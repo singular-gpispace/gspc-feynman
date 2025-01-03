@@ -452,3 +452,956 @@ quit;!
 quit;!
 quit;
 quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temp/tempbonjour.ssi";
+ def m=read(l);
+link l="ssi:r tempbonjour.ssi";
+ def m=read(l);
+m;
+m;
+quit;
+quit;
+quit;
+link l="ssi:r temphello.ssi";
+ def m=read(l);
+m;
+m;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temphello.ssi";
+ def m=read(l);
+m;
+link l="ssi:r temp/waas_1293822_1734696871369182968";
+ def m=read(l);
+m;
+m.r_data;
+ setring nr;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+ m.data[2];
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temphello.ssi";
+ def m=read(l);
+m;
+m;
+quit;
+link l="ssi:r temphello.ssi";
+link l="ssi:r temphello.ssi";
+ m.data[2];
+ def m=read(l);
+m;
+quit;
+quit;
+link l="ssi:r temphello.ssi";
+ def m=read(l);
+m;
+m[1][1].sectorMap;
+m[1][1].sectorMap;
+quit;
+quit;
+quit;
+link l="ssi:r tempgetSector.ssi";
+ def m=read(l);
+m;
+m;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r tempfindSector.ssi";
+ def m=read(l);
+m;
+m;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r hello.ssi";
+ def m=read(l);
+ def m1=read(l);
+ def m2=read(l);
+m;
+m1;
+m2;
+m3;
+ def m3=read(l);
+m3;
+quit;
+quit;
+link l="ssi:r hello.ssi";
+ def m=read(l);
+ def m1=read(l);
+ def m2=read(l);
+ def m3=read(l);
+ def m4=read(l);
+ def m5=read(l);
+m;
+m1;
+m2;
+m3;
+m4;
+m5;
+quit;
+link l="ssi:r hello.ssi";
+ def m=read(l);
+ def m1=read(l);
+m;
+m1;
+quit;
+link l="ssi:r hello.ssi";
+ def m1=read(l);
+m1;
+m1;
+quit;
+link l="ssi:r hello.ssi";
+ def m1=read(l);
+m1;
+quit;
+link l="ssi:r hello.ssi";
+ def m1=read(l);
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m1;
+m;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m;
+m1;
+m2;
+m3;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+m;
+def m1=read(l);
+m1;
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m1;
+m4;
+m4;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+m;
+def m1=read(l);
+m1;
+link l = "ssi:r hello.ssi";  // Open file for reading
+list lines;                  // Initialize a list to store all lines
+while (!eof(l)) {            // Continue reading until end of file
+  lines[size(lines) + 1] = read(l);
+}
+// Close the link after reading
+close(l);
+// Access lines using their index
+lines[1];  // First line
+lines[2];  // Second line
+lines[3];  // Third line
+// and so on...
+link l = "ssi:r hello.ssi";  // Open file for reading
+list lines;                  // Initialize a list to store all lines
+int success = 1;             // Variable to check if reading was successful
+while (success) {
+  try {
+    lines[size(lines) + 1] = read(l);  // Attempt to read a line
+  } catch {                           // Catch errors when no more lines exist
+    success = 0;                      // Stop the loop
+  }
+}
+// Close the link after reading
+close(l);
+// Access lines using their index
+lines[1];  // First line
+lines[2];  // Second line
+lines[3];  // Third line
+// and so on...
+link l = "ssi:r hello.ssi";  // Open the file for reading
+list lines;                  // Initialize a list to store the lines
+string line;                 // Variable to temporarily store each line
+while (1) {
+  line = read(l);            // Try to read a line
+  if (line == "") {          // Check if the line is empty (EOF reached)
+    break;                   // Exit the loop
+  }
+  lines[size(lines) + 1] = line;  // Append the line to the list
+}
+// Close the link after reading
+close(l);
+// Access the lines
+lines[1];  // First line
+lines[2];  // Second line
+lines[3];  // Third line
+// ...and so on
+link l = "ssi:r hello.ssi"; // Open the file for reading
+list lines;                 // Initialize a list to store the lines
+string line;                // Temporary variable to hold each line
+int i = 1;                  // Counter for indexing the lines
+// Read the file line by line until EOF
+while (1) {
+  if (defined(l)) {          // Check if the link is valid
+    line = read(l);          // Read a line
+    if (line == "") {        // If an empty string, EOF reached
+      break;                 // Exit the loop
+    }
+    lines[i] = line;         // Store the line in the list
+    i++;                     // Increment the counter
+  } else {
+    break;                   // Exit if the link becomes undefined
+  }
+}
+// Close the link after reading
+close(l);
+// Access the lines
+write("Total lines read: ", size(lines), "\n");
+for (i = 1; i <= size(lines); i++) {
+  write("Line ", i, ": ", lines[i], "\n");
+}
+link l = "ssi:r hello.ssi"; // Open the file for reading
+list expressions;           // List to store the expressions
+int i = 1;                  // Counter for indexing
+// Read all expressions until EOF
+while (status(l)) {         // Check if there's data to read
+  expressions[i] = read(l); // Read one expression and store it
+  i++;                      // Increment the counter
+}
+// Close the link after reading
+close(l);
+// Print all expressions
+write("Total expressions read: ", size(expressions), "\n");
+for (i = 1; i <= size(expressions); i++) {
+  write("Expression ", i, ": ", expressions[i], "\n");
+}
+link l = "ssi:r hello.ssi"; // Open the file for reading
+list expressions;           // List to store the expressions
+int i = 1;                  // Counter for indexing
+// Check the link's status and read all expressions
+while (status(l) != 0) {    // Ensure there is data to read
+  expressions[i] = read(l); // Read one expression and store it
+  i++;                      // Increment the counter
+}
+// Close the link after reading
+close(l);
+// Print all expressions
+write("Total expressions read: ", size(expressions), "\n");
+for (i = 1; i <= size(expressions); i++) {
+  write("Expression ", i, ": ", expressions[i], "\n");
+}
+link l = "ssi:r hello.ssi"; // Open the file for reading
+list expressions;           // List to store the expressions
+int i = 1;                  // Counter for indexing
+// Check the link's status and read all expressions
+while (status(l)) {         // Loop while there is data to read
+  expressions[i] = read(l); // Read one expression and store it
+  i++;                      // Increment the counter
+}
+// Close the link after reading
+close(l);
+// Print all expressions
+write("Total expressions read: ", size(expressions), "\n");
+for (i = 1; i <= size(expressions); i++) {
+  write("Expression ", i, ": ", expressions[i], "\n");
+}
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m1;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m1;
+m2;
+m3;
+m4;
+m5;
+link l = "ssi:r hello.ssi";  // Open the file for reading
+list file_content;
+while (!eof(l)) {
+  file_content = file_content, read(l);  // Append each line to the list
+}
+close(l);  // Close the file
+// Access the content by indices
+file_content[1];  // Starting removeElimVars procedure.
+file_content[2];  // Number of elimvars:
+file_content[3];  // 6
+file_content[4];  // Labels:
+file_content[5];  // [1]: q(1)
+file_content[6];  // [2]: q(2)
+link l = "ssi:r hello.ssi";  // Open the file for reading
+list file_content;           // List to store all lines
+string line;                 // Temporary variable to store each line
+while (1) {                  // Infinite loop to keep reading
+  try {
+    line = read(l);          // Attempt to read a line
+    file_content = file_content, line;  // Append to the list
+  } catch {                  // If an error occurs (e.g., end of file)
+    break;                   // Exit the loop
+  }
+}
+close(l);  // Close the file
+// Access the content by indices
+file_content[1];  // Starting removeElimVars procedure.
+file_content[2];  // Number of elimvars:
+file_content[3];  // 6
+file_content[4];  // Labels:
+file_content[5];  // [1]: q(1)
+file_content[6];  // [2]: q(2)
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m7;
+m6;
+m5;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l):
+;
+def m6=read(l);
+m6;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+m;
+m2;
+m4;
+m5;
+m6;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+m5;
+m4;
+m6;
+m4;
+m5;
+quit;
+  write(l, "Updated Graph:\n", G1);
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+m4;
+m5;
+m6;
+m3;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+m5;
+m4;
+m6;
+m5;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+m5;
+m6;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+m5;
+m6;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+m5;
+m6;
+m4;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m3;
+m4;
+m6;
+C95;
+m5;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m4;
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m4;
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m4;
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m4;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+quit;
+ link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m1;
+m2;
+m3;
+m4;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m1;
+m2;
+m;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m1;
+m2;
+m3;
+m4;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m4;
+quit;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m4;
+m5;
+m6;
+m7;
+m8;
+m8;
+quit;
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m4;
+m6;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temp/waas_1293822_1734696871369182968";
+quit;
+link l="ssi:r temp/waas_1990514_1735033174858440727";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+ m.data[2];
+ m.data[3];
+ m.data[4];
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temp/waas_1990514_1735033174858440727";
+link l="ssi:r temp/waas_2006852_1735038019081428306";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+m.data[2];
+quit;
+quit;
+quit;
+quit;
+link l="ssi:r temp/waas_2006852_1735038019081428306";
+link l="ssi:r temp/waas_2011967_1735039220841016463";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+quit;
+quit;
+link l="ssi:r temp/waas_2011967_1735039220841016463";
+link l="ssi:r temp/waas_2013242_1735039403265454080";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;
+quit;

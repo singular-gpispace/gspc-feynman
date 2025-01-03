@@ -1,4 +1,4 @@
-cd /home/atraore/gpi/try_gpi/Reduce/example_dir
+cd /home/atraore/gpi/try_gpi/feynman_ibp/example_dir
 rm -rf temp/*
 spack load gpi-space@23.06
 
@@ -12,4 +12,4 @@ FLINT_HOME="/usr/local/"
 export LD_LIBRARY_PATH=/home/atraore/git/Singular4/flint/flint2:$LD_LIBRARY_PATH
 
 # Run Singular with the example script
-SINGULARPATH=/home/atraore/gpi/try_gpi/Reduce/install_dir Singular example.sing
+SINGULARPATH=/home/atraore/gpi/try_gpi/feynman_ibp/install_dir Singular example.sing

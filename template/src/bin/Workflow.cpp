@@ -50,7 +50,7 @@ namespace template_module
         // Determine the number of "OUTPUT" entries
         int output_count = 0;
         for (auto it = valuesOnPortsMap.begin(); it != valuesOnPortsMap.end(); ++it) {
-            if (boost::get<std::string>(it->first) == "answer") {
+            if (boost::get<std::string>(it->first) == "place_output") {
                 output_count++;
             }
         }
@@ -64,7 +64,7 @@ namespace template_module
         int i = 0;
 
         for (auto it = valuesOnPortsMap.begin(); it != valuesOnPortsMap.end(); ++it) {
-            if (boost::get<std::string>(it->first) == "answer") {
+            if (boost::get<std::string>(it->first) == "place_output") {
                 try {
                     // Extract and print the raw input
                     std::string raw_data = boost::get<std::string>(it->second);

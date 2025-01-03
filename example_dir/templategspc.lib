@@ -19,16 +19,25 @@ generateIOTokenTypes(configToken)              register the user - defined types
 gspc_template(list, configToken, configToken)    interface of the template framework in Singular
 ";
 
+
+
 proc mod_init()
 {
     //Singular does not support fieldname containing underscore
-    LIB "/home/atraore/gpi/try_gpi/Reduce/build_dir/src/libSINGULAR-template-module.so";
+    LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");
     newstruct("templateConfigToken", " string neededLibrary, string functionName");
     newstruct("token", "list fieldnames, list data");
     //newstruct("Toknlift", "vector a, vector b"); 
+
+    newstruct("graph", "list vertices, list edges");
+    newstruct("labeledgraph", "list vertices, list edges, ring over, list labels, ring overpoly, list elimvars, ring baikovover, matrix baikovmatrix");
+    newstruct("Net", "list rows");
+    newstruct("oneIBP", "list c, list i");
+    newstruct("setIBP", "ring over,list seed,list IBP");
+    newstruct("oneSector", "list lab, list sectorMap ,list targetInts ");
 
 }
 
@@ -178,12 +187,13 @@ proc gspc_template_SchRes(list L, configToken gc)
     //list L = s;
     list inputlists;
     token t;
-    
+
     t.fieldnames = list("generators", "Input101");
     //  L is a list containing the input data
     for (int i = 1; i <= size(L); i++) {
 
         t.data[i] = L[i];
+
     }
     inputlists[1] = t;
 

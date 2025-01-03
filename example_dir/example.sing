@@ -1,7 +1,7 @@
 
 
 LIB "templategspc.lib";
-//LIB "/home//atraore/gpi/try_gpi/Reduce/template/template/LIB/templategspc.lib";
+//LIB "/home//atraore/gpi/try_gpi/feynman_ibp/template/template/LIB/templategspc.lib";
 
 //LIB "random.lib";
 LIB "modstd.lib";
@@ -10,7 +10,7 @@ LIB "modstd.lib";
 
 // Configure GPI-Space	
 configToken gc = configure_gspc();
-gc.options.tmpdir = "/home//atraore/gpi/try_gpi/Reduce/example_dir/temp";
+gc.options.tmpdir = "/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp";
 gc.options.nodefile = "nodefile";
 gc.options.procspernode = 7;
 gc.options.loghost = "waas";
@@ -19,13 +19,14 @@ gc.options.logport = 9876;
 
 
 ring R = 0, x, dp;
-ideal J = 1;
-int d = 12; // degree
-int e = 3; // edges
-int g = 2; // genus (number of holes)
-string s = "{{1, 2}, {1, 2}, {1, 2}}"; // graph.
+//ideal J = 1;  
 
-list L = d, e, g, s;
+list v = list(1, 2, 3, 4, 5, 6); // vertices
+list e = list(list(6, 1), list(4, 6), list(1, 2), list(3, 5), list(4, 3), list(2, 5), list(5, 6), list(1), list(2), list(3), list(4)); // edges 
+
+list targetInt = list(list(1, 2, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+
+list L = v, e, targetInt;
 
 
 

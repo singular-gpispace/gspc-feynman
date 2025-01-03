@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -shared -Wl,-soname,libfeynman_implementation.so -o libfeynman_implementation.so CMakeFiles/feynman_implementation.dir/src/feynman.cpp.o   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib: -lflint 

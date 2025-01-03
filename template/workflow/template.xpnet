@@ -2,417 +2,59 @@
   <in name="base_filename" type="string" place="place_base_filename"/>
   <in name="library_name" type="string" place="place_library_name"/>
   <in name="input" type="string" place="place_input"/>
-  <out name="answer" type="string" place="answer"/>
-
+  <out name="output" type="string" place="web"/>
   <net>
     <place name="place_input" type="string"/>
-    <place name="place_output" type="string"/>
+    <place name="labeledgraph" type="string"/>
+    <place name="web" type="string"/>
+    <place name="reducedIBPs" type="string"/>
+    <place name="MI" type="string"/>
+
     <place name="place_base_filename" type="string"/>
     <place name="place_library_name" type="string"/>
 
     <transition name="compute">
       <defun>
         <require key="worker" mandatory="true"/>
-        <in name="base_filename" type="string"/>
         <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
         <in name="input" type="string"/>
-        <out name="output" type="string"/>
-        <module name="singular_template" require_function_unloads_without_rest="false" function="compute(base_filename,input,library_name,output)">
+        <out name="labeledgraph" type="string"/>
+        <out name="web" type="string"/>
+        <out name="reducedIBPs" type="string"/>
+        <out name="MI" type="string"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute(input,library_name,base_filename,labeledgraph,web,reducedIBPs,MI)">
           <cinclude href="interface/template_interface.hpp" />
           <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="iostream" />
           <code><![CDATA[
-    output=  RESOLVE_INTERFACE_FUNCTION( singular_template_compute_StdBasis) (input,library_name);
+						labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)
+            				( 
+							   input, library_name, base_filename
+							);
+              web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)
+            				( 
+							   input, library_name, base_filename
+							);
+                 reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)
+            				( 
+							   input, library_name, base_filename
+							);   
+              MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)
+            				( 
+							   input, library_name, base_filename
+							);
             		]]>          </code>
         </module>
       </defun>
-      <connect-read port="base_filename" place="place_base_filename"/>
       <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
       <connect-in port="input" place="place_input"/>
-      <connect-out port="output" place="g"/>
-    </transition>
-
-    <place name="g" type="string"/>
-
-    <transition name="compute1">
-      <defun>
-        <require key="worker" mandatory="true"/>
-        <in name="input" type="string"/>
-        <out name="output" type="string"/>
-        <out name="degree" type="int"/>
-        <out name="edges" type="int"/>
-        <out name="genus" type="int"/>
-        <out name="graph" type="string"/>
-        <out name="deg" type="int"/>
-        <out name="total" type="unsigned long"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function="compute1(graph,degree,edges,genus,deg,total,input,output)">
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-
-          <cinclude href="iostream" />
-          <code><![CDATA[
-        std::vector<std::string> result=  RESOLVE_INTERFACE_FUNCTION( singular_template_compute_parseInput) (input);
-
-        degree = std::stoi(result[0]);
-        edges = std::stoi(result[1]);
-        int _genus = std::stoi(result[2]);
-        graph = result[3];
-        genus = 6 * _genus - 6;
-        deg=degree;
-        total =RESOLVE_INTERFACE_FUNCTION( partialBinomialSum) (edges,degree);
-
-            		]]>
-          </code>
-        </module>
-      </defun>
-      <connect-in port="input" place="g"/>
-      <connect-out port="output" place="place_output"/>
-      <connect-out port="degree" place="degree"/>
-      <connect-out port="deg" place="deg"/>
-      <connect-out port="edges" place="N"/>
-      <connect-out port="genus" place="genus"/>
-      <connect-out port="graph" place="graph"/>
-      <connect-out port="total" place="total"/>
-    </transition>
-
-    <place name="degree" type="int"/>
-    <place name="deg" type="int"/>
-    <place name="N" type="int"/>
-    <place name="fey_out" type="string" />
-    <place name="total" type="unsigned long"/>
-    <place name="genus" type="int"/>
-
-
-    <transition name="degrees_fey">
-      <defun>
-        <require key="worker" mandatory="true"/>
-
-        <in name="weightmax" type="int"/>
-
-        <in name="d" type="int"/>
-        <out name="v" type="list"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" degrees_fey(weightmax,d,v)">
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-          <cinclude href="iostream" />
-
-          <code><![CDATA[
-              int nb = RESOLVE_INTERFACE_FUNCTION(number_monomial)(weightmax);
-         // number_monomial function
-        if (d < nb) {
-            // Throw an exception with a proper message
-            throw std::runtime_error(
-                "d = " + std::to_string(d) + " should be greater or equal than the number of monomials, which is " + std::to_string(nb));
-        } else {
-            // Populate the vector v with integers from 2 to d
-            for (int i = 2; i <= d; ++i) {
-                v.emplace_back(i);
-            }
-        }
-         ]]>
-          </code>
-        </module>
-      </defun>
-      <connect-read port="weightmax" place="genus"/>
-
-      <connect-in port="d" place="degree"/>
-      <connect-out-many port="v" place="degrees"/>
-    </transition>
-
-    <place name="degrees" type="int"/>
-
-    <transition name="partition">
-      <defun>
-        <in name="i" type="int"/>
-        <in name="n" type="int"/>
-        <out name="v" type="list"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" gen_block_(n,i,v)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="sstream"/>
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-          <code><![CDATA[
-            using vector2d = std::vector<std::vector<int>>;
-        vector2d gen = RESOLVE_INTERFACE_FUNCTION(gen_block)(n,i);
-
-          for (std::vector<int> ge:gen){
-              std::list<pnet::type::value::value_type> temp;
-              for (int xi : ge) {
-                  temp.push_back(pnet::type::value::value_type(xi));
-              }
-              v.push_back(temp);
-          }
-
-         ]]>          </code>
-        </module>
-      </defun>
-      <connect-read port="n" place="N"/>
-      <connect-in port="i" place="degrees"/>
-      <connect-out-many port="v" place="d_vectors"/>
-    </transition>
-
-    <place name="d_vectors" type="list"/>
-
-    <transition name="Combination">
-      <defun>
-        <in name="v" type="list"/>
-        <out name="vec" type="list"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" partition(v, vec)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="numeric"/>
-          <cinclude href="sstream"/>
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-          <code><![CDATA[
-    std::vector<int> x;
-    for (const auto& elem : v) {
-      auto ptr = boost::get<int>(&elem) ;
-        x.push_back(*ptr);
-      }
-        vector2d gen = RESOLVE_INTERFACE_FUNCTION(iterate)(x);
-
-    using pnet_value = pnet::type::value::value_type;
-    using pnet_list = std::list<pnet_value>;
-        for (std::vector<int> &a : gen)
-    {
-        pnet_list temp_a;
-        for (int xi : a)
-        {
-            temp_a.push_back(pnet::type::value::value_type(xi));
-        }
-        vec.push_back(temp_a);
-    }
-
-          ]]>
-          </code>
-        </module>
-      </defun>
-      <connect-in port="v" place="d_vectors"/>
-      <connect-out-many port="vec" place="branchtype"/>
-    </transition>
-
-
-    <place name="branchtype" type="list"/>
-    <place name="graph" type="string"/>
-    <transition name="feynman_degree">
-      <defun>
-        <in name="deg" type="int"/>
-        <in name="a" type="list"/>
-        <in name="graph" type="string"/>
-        <out name="s" type="string"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" feynman_integral_degree(deg,s,graph,a)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="numeric"/>
-          <cinclude href="tuple"/>
-          <cinclude href="algorithm"/>
-          <cinclude href="unordered_map"/>
-          <cinclude href="functional"/>
-          <cinclude href="cmath"/>
-          <cinclude href="sstream"/>
-          <cinclude href="stack"/>
-          <cinclude href="unordered_set"/>
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-          <code><![CDATA[
-         // Extract integer pairs from the input string
- std::vector<std::pair<int, int>> Gv  =  RESOLVE_INTERFACE_FUNCTION( extractIntegerPairs) (graph);
-/****************************************************************************/
-          std::vector<int> av;
-          int c=0;
-          for (const auto &xi : a)
-          {
-              if (auto ptr = boost::get<int>(&xi))
-              {
-                  av.push_back( *ptr);
-                  c+=*ptr;
-              }
-          }
-/****************************************************************************/
-       unsigned long fe=  RESOLVE_INTERFACE_FUNCTION(feynman_integral_branch_type) (Gv, av);
-/****************************************************************************/
-      std::vector<unsigned long> v(deg, 0); 
-      v[c-1] = fe;
-      s=  RESOLVE_INTERFACE_FUNCTION( vectorToStringULong) (v);
-      
-      ]]>
-          </code>
-        </module>
-      </defun>
-      <connect-read port="deg" place="deg"/>
-      <connect-read port="graph" place="graph"/>
-      <connect-in port="a" place="branchtype"/>
-      <connect-out port="s" place="fey_out"/>
-    </transition>
-
-    <place name="sum" type="string">
-      <token>
-        <value>" "</value>
-      </token>
-    </place>
-
-    <transition name="Reduce">
-      <defun>
-        <out name="ns" type="control"/>
-        <in name="s" type="string"/>
-        <inout name="sum" type="string"/>
-        <module name="singular_template" require_function_unloads_without_rest="false" function="plus (ns,s, sum)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="tuple"/>
-          <cinclude href="algorithm"/>
-          <cinclude href="unordered_map"/>
-          <cinclude href="functional"/>
-          <cinclude href="cmath"/>
-          <cinclude href="sstream"/>
-          <cinclude href="stack"/>
-          <cinclude href="unordered_set"/>
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-          <code><![CDATA[
-                std::vector<unsigned long> v = RESOLVE_INTERFACE_FUNCTION( stringToVectorUlong) (sum);
-                std::vector<unsigned long> w = RESOLVE_INTERFACE_FUNCTION( stringToVectorUlong) (s);
-
-                //  sum of the vectors
-                std::vector<unsigned long> sum_vector = RESOLVE_INTERFACE_FUNCTION( sumOfVectors) (v,w);
-
-                // Convert the result back to a string
-      sum=  RESOLVE_INTERFACE_FUNCTION( vectorToStringULong) (sum_vector);
-
-          ]]>
-          </code>
-
-        </module>
-      </defun>
-      <connect-in port="s" place="fey_out"/>
-      <connect-inout port="sum" place="sum"/>
-      <connect-out port="ns" place="ns"/>
-    </transition>
-
-
-    <place name="ns" type="control"/>
-
-    <place name="counter_total" type="unsigned long">
-      <token>
-        <value>0UL</value>
-      </token>
-    </place>
-
-    <transition name="transition6">
-      <defun>
-        <in name="ns" type="control"/>
-        <inout name="counter_total" type="unsigned long"/>
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" control1 (ns,counter_total)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="sstream"/>
-          <code><![CDATA[
-
-          counter_total +=1;
-
-         ]]>
-          </code>
-        </module>
-      </defun>
-      <connect-in port="ns" place="ns"/>
-      <connect-inout port="counter_total" place="counter_total"/>
-    </transition>
-
-
-    <transition name="transition7">
-      <defun>
-        <in name="total" type="unsigned long"/>
-        <in name="counter_total" type="unsigned long"/>
-        <inout name="answer" type="string"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" final (answer,total,counter_total)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="sstream"/>
-          <code><![CDATA[
-
-         ]]>
-          </code>
-        </module>
-      </defun>
-      <condition>
-      ${counter_total}:eq: ${total}
-      </condition>
-      <connect-read port="total" place="total"/>
-      <connect-out port="answer" place="fey_sum"/>
-      <connect-in port="counter_total" place="counter_total"/>
-      <connect-in port="answer" place="sum"/>
+      <connect-out port="labeledgraph" place="labeledgraph"/>
+      <connect-out port="web" place="web"/>
+      <connect-out port="reducedIBPs" place="reducedIBPs"/>
+      <connect-out port="MI" place="MI"/>
 
     </transition>
-
-    <place name="fey_sum" type="string" />
-
-    <transition name="Quasimodular">
-      <defun>
-        <inout name="answer" type="string"/>
-        <in name="weightmax" type="int"/>
-
-        <module name="singular_template" require_function_unloads_without_rest="false" function=" Quasi (answer,weightmax)">
-          <cinclude href="iostream"/>
-          <cinclude href="vector"/>
-          <cinclude href="sstream"/>
-          <cinclude href="interface/template_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <cinclude href="interface/feynman.hpp" />
-
-          <code><![CDATA[
-          std::vector<unsigned long> Iq = RESOLVE_INTERFACE_FUNCTION( stringToVectorUlong) (answer);
-
-    // Maximum weight
-
-    // Initialize FLINT polynomial context with 3 variables
-    slong nv = 3;  // Number of variables
-    fmpq_mpoly_ctx_t ctx;
-    RESOLVE_INTERFACE_FUNCTION( myctx_init) (ctx,nv);
-    // Variable to hold the result
-    fmpq_mpoly_t result;
-        RESOLVE_INTERFACE_FUNCTION( my_init) (result,ctx);
-
-
-        RESOLVE_INTERFACE_FUNCTION( quasimodular_form) (result,Iq,weightmax,ctx);
-
-
-    RESOLVE_INTERFACE_FUNCTION(my_mpoly_pretty) (result,ctx);
-
-    // Convert polynomial result to string
-   answer =RESOLVE_INTERFACE_FUNCTION(fmpq_mpolyToString) (result,ctx);
-
-    std::cout << "Polynomial as string: " << answer << std::endl;
-
-    // Clear polynomials and context
-        RESOLVE_INTERFACE_FUNCTION(my_mpoly_clear) (result,ctx);
-        RESOLVE_INTERFACE_FUNCTION( my_ctx_clear) (ctx);
-
-
-         ]]>
-          </code>
-        </module>
-      </defun>
-      <connect-in port="answer" place="fey_sum"/>
-      <connect-in port="weightmax" place="genus"/>
-
-      <connect-out port="answer" place="answer"/>
-    </transition>
-
-    <place name="answer" type="string" />
-
   </net>
 </defun>

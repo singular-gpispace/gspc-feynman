@@ -1,0 +1,102 @@
+// Write test data
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+write(l, "This is a test line 1\n");
+write(l, "This is a test line 2\n");
+close(l);
+
+// Read the test file
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def m = read(l);
+m;
+
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+write(l, "This is a test line 1", "\n");
+write(l, "This is a test line 2", "\n");
+close(l);
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def m = read(l);  // Reads the file into a list
+m;                // Displays the entire content of the file
+
+kill l, m;
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def m = read(l);
+m;
+
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+write(l, "Debug Line 1\n");
+write(l, "Debug Line 2\n");
+close(l);
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def m = read(l);
+m;
+
+m;
+ m.r_data;
+
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+write(l, "Debug Line 1");
+write(l, "Debug Line 2");
+close(l);
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def m = list();
+while (!eof(l)) {
+  m[size(m) + 1] = readline(l);  // Read each line into the list
+}
+close(l);
+m;
+
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+write(l, "Debug Line 1\nDebug Line 2\n");
+close(l);
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
+def str = readline(l);  // Read entire content as a single string
+close(l);
+def m = split(str, "\n");  // Split the string by newline
+m;
+
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
+write(l, "Debug Line 1");
+write(l, "Debug Line 2");
+write(l, "Additional Info");
+close(l);
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
+def line1 = read(l);
+def line2 = read(l);
+def line3 = read(l);
+close(l);
+
+line1;
+line2;
+line3;
+
+link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
+def line1 = read(l);
+def line2 = read(l);
+def line3 = read(l);
+close(l);
+
+line1;
+line2;
+line3;
+
+// Define the path to the file
+string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Adjust path if necessary
+
+// Open the file for writing using a link
+link l = "ssi:w " + path;
+
+// Write debug information
+write(l, "D\n");
+write(l, 22, "\n");  // Adjust this to the actual size of elimvars if needed
+
+// Close the link after writing
+close(l);
+
+ link l="ssi:r hi.ssi";
+def m=read(l);

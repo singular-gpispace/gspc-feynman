@@ -1,3 +1,0 @@
-LDFLAGS += -L/home/atraore/gpi/try_gpi/gpispace/build
-LDFLAGS += -lfeynman_implementation
-LDFLAGS += -Wl,-rpath=/home/atraore/gpi/try_gpi/gpispace/bin/lib

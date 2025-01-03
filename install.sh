@@ -1,22 +1,22 @@
 #!/bin/bash
-#rm -rf ~/gpi/try_gpi/Reduce/build_dir/* ~/gpi/try_gpi/Reduce/install_dir/*
+#rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
 
 # Create necessary directories
-mkdir -p ~/gpi/try_gpi/Reduce/build_dir ~/gpi/try_gpi/Reduce/install_dir
+mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
 
 # Activate the Spack environment
 spack load gpi-space@23.06
 
 # Generate SVG workflow diagram
-pnetc ~/gpi/try_gpi/Reduce/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/Reduce/template/workflow/fey.svg
+pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg
 
 # Define variables
-INSTALL_PREFIX="/home/atraore/gpi/try_gpi/Reduce/install_dir/"
+INSTALL_PREFIX="/home/atraore/gpi/try_gpi/feynman_ibp/install_dir/"
 BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 GPISPACE_ROOT="$HOME/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-23.06-gxye6b7ngsnbxnzjkfsfqtvanynyghdk/"
-BUILD_DIR="/home/atraore/gpi/try_gpi/Reduce/build_dir/"
-SOURCE_DIR="/home/atraore/gpi/try_gpi/Reduce/template"
+BUILD_DIR="/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/"
+SOURCE_DIR="/home/atraore/gpi/try_gpi/feynman_ibp/template"
 
 # Set FLINT home directory
 FLINT_HOME="/usr/local/"

@@ -2298,34 +2298,12 @@ proc getReducedIBPSystem_gpi(token ibp)
 {
   list v = ibp.data[1];
   list e = ibp.data[2];
+  list targetInt = ibp.data[3];
 
 
   graph G;
   G.vertices = v;
   G.edges = e;
-
-
-  labeledgraph G1 = computeBaikovMatrix(G);
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
-  link l = "ssi:w " + path;
-  write(l, G1, "hello");
-  close(l);
-
-  token output;
-  output.fieldnames = list("generators", "computeBaikovMatrix");
-
-  output.data[1] = G1;
-
-  return(output);
-
-
-}
-
-proc updateWeb_gpi(token ibp)
-{
-  list targetInt = ibp.data[3];
-
-
 
   list L = pickHighestSector(targetInt);
 
@@ -2337,42 +2315,30 @@ proc updateWeb_gpi(token ibp)
 
   web = w4[1];
 
-
-  token output;
-  output.fieldnames = list("generators", "updateWeb_gpi");
-
-  output.data[1] = web;
-
-  return(output);
-
-
-}
-
-
-proc reducedIBPs_gpi(token ibp)
-{
-  list targetInt = ibp.data[3];
+  labeledgraph G1 = computeBaikovMatrix(G);
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+  write(l, G1, "hello");
+  close(l);
   setIBP reducedIBPs;
+  list MI;
+  //reducedIBPs.over=G1.baikovover;
   int te = 0;
   reducedIBPs.seed = targetInt;
 
-  token output;
-  output.fieldnames = list("generators", "reducedIBPs_gpi");
 
+  token output;
+  output.fieldnames = list("generators", "GroebnerBasis");
   output.data[1] = reducedIBPs;
+  output.data[2] = MI;
+  output.data[3] = G1;
+  output.data[4] = web;
 
   return(output);
+
+
 }
 
 
-proc MI_gpi(token ibp)
-{
-  list v = ibp.data[1];
-  list MI;
-  token output;
-  output.fieldnames = list("generators", "MI_gpi");
 
-  output.data[1] = MI;
 
-  return(output);
-}

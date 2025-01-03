@@ -50,7 +50,7 @@ void parseSSIFile(const std::string& filePath) {
 }
 
 int main() {
-    std::string directoryPath = "/home/atraore/gpi/try_gpi/Reduce/example_dir/temp/";
+    std::string directoryPath = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/";
 
     // Iterate through files in the directory
     for (const auto& entry : fs::directory_iterator(directoryPath)) {

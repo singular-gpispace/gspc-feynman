@@ -9,7 +9,7 @@
 namespace singular_template
 {
   // Define SP_INSTALL_PATH in the namespace
-  const boost::filesystem::path SP_INSTALL_PATH = "/home/atraore/gpi/try_gpi/Reduce/install_dir";
+  const boost::filesystem::path SP_INSTALL_PATH = "/home/atraore/gpi/try_gpi/feynman_ibp/install_dir";
 
   namespace
   {
