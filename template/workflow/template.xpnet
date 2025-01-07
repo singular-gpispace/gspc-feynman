@@ -2,13 +2,9 @@
   <in name="base_filename" type="string" place="place_base_filename"/>
   <in name="library_name" type="string" place="place_library_name"/>
   <in name="input" type="string" place="place_input"/>
-  <out name="output" type="string" place="web"/>
+  <out name="output" type="string" place="web_size"/>
   <net>
     <place name="place_input" type="string"/>
-    <place name="labeledgraph" type="string"/>
-    <place name="web" type="string"/>
-    <place name="reducedIBPs" type="string"/>
-    <place name="MI" type="string"/>
 
     <place name="place_base_filename" type="string"/>
     <place name="place_library_name" type="string"/>
@@ -56,5 +52,51 @@
       <connect-out port="MI" place="MI"/>
 
     </transition>
+
+    <place name="labeledgraph" type="string"/>
+    <place name="web" type="string"/>
+    <place name="reducedIBPs" type="string"/>
+    <place name="MI" type="string"/>
+
+    <place name="it" type="long"/>
+
+    <transition name="compute1">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="web" type="string"/>
+        <in name="labeledgraph" type="string"/>
+
+        <out name="web_size" type="string"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute1(labeledgraph,web_size,web,library_name,base_filename)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+    
+       
+ int i=1;
+  web_size = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBP_gpi)
+            				( 
+							  labeledgraph, web,i,i, library_name, base_filename
+							);
+    std::cout<<" web_size "<<web_size<<std::endl;
+
+            		]]>          </code>
+        </module>
+      </defun>
+      <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
+      <connect-in port="web" place="web"/>
+      <connect-in port="labeledgraph" place="labeledgraph"/>
+
+      <connect-out port="web_size" place="web_size"/>
+
+    </transition>
+
+    <place name="web_size" type="string"/>
+
+
   </net>
 </defun>

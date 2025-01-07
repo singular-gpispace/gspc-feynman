@@ -69,3 +69,19 @@ NO_NAME_MANGLING
 std::string singular_MI_gpi(std::string const& res
       , std::string const& needed_library
       , std::string const& base_filename);
+NO_NAME_MANGLING
+
+int singular_size_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_computeManyIBP_gpi(std::string const& res
+      , std::string const& res1
+      , int const& i
+      , int const& k
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_targetInt_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
