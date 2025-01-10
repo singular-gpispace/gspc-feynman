@@ -3,44 +3,34 @@ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi"
 write(l, "This is a test line 1\n");
 write(l, "This is a test line 2\n");
 close(l);
-
 // Read the test file
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def m = read(l);
 m;
-
 link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 write(l, "This is a test line 1", "\n");
 write(l, "This is a test line 2", "\n");
 close(l);
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def m = read(l);  // Reads the file into a list
 m;                // Displays the entire content of the file
-
 kill l, m;
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def m = read(l);
 m;
-
 link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 write(l, "Debug Line 1\n");
 write(l, "Debug Line 2\n");
 close(l);
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def m = read(l);
 m;
-
 m;
  m.r_data;
-
 link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 write(l, "Debug Line 1");
 write(l, "Debug Line 2");
 close(l);
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def m = list();
 while (!eof(l)) {
@@ -48,55 +38,304 @@ while (!eof(l)) {
 }
 close(l);
 m;
-
 link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 write(l, "Debug Line 1\nDebug Line 2\n");
 close(l);
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/test.ssi";
 def str = readline(l);  // Read entire content as a single string
 close(l);
 def m = split(str, "\n");  // Split the string by newline
 m;
-
 link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
 write(l, "Debug Line 1");
 write(l, "Debug Line 2");
 write(l, "Additional Info");
 close(l);
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
 def line1 = read(l);
 def line2 = read(l);
 def line3 = read(l);
 close(l);
-
 line1;
 line2;
 line3;
-
 link l = "ssi:r /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/debug.ssi";
 def line1 = read(l);
 def line2 = read(l);
 def line3 = read(l);
 close(l);
-
 line1;
 line2;
 line3;
-
 // Define the path to the file
 string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Adjust path if necessary
-
 // Open the file for writing using a link
 link l = "ssi:w " + path;
-
 // Write debug information
 write(l, "D\n");
 write(l, 22, "\n");  // Adjust this to the actual size of elimvars if needed
-
 // Close the link after writing
 close(l);
-
  link l="ssi:r hi.ssi";
 def m=read(l);
+graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+LIB "feynman.lib"
+graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+G1.baikovmatrix;
+quit,;
+quit;
+LIB "feynman.lib"
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib"
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1 = computeBaikovMatrix(G);
+quit,;
+quit;
+LIB "feynman.lib"
+LIB "feynman.lib";
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+ ring RB= G1.baikovover;
+  setring RB;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+G1.baikovmatrix;
+typeof(G1);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+G1.baikovover;
+G1.baikovmatrix;
+labeledgraph G1 = computeBaikovMatrix(G);
+setring(G1.baikovover); // Ensure the Baikov ring is active
+G1.baikovmatrix;
+ ring RB= G1.baikovover;
+  setring RB;
+  RB;
+  matrix B = G1.baikovmatrix;
+B;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+ring RB= G1.baikovover;
+  setring RB;
+G1.baikovmatrix;
+G1;
+setring(G1.baikovover);
+G1;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+quit;
+LIB "feynman.lib";
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+matrix BaikovMatrix = getBaikovMatrix(G1);
+atrix bMatrix = getBaikovMatrix(G1);
+print(bMatrix);
+matrix BaikovMatrix = getBaikovMatrix(G1);
+BaikovMatrix;
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+matrix bMatrix = getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+matrix bMatrix = getBaikovMatrix(G1);
+matrix mm = getBaikovMatrix(G1);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+matrix mm = getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+labeledgraph mm = getBaikovMatrix(G1);
+mm;
+mm.baikovmatrix;
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+mm.baikovmatrix;
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+getBaikovMatrix(G1);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+G1.baikovmatrix;
+G1.baikovover;
+G1.baikovmatrix;
+  setring RB;
+  ring RB= G1.baikovover;
+  setring RB;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+G1=computeBaikovMatrix(G);
+computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+// Print all field names of labeledgraph G1
+list fieldnames(G1);
+list fields = fieldnames(G1);
+quit;
+LIB "feynman.lib";
+list fields = fieldnames(G1);
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+G1.baikovmatrix;
+ring RB= G1.baikovover;
+  setring RB;
+  ring RB= G1.baikovover;
+quit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6), list(list(6,1), list(4,6), list(1,2), list(3,5), list(4,3), list(2,5), list(5,6), list(1), list(2), list(3), list(4)));
+labeledgraph G1 = computeBaikovMatrix(G);
+G1;
+ G1.baikovover;
+  ring RB= G1.baikovover;
+  setring RB;
+  matrix B = G1.baikovmatrix;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+G1.baikovover;
+G1.over;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+computeBaikovMatrix(G);
+  labeledgraph G1=computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+computeBaikovMatrix(G);
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+computeBaikovMatrix(G);
+  labeledgraph G1=computeBaikovMatrix(G);
+G1.baikovover;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+G1.baikovover;
+G1.baikovmatrix;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+  setIBP S=computeIBP(G1,list(1,1,0,1,0,1,0,1,0));
+
+quit;

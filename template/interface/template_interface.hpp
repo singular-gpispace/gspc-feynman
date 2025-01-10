@@ -69,11 +69,7 @@ NO_NAME_MANGLING
 std::string singular_MI_gpi(std::string const& res
       , std::string const& needed_library
       , std::string const& base_filename);
-NO_NAME_MANGLING
 
-int singular_size_gpi(std::string const& res
-      , std::string const& needed_library
-      , std::string const& base_filename);
 NO_NAME_MANGLING
 std::string singular_computeManyIBP_gpi(std::string const& res
       , std::string const& res1
@@ -82,6 +78,47 @@ std::string singular_computeManyIBP_gpi(std::string const& res
       , std::string const& needed_library
       , std::string const& base_filename);
 NO_NAME_MANGLING
+std::string singular_targetInts_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
 std::string singular_targetInt_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getRedIBPs_gpi(std::string const& res
+      , int const& j
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_IBP_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_alreadyIntheList_gpi(std::string const& res
+      , std::string const& res1
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+int singular_size_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_over_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_seed_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+
+std::string singular_equal_gpi(std::string const& res
+      , std::string const& res1
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_setIBP_gpi(int res
       , std::string const& needed_library
       , std::string const& base_filename);

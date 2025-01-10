@@ -90,7 +90,7 @@
 							);
 
 /**********************************************************************************************/
-          std::string  reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_setIBP_gpi)
+          std::string    reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_setIBP_gpi)
             				( 
 							  1, library_name, base_filename
 							);
@@ -121,6 +121,15 @@ std::string  reducedIbp_seeds = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
 							 reducedIBPs,library_name, base_filename
 							);
 
+                std::string  totalIBP_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)
+            				( 
+							 totalIBP,library_name, base_filename
+							);
+/**********************************************************************************************/
+std::string  reducedIbp_seeds = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+            				( 
+							  reducedibp_over, totalIBP_over,library_name, base_filename
+							);
             te=te+1;
           }
           

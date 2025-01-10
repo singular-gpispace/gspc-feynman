@@ -32,3 +32,15 @@ def m8=read(l);
 m;
 m1;
 m2;
+
+
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
