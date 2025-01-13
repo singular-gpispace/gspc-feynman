@@ -353,10 +353,10 @@ std::string singular_getRedIBPs_gpi(std::string const& res
     return out_filename;
 }
 
-int singular_alreadyIntheList_gpi(std::string const& res
+std::string singular_alreadyIntheList_gpi(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
- )
+    , std::string const& base_filename)
 {
     init_singular(config::singularLibrary().string());
     load_singular_library(needed_library);
@@ -366,8 +366,6 @@ int singular_alreadyIntheList_gpi(std::string const& res
     std::pair<int, lists> out;
     std::string ids;
     std::string out_filename;
-    std::string out_filename1;
-
     ids = worker();
     //std::cout << ids << " in singular_..._compute" << std::endl;
 
@@ -380,19 +378,9 @@ int singular_alreadyIntheList_gpi(std::string const& res
 
     std::string function_name = "alreadyIntheList_gpi";
     out = call_user_proc(function_name, needed_library, args);
-    //out_filename = serialize(out.second, base_filename);
+    out_filename = serialize(out.second, base_filename);
 
-    lists u = (lists)out.second->m[3].Data(); //token data
-
-    sleftv& listElement = u->m[0];
-    out_filename1 = listElement.String();
-
-    std::cout << "out_filename1= " << out_filename1 << std::endl;
-
-    int ss = std::stoi(out_filename1);
-    std::cout << "alreadyIntheList_gpi " << ss << std::endl;
-
-    return ss;
+    return out_filename;
 }
 
 std::string singular_over_gpi(std::string const& res
@@ -560,46 +548,6 @@ std::string singular_Return_place(std::string const& res
     out = call_user_proc(function_name, needed_library, args);
 
 
-    out_filename = serialize(out.second, base_filename);
-
-    return out_filename;
-}
-
-std::string singular_updateWeb_later(std::string const& res
-    , std::string const& res1
-    , int const& j
-    , int const& k
-    , std::string const& needed_library
-    , std::string const& base_filename)
-{
-    init_singular(config::singularLibrary().string());
-    load_singular_library(needed_library);
-    std::pair<int, lists> Res;
-    std::pair<int, lists> Res1;
-    std::pair<int, lists> Res2;
-    std::pair<int, lists> Res3;
-
-    std::pair<int, lists> out;
-    std::string ids;
-    std::string out_filename;
-    ids = worker();
-    //std::cout << ids << " in singular_..._compute" << std::endl;
-    void* p = (char*)(long)(j);
-    void* M = (char*)(long)(k);
-
-
-
-    Res = deserialize(res, ids);
-    Res1 = deserialize(res1, ids);
-
-
-    ScopedLeftv args(Res.first, lCopy(Res.second));
-    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
-    ScopedLeftv arg(args1, INT_CMD, p);
-    ScopedLeftv argss(args1, INT_CMD, M);
-
-    std::string function_name = "updateWeb_later";
-    out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
 
     return out_filename;

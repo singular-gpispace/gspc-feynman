@@ -96,10 +96,10 @@ std::string singular_IBP_gpi(std::string const& res
       , std::string const& base_filename);
 
 NO_NAME_MANGLING
-std::string singular_alreadyIntheList_gpi(std::string const& res
+int singular_alreadyIntheList_gpi(std::string const& res
       , std::string const& res1
       , std::string const& needed_library
-      , std::string const& base_filename);
+   );
 NO_NAME_MANGLING
 int singular_size_gpi(std::string const& res
       , std::string const& needed_library
@@ -120,5 +120,26 @@ std::string singular_equal_gpi(std::string const& res
       , std::string const& base_filename);
 NO_NAME_MANGLING
 std::string singular_setIBP_gpi(int res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_indpndIBP_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_masterAndTailIntgrals_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_Return_place(std::string const& res
+      , int const& j
+      , std::string const& needed_library
+      , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_updateWeb_later(std::string const& res
+      , std::string const& res1
+      , int const& j
+      , int const& k
       , std::string const& needed_library
       , std::string const& base_filename);

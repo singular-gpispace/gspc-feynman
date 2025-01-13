@@ -812,13 +812,11 @@ matrix zvars[1][n+m2] = z(1..n),pq[1..m2];
 matrix A = imap(RP,A);
 matrix Bentries = zvars * A;
 matrix B1[nvars(RP)][nvars(RP)] = Bentries[1,1..ncols(Bentries)];
-matrix B2=B+B1;
+B=B+B1;
 labeledgraph GG =G;
 GG.baikovover=Z;
-GG.baikovmatrix = B2;
-
-return(GG);
-}
+GG.baikovmatrix = B;
+return(GG);}
 example
 { "EXAMPLE:"; echo=2;labeledgraph G1 = computeBaikovMatrix(G);
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
@@ -1047,8 +1045,6 @@ int m=npars(R);
 ring RB=G.baikovover;
 matrix B=G.baikovmatrix;
 setring RB;
-print(" RB= ");
-print(RB);
 int n=nvars(RB);
 int E = m;
 int L = nvars(R);
@@ -1097,8 +1093,6 @@ for(int i=1;i<=size(M);i++){
     f=f+(diff(M[i][j],z(j))-Nu[j]*M[i][j]/z(j));  
   }
   poly h=(D-L-E-1)/2;
-  print(" here is h");
-  print(h);
   f=f-M[i][n+1]*h; 
   if(f != 0){
     int t=1;
@@ -2206,6 +2200,8 @@ KEYWORDS: Feynman graph,IBPs
                 
 //using finite field row reduction, identify independent IBPs, master integrals and tails integrals.
           list L=getRedIBPs(totalIBP,101);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
+         print(" *******************");
+         print(L);
           list indpndIBP=L[1];
           list masterAndTailIntgrals=L[2];
 // update reducedIBPs. 

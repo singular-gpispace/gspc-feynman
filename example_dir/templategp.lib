@@ -2382,10 +2382,14 @@ proc updateWeb_gpi(token ibp)
 
 proc reducedIBPs_gpi(token ibp)
 {
+
+
   list targetInt = ibp.data[3];
   setIBP reducedIBPs;
   int te = 0;
+
   reducedIBPs.seed = targetInt;
+
 
   token output;
   output.fieldnames = list("generators", "reducedIBPs_gpi");
@@ -2460,17 +2464,15 @@ proc targetInt_gpi(token ibp)
 }
 proc over_gpi(token ibp)
 {
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
-  link l = "ssi:w " + path;
+
   def v = ibp.data[1];
+  list V = v.over;
 
   token output;
   output.fieldnames = list("generators", "over_gpi");
 
-  output.data[1] = v.over;
-  write(l, v.over, "v.over");
+  output.data[1] = V;
 
-  close(l);
   return(output);
 }
 proc seed_gpi(token ibp)
@@ -2486,34 +2488,70 @@ proc seed_gpi(token ibp)
 
 proc IBP_gpi(token ibp)
 {
-  list S = ibp.data[1];
 
+
+  setIBP S = ibp.data[1];
+
+  list ibps = S.IBP;
 
   token output;
   output.fieldnames = list("generators", "IBP_gpi");
 
-  output.data[1] = v.IBP;
+  output.data[1] = ibps;
 
   return(output);
 }
 
-proc getRedIBPs_gpi(token s, int P)
+proc getRedIBPs_gpi(token s, int p)
 {
+
+
   setIBP S = s.data[1];
-  int p = P.data[1];
-
-
 
   list L = getRedIBPs(S, p);
+  list indpndIBP = L[1];
+  list masterAndTailIntgrals = L[2];
+
 
   token output;
   output.fieldnames = list("generators", "getRedIBPs_gpi");
 
-  output.data[1] = L;
+  output.data[1] = indpndIBP;
+  output.data[2] = masterAndTailIntgrals;
 
   return(output);
 }
+proc indpndIBP_gpi(token s)
+{
 
+
+  list  indpndIBP = s.data[1];
+
+
+  token output;
+  output.fieldnames = list("generators", "indpndIBP_gpi");
+
+  output.data[1] = indpndIBP;
+
+  return(output);
+}
+proc masterAndTailIntgrals_gpi(token s)
+{
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+
+  list masterAndTailIntgrals = s.data[2];
+
+  write(l, L, "masterAndTailIntgrals_gpi");
+
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "masterAndTailIntgrals_gpi");
+
+  output.data[1] = masterAndTailIntgrals;
+
+  return(output);
+}
 proc alreadyIntheList_gpi(token s, token P)
 {
   list l = s.data[1];
@@ -2552,4 +2590,41 @@ proc setIBP_gpi(int s)
   output.data[1] = S;
 
   return(output);
+}
+proc Return_place(token s, int i)
+{
+
+
+  def  place = s.data[1];
+  list pp = place[i];
+
+
+  token output;
+  output.fieldnames = list("generators", "place");
+
+  output.data[1] = pp;
+
+  return(output);
+}
+
+proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
+{
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+
+  list web = Web.data[1];
+  list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
+  list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
+  write(l, w4, "w4");
+
+  close(l);
+
+  token output;
+  output.fieldnames = list("generators", "updateWeb_later");
+
+  output.data[1] = w4;
+
+  return(output);
+
+
 }

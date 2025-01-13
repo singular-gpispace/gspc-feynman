@@ -468,7 +468,7 @@ proc deleteFromIntvec(intvec v, int j) {
   intvec w;
   int idx = 1;
   for (int i = 1;i <= size(v);i++) {
-    if (j<>i) { w[idx] = v[i];idx = idx + 1; }
+    if (j != i) { w[idx] = v[i];idx = idx + 1; }
   }
   return(w);
 }
@@ -825,8 +825,8 @@ EXAMPLE : removeElimVars G; shows an example
   int m2 = (m * (m - 1)) div 2;
   int mt = m2 - 1;
   int n = ncols(PI) - m2;
-  //ring Z = (0,(t(1..mt),D)),(z(1..n)),dp; //change this
-  ring Z = (0, t(1..mt)), (z(1..n)), dp;
+  ring Z = (0, (t(1..mt), D)), (z(1..n)), dp; //change this
+  //ring Z = (0, t(1..mt)), (z(1..n)), dp;
   matrix B[nvars(RP)][nvars(RP)];
   int idx = 1;
   poly sumt;
@@ -890,7 +890,7 @@ KEYWORDS : Feynman graph
     labeledgraph G0 = G1;
 
   }
-  if (typeof(G0) < > "labeledgraph") {
+  if (typeof(G0) != "labeledgraph") {
     ERROR("expected a graph or labeledgraph");
   }
   labeledgraph G = G0;
@@ -952,7 +952,7 @@ KEYWORDS : Feynman graph
             }
           }
 
-          if (o < >0) {
+          if (o != 0) {
             c2 = D[l, o];
           }
           a = a + c1 * c2 * B[j, k];
@@ -977,7 +977,7 @@ KEYWORDS : Feynman graph
       testP = testP + M[j][i] * diff(F, z(i));
     }
     testP = testP + M[j][n + 1] * F;
-    if (testP < >0) {
+    if (testP != 0) {
       print("Something wrong");
     }
 
@@ -1012,7 +1012,7 @@ KEYWORDS : Feynman graph
     kill G0;
     labeledgraph G0 = G1;
   }
-  if (typeof(G0) < > "labeledgraph") {
+  if (typeof(G0) != "labeledgraph") {
     ERROR("expected a graph or labeledgraph");
   }
 
@@ -1024,7 +1024,7 @@ KEYWORDS : Feynman graph
   setring RB;
   int n = nvars(RB);
 
-  if (size(Nu) < > n) {
+  if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
 
@@ -1074,7 +1074,7 @@ KEYWORDS : Feynman graph
     kill G0;
     labeledgraph G0 = G1;
   }
-  if (typeof(G0) < > "labeledgraph") {
+  if (typeof(G0) != "labeledgraph") {
     ERROR("expected a graph or labeledgraph");
   }
 
@@ -1088,7 +1088,7 @@ KEYWORDS : Feynman graph
   int E = m;
   int L = nvars(R);
 
-  if (size(Nu) < > n) {
+  if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
 
@@ -1108,7 +1108,7 @@ KEYWORDS : Feynman graph
     }
     testP = testP + M[j][n + 1] * F;
     //print(testP);
-    if (testP < >0) {
+    if (testP != 0) {
       print("Something wrong");
     }
   }
@@ -1132,9 +1132,9 @@ KEYWORDS : Feynman graph
     }
     poly h = (D - L - E - 1) / 2;
     f = f - M[i][n + 1] * h;
-    if (f < >0) {
+    if (f != 0) {
       int t = 1;
-      while (f < >0) {
+      while (f != 0) {
         y[t] = leadcoef(f);
         list nu;
         for (int k = 1;k <= size(Nu);k++) {
@@ -1942,7 +1942,7 @@ EXAMPLE : getRedIBPs; shows an example
   {
     for (int k = 1;k <= ncols(Z[1]);k++)
     {
-      if (Z[1][j, k] < >0) {
+      if (Z[1][j, k] != 0) {
         indIBP[l] = S.IBP[k];
         l++;
       }
@@ -1955,7 +1955,7 @@ EXAMPLE : getRedIBPs; shows an example
   int l = 1;
   for (int k = 1;k <= ncols(Z[3]);k++) {
     for (int j = 1;j <= nrows(Z[3]);j++) {
-      if (Z[3][j, k] < >0) {
+      if (Z[3][j, k] != 0) {
         seed[l] = ind[k][1];
         l++;
         break;
@@ -2040,32 +2040,49 @@ KEYWORDS : Feynman graph, IBPs
 "
 
 {
+
+
   if (typeof(G0) == "graph") {
     labeledgraph G1 = computeBaikovMatrix(G0);
     //return(computeM2(G1,Nu));
     kill G0;
     labeledgraph G0 = G1;
+
   }
-  if (typeof(G0) < > "labeledgraph") {
+  if (typeof(G0) != "labeledgraph") {
     ERROR("expected a graph or labeledgraph");
+
   }
+
   list Nu = setNu[1];
   labeledgraph G = G0;
+
   def R = G.over;
   int m = npars(R);
-  ring RB = G.baikovover;
-  matrix B = G.baikovmatrix;
+
+  //ring RB = G.baikovover;
+
+
+  def RB = G.r_baikovmatrix;
   setring RB;
+
+  matrix B = G.baikovmatrix;
+
+  def RB = G.baikovover;
+  setring RB;
+
   int n = nvars(RB);
   int E = m;
   int L = nvars(R);
-
-  if (size(Nu) < > n) {
+  if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
 
   module M1 = computeM1(G, Nu);
+
   module M2 = computeM2(G, Nu);
+
+
   option(redSB);
   module M = std(intersect(M1, M2));
 
@@ -2078,40 +2095,47 @@ KEYWORDS : Feynman graph, IBPs
     }
     testP = testP + M[j][n + 1] * F;
     //print(testP);
-    if (testP < >0) {
+    if (testP != 0) {
       print("Something wrong");
     }
   }
   //
 
-  ring Z = (0, t(1..(m - 1)), D), (z(1..n)), dp;
+  //ring Z = (0, t(1..(m - 1)), D), (z(1..n)), dp;
   setIBP S;
-  S.over = Z;
+  S.over = RB;
   //S.over=RB;
   S.seed = Nu;
-  setring Z;
-  module M = imap(RB, M);
+
   int p = 1;
+
   for (int b = 1;b <= size(setNu);b++)
   {
     list Nu = setNu[b];
 
     for (int i = 1;i <= size(M);i++)
     {
+
       list y;
-      list l;
+
+      list l0;
       //computation of polynomial
-      poly f = 0;
+
+      poly f = poly(0);
+
       for (int j = 1;j <= n;j++)
       {
         f = f + (diff(M[i][j], z(j)) - Nu[j] * M[i][j] / z(j));
       }
+
       poly h = (D - L - E - 1) / 2;
+
       f = f - M[i][n + 1] * h;
-      if (f < >0)
+
+      if (f != 0)
       {
         int t = 1;
-        while (f < >0)
+        while (f != 0)
         {
           y[t] = leadcoef(f);
           list nu;
@@ -2119,13 +2143,13 @@ KEYWORDS : Feynman graph, IBPs
           {
             nu[k] = Nu[k] - leadexp(f)[k];
           }
-          l[t] = nu;
+          l0[t] = nu;
           t = t + 1;
           f = f - lead(f);
         }
         oneIBP I;
         I.c = y;
-        I.i = l;
+        I.i = l0;
         S.IBP[p] = I;
         p = p + 1;
       }
@@ -2219,6 +2243,7 @@ KEYWORDS : Feynman graph, IBPs
     for (int k = 1; k <= nSectors; k++)
     {
 
+
       if (size(web[j][k].targetInts) >= 1)
       {
         setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
@@ -2294,16 +2319,44 @@ size(finalset[2]);
 }
 
 
+
 proc getReducedIBPSystem_gpi(token ibp)
 {
   list v = ibp.data[1];
   list e = ibp.data[2];
-  list targetInt = ibp.data[3];
 
 
   graph G;
   G.vertices = v;
   G.edges = e;
+
+
+
+
+  labeledgraph G1 = computeBaikovMatrix(G);
+
+
+
+  def s = G1.r_baikovmatrix;
+  setring s;
+
+
+
+  token output;
+  output.fieldnames = list("generators", "computeBaikovMatrix");
+
+  output.data[1] = G1;
+
+  return(output);
+
+
+}
+
+proc updateWeb_gpi(token ibp)
+{
+  list targetInt = ibp.data[3];
+
+
 
   list L = pickHighestSector(targetInt);
 
@@ -2315,24 +2368,11 @@ proc getReducedIBPSystem_gpi(token ibp)
 
   web = w4[1];
 
-  labeledgraph G1 = computeBaikovMatrix(G);
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
-  link l = "ssi:w " + path;
-  write(l, G1, "hello");
-  close(l);
-  setIBP reducedIBPs;
-  list MI;
-  //reducedIBPs.over=G1.baikovover;
-  int te = 0;
-  reducedIBPs.seed = targetInt;
-
 
   token output;
-  output.fieldnames = list("generators", "GroebnerBasis");
-  output.data[1] = reducedIBPs;
-  output.data[2] = MI;
-  output.data[3] = G1;
-  output.data[4] = web;
+  output.fieldnames = list("generators", "updateWeb_gpi");
+
+  output.data[1] = web;
 
   return(output);
 
@@ -2340,5 +2380,226 @@ proc getReducedIBPSystem_gpi(token ibp)
 }
 
 
+proc reducedIBPs_gpi(token ibp)
+{
 
 
+  list targetInt = ibp.data[3];
+  setIBP reducedIBPs;
+  int te = 0;
+
+  reducedIBPs.seed = targetInt;
+
+
+  token output;
+  output.fieldnames = list("generators", "reducedIBPs_gpi");
+
+  output.data[1] = reducedIBPs;
+
+  return(output);
+}
+
+
+proc MI_gpi(token ibp)
+{
+  list v = ibp.data[1];
+  list MI;
+  token output;
+  output.fieldnames = list("generators", "MI_gpi");
+
+  output.data[1] = MI;
+
+  return(output);
+}
+
+proc computeManyIBP_gpi(token g, token Web, int j, int k)
+{
+  labeledgraph G = g.data[1];
+  list web = Web.data[1];
+
+  oneSector  w = web[j][k];
+
+
+  list v = web[j][k].targetInts;
+
+  setIBP bp = computeManyIBP(G, v);
+
+  token output;
+  output.fieldnames = list("generators", "computeManyIBP_gpi");
+
+  output.data[1] = bp;
+
+  return(output);
+}
+proc size_gpi(token ibp)
+{
+  list v = ibp.data[1];
+  token output;
+  output.fieldnames = list("generators", "size_gpi");
+
+  output.data[1] = size(v);
+
+  return(output);
+}
+proc targetInts_gpi(token ibp)
+{
+  oneSector v = ibp.data[1];
+  token output;
+  output.fieldnames = list("generators", "targetInts_gpi");
+
+  output.data[1] = v.targetInts;
+
+  return(output);
+}
+
+proc targetInt_gpi(token ibp)
+{
+  list v = ibp.data[3];
+  token output;
+  output.fieldnames = list("generators", "targetInt_gpi");
+
+  output.data[1] = v;
+
+  return(output);
+}
+proc over_gpi(token ibp)
+{
+
+  def v = ibp.data[1];
+  list V = v.over;
+
+  token output;
+  output.fieldnames = list("generators", "over_gpi");
+
+  output.data[1] = V;
+
+  return(output);
+}
+proc seed_gpi(token ibp)
+{
+  setIBP v = ibp.data[1];
+  token output;
+  output.fieldnames = list("generators", "seed_gpi");
+
+  output.data[1] = v.seed;
+
+  return(output);
+}
+
+proc IBP_gpi(token ibp)
+{
+
+  setIBP S = ibp.data[1];
+
+  list ibps = S.IBP;
+
+  token output;
+  output.fieldnames = list("generators", "IBP_gpi");
+
+  output.data[1] = ibps;
+
+  return(output);
+}
+
+proc getRedIBPs_gpi(token s, int p)
+{
+
+
+  setIBP S = s.data[1];
+
+  list L = getRedIBPs(S, p);
+  list indpndIBP = L[1];
+  list masterAndTailIntgrals = L[2];
+
+
+  token output;
+  output.fieldnames = list("generators", "getRedIBPs_gpi");
+
+  output.data[1] = indpndIBP;
+  output.data[2] = masterAndTailIntgrals;
+
+  return(output);
+}
+proc indpndIBP_gpi(token s)
+{
+
+
+  list  indpndIBP = s.data[1];
+
+
+  token output;
+  output.fieldnames = list("generators", "indpndIBP_gpi");
+
+  output.data[1] = indpndIBP;
+
+  return(output);
+}
+proc masterAndTailIntgrals_gpi(token s)
+{
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+
+  list masterAndTailIntgrals = s.data[2];
+
+  write(l, L, "masterAndTailIntgrals_gpi");
+
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "masterAndTailIntgrals_gpi");
+
+  output.data[1] = masterAndTailIntgrals;
+
+  return(output);
+}masterIntgralsInSector(l, a);
+
+token output;
+output.fieldnames = list("generators", "alreadyIntheList");
+
+output.data[1] = L;
+
+return(output);
+}
+proc equal_gpi(token s, token P)
+{
+  def S = s.data[1];
+  def A = P.data[1];
+
+  S = A;
+
+  token output;
+  output.fieldnames = list("generators", "equal_gpi");
+
+  output.data[1] = S;
+
+  return(output);
+}
+
+proc setIBP_gpi(int s)
+{
+  setIBP S;
+  token output;
+  output.fieldnames = list("generators", "setIBP_gpi");
+
+  output.data[1] = S;
+
+  return(output);
+}
+
+/* proc Return_place(token s, int i)
+{
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+  write(l, -111111, " -111111");
+
+  def  place = s.data[1];
+  list pp = place[i];
+  write(l, pp, "place");
+
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "place");
+
+  output.data[1] = pp;
+
+  return(output);
+} */

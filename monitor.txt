@@ -1,34 +1,350 @@
-230286.230292@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 42231 230265-0 17 waas.job.230286.0 8 template 0
-230300.230305@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 42231 230265-2 17 waas.job.230286.1 7 compute 0
-230300.230305@waas 2024-11-13 22:42:20 legacy-level-trace task finished: waas.job.230286.1
-230300.230305@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 42231 230265-2 17 waas.job.230286.1 0  1
-230286.230292@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 42231 230265-0 17 waas.job.230286.0 8 template 1
-230324.230327@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-6 is shutting down
-230318.230321@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-5 is shutting down
-230312.230315@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-4 is shutting down
-230306.230309@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-3 is shutting down
-230300.230303@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-2 is shutting down
-230294.230297@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-1 is shutting down
-230663.230671@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38937 230650-0 17 waas.job.230663.0 8 template 0
-230697.230702@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38937 230650-4 17 waas.job.230663.1 7 compute 0
-230697.230702@waas 2024-11-13 22:44:14 legacy-level-trace task finished: waas.job.230663.1
-230697.230702@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38937 230650-4 17 waas.job.230663.1 0  1
-230663.230671@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38937 230650-0 17 waas.job.230663.0 8 template 1
-230709.230712@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-6 is shutting down
-230703.230706@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-5 is shutting down
-230691.230694@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-3 is shutting down
-230697.230700@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-4 is shutting down
-230685.230688@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-2 is shutting down
-230677.230682@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-1 is shutting down
-231074.231083@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 46527 231060-0 17 waas.job.231074.0 8 template 0
-231089.231094@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 46527 231060-1 17 waas.job.231074.1 7 compute 0
-231089.231094@waas 2024-11-13 22:46:03 legacy-level-info ****output****123
-231089.231094@waas 2024-11-13 22:46:03 legacy-level-trace task finished: waas.job.231074.1
-231089.231094@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 46527 231060-1 17 waas.job.231074.1 0  1
-231074.231083@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 46527 231060-0 17 waas.job.231074.0 8 template 1
-231119.231122@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-6 is shutting down
-231113.231116@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-5 is shutting down
-231107.231110@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-4 is shutting down
-231101.231104@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-3 is shutting down
-231095.231098@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-2 is shutting down
-231089.231092@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-1 is shutting down
+411292.411298@waas 2025-01-12 16:11:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 43351 411282-0 17 waas.job.411292.0 8 template 0
+411324.411329@waas 2025-01-12 16:11:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43351 411282-5 17 waas.job.411292.1 7 compute 0
+411324.411329@waas 2025-01-12 16:11:06 legacy-level-trace task finished: waas.job.411292.1
+411324.411329@waas 2025-01-12 16:11:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43351 411282-5 17 waas.job.411292.1 0  1
+411306.411311@waas 2025-01-12 16:11:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43351 411282-2 17 waas.job.411292.2 8 compute1 0
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info Processed element [0]: (QQ),(x),(dp(1),C)
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info Processed element [1]: generators,getRedIBPs_gpi
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info Processed element [2]: (QQ),(x),(dp(1),C)
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info Processed element [3]: i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,i=<list>
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+411306.411311@waas 2025-01-12 16:11:07 legacy-level-trace task finished: waas.job.411292.2
+411306.411311@waas 2025-01-12 16:11:07 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43351 411282-2 17 waas.job.411292.2 0  1
+411292.411298@waas 2025-01-12 16:11:07 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 43351 411282-0 17 waas.job.411292.0 8 template 1
+411336.411341@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-7 is shutting down
+411324.411327@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-5 is shutting down
+411312.411315@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-3 is shutting down
+411306.411309@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-2 is shutting down
+411318.411321@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-4 is shutting down
+411300.411303@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-1 is shutting down
+411330.411333@waas 2025-01-12 16:11:07 legacy-level-trace worker-waas 43351 411282-6 is shutting down
+411582.411588@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 34067 411572-0 17 waas.job.411582.0 8 template 0
+411620.411625@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 34067 411572-6 17 waas.job.411582.1 7 compute 0
+411620.411625@waas 2025-01-12 16:11:36 legacy-level-trace task finished: waas.job.411582.1
+411620.411625@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 34067 411572-6 17 waas.job.411582.1 0  1
+411590.411595@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 34067 411572-1 17 waas.job.411582.2 8 compute1 0
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info Processed element [0]: (QQ),(x),(dp(1),C)
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info Processed element [1]: generators,getRedIBPs_gpi
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info Processed element [2]: (QQ),(x),(dp(1),C)
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info Processed element [3]: i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,i=<list>
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+411590.411595@waas 2025-01-12 16:11:36 legacy-level-trace task finished: waas.job.411582.2
+411590.411595@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 34067 411572-1 17 waas.job.411582.2 0  1
+411582.411588@waas 2025-01-12 16:11:36 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 34067 411572-0 17 waas.job.411582.0 8 template 1
+411620.411623@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-6 is shutting down
+411614.411617@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-5 is shutting down
+411608.411611@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-4 is shutting down
+411602.411605@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-3 is shutting down
+411596.411599@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-2 is shutting down
+411626.411633@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-7 is shutting down
+411590.411593@waas 2025-01-12 16:11:36 legacy-level-trace worker-waas 34067 411572-1 is shutting down
+412040.412046@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 41723 412030-0 17 waas.job.412040.0 8 template 0
+412066.412071@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 41723 412030-4 17 waas.job.412040.1 7 compute 0
+412066.412071@waas 2025-01-12 16:12:28 legacy-level-trace task finished: waas.job.412040.1
+412066.412071@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 41723 412030-4 17 waas.job.412040.1 0  1
+412078.412083@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 41723 412030-6 17 waas.job.412040.2 8 compute1 0
+412078.412083@waas 2025-01-12 16:12:28 legacy-level-info Processed element [0]: Q
+412078.412083@waas 2025-01-12 16:12:28 legacy-level-info Processed element [1]: e
+412078.412083@waas 2025-01-12 16:12:28 legacy-level-info Processed element [2]: Q
+412078.412083@waas 2025-01-12 16:12:28 legacy-level-info Processed element [3]: =
+412078.412083@waas 2025-01-12 16:12:28 legacy-level-trace task finished: waas.job.412040.2
+412078.412083@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 41723 412030-6 17 waas.job.412040.2 0  1
+412040.412046@waas 2025-01-12 16:12:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 41723 412030-0 17 waas.job.412040.0 8 template 1
+412072.412075@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-5 is shutting down
+412066.412069@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-4 is shutting down
+412078.412081@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-6 is shutting down
+412060.412063@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-3 is shutting down
+412084.412087@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-7 is shutting down
+412054.412057@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-2 is shutting down
+412048.412051@waas 2025-01-12 16:12:28 legacy-level-trace worker-waas 41723 412030-1 is shutting down
+412347.412353@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38777 412337-0 17 waas.job.412347.0 8 template 0
+412361.412366@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38777 412337-2 17 waas.job.412347.1 7 compute 0
+412361.412366@waas 2025-01-12 16:12:47 legacy-level-trace task finished: waas.job.412347.1
+412361.412366@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38777 412337-2 17 waas.job.412347.1 0  1
+412355.412360@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38777 412337-1 17 waas.job.412347.2 8 compute1 0
+412355.412360@waas 2025-01-12 16:12:47 legacy-level-info Processed element [0]: Q
+412355.412360@waas 2025-01-12 16:12:47 legacy-level-info Processed element [1]: e
+412355.412360@waas 2025-01-12 16:12:47 legacy-level-info Processed element [2]: Q
+412355.412360@waas 2025-01-12 16:12:47 legacy-level-info Processed element [3]: =
+412355.412360@waas 2025-01-12 16:12:47 legacy-level-trace task finished: waas.job.412347.2
+412355.412360@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38777 412337-1 17 waas.job.412347.2 0  1
+412347.412353@waas 2025-01-12 16:12:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38777 412337-0 17 waas.job.412347.0 8 template 1
+412391.412394@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-7 is shutting down
+412385.412388@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-6 is shutting down
+412379.412382@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-5 is shutting down
+412373.412376@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-4 is shutting down
+412367.412370@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-3 is shutting down
+412361.412364@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-2 is shutting down
+412355.412358@waas 2025-01-12 16:12:47 legacy-level-trace worker-waas 38777 412337-1 is shutting down
+412789.412795@waas 2025-01-12 16:15:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 35965 412779-0 17 waas.job.412789.0 8 template 0
+412797.412802@waas 2025-01-12 16:15:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 35965 412779-1 17 waas.job.412789.1 7 compute 0
+412797.412802@waas 2025-01-12 16:15:49 legacy-level-trace task finished: waas.job.412789.1
+412797.412802@waas 2025-01-12 16:15:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 35965 412779-1 17 waas.job.412789.1 0  1
+412844.412849@waas 2025-01-12 16:15:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 35965 412779-7 17 waas.job.412789.2 8 compute1 0
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info Processed element [0]: (QQ),(x),(dp(1),C)
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info Processed element [1]: generators,getRedIBPs_gpi
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info Processed element [2]: (QQ),(x),(dp(1),C)
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info Processed element [3]: i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,i=<list>
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+412844.412849@waas 2025-01-12 16:15:50 legacy-level-trace task finished: waas.job.412789.2
+412844.412849@waas 2025-01-12 16:15:50 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 35965 412779-7 17 waas.job.412789.2 0  1
+412789.412795@waas 2025-01-12 16:15:50 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 35965 412779-0 17 waas.job.412789.0 8 template 1
+412831.412835@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-6 is shutting down
+412815.412818@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-4 is shutting down
+412809.412812@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-3 is shutting down
+412844.412847@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-7 is shutting down
+412803.412806@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-2 is shutting down
+412821.412824@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-5 is shutting down
+412797.412800@waas 2025-01-12 16:15:50 legacy-level-trace worker-waas 35965 412779-1 is shutting down
+413014.413020@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 43065 413004-0 17 waas.job.413014.0 8 template 0
+413040.413045@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43065 413004-4 17 waas.job.413014.1 7 compute 0
+413040.413045@waas 2025-01-12 16:16:01 legacy-level-trace task finished: waas.job.413014.1
+413040.413045@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43065 413004-4 17 waas.job.413014.1 0  1
+413034.413039@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43065 413004-3 17 waas.job.413014.2 8 compute1 0
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info Processed element [0]: (QQ),(x),(dp(1),C)
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info Processed element [1]: generators,getRedIBPs_gpi
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info Processed element [2]: (QQ),(x),(dp(1),C)
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info Processed element [3]: i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,i=<list>
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+413034.413039@waas 2025-01-12 16:16:01 legacy-level-trace task finished: waas.job.413014.2
+413034.413039@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 43065 413004-3 17 waas.job.413014.2 0  1
+413014.413020@waas 2025-01-12 16:16:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 43065 413004-0 17 waas.job.413014.0 8 template 1
+413052.413055@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-6 is shutting down
+413046.413049@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-5 is shutting down
+413058.413061@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-7 is shutting down
+413040.413043@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-4 is shutting down
+413034.413037@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-3 is shutting down
+413028.413031@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-2 is shutting down
+413022.413025@waas 2025-01-12 16:16:01 legacy-level-trace worker-waas 43065 413004-1 is shutting down
+413525.413531@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 37321 413515-0 17 waas.job.413525.0 8 template 0
+413545.413550@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 37321 413515-3 17 waas.job.413525.1 7 compute 0
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-trace task finished: waas.job.413525.1
+413545.413550@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 37321 413515-3 17 waas.job.413525.1 0  1
+413545.413550@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 37321 413515-3 17 waas.job.413525.2 8 compute1 0
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info Processed element [3]: i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,i=<list>
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+413545.413550@waas 2025-01-12 16:19:34 legacy-level-trace task finished: waas.job.413525.2
+413545.413550@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 37321 413515-3 17 waas.job.413525.2 0  1
+413525.413531@waas 2025-01-12 16:19:34 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 37321 413515-0 17 waas.job.413525.0 8 template 1
+413551.413554@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-4 is shutting down
+413570.413576@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-7 is shutting down
+413545.413548@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-3 is shutting down
+413539.413542@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-2 is shutting down
+413533.413536@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-1 is shutting down
+413563.413566@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-6 is shutting down
+413557.413560@waas 2025-01-12 16:19:34 legacy-level-trace worker-waas 37321 413515-5 is shutting down
+413768.413774@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 36529 413758-0 17 waas.job.413768.0 8 template 0
+413776.413781@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36529 413758-1 17 waas.job.413768.1 7 compute 0
+413776.413781@waas 2025-01-12 16:19:53 legacy-level-trace task finished: waas.job.413768.1
+413776.413781@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36529 413758-1 17 waas.job.413768.1 0  1
+413802.413807@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36529 413758-5 17 waas.job.413768.2 8 compute1 0
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info Processed element [3]: i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,i=<list>
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+413802.413807@waas 2025-01-12 16:19:53 legacy-level-trace task finished: waas.job.413768.2
+413802.413807@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36529 413758-5 17 waas.job.413768.2 0  1
+413768.413774@waas 2025-01-12 16:19:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 36529 413758-0 17 waas.job.413768.0 8 template 1
+413814.413817@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-7 is shutting down
+413808.413811@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-6 is shutting down
+413802.413805@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-5 is shutting down
+413795.413799@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-4 is shutting down
+413788.413791@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-3 is shutting down
+413776.413779@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-1 is shutting down
+413782.413785@waas 2025-01-12 16:19:54 legacy-level-trace worker-waas 36529 413758-2 is shutting down
+420663.420669@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 36199 420653-0 17 waas.job.420663.0 8 template 0
+420707.420716@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36199 420653-7 17 waas.job.420663.1 7 compute 0
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-trace task finished: waas.job.420663.1
+420707.420716@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36199 420653-7 17 waas.job.420663.1 0  1
+420707.420716@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36199 420653-7 17 waas.job.420663.2 8 compute1 0
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info Processed element [3]: i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,i=<list>
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+420707.420716@waas 2025-01-12 18:33:44 legacy-level-trace task finished: waas.job.420663.2
+420707.420716@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36199 420653-7 17 waas.job.420663.2 0  1
+420663.420669@waas 2025-01-12 18:33:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 36199 420653-0 17 waas.job.420663.0 8 template 1
+420707.420714@waas 2025-01-12 18:33:44 legacy-level-trace worker-waas 36199 420653-7 is shutting down
+420701.420704@waas 2025-01-12 18:33:44 legacy-level-trace worker-waas 36199 420653-6 is shutting down
+420695.420698@waas 2025-01-12 18:33:45 legacy-level-trace worker-waas 36199 420653-5 is shutting down
+420689.420692@waas 2025-01-12 18:33:45 legacy-level-trace worker-waas 36199 420653-4 is shutting down
+420683.420686@waas 2025-01-12 18:33:45 legacy-level-trace worker-waas 36199 420653-3 is shutting down
+420677.420680@waas 2025-01-12 18:33:45 legacy-level-trace worker-waas 36199 420653-2 is shutting down
+420671.420674@waas 2025-01-12 18:33:45 legacy-level-trace worker-waas 36199 420653-1 is shutting down
+420880.420886@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 39259 420870-0 17 waas.job.420880.0 8 template 0
+420912.420917@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 39259 420870-5 17 waas.job.420880.1 7 compute 0
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-trace task finished: waas.job.420880.1
+420912.420917@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 39259 420870-5 17 waas.job.420880.1 0  1
+420912.420917@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 39259 420870-5 17 waas.job.420880.2 8 compute1 0
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info Processed element [3]: i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,i=<list>
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+420912.420917@waas 2025-01-12 18:34:05 legacy-level-trace task finished: waas.job.420880.2
+420912.420917@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 39259 420870-5 17 waas.job.420880.2 0  1
+420880.420886@waas 2025-01-12 18:34:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 39259 420870-0 17 waas.job.420880.0 8 template 1
+420924.420927@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-7 is shutting down
+420912.420915@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-5 is shutting down
+420906.420909@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-4 is shutting down
+420900.420903@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-3 is shutting down
+420888.420891@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-1 is shutting down
+420918.420921@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-6 is shutting down
+420894.420897@waas 2025-01-12 18:34:05 legacy-level-trace worker-waas 39259 420870-2 is shutting down
+421231.421237@waas 2025-01-12 18:34:39 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 45167 421221-0 17 waas.job.421231.0 8 template 0
+421279.421291@waas 2025-01-12 18:34:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 45167 421221-7 17 waas.job.421231.1 7 compute 0
+421279.421291@waas 2025-01-12 18:34:40 legacy-level-trace task finished: waas.job.421231.1
+421279.421291@waas 2025-01-12 18:34:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 45167 421221-7 17 waas.job.421231.1 0  1
+421263.421268@waas 2025-01-12 18:34:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 45167 421221-5 17 waas.job.421231.2 8 compute1 0
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info Processed tok [3]: i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,i=<list>
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-info c=<list>,1,1,0,-1,-3,-1,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-1,0,2,1,-1,-3,-1,-1,-1,-1,1,2,0,-1,-3,-1,-1,-1,-1,1,2,0,-2,-3,-1,-1,-1,-1,1,2,0,-1,-4,-1,-1,-1,-1,1,1,1,-1,-3,-2,-1,-1,-1,1,1,1,-1,-3,-1,-1,-1,-2,1,2,0,-1,-3,-1,-1,-2,-1,1,2,0,-2,-3,-1,-1,-2,-1,1,2,0,-1,-4,-1,-1,-2,-1,1,2,1,-1,-3,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-1,-2,1,2,1,-1,-4,-1,-1,-1,-1,1,2,1,-1,-3,-1,-1,-2,-1,1,2,1,-2,-3,-1,-1,-1,-1,1,2,1,-1,-3,-2,-1,-1,-1,1,2,1,-1,-3,-1,-2,-1,-1,1,2,1,-2,-3,-2,-1,-1,-1,1,2,1,-1,-4,-2,-1,-1,-1,1,2,1,-2,-3,-1,-1,-1,-2,1,2,1,-1,-3,-1,-1,-2,-2,1,2,1,-1,-3,-3,-1,-1,-1,1,2,1,-1,-3,-2,-2,-1,-1,1,2,1,-1,-3,-2,-1,-2,-1,1,2,1,-1,-4,-1,-1,-1,-2,1,2,1,-1,-3,-2,-1,-1,-2,1,2,1,-1,-3,-1,-2,-1,-2,1,2,1,-1,-3,-1,-1,-1,-3
+421263.421268@waas 2025-01-12 18:34:40 legacy-level-trace task finished: waas.job.421231.2
+421263.421268@waas 2025-01-12 18:34:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 45167 421221-5 17 waas.job.421231.2 0  1
+421231.421237@waas 2025-01-12 18:34:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 45167 421221-0 17 waas.job.421231.0 8 template 1
+421269.421276@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-6 is shutting down
+421263.421266@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-5 is shutting down
+421279.421289@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-7 is shutting down
+421251.421254@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-3 is shutting down
+421245.421248@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-2 is shutting down
+421239.421242@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-1 is shutting down
+421257.421260@waas 2025-01-12 18:34:40 legacy-level-trace worker-waas 45167 421221-4 is shutting down
+421464.421470@waas 2025-01-12 18:35:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 36379 421454-0 17 waas.job.421464.0 8 template 0
+421484.421489@waas 2025-01-12 18:35:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36379 421454-3 17 waas.job.421464.1 7 compute 0
+421484.421489@waas 2025-01-12 18:35:03 legacy-level-trace task finished: waas.job.421464.1
+421484.421489@waas 2025-01-12 18:35:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36379 421454-3 17 waas.job.421464.1 0  1
+421490.421495@waas 2025-01-12 18:35:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 36379 421454-4 17 waas.job.421464.2 8 compute1 0
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info Processed tok [3]: i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 legacy-level-info c=<list>,i=<list>
+421490.421495@waas 2025-01-12 18:35:03 l
