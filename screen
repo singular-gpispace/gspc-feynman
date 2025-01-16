@@ -1,47 +1,29 @@
-
-
-proc getReducedIBPSystem_gpi(token ibp)
-{
-  list v = ibp.data[1];
-  list e = ibp.data[2];
-  list targetInt = ibp.data[3];
-
-
-  graph G;
-  G.vertices = v;
-  G.edges = e;
-
-  list L = pickHighestSector(targetInt);
-
-  list web = generateWebSectors(L[1][1]);
-
-  web = setSectorMap(web);
-
-  list w4 = updateWeb(web, list(1, 1), targetInt);
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/temp";  // Ensure the path ends with a "/"
-  string filename = "hello.ssi";
-  link l = "ssi:w " + path + filename;
-  write(l, w4, "hello");
-  close(l);
-  web = w4[1];
-
-  labeledgraph G1 = computeBaikovMatrix(G);
-  setIBP reducedIBPs;
-  list MI;
-  //reducedIBPs.over=G1.baikovover;
-  int te = 0;
-  reducedIBPs.seed = targetInt;
-
-
-
-  token output;
-  output.fieldnames = list("generators", "GroebnerBasis");
-  output.data[1] = reducedIBPs;
-  output.data[2] = MI;
-  output.data[3] = G1;
-  output.data[4] = web;
-
-  return(output);
-
-
-}
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: T: task finished: waas.job.662016.1
+[2025-01-15 10:00:33] waas: pid 662024 tid662029: T: task finished: waas.job.662016.2
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: vec before = 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: 1 1 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: 2 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: 3 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I:  Myv: 1 1 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: Extracted first element: 1
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: Remaining elements in v: 1 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: vec after = 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: 2 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: I: 3 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662030 tid662035: T: task finished: waas.job.662016.3
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: vec before = 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: 2 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: 3 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I:  Myv: 2 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: Extracted first element: 2
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: Remaining elements in v: 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: vec after = 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: I: 3 1 2 3 
+[2025-01-15 10:00:33] waas: pid 662036 tid662041: T: task finished: waas.job.662016.4
+[2025-01-15 10:00:33] waas: pid 662060 tid662063: T: worker-waas 44045 662006-7 is shutting down
+[2025-01-15 10:00:33] waas: pid 662042 tid662045: T: worker-waas 44045 662006-4 is shutting down
+[2025-01-15 10:00:33] waas: pid 662054 tid662057: T: worker-waas 44045 662006-6 is shutting down
+[2025-01-15 10:00:33] waas: pid 662048 tid662051: T: worker-waas 44045 662006-5 is shutting down
+[2025-01-15 10:00:33] waas: pid 662036 tid662039: T: worker-waas 44045 662006-3 is shutting down
+[2025-01-15 10:00:33] waas: pid 662030 tid662033: T: worker-waas 44045 662006-2 is shutting down
+[2025-01-15 10:00:33] waas: pid 662024 tid662027: T: worker-waas 44045 662006-1 is shutting down

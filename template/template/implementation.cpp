@@ -46,7 +46,7 @@ std::string singular_template_compute_StdBasis(std::string const& input_filename
     for (int i = 0; i < L_size; i++) {
         sleftv& listElement = Token->m[i];  // Access each element as `leftv`
         if (listElement.data == NULL) {
-            std::cout << "Input: NULL" << std::endl;
+           // std::cout << "Input: NULL" << std::endl;
         }
         else if (i == 3) {
             out_filename1 = listElement.String();
@@ -208,10 +208,10 @@ int singular_size_gpi(std::string const& res
     sleftv& listElement = u->m[0];
     out_filename1 = listElement.String();
 
-    std::cout << "out_filename1= " << out_filename1 << std::endl;
+   // std::cout << "out_filename1= " << out_filename1 << std::endl;
 
     int ss = std::stoi(out_filename1);
-    std::cout << "ss " << ss << std::endl;
+    //std::cout << "ss " << ss << std::endl;
     out_filename = serialize(out.second, base_filename);
 
     return ss;
@@ -387,10 +387,10 @@ int singular_alreadyIntheList_gpi(std::string const& res
     sleftv& listElement = u->m[0];
     out_filename1 = listElement.String();
 
-    std::cout << "out_filename1= " << out_filename1 << std::endl;
+    //std::cout << "out_filename1= " << out_filename1 << std::endl;
 
     int ss = std::stoi(out_filename1);
-    std::cout << "alreadyIntheList_gpi " << ss << std::endl;
+  //  std::cout << "alreadyIntheList_gpi " << ss << std::endl;
 
     return ss;
 }
@@ -603,4 +603,50 @@ std::string singular_updateWeb_later(std::string const& res
     out_filename = serialize(out.second, base_filename);
 
     return out_filename;
+}
+
+
+std::string vector2dToString(const std::vector<std::vector<int>>& vec) {
+    std::stringstream ss;
+    for (const auto& innerVec : vec) {
+        for (int val : innerVec) {
+            ss << val << ' ';
+        }
+        ss << '\n'; // Add a newline after each inner vector
+    }
+    return ss.str();
+}
+
+std::vector<std::vector<int>> stringToVector2d(const std::string& str) {
+    std::vector<std::vector<int>> result;
+    std::stringstream ss(str);
+    std::string line;
+    while (std::getline(ss, line)) {
+        std::vector<int> innerVec;
+        std::stringstream lineStream(line);
+        int num;
+        while (lineStream >> num) {
+            innerVec.push_back(num);
+        }
+        result.push_back(innerVec);
+    }
+    return result;
+}
+std::vector<int> getFirstList(std::vector<std::vector<int>>& vec2d) {
+    if (!vec2d.empty()) {
+        std::vector<int> firstList = std::move(vec2d.front());
+        vec2d.erase(vec2d.begin());
+        return firstList;
+    }
+    return {};
+}
+std::pair<int, int> string_to_pair(const std::string& pair_str) {
+    std::istringstream iss(pair_str);
+    int first, second;
+    char comma; 
+
+    if (iss >> first >> comma && comma == ',' && iss >> second) {
+        return std::make_pair(first, second); 
+    }
+    return std::make_pair(0, 0); 
 }

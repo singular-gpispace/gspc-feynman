@@ -1,7 +1,14 @@
 #pragma once
 
 #define NO_NAME_MANGLING extern "C"
+#include <config.hpp>
+#include <boost/variant.hpp>
 
+#include <we/type/literal/control.hpp>
+#include <we/type/bitsetofint.hpp>
+#include <we/type/bytearray.hpp>
+#include <we/type/value.hpp>
+#include <map>
 #include <list>
 #include <tuple>
 #include <sstream> // for std::istringstream
@@ -143,3 +150,11 @@ std::string singular_updateWeb_later(std::string const& res
       , int const& k
       , std::string const& needed_library
       , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string vector2dToString(const std::vector<std::vector<int>>& vec);
+NO_NAME_MANGLING
+std::vector<std::vector<int>> stringToVector2d(const std::string& str);
+NO_NAME_MANGLING
+std::vector<int> getFirstList(std::vector<std::vector<int>>& vec2d);
+NO_NAME_MANGLING
+std::pair<int, int> string_to_pair(const std::string& pair_str) ;
