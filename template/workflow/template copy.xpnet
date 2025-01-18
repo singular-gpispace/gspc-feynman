@@ -288,9 +288,9 @@ std::cout<<"total="<<total<<std::endl;
               }
             }
 
-         int j = c[0];
-            int k = c[1]; 
-       
+            int j = c[0];
+            int k = c[1];
+           
             
                 std::string    reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)
                   (

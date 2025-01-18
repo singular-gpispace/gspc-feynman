@@ -1205,7 +1205,7 @@ KEYWORDS : Feynman graph
   list s;
   list n;
   for (int i = 1;i <= size(l);i++) {
-    if (l[i] >= 0) {
+    if (l[i] > 0) {
       s[i] = 1;
       n[size(n) + 1] = i;
     }
@@ -2290,7 +2290,7 @@ KEYWORDS : Feynman graph, IBPs
         {
           for (int i = 1;i <= size(masterIntgralsInSector);i++)
           {
-            if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 1)
+            if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0)
             {
               MI[size(MI) + 1] = masterIntgralsInSector[i];
             }
@@ -2443,11 +2443,17 @@ proc size_gpi(token ibp)
 }
 proc targetInts_gpi(token ibp)
 {
+
+
   oneSector v = ibp.data[1];
+   
+
+  list vv=v.targetInts;
+ 
   token output;
   output.fieldnames = list("generators", "targetInts_gpi");
 
-  output.data[1] = v.targetInts;
+  output.data[1] = vv;
 
   return(output);
 }
@@ -2488,6 +2494,7 @@ proc seed_gpi(token ibp)
 
 proc IBP_gpi(token ibp)
 {
+
 
   setIBP S = ibp.data[1];
 
@@ -2550,14 +2557,20 @@ proc masterAndTailIntgrals_gpi(token s)
   output.data[1] = masterAndTailIntgrals;
 
   return(output);
-}masterIntgralsInSector(l, a);
+}
+proc alreadyIntheList_gpi(token s, token P)
+{
+  list l = s.data[1];
+  list a = P.data[1];
 
-token output;
-output.fieldnames = list("generators", "alreadyIntheList");
+  int L = alreadyIntheList(l, a);
 
-output.data[1] = L;
+  token output;
+  output.fieldnames = list("generators", "alreadyIntheList");
 
-return(output);
+  output.data[1] = L;
+
+  return(output);
 }
 proc equal_gpi(token s, token P)
 {
@@ -2584,22 +2597,90 @@ proc setIBP_gpi(int s)
 
   return(output);
 }
-
-/* proc Return_place(token s, int i)
+proc Return_place(token s, int i)
 {
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
-  link l = "ssi:w " + path;
-  write(l, -111111, " -111111");
+
 
   def  place = s.data[1];
   list pp = place[i];
-  write(l, pp, "place");
 
-  close(l);
+
   token output;
   output.fieldnames = list("generators", "place");
 
   output.data[1] = pp;
 
   return(output);
-} */
+}
+proc replace_two(token s, int j,int k)
+{
+
+
+  def  place = s.data[1];
+  def pp = place[j][k];
+
+
+  token output;
+  output.fieldnames = list("generators", "replace_two");
+
+  output.data[1] = pp;
+
+  return(output);
+}
+proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
+{
+ string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+
+  list web = Web.data[1];
+        write(l, web, "web");
+
+  list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
+     write(l, "masterAndTailIntgrals", masterAndTailIntgrals);
+
+  list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
+     write(l, (j,k), "(j,k)");
+
+   write(l, w4, "w4");
+   write(l, w4[1], "w4[1]");
+
+  close(l);
+
+  token output;
+  output.fieldnames = list("generators", "updateWeb_later");
+
+  output.data[1] = w4;
+
+  return(output);
+}
+
+proc computeM1_gpi(token G0)
+{
+
+
+  def G = G0.data[1];
+module ML = computeM1(G);
+
+  token output;
+  output.fieldnames = list("generators", "IBP_gpi");
+
+  output.data[1] = ML;
+
+  return(output);
+}
+proc computeM2_gpi(token G0,token Web, int j, int k)
+{
+
+
+  def G = G0.data[1];
+  def web= Web.data[1];
+ list l=web[j][k].lab;
+module ML = computeM2(G,l);
+
+  token output;
+  output.fieldnames = list("generators", "IBP_gpi");
+
+  output.data[1] = ML;
+
+  return(output);
+}

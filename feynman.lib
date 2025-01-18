@@ -2217,8 +2217,6 @@ KEYWORDS : Feynman graph, IBPs
 
         //using finite field row reduction, identify independent IBPs, master integrals and tails integrals.
         list L = getRedIBPs(totalIBP, 101);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
-        print(" *******************");
-        print(L);
         list indpndIBP = L[1];
         list masterAndTailIntgrals = L[2];
         // update reducedIBPs. 

@@ -158,3 +158,9 @@ NO_NAME_MANGLING
 std::vector<int> getFirstList(std::vector<std::vector<int>>& vec2d);
 NO_NAME_MANGLING
 std::pair<int, int> string_to_pair(const std::string& pair_str) ;
+NO_NAME_MANGLING
+std::string singular_replace_two(std::string const& res
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename);

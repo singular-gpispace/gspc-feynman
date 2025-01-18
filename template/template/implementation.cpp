@@ -650,3 +650,38 @@ std::pair<int, int> string_to_pair(const std::string& pair_str) {
     }
     return std::make_pair(0, 0); 
 }
+
+std::string singular_replace_two(std::string const& res
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+  
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    void* p = (char*)(long)(j);
+    void* M = (char*)(long)(k);
+
+
+
+    Res = deserialize(res, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv arg(args, INT_CMD, p);
+    ScopedLeftv argss(args, INT_CMD, M);
+
+    std::string function_name = "replace_two";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}

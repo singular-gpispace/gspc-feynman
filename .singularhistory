@@ -357,28 +357,74 @@ LIB "feynman.lib";
   list finalset = getReducedIBPSystem(G,targetInt);
 LIB "feynman.lib";
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
-
   labeledgraph G1=computeBaikovMatrix(G);
-
   ring RZ= G1.baikovover;
-
   printMat(G1.baikovmatrix);
-
   list setInt=list(list(1,1,1,-1,-3,1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
-
   list setInt=list(list(1,1,1,1,1,1,1,-5,0));
-
   list web=generateWebSectors(setInt[1]);
-
   list w1=setSectorMap(web); 
-
   web=w1;
-
   list L1=pickHighestSector(setInt);  
-
   list w2=updateWeb(web,list(1,1),L1[1]); //updateWeb returns a list w3 with w3[1]=sectorWeb,w3[2]=list of master Integrals, w3[3]=list of integrals that not belong to the current web
-
   web=w2[1]; 
-
   setIBP S=computeIBP(G1,L1[1][1]);
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  list targetInt = list(list(1,1,1,-1,-3,1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
+  list finalset=getReducedIBPSystem(G,targetInt);
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  list targetInt = list(list(1,1,1,-1,-3,1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
+    list L=pickHighestSector(targetInt);
+  list web=generateWebSectors(L[1][1]); 
+  web=setSectorMap(web);
+  list w4=updateWeb(web,list(1,1),targetInt); 
+  web=w4[1];
+  labeledgraph G1=computeBaikovMatrix(G);
+  setIBP reducedIBPs;
+  list MI;
+  int te=0;
+  reducedIBPs.seed=targetInt;
+  int nLayers=size(web);
+      int nSectors=size(web[j]);
+int j=1;
+int k=1;
+web[j];
+web[j][1].targetInts;
+web[j][1].targetInts;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+  ring RZ= G1.baikovover;
+list targetInt = list(list(1, 2, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+list setInt = list(list(1, 2, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+  list web=generateWebSectors(setInt[1]);
+  list w1=setSectorMap(web); 
+  web=w1;
+  list L1=pickHighestSector(setInt);  
+  list w2=updateWeb(web,list(1,1),L1[1]); //updateWeb returns a list w3 with w3[1]=sectorWeb,w3[2]=list of master Integrals, w3[3]=list of integrals that not belong to the current web
+  web=w2[1]; 
+  setIBP S=computeIBP(G1,L1[1][1]);
+  ring R=S.over;
+  setring R;
+  list L=getRedIBPs(S,101); //L[1]=list of independent IBPs,L[2]=list of master integrals
+  list independIBPs=L[1];
+  list masterAndTailIntgrals=L[2];
+  size(independIBPs) < size(S.IBP); //number of linearly independent set of IBPs are less than the number of orginal IBPs. So this returns true
+  oneIBP I1=independIBPs[18];     //Here is an example for one IBP i
+  I1;
+  list w3=updateWeb(web,list(1,1),masterAndTailIntgrals); //updateWeb returns a list w3 with w3[1]=sectorWeb,w3[2]=list of master Integrals, w3[3]=list of integrals that not belong to the current web
+  web=w3[1];   
+  size(web[1][1].targetInts);
+w3;
+  size(web[2][2].targetInts);
+web;
+w3;
+quit;
+LIB "feynman.lib";
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
 
+list targetInt = list(list(1, 2, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+quit;
