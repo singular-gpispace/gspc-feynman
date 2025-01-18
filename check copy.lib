@@ -1,0 +1,25 @@
+ ML;
+ML[1]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+z(1)*gen(1)-z(3)*gen(7)-z(3)*gen(6)-z(3)*gen(3)-z(3)*gen(1)-2*z(8)*gen(7)+(t(2))/2*gen(9)+(-t(1))*gen(6)
+ML[2]=-z(2)*gen(7)+z(3)*gen(7)+z(3)*gen(6)+z(3)*gen(3)+z(3)*gen(1)+z(4)*gen(7)-z(6)*gen(7)-z(6)*gen(6)-z(6)*gen(3)-z(6)*gen(1)+2*z(8)*gen(7)+(-t(1)-t(2))/2*gen(9)+(t(1))*gen(1)
+ML[3]=-z(4)*gen(7)+z(5)*gen(7)+2*z(9)*gen(7)+2*z(9)*gen(6)+2*z(9)*gen(3)+2*z(9)*gen(1)+(t(1))*gen(7)+(t(1))*gen(6)+(-t(2))*gen(3)
+ML[4]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+2*z(1)*gen(1)-z(2)*gen(7)+z(3)*gen(3)+z(6)*gen(6)+z(7)*gen(7)+z(9)*gen(9)-2*gen(10)+(-t(1))*gen(6)
+ML[5]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+z(1)*gen(1)-z(2)*gen(7)+z(2)*gen(3)+z(2)*gen(1)+1/2*z(4)*gen(9)+z(4)*gen(6)-1/2*z(5)*gen(9)-z(7)*gen(7)-z(7)*gen(6)-z(7)*gen(3)-z(7)*gen(1)-2*z(8)*gen(3)+(-t(1))/2*gen(9)+(-t(1))*gen(6)
+ML[6]=-z(1)*gen(7)+z(3)*gen(7)+2*z(8)*gen(7)+2*z(8)*gen(5)+2*z(8)*gen(4)+2*z(8)*gen(2)+(-t(1)-t(2))*gen(5)+(-t(1))*gen(4)
+ML[7]=z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+z(2)*gen(2)-z(3)*gen(7)-z(4)*gen(7)-z(4)*gen(5)-z(4)*gen(4)-z(4)*gen(2)+z(6)*gen(7)-2*z(8)*gen(7)-2*z(8)*gen(5)-2*z(8)*gen(4)-2*z(8)*gen(2)+(t(1))/2*gen(8)+(t(1)+t(2))*gen(5)+(t(1))*gen(2)
+ML[8]=z(4)*gen(7)+z(4)*gen(5)+z(4)*gen(4)+z(4)*gen(2)-z(5)*gen(7)-z(5)*gen(5)-z(5)*gen(4)-z(5)*gen(2)-2*z(9)*gen(7)+(t(2))/2*gen(8)+(-t(1))*gen(7)+(-t(1))*gen(2)
+ML[9]=1/2*z(1)*gen(8)-z(1)*gen(7)+z(1)*gen(2)+z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+z(2)*gen(2)-1/2*z(3)*gen(8)+z(6)*gen(5)+z(6)*gen(4)-z(7)*gen(7)-z(7)*gen(5)-z(7)*gen(4)-z(7)*gen(2)-2*z(9)*gen(5)+(-t(1))*gen(5)+(-t(1))*gen(4)
+ML[10]=-z(1)*gen(7)+z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+2*z(2)*gen(2)+z(4)*gen(4)+z(5)*gen(5)+z(7)*gen(7)+z(8)*gen(8)-2*gen(10)+(-t(1))*gen(4)
+
+// in gpi
+
+ML;
+ML[1]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+z(1)*gen(1)-z(3)*gen(7)-z(3)*gen(6)-z(3)*gen(3)-z(3)*gen(1)-2*z(8)*gen(7)
+ML[2]=-z(2)*gen(7)+z(3)*gen(7)+z(3)*gen(6)+z(3)*gen(3)+z(3)*gen(1)+z(4)*gen(7)-z(6)*gen(7)-z(6)*gen(6)-z(6)*gen(3)-z(6)*gen(1)+2*z(8)*gen(7)
+ML[3]=-z(4)*gen(7)+z(5)*gen(7)+2*z(9)*gen(7)+2*z(9)*gen(6)+2*z(9)*gen(3)+2*z(9)*gen(1)
+ML[4]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+2*z(1)*gen(1)-z(2)*gen(7)+z(3)*gen(3)+z(6)*gen(6)+z(7)*gen(7)+z(9)*gen(9)-2*gen(10)
+ML[5]=z(1)*gen(7)+z(1)*gen(6)+z(1)*gen(3)+z(1)*gen(1)-z(2)*gen(7)+z(2)*gen(3)+z(2)*gen(1)+1/2*z(4)*gen(9)+z(4)*gen(6)-1/2*z(5)*gen(9)-z(7)*gen(7)-z(7)*gen(6)-z(7)*gen(3)-z(7)*gen(1)-2*z(8)*gen(3)
+ML[6]=-z(1)*gen(7)+z(3)*gen(7)+2*z(8)*gen(7)+2*z(8)*gen(5)+2*z(8)*gen(4)+2*z(8)*gen(2)
+ML[7]=z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+z(2)*gen(2)-z(3)*gen(7)-z(4)*gen(7)-z(4)*gen(5)-z(4)*gen(4)-z(4)*gen(2)+z(6)*gen(7)-2*z(8)*gen(7)-2*z(8)*gen(5)-2*z(8)*gen(4)-2*z(8)*gen(2)
+ML[8]=z(4)*gen(7)+z(4)*gen(5)+z(4)*gen(4)+z(4)*gen(2)-z(5)*gen(7)-z(5)*gen(5)-z(5)*gen(4)-z(5)*gen(2)-2*z(9)*gen(7)
+ML[9]=1/2*z(1)*gen(8)-z(1)*gen(7)+z(1)*gen(2)+z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+z(2)*gen(2)-1/2*z(3)*gen(8)+z(6)*gen(5)+z(6)*gen(4)-z(7)*gen(7)-z(7)*gen(5)-z(7)*gen(4)-z(7)*gen(2)-2*z(9)*gen(5)
+ML[10]=-z(1)*gen(7)+z(2)*gen(7)+z(2)*gen(5)+z(2)*gen(4)+2*z(2)*gen(2)+z(4)*gen(4)+z(5)*gen(5)+z(7)*gen(7)+z(8)*gen(8)-2*gen(10)
