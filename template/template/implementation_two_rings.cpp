@@ -1,5 +1,10 @@
 
 #include <Singular/libsingular.h>
+#include "polys/ext_fields/transext.h"
+#include <singular/Singular/maps_ip.h>
+#include <singular/Singular/ipid.h>
+#include <singular/coeffs/numbers.h> // For n_SetMap
+#include <singular/polys/simpleideals.h>
 
 
 #include <interface/template_interface.hpp>
@@ -878,6 +883,52 @@ std::string singular_computeM2_gpi(std::string const& res
     return out_filename;
 }
 
+std::pair<int, lists> intersection_gpi(leftv arg1) {
+   
+
+    // Extract input list
+    lists input = (lists)(arg1->Data());
+   
+        // Extract tmp list
+    lists tmp = (lists)(input->m[3].Data());
+
+    lists Tok = (lists)(arg1->next->Data()); // extract Tok
+    lists tmp1 = (lists)(Tok->m[3].Data()); // Tok.data
+
+
+  
+
+    // Extract ideal M
+    ideal M1 = (ideal)tmp->m[0].Data();
+    ideal M2 = (ideal)tmp1->m[0].Data();
+
+    ideal M = idSect(M1, M2);
+    int size_M= IDELEMS( M);
+    std::cout<<"size_of_module_intersection "<<size_M<<std::endl;
+int p=13;
+    // Prepare the output token
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);
+
+    lists t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(2);
+    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
+    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_intersection");
+    output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
+    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+
+    t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(1); // Use the size of Li to initialize t
+        t->m[0].rtyp = MODUL_CMD; t->m[0].data = M;
+
+    output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
+
+    // Cleanup
+
+    return {p, output};
+}
+
 std::string singular_intersection_gpi(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
@@ -901,8 +952,10 @@ std::string singular_intersection_gpi(std::string const& res
     ScopedLeftv args(Res.first, lCopy(Res.second));
     ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
 
-    std::string function_name = "intersection_gpi";
-    out = call_user_proc(function_name, needed_library, args);
+    out = intersection_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+
+   // std::string function_name = "intersection_gpi";
+    //out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
 
     return out_filename;
@@ -910,9 +963,9 @@ std::string singular_intersection_gpi(std::string const& res
 
 
 
-
-
 /* 
+
+
 std::pair<int, lists> std_gpi(leftv arg1) {
 
     // std::cout << "Type of 1.arg:" << arg1->Typ() <<std::endl;
@@ -925,22 +978,32 @@ int p = IDELEMS(M);
 std::cout<<"M_size"<<p<<std::endl;
    // std::cout<<" M_element "<<pString((poly)M->m[14])<<std::endl;
 
-int pr=15;
+int pr=13;
 ideal L = idInit(pr, 1);  // Initialize an empty ideal (syzygy module)
 
-for (int i = 0; i < pr; i++) {
-    L->m[i] = pCopy(M->m[i]);  // Copy elements from L to tmpL
-    //std::cout<<" L_element "<<pString((poly)L->m[i])<<std::endl;
-}
+  for (int i = 0; i < pr; i++) {
+        L->m[i] = pCopy(M->m[i]);
+//        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
+    }
+
+std::cout << "Current ring: " << rString(currRing) << std::endl;
+std::cout << "Is global ordering: " << rHasGlobalOrdering(currRing) << std::endl;
 
 ideal Li=kStd(L,NULL, testHomog, NULL);
 int tt=IDELEMS(Li);
  std::cout<<" Li_size "<<tt<<std::endl;
 
-for (int i = 0; i <tt ; i++) {
-    
-    std::cout<<" Ideal************** "<<pString((poly)Li->m[i])<<std::endl;
-}
+    // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    } 
+
+
+   // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    }
+
 for(int i=0;i<p;i++){
 }
 for(int i=0;i<p;i++){
@@ -956,7 +1019,7 @@ std::cout << "p_ProjectiveUnique called successfully" << std::endl;
 ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
  std::cout<<"i= "<<i<<" Mi_size "<<IDELEMS(Mi)<<std::endl;
 
-}
+} 
 
 
 
@@ -982,8 +1045,41 @@ ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
           return {p,output};
 
 }
- */
+  */
 
+
+ring createRing(char **extNames, int extCount, char **varNames, int varCount)
+{
+    // Create the coefficient field Q[t(1), t(2), D]
+    ring extRing = rDefault(0, extCount, extNames);
+    //std::cout << "Current ring: " << rString(extRing) << std::endl;
+
+    TransExtInfo extParam;
+    extParam.r = extRing;
+    coeffs cf = nInitChar(n_transExt, &extParam);
+
+    // Define variable names for the ring
+    char *vars[varCount];
+    for (int i = 0; i < varCount; ++i)
+    {
+        vars[i] = (char *)omAlloc(5 * sizeof(char));
+        sprintf(vars[i], "%s(%d)", varNames[0], i + 1);
+    }
+
+    // Define the orders (dp(varCount), C)
+    rRingOrder_t *order = (rRingOrder_t *)omAlloc0(3 * sizeof(rRingOrder_t));
+    order[0] = ringorder_dp;
+    order[1] = ringorder_c;
+
+    // Define the blocks of the ring
+    int *block0 = (int *)omAlloc(3 * sizeof(int));
+    block0[0] = 1;
+    int *block1 = (int *)omAlloc0(3 * sizeof(int));
+    block1[0] = varCount;
+
+    // Define the ring using rDefault function
+    return rDefault(cf, varCount, vars, 3, order, block0, block1);
+}
 std::pair<int, lists> std_gpi(leftv arg1) {
     // Validate input argument
     if (!arg1 || !arg1->Data()) {
@@ -993,17 +1089,11 @@ std::pair<int, lists> std_gpi(leftv arg1) {
 
     // Extract input list
     lists input = (lists)(arg1->Data());
-    if (!input || input->nr < 3) {
-        std::cerr << "Error: Input list is invalid or too small!" << std::endl;
-        return {0, nullptr};
-    }
+   
 
     // Extract tmp list
     lists tmp = (lists)(input->m[3].Data());
-    if (!tmp || tmp->nr < 0) {
-        std::cerr << "Error: Invalid tmp list!" << std::endl;
-        return {0, nullptr};
-    }
+   
 
     // Extract ideal M
     ideal M = (ideal)tmp->m[0].Data();
@@ -1020,12 +1110,12 @@ std::pair<int, lists> std_gpi(leftv arg1) {
     }
 
     // Set pr dynamically based on M
-    int pr = IDELEMS(M); // Use the size of M to determine pr
+    int pr = 15; // Use the size of M to determine pr
     if (pr > IDELEMS(M)) {
         std::cerr << "Error: pr exceeds the size of M!" << std::endl;
         return {0, nullptr};
     }
-pr=15;
+
     // Initialize ideal L
     ideal L = idInit(pr, 1);
     if (!L) {
@@ -1040,15 +1130,31 @@ pr=15;
             return {0, nullptr};
         }
         L->m[i] = pCopy(M->m[i]);
-        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
     }
+            std::cout << "L->m[" << 1 << "]: " << pString((poly)L->m[1]) << std::endl;
 
-    // Debugging output
-    std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
-    std::cout << "L->rank after idInit: " << L->rank << std::endl;
+    std::cout << "Current ring: " << rString(currRing) << std::endl;
+    rChangeCurrRing(currRing);
 
-    // Compute Gröbner basis
-    ideal Li = kStd(L, currRing->qideal, testHomog, NULL);
+  /*   char *extNames[] = {(char *)"t(1)", (char *)"t(2)", (char *)"D"};
+    char *varType = (char *)"x";
+    ring R = createRing(extNames, 3, &varType, 9);
+    std::cout << "Current ring: " << rString(R) << std::endl;
+    rChangeCurrRing(R);
+
+    nMapFunc nMap = n_SetMap(currRing->cf, R->cf);
+
+    int C = IDELEMS(L);
+
+    const int *perm = NULL;
+
+    // Map the ideal from `R` to `r`
+    ideal I_mapped = id_PermIdeal(L, 1, C, perm, currRing, R, nMap, NULL, 1, FALSE);
+    std::cout << "I_mapped->m[" << 1 << "]: " << pString((poly)I_mapped->m[1]) << std::endl;
+ */
+   //ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
+
+    ideal Li = kStd(L,NULL,  testHomog,  NULL);
     if (!Li) {
         std::cerr << "Error: kStd returned null!" << std::endl;
         return {0, nullptr};
@@ -1080,14 +1186,10 @@ pr=15;
     output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
 
     t = (lists)omAlloc0Bin(slists_bin);
-    // Instead of using pr for the output size, use tt (the actual size of Li)
-t->Init(tt); // Initialize with the actual size of Li (51 in your case)
-
-for (int i = 0; i < tt; i++) {
-    t->m[i].rtyp = POLY_CMD;
-    t->m[i].data = pCopy((poly)Li->m[i]);
-}
-   
+    t->Init(tt); // Use the size of Li to initialize t
+    for (int i = 0; i < tt; i++) {
+        t->m[i].rtyp = POLY_CMD; t->m[i].data = pCopy((poly)Li->m[i]);
+    }
     output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
 
     // Cleanup

@@ -1,6 +1,10 @@
 
 #include <Singular/libsingular.h>
-
+#include "polys/ext_fields/transext.h"
+#include <singular/Singular/maps_ip.h>
+#include <singular/Singular/ipid.h>
+#include <singular/coeffs/numbers.h> // For n_SetMap
+#include <singular/polys/simpleideals.h>
 
 #include <interface/template_interface.hpp>
 #include <interface/WorkflowResult.hpp>
@@ -909,80 +913,42 @@ std::string singular_intersection_gpi(std::string const& res
 }
 
 
+ring createRing(char **extNames, int extCount, char **varNames, int varCount)
+{
+    // Create the coefficient field Q[t(1), t(2), D]
+    ring extRing = rDefault(0, extCount, extNames);
+    //std::cout << "Current ring: " << rString(extRing) << std::endl;
 
+    TransExtInfo extParam;
+    extParam.r = extRing;
+    coeffs cf = nInitChar(n_transExt, &extParam);
 
+    // Define variable names for the ring
+    char *vars[varCount];
+    for (int i = 0; i < varCount; ++i)
+    {
+        vars[i] = (char *)omAlloc(5 * sizeof(char));
+        sprintf(vars[i], "%s(%d)", varNames[0], i + 1);
+    }
 
-/* 
-std::pair<int, lists> std_gpi(leftv arg1) {
+    // Define the orders (dp(varCount), C)
+    rRingOrder_t *order = (rRingOrder_t *)omAlloc0(3 * sizeof(rRingOrder_t));
+    order[0] = ringorder_dp;
+    order[1] = ringorder_c;
 
-    // std::cout << "Type of 1.arg:" << arg1->Typ() <<std::endl;
-    lists input = (lists)(arg1->Data()); //extract input
-   
+    // Define the blocks of the ring
+    int *block0 = (int *)omAlloc(3 * sizeof(int));
+    block0[0] = 1;
+    int *block1 = (int *)omAlloc0(3 * sizeof(int));
+    block1[0] = varCount;
 
-lists tmp = (lists)(input->m[3].Data()); // input.data
-ideal M= (ideal)tmp->m[0].Data();
-int p = IDELEMS(M);
-std::cout<<"M_size"<<p<<std::endl;
-   // std::cout<<" M_element "<<pString((poly)M->m[14])<<std::endl;
-
-int pr=15;
-ideal L = idInit(pr, 1);  // Initialize an empty ideal (syzygy module)
-
-for (int i = 0; i < pr; i++) {
-    L->m[i] = pCopy(M->m[i]);  // Copy elements from L to tmpL
-    //std::cout<<" L_element "<<pString((poly)L->m[i])<<std::endl;
+    // Define the ring using rDefault function
+    return rDefault(cf, varCount, vars, 3, order, block0, block1);
 }
 
-ideal Li=kStd(L,NULL, testHomog, NULL);
-int tt=IDELEMS(Li);
- std::cout<<" Li_size "<<tt<<std::endl;
-
-for (int i = 0; i <tt ; i++) {
-    
-    std::cout<<" Ideal************** "<<pString((poly)Li->m[i])<<std::endl;
-}
-for(int i=0;i<p;i++){
-}
-for(int i=0;i<p;i++){
-bool b= p_Test((poly)M->m[i],currRing);
- std::cout<<"i= "<<i<<" p_test "<<b<<std::endl;
- p_ContentForGB((poly)M->m[i], currRing);
-std::cout << "p_ContentForGB called successfully" << std::endl;
-poly po= p_Cleardenom((poly)M->m[i], currRing);
- std::cout<<"i= "<<i<<" poly "<<pString(po)<<std::endl;
-p_ProjectiveUnique((poly)M->m[i], currRing);
-std::cout << "p_ProjectiveUnique called successfully" << std::endl;
-
-ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
- std::cout<<"i= "<<i<<" Mi_size "<<IDELEMS(Mi)<<std::endl;
-
-}
-
-
-
-//ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
-    
-
-// Prepare the output token
-    lists output=(lists)omAlloc0Bin(slists_bin);
-    output->Init(4);// type token
-    // fieldnames
-    lists t=(lists)omAlloc0Bin(slists_bin);
-    t->Init(2);
-    t->m[0].rtyp=STRING_CMD; t->m[0].data=strdup("generators");
-    t->m[1].rtyp=STRING_CMD; t->m[1].data=strdup("module_std");
-    output->m[1].rtyp=LIST_CMD; output->m[1].data=t;
-     output->m[0].rtyp=RING_CMD; output->m[0].data=currRing;
-      output->m[2].rtyp=RING_CMD; output->m[2].data=currRing;
-    //data
-    t=(lists)omAlloc0Bin(slists_bin);
-    t->Init(1);
-      t->m[0].rtyp=MODUL_CMD; t->m[0].data=Li;
-          output->m[3].rtyp=LIST_CMD; output->m[3].data=t;
-          return {p,output};
-
-}
- */
+#include <singular/Singular/libsingular.h>
+#include <iostream>
+#include <cstring>
 
 std::pair<int, lists> std_gpi(leftv arg1) {
     // Validate input argument
@@ -1004,96 +970,160 @@ std::pair<int, lists> std_gpi(leftv arg1) {
         std::cerr << "Error: Invalid tmp list!" << std::endl;
         return {0, nullptr};
     }
+  char *extNames[] = {(char *)"t(1)", (char *)"t(2)", (char *)"D"};
+    char *varType = (char *)"x";
+    ring r = createRing(extNames, 3, &varType, 9);
+    std::cout << "Current ring: " << rString(r) << std::endl;
+    rChangeCurrRing(r);
 
-    // Extract ideal M
-    ideal M = (ideal)tmp->m[0].Data();
-    if (!M) {
-        std::cerr << "Error: Ideal M is null!" << std::endl;
-        return {0, nullptr};
-    }
+     int numVars=9;
 
-    // Check size of M
-    int p = IDELEMS(M);
-    if (p <= 0) {
-        std::cerr << "Error: Ideal M has no elements!" << std::endl;
-        return {0, nullptr};
-    }
+    // Initialize the ideal
+    int initialSize = 36 + numVars + numVars;  // 36 quadratic terms + 9 cubic terms + 9 mixed terms
+    ideal I = idInit(initialSize, 1);
+    
 
-    // Set pr dynamically based on M
-    int pr = IDELEMS(M); // Use the size of M to determine pr
-    if (pr > IDELEMS(M)) {
-        std::cerr << "Error: pr exceeds the size of M!" << std::endl;
-        return {0, nullptr};
-    }
-pr=15;
-    // Initialize ideal L
-    ideal L = idInit(pr, 1);
-    if (!L) {
-        std::cerr << "Error: Failed to initialize ideal L!" << std::endl;
-        return {0, nullptr};
-    }
+    std::cout << "Ideal initialized with " << initialSize << " generators." << std::endl;
 
-    // Copy polynomials from M to L
-    for (int i = 0; i < pr; i++) {
-        if (!M->m[i] || !p_Test((poly)M->m[i], currRing)) {
-            std::cerr << "Error: M->m[" << i << "] is invalid!" << std::endl;
-            return {0, nullptr};
+
+    coeffs cf = r->cf; // getting the coefficient field from the ring R
+
+    // Create coefficients from the transcendental extension field
+    number t1 = n_Param(1, cf); // t(1)
+    number t2 = n_Param(2, cf); // t(2)
+
+    // Add quadratic terms to the ideal
+    int index = 0;
+    for (int i = 0; i < numVars; i++) {
+        for (int j = i + 1; j < numVars; j++) {
+            // Create the term (t(1) + t(2)) * z(i) * z(j)
+            poly p1 = p_ISet(1, r); // Start with constant polynomial 1
+            p_SetExp(p1, 1, 1, r); // Set exponent of t(1) to 1
+            p_SetExp(p1, 2, 1, r); // Set exponent of t(2) to 1
+            p_Setm(p1, r);
+
+  // Multiply by (t(1) + t(2))
+    number sum = n_Add(t1, t2, cf);
+    p1 = p_Mult_nn(p1, sum, r);
+
+            poly p2 = p_ISet(1, r); // Start with constant polynomial 1
+            p_SetExp(p2, i + 3, 1, r); // Set exponent of z(i) to 1
+            p_SetExp(p2, j + 3, 1, r); // Set exponent of z(j) to 1
+            p_Setm(p2, r);
+            
+            p2 = p_Mult_nn(p2, t2, r);
+
+            poly p = p_Mult_q(p1, p2, r); // Multiply p1 and p2
+            p_SetComp(p, i + 1, r);  // Assign the component index
+
+            // Add additional terms as specified
+            poly term1 = p_ISet(2, r); // Start with constant polynomial 2
+            p_SetExp(term1, 2, 1, r); // Set exponent of t(2) to 1
+            p_SetExp(term1, i + 3, 1, r); // Set exponent of z(i) to 1
+            p_Setm(term1, r);
+            p_SetComp(term1, i + 1, r); // Assign the component index
+            p = p_Add_q(p, term1, r);
+
+            poly term2 = p_ISet(1, r); // Start with constant polynomial 1
+            p_SetExp(term2, 2, 1, r); // Set exponent of t(2) to 1
+            p_SetExp(term2, j + 3, 1, r); // Set exponent of z(j) to 1
+            p_Setm(term2, r);
+            p_SetComp(term2, i + 1, r); // Assign the component index
+            p = p_Add_q(p, term2, r);
+
+            p_SetmComp(p, r); // Update the monomial representation
+            std::cout << "t" << i << "= " << pString(p) << std::endl;
+
+            // Add the polynomial to the ideal
+            I->m[index++] = p;
         }
-        L->m[i] = pCopy(M->m[i]);
-        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
     }
 
-    // Debugging output
-    std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
-    std::cout << "L->rank after idInit: " << L->rank << std::endl;
+    // Add cubic terms (z(i)^3) to the ideal
+    for (int i = 0; i < numVars; i++) {
+        poly p = p_ISet(1, r); // Start with constant polynomial 1
+        p_SetExp(p, i + 3, 3, r); // Set exponent of z(i) to 3
+        p_SetComp(p, i + 1, r); // Assign the component index
+        p_Setm(p, r);
 
-    // Compute Gröbner basis
-    ideal Li = kStd(L, currRing->qideal, testHomog, NULL);
-    if (!Li) {
-        std::cerr << "Error: kStd returned null!" << std::endl;
-        return {0, nullptr};
+        // Add the polynomial to the ideal
+        I->m[index++] = p;
     }
 
-    // Check size of Li
-    int tt = IDELEMS(Li);
-    std::cout << "Li_size: " << tt << std::endl;
-    if (tt <= 0) {
-        std::cerr << "Error: Li has no elements!" << std::endl;
-        return {0, nullptr};
+    // Add mixed terms (t(1) * z(i)^2) to the ideal
+    for (int i = 0; i < numVars; i++) {
+        poly p = p_ISet(1, r); // Start with constant polynomial 1
+        p_SetExp(p, 1, 1, r); // Set exponent of t(1) to 1
+        p_SetExp(p, i + 3, 2, r); // Set exponent of z(i) to 2
+        p_SetComp(p, i + 1, r); // Assign the component index
+        p_Setm(p, r);
+
+        // Add the polynomial to the ideal
+        I->m[index++] = p;
     }
 
-    // Debugging output for Li
+    // Output the ideal's generators
+    std::cout << "Ideal generators:" << std::endl;
+    for (int i = 0; i < initialSize; ++i) {
+        std::cout << "I->m[" << i << "]: ";
+        char* polyStr = p_String(I->m[i], r);
+        if (polyStr) {
+            std::cout << polyStr << std::endl;
+            omFree(polyStr); // Free memory
+        } else {
+            std::cerr << "Failed to convert polynomial to string" << std::endl;
+        }
+    }
+
+    // Compute the Gröbner basis
+    ideal G = kStd(I, NULL, testHomog, NULL);
+   
+
+    std::cout << "Gröbner basis computed." << std::endl;
+
+    // Print the size of the Gröbner basis
+    int tt = IDELEMS(G);
+    std::cout << "Gröbner basis has " << tt << " elements:" << std::endl;
+
+    // Print the Gröbner basis
     for (int i = 0; i < tt; i++) {
-        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+        char* polyStr = p_String(G->m[i], r);
+        if (polyStr) {
+            std::cout << "G[" << i << "]: " << polyStr << std::endl;
+            omFree(polyStr); // Free memory
+        } else {
+            std::cerr << "Failed to convert polynomial to string" << std::endl;
+        }
     }
 
     // Prepare the output token
     lists output = (lists)omAlloc0Bin(slists_bin);
+   
+
     output->Init(4);
 
     lists t = (lists)omAlloc0Bin(slists_bin);
     t->Init(2);
-    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
-    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_std");
+    t->m[0].rtyp = STRING_CMD; t->m[0].data = (void*)strdup("generators");
+    t->m[1].rtyp = STRING_CMD; t->m[1].data = (void*)strdup("module_std");
     output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
-    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+
+    output->m[0].rtyp = RING_CMD; output->m[0].data = (void*)r;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = (void*)r;
 
     t = (lists)omAlloc0Bin(slists_bin);
-    // Instead of using pr for the output size, use tt (the actual size of Li)
-t->Init(tt); // Initialize with the actual size of Li (51 in your case)
-
-for (int i = 0; i < tt; i++) {
-    t->m[i].rtyp = POLY_CMD;
-    t->m[i].data = pCopy((poly)Li->m[i]);
-}
-   
+    t->Init(tt); // Use the size of G to initialize t
+    for (int i = 0; i < tt; i++) {
+        t->m[i].rtyp = POLY_CMD; t->m[i].data = (void*)p_Copy(G->m[i], r);
+    }
     output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
 
     // Cleanup
-    id_Delete(&L, currRing); // Cleanup L if no longer needed
+    id_Delete(&I, r); // Cleanup the ideal
+    id_Delete(&G, r); // Cleanup the Gröbner basis
+ 
 
-    return {p, output};
+    return {tt, output};
 }
 
 

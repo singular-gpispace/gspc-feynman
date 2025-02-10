@@ -17,6 +17,16 @@ def m=read(l);
 
 
 
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
 
 link l="ssi:r hello.ssi";
 def m=read(l);

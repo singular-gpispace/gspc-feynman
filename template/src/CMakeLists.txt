@@ -1,5 +1,15 @@
-configure_file("installation.hpp.in" "installation.hpp" @ONLY)
+# Ensure C++17 support
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=1 -D_GLIBCXX_USE_FILESYSTEM=1")
 
+# Generate installation.hpp
+configure_file("installation.hpp.in" "${CMAKE_BINARY_DIR}/installation.hpp" @ONLY)
+
+# Ensure the generated header is found
+include_directories("${CMAKE_BINARY_DIR}")
+
+# Add installation library
 extended_add_library(NAME installation
   TYPE SHARED
   NAMESPACE SINGULAR-template
@@ -14,6 +24,7 @@ set_target_properties(SINGULAR-template-installation
   INSTALL_RPATH_USE_LINK_PATH TRUE
 )
 
+# Add module library
 extended_add_library(NAME module
   TYPE SHARED
   NAMESPACE SINGULAR-template
@@ -26,17 +37,9 @@ extended_add_library(NAME module
   "${CMAKE_SOURCE_DIR}/template/singular_functions.cpp"
   "${CMAKE_SOURCE_DIR}/template/feynman.cpp"
 
-  # INCLUDE_DIRECTORIES PRIVATE "${CMAKE_SOURCE_DIR}" "${FLINT_INCLUDE_DIR}"
   COMPILE_DEFINITIONS SING_NDEBUG OM_NDEBUG
-  LIBRARIES SINGULAR-template::installation Util::Generic GPISpace::execution Singular # ${FLINT_LIB}
+  LIBRARIES SINGULAR-template::installation Util::Generic GPISpace::execution Singular
   POSITION_INDEPENDENT
   INSTALL
   INSTALL_DESTINATION "${CMAKE_INSTALL_PREFIX}"
 )
-#[[
-set_target_properties(SINGULAR-template-module
-  PROPERTIES
-  INSTALL_RPATH "$ORIGIN/lib:${FLINT_LIB_DIR}"
-  INSTALL_RPATH_USE_LINK_PATH TRUE
-)
-]]

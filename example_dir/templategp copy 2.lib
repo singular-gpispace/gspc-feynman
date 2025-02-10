@@ -834,9 +834,9 @@ EXAMPLE : removeElimVars G; shows an example
   for (i = 1; i <= m;i++) {
     for (j = i + 1; j <= m;j++) {
       if (idx <= mt) {
-        B[i, j] = 1 / 2 * t(idx);
-        sumt = sumt + 1 / 2 * t(idx);
-        pq[idx] = 1 / 2 * t(idx);
+        B[i, j] = 1/2 * t(idx);
+        sumt = sumt + 1/2 * t(idx);
+        pq[idx] = 1/2 * t(idx);
       }
       else {
         B[i, j] = -sumt;
@@ -2077,8 +2077,7 @@ KEYWORDS : Feynman graph, IBPs
   if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
-
-  module M1 = computeM1(G, Nu);
+ module M1 = computeM1(G, Nu);
 
   module M2 = computeM2(G, Nu);
 
@@ -2627,22 +2626,37 @@ proc replace_two(token s, int j,int k)
 
   return(output);
 }
+
+
+proc updateWeb_sizejk(token Web)
+{
+ 
+  list w4 = Web.data[1];
+
+int ss= size(w4[1][2][1].targetInts);
+
+  token output;
+  output.fieldnames = list("generators", "updateWeb_sizejk");
+
+  output.data[1] = ss;
+
+  return(output);
+}
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
 
   list web = Web.data[1];
-        write(l, web, "web");
 
   list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
-     write(l, "masterAndTailIntgrals", masterAndTailIntgrals);
+     write(l, "masterAndTailIntgrals", size(masterAndTailIntgrals));
 
   list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
      write(l, (j,k), "(j,k)");
 
    write(l, w4, "w4");
-   write(l, w4[1], "w4[1]");
+   write(l,size( w4[1][2][1].targetInts), "size( w4[1][2][1].targetInts");
 
   close(l);
 

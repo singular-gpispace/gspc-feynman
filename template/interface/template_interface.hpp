@@ -164,3 +164,36 @@ std::string singular_replace_two(std::string const& res
     , int const& k
     , std::string const& needed_library
     , std::string const& base_filename);
+NO_NAME_MANGLING
+    std::string singular_computeManyIBPjk_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+    int singular_updateWeb_sizejk(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+    std::string singular_computeM1_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+    NO_NAME_MANGLING
+     
+std::string singular_computeM2_gpi(std::string const& res
+    , std::string const& res1
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename);
+
+    NO_NAME_MANGLING
+std::string singular_intersection_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+    NO_NAME_MANGLING
+
+
+std::string singular_std_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);

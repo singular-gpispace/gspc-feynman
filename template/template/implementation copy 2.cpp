@@ -910,9 +910,9 @@ std::string singular_intersection_gpi(std::string const& res
 
 
 
-
-
 /* 
+
+
 std::pair<int, lists> std_gpi(leftv arg1) {
 
     // std::cout << "Type of 1.arg:" << arg1->Typ() <<std::endl;
@@ -925,22 +925,32 @@ int p = IDELEMS(M);
 std::cout<<"M_size"<<p<<std::endl;
    // std::cout<<" M_element "<<pString((poly)M->m[14])<<std::endl;
 
-int pr=15;
+int pr=13;
 ideal L = idInit(pr, 1);  // Initialize an empty ideal (syzygy module)
 
-for (int i = 0; i < pr; i++) {
-    L->m[i] = pCopy(M->m[i]);  // Copy elements from L to tmpL
-    //std::cout<<" L_element "<<pString((poly)L->m[i])<<std::endl;
-}
+  for (int i = 0; i < pr; i++) {
+        L->m[i] = pCopy(M->m[i]);
+//        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
+    }
+
+std::cout << "Current ring: " << rString(currRing) << std::endl;
+std::cout << "Is global ordering: " << rHasGlobalOrdering(currRing) << std::endl;
 
 ideal Li=kStd(L,NULL, testHomog, NULL);
 int tt=IDELEMS(Li);
  std::cout<<" Li_size "<<tt<<std::endl;
 
-for (int i = 0; i <tt ; i++) {
-    
-    std::cout<<" Ideal************** "<<pString((poly)Li->m[i])<<std::endl;
-}
+    // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    } 
+
+
+   // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    }
+
 for(int i=0;i<p;i++){
 }
 for(int i=0;i<p;i++){
@@ -956,7 +966,7 @@ std::cout << "p_ProjectiveUnique called successfully" << std::endl;
 ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
  std::cout<<"i= "<<i<<" Mi_size "<<IDELEMS(Mi)<<std::endl;
 
-}
+} 
 
 
 
@@ -982,7 +992,8 @@ ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
           return {p,output};
 
 }
- */
+  */
+
 
 std::pair<int, lists> std_gpi(leftv arg1) {
     // Validate input argument
@@ -1025,7 +1036,7 @@ std::pair<int, lists> std_gpi(leftv arg1) {
         std::cerr << "Error: pr exceeds the size of M!" << std::endl;
         return {0, nullptr};
     }
-pr=15;
+
     // Initialize ideal L
     ideal L = idInit(pr, 1);
     if (!L) {
@@ -1047,8 +1058,9 @@ pr=15;
     std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
     std::cout << "L->rank after idInit: " << L->rank << std::endl;
 
-    // Compute Gröbner basis
-    ideal Li = kStd(L, currRing->qideal, testHomog, NULL);
+   //ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
+
+    ideal Li = kStd(L, currRing->qideal,  testHomog,  NULL);
     if (!Li) {
         std::cerr << "Error: kStd returned null!" << std::endl;
         return {0, nullptr};
@@ -1080,14 +1092,10 @@ pr=15;
     output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
 
     t = (lists)omAlloc0Bin(slists_bin);
-    // Instead of using pr for the output size, use tt (the actual size of Li)
-t->Init(tt); // Initialize with the actual size of Li (51 in your case)
-
-for (int i = 0; i < tt; i++) {
-    t->m[i].rtyp = POLY_CMD;
-    t->m[i].data = pCopy((poly)Li->m[i]);
-}
-   
+    t->Init(tt); // Use the size of Li to initialize t
+    for (int i = 0; i < tt; i++) {
+        t->m[i].rtyp = POLY_CMD; t->m[i].data = pCopy((poly)Li->m[i]);
+    }
     output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
 
     // Cleanup

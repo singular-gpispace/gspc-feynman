@@ -600,7 +600,26 @@ std::string singular_updateWeb_later(std::string const& res
 
     std::string function_name = "updateWeb_later";
     out = call_user_proc(function_name, needed_library, args);
+
+   /*   lists u = (lists)out.second->m[3].Data();
+    //  lists u1 = (lists)out.second->m[3].Data(); //token data
+
+       int L_size1 = lSize(u)+1;
+        std::cout << "LeadSyz in implementation.cpp " << L_size1 << std::endl;
+    for (int i = 0; i < L_size1; i++) {
+        sleftv& listElement = u->m[i];  // Access each element as `leftv`
+        if (listElement.data == NULL) {
+            std::cout << "Input: NULL" << std::endl;
+        }
+
+       auto out_filename1 = listElement.String();
+         std::cout << "i=" << i << " " << "out_inside= " << out_filename1 << std::endl;
+
+
+    }  */
+
     out_filename = serialize(out.second, base_filename);
+
 
     return out_filename;
 }
@@ -685,3 +704,494 @@ std::string singular_replace_two(std::string const& res
 
     return out_filename;
 }
+
+std::string singular_computeManyIBPjk_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+
+    std::string function_name = "computeManyIBPjk_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+int singular_updateWeb_sizejk(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    Res = deserialize(res, ids);
+    std::string out_filename1;
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    /*  lists Token = (lists)(args.leftV()->data);
+
+     int L_size = lSize(Token) + 1;
+     for (int i = 0; i < L_size; i++) {
+         sleftv& listElement = Token->m[i];  // Access each element as `leftv`
+         if (listElement.data == NULL) {
+             std::cout << "Input: NULL" << std::endl;
+         }
+
+         out_filename1 = listElement.String();
+         std::cout << "first= " << out_filename1 << std::endl;
+     } */
+
+    std::string function_name = "updateWeb_sizejk";
+    out = call_user_proc(function_name, needed_library, args);
+
+
+    lists u = (lists)out.second->m[3].Data(); //token data
+
+    // lists u = (lists)(args.leftV()->data);
+
+ /*    int L_size1 = lSize(u) + 1;
+    for (int i = 0; i < L_size1; i++) {
+        sleftv& listElement = u->m[i];  // Access each element as `leftv`
+        if (listElement.data == NULL) {
+            std::cout << "Input: NULL" << std::endl;
+        }
+
+        out_filename1 = listElement.String();
+        //  std::cout << "i=" << i << " " << "out_inside= " << out_filename1 << std::endl;
+
+
+    } */
+    sleftv& listElement = u->m[0];
+    out_filename1 = listElement.String();
+
+   // std::cout << "out_filename1= " << out_filename1 << std::endl;
+
+    int ss = std::stoi(out_filename1);
+    //std::cout << "ss " << ss << std::endl;
+    out_filename = serialize(out.second, base_filename);
+
+    return ss;
+}
+
+std::string singular_computeM1_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    std::string function_name = "computeM1_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+  /*  lists u = (lists)out.second->m[3].Data();
+    //  lists u1 = (lists)out.second->m[3].Data(); //token data
+
+       int L_size1 = lSize(u)+1;
+        std::cout << "computeM1_gpi " << L_size1 << std::endl;
+    for (int i = 0; i < L_size1; i++) {
+        sleftv& listElement = u->m[i];  // Access each element as `leftv`
+        if (listElement.data == NULL) {
+            std::cout << "Input: NULL" << std::endl;
+        }
+
+       auto out_filename1 = listElement.String();
+         std::cout << "i=" << i << " " << "out_inside= " << out_filename1 << std::endl;
+
+
+    }   */
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+
+
+std::string singular_computeM2_gpi(std::string const& res
+    , std::string const& res1
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> Res3;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    void* p = (char*)(long)(j);
+    void* M = (char*)(long)(k);
+
+
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv arg(args1, INT_CMD, p);
+    ScopedLeftv argss(args1, INT_CMD, M);
+
+    std::string function_name = "computeM2_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+
+   
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::pair<int, lists> intersection_gpi(leftv arg1) {
+   
+
+    // Extract input list
+    lists input = (lists)(arg1->Data());
+   
+        // Extract tmp list
+    lists tmp = (lists)(input->m[3].Data());
+
+    lists Tok = (lists)(arg1->next->Data()); // extract Tok
+    lists tmp1 = (lists)(Tok->m[3].Data()); // Tok.data
+
+
+  
+
+    // Extract ideal M
+    ideal M1 = (ideal)tmp->m[0].Data();
+    ideal M2 = (ideal)tmp1->m[0].Data();
+
+    ideal M = idSect(M1, M2);
+    int size_M= IDELEMS( M);
+    std::cout<<"size_of_module_intersection "<<size_M<<std::endl;
+int p=13;
+    // Prepare the output token
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);
+
+    lists t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(2);
+    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
+    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_intersection");
+    output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
+    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+
+    t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(1); // Use the size of Li to initialize t
+        t->m[0].rtyp = MODUL_CMD; t->m[0].data = M;
+
+    output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
+
+    // Cleanup
+
+    return {p, output};
+}
+
+std::string singular_intersection_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+
+    out = intersection_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+
+   // std::string function_name = "intersection_gpi";
+    //out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+
+
+/* 
+
+
+std::pair<int, lists> std_gpi(leftv arg1) {
+
+    // std::cout << "Type of 1.arg:" << arg1->Typ() <<std::endl;
+    lists input = (lists)(arg1->Data()); //extract input
+   
+
+lists tmp = (lists)(input->m[3].Data()); // input.data
+ideal M= (ideal)tmp->m[0].Data();
+int p = IDELEMS(M);
+std::cout<<"M_size"<<p<<std::endl;
+   // std::cout<<" M_element "<<pString((poly)M->m[14])<<std::endl;
+
+int pr=13;
+ideal L = idInit(pr, 1);  // Initialize an empty ideal (syzygy module)
+
+  for (int i = 0; i < pr; i++) {
+        L->m[i] = pCopy(M->m[i]);
+//        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
+    }
+
+std::cout << "Current ring: " << rString(currRing) << std::endl;
+std::cout << "Is global ordering: " << rHasGlobalOrdering(currRing) << std::endl;
+
+ideal Li=kStd(L,NULL, testHomog, NULL);     
+int tt=IDELEMS(Li);
+ std::cout<<" Li_size "<<tt<<std::endl;
+
+    // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    } 
+
+
+   // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    }
+
+for(int i=0;i<p;i++){
+}
+for(int i=0;i<p;i++){
+bool b= p_Test((poly)M->m[i],currRing);
+ std::cout<<"i= "<<i<<" p_test "<<b<<std::endl;
+ p_ContentForGB((poly)M->m[i], currRing);
+std::cout << "p_ContentForGB called successfully" << std::endl;
+poly po= p_Cleardenom((poly)M->m[i], currRing);
+ std::cout<<"i= "<<i<<" poly "<<pString(po)<<std::endl;
+p_ProjectiveUnique((poly)M->m[i], currRing);
+std::cout << "p_ProjectiveUnique called successfully" << std::endl;
+
+ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
+ std::cout<<"i= "<<i<<" Mi_size "<<IDELEMS(Mi)<<std::endl;
+
+} 
+
+
+
+//ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
+    
+
+// Prepare the output token
+    lists output=(lists)omAlloc0Bin(slists_bin);
+    output->Init(4);// type token
+    // fieldnames
+    lists t=(lists)omAlloc0Bin(slists_bin);
+    t->Init(2);
+    t->m[0].rtyp=STRING_CMD; t->m[0].data=strdup("generators");
+    t->m[1].rtyp=STRING_CMD; t->m[1].data=strdup("module_std");
+    output->m[1].rtyp=LIST_CMD; output->m[1].data=t;
+     output->m[0].rtyp=RING_CMD; output->m[0].data=currRing;
+      output->m[2].rtyp=RING_CMD; output->m[2].data=currRing;
+    //data
+    t=(lists)omAlloc0Bin(slists_bin);
+    t->Init(1);
+      t->m[0].rtyp=MODUL_CMD; t->m[0].data=Li;
+          output->m[3].rtyp=LIST_CMD; output->m[3].data=t;
+          return {p,output};
+
+}
+  */
+
+
+std::pair<int, lists> std_gpi(leftv arg1) {
+    // Validate input argument
+    if (!arg1 || !arg1->Data()) {
+        std::cerr << "Error: Invalid input argument!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Extract input list
+    lists input = (lists)(arg1->Data());
+    if (!input || input->nr < 3) {
+        std::cerr << "Error: Input list is invalid or too small!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Extract tmp list
+    lists tmp = (lists)(input->m[3].Data());
+    if (!tmp || tmp->nr < 0) {
+        std::cerr << "Error: Invalid tmp list!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Extract ideal M
+    ideal M = (ideal)tmp->m[0].Data();
+    if (!M) {
+        std::cerr << "Error: Ideal M is null!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Check size of M
+    int p = IDELEMS(M);
+    if (p <= 0) {
+        std::cerr << "Error: Ideal M has no elements!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Set pr dynamically based on M
+    int pr = 15; // Use the size of M to determine pr
+    if (pr > IDELEMS(M)) {
+        std::cerr << "Error: pr exceeds the size of M!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Initialize ideal L
+    ideal L = idInit(pr, 1);
+    if (!L) {
+        std::cerr << "Error: Failed to initialize ideal L!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Copy polynomials from M to L
+    for (int i = 0; i < pr; i++) {
+        if (!M->m[i] || !p_Test((poly)M->m[i], currRing)) {
+            std::cerr << "Error: M->m[" << i << "] is invalid!" << std::endl;
+            return {0, nullptr};
+        }
+        L->m[i] = pCopy(M->m[i]);
+        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
+    }
+
+    // Debugging output
+    std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
+    std::cout << "L->rank after idInit: " << L->rank << std::endl;
+
+   //ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
+
+    ideal Li = kStd(L, currRing->qideal,  testHomog,  NULL);
+    if (!Li) {
+        std::cerr << "Error: kStd returned null!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Check size of Li
+    int tt = IDELEMS(Li);
+    std::cout << "Li_size: " << tt << std::endl;
+    if (tt <= 0) {
+        std::cerr << "Error: Li has no elements!" << std::endl;
+        return {0, nullptr};
+    }
+
+    // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    }
+
+    // Prepare the output token
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);
+
+    lists t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(2);
+    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
+    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_std");
+    output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
+    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+
+    t = (lists)omAlloc0Bin(slists_bin);
+    t->Init(tt); // Use the size of Li to initialize t
+    for (int i = 0; i < tt; i++) {
+        t->m[i].rtyp = POLY_CMD; t->m[i].data = pCopy((poly)Li->m[i]);
+    }
+    output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
+
+    // Cleanup
+    id_Delete(&L, currRing); // Cleanup L if no longer needed
+
+    return {p, output};
+}
+
+
+std::string singular_std_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+
+    Res = deserialize(res, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+  /*
+    lists Token = (lists)(args.leftV()->data);
+std::string  out_filename1;
+   int L_size = lSize(Token) + 1;
+    for (int i = 0; i < L_size; i++) {
+        sleftv& listElement = Token->m[i];  // Access each element as `leftv`
+        if (listElement.data == NULL) {
+         std::cout << "Input: NULL" << std::endl;
+        }
+        else if (i == 3) {
+             out_filename1 = listElement.String();
+        std::cout << "out_filename1= " << out_filename1 << std::endl;
+        }
+    }  */
+    /* std::string function_name = "std_gpi";
+    out = call_user_proc(function_name, needed_library, args); */
+    out = std_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+
+
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+

@@ -289,10 +289,9 @@ std::cout<<"total="<<total<<std::endl;
             }
 
          int j = c[0];
-          int k = c[1]; 
+            int k = c[1]; 
        
-          /*   int j=1;
-            int k=1; */
+            
                 std::string    reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)
                   (
                     data.reducedIBPs, library_name, base_filename
@@ -328,13 +327,14 @@ std::cout<<"total="<<total<<std::endl;
                     reducedIBPs_seed, targetInt, library_name, base_filename
                     );
                 /**********************************************************************************************/
-            if(size_wjk_targetInt>=1)
+        if(size_wjk_targetInt>=1)
         {
-          std::string totalIBP = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBPjk_gpi)
+               /**********************************************************************************************/
+             std::string totalIBP = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBPjk_gpi)
               (
                 labeledgraph, wjk_targetInt,  library_name, base_filename
                 );
-                 int te = 0;
+                int te = 0;
 
                 if (te == 0) {
                   std::string  reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)
@@ -471,7 +471,6 @@ std::cout<<"total="<<total<<std::endl;
                 }
         }
             data_copy=data;
-
                         		]]>
           </code>
         </module>

@@ -909,88 +909,18 @@ std::string singular_intersection_gpi(std::string const& res
 }
 
 
-
-
-
-/* 
-std::pair<int, lists> std_gpi(leftv arg1) {
-
-    // std::cout << "Type of 1.arg:" << arg1->Typ() <<std::endl;
-    lists input = (lists)(arg1->Data()); //extract input
-   
-
-lists tmp = (lists)(input->m[3].Data()); // input.data
-ideal M= (ideal)tmp->m[0].Data();
-int p = IDELEMS(M);
-std::cout<<"M_size"<<p<<std::endl;
-   // std::cout<<" M_element "<<pString((poly)M->m[14])<<std::endl;
-
-int pr=15;
-ideal L = idInit(pr, 1);  // Initialize an empty ideal (syzygy module)
-
-for (int i = 0; i < pr; i++) {
-    L->m[i] = pCopy(M->m[i]);  // Copy elements from L to tmpL
-    //std::cout<<" L_element "<<pString((poly)L->m[i])<<std::endl;
-}
-
-ideal Li=kStd(L,NULL, testHomog, NULL);
-int tt=IDELEMS(Li);
- std::cout<<" Li_size "<<tt<<std::endl;
-
-for (int i = 0; i <tt ; i++) {
-    
-    std::cout<<" Ideal************** "<<pString((poly)Li->m[i])<<std::endl;
-}
-for(int i=0;i<p;i++){
-}
-for(int i=0;i<p;i++){
-bool b= p_Test((poly)M->m[i],currRing);
- std::cout<<"i= "<<i<<" p_test "<<b<<std::endl;
- p_ContentForGB((poly)M->m[i], currRing);
-std::cout << "p_ContentForGB called successfully" << std::endl;
-poly po= p_Cleardenom((poly)M->m[i], currRing);
- std::cout<<"i= "<<i<<" poly "<<pString(po)<<std::endl;
-p_ProjectiveUnique((poly)M->m[i], currRing);
-std::cout << "p_ProjectiveUnique called successfully" << std::endl;
-
-ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
- std::cout<<"i= "<<i<<" Mi_size "<<IDELEMS(Mi)<<std::endl;
-
-}
-
-
-
-//ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
-    
-
-// Prepare the output token
-    lists output=(lists)omAlloc0Bin(slists_bin);
-    output->Init(4);// type token
-    // fieldnames
-    lists t=(lists)omAlloc0Bin(slists_bin);
-    t->Init(2);
-    t->m[0].rtyp=STRING_CMD; t->m[0].data=strdup("generators");
-    t->m[1].rtyp=STRING_CMD; t->m[1].data=strdup("module_std");
-    output->m[1].rtyp=LIST_CMD; output->m[1].data=t;
-     output->m[0].rtyp=RING_CMD; output->m[0].data=currRing;
-      output->m[2].rtyp=RING_CMD; output->m[2].data=currRing;
-    //data
-    t=(lists)omAlloc0Bin(slists_bin);
-    t->Init(1);
-      t->m[0].rtyp=MODUL_CMD; t->m[0].data=Li;
-          output->m[3].rtyp=LIST_CMD; output->m[3].data=t;
-          return {p,output};
-
-}
- */
+#include <singular/Singular/libsingular.h>
+#include <iostream>
+#include <cstring>
+#include "polys/ext_fields/transext.h"
 
 std::pair<int, lists> std_gpi(leftv arg1) {
-    // Validate input argument
     if (!arg1 || !arg1->Data()) {
         std::cerr << "Error: Invalid input argument!" << std::endl;
         return {0, nullptr};
     }
-
+    std::cout << "Current first ring: " << rString(currRing) << std::endl;
+ring R=currRing;
     // Extract input list
     lists input = (lists)(arg1->Data());
     if (!input || input->nr < 3) {
@@ -1020,82 +950,163 @@ std::pair<int, lists> std_gpi(leftv arg1) {
     }
 
     // Set pr dynamically based on M
-    int pr = IDELEMS(M); // Use the size of M to determine pr
+    int pr =14; // Use the size of M to determine pr
     if (pr > IDELEMS(M)) {
         std::cerr << "Error: pr exceeds the size of M!" << std::endl;
         return {0, nullptr};
     }
-pr=15;
-    // Initialize ideal L
-    ideal L = idInit(pr, 1);
-    if (!L) {
-        std::cerr << "Error: Failed to initialize ideal L!" << std::endl;
+
+    // Initialize ideal I
+    ideal I = idInit(pr, 1);
+    if (!I) {
+        std::cerr << "Error: Failed to initialize ideal I!" << std::endl;
         return {0, nullptr};
     }
 
-    // Copy polynomials from M to L
+    // Copy polynomials from M to I
     for (int i = 0; i < pr; i++) {
         if (!M->m[i] || !p_Test((poly)M->m[i], currRing)) {
             std::cerr << "Error: M->m[" << i << "] is invalid!" << std::endl;
             return {0, nullptr};
         }
-        L->m[i] = pCopy(M->m[i]);
-        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
+        I->m[i] = pCopy(M->m[i]);
+        std::cout << "I->m[" << i << "]: " << pString((poly)I->m[i]) << std::endl;
+    }
+    char **n = (char**)omalloc(3 * sizeof(char*));
+    n[0] = omStrDup("t(1)");
+    n[1] = omStrDup("t(2)");
+    n[2] = omStrDup("D");
+
+    // Create ring Z/32003[x,y,z]
+    ring extRing = rDefault(0, 3, n);
+
+    TransExtInfo extParam;
+          extParam.r = extRing;
+          coeffs cf = nInitChar(n_transExt, &extParam);
+
+
+    // Define coefficient variables t(1), t(2)
+    const int numVars = 9;       // z(1) to z(9)
+
+   
+
+    // Dynamically create the names for the variables z(1) to z(9)
+    char *vars[numVars];
+    for (int i = 0; i < numVars; ++i) {
+        vars[i] = (char*)omAlloc(5 * sizeof(char)); // "z(i)" where i = 1,2,...,9
+        sprintf(vars[i], "z(%d)", i + 1);
     }
 
-    // Debugging output
-    std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
-    std::cout << "L->rank after idInit: " << L->rank << std::endl;
+    // Define the orders (dp(9), C)
+    rRingOrder_t* order = (rRingOrder_t*)omAlloc0(3 * sizeof(rRingOrder_t));
+    order[0] = ringorder_dp;  // dp(9)
+    order[1] = ringorder_c;   // C (for the coefficient field)
 
-    // Compute Gröbner basis
-    ideal Li = kStd(L, currRing->qideal, testHomog, NULL);
-    if (!Li) {
-        std::cerr << "Error: kStd returned null!" << std::endl;
+    // Define the blocks of the ring
+    int* block0 = (int*)omAlloc(3 * sizeof(int));
+    block0[0] = 1;  
+    int* block1 = (int*)omAlloc0(3 * sizeof(int));
+    block1[0] = 9;  
+
+
+    // Define the ring using rDefault function
+    ring r = rDefault(cf, numVars,vars,3, order, block0, block1);  // 0 means coefficient field is ℚ
+    if (!r) {
+        std::cerr << "Error: Failed to create polynomial ring!" << std::endl;
+       
+        for (int i = 0; i < numVars; ++i) {
+            omFree(vars[i]);
+        }
+        omFree(order);
+        omFree(block0);
+        omFree(block1);
         return {0, nullptr};
     }
 
-    // Check size of Li
-    int tt = IDELEMS(Li);
-    std::cout << "Li_size: " << tt << std::endl;
-    if (tt <= 0) {
-        std::cerr << "Error: Li has no elements!" << std::endl;
+    std::cout << "New ring: " << rString(r) << std::endl;
+
+    // Define the image ideal dynamically using a loop
+    ideal image_id = idInit(numVars, 1);
+    for (int i = 0; i < numVars; ++i) {
+        image_id->m[i] = p_ISet(1, r);
+        p_SetExp(image_id->m[i], i + 1, 1, r);  // a, b, etc.
+        p_Setm(image_id->m[i], r);
+    }
+
+    // Use identity coefficient mapping
+    nMapFunc coeff_map = n_SetMap(R->cf, r->cf);
+
+    // Perform the ideal mapping
+    ideal J = maMapIdeal(I, R, image_id, r, coeff_map);
+
+    std::cout << "Ideal mapped to new ring r." << std::endl;
+
+    for (int i = 0; i < IDELEMS(J); i++) {
+        std::cout << "J[" << i << "] = " << pString(J->m[i]) << std::endl;
+    }
+        // Change the current ring
+    rChangeCurrRing(r);
+    // Compute the Gröbner basis using the new ring
+    ideal G = kStd(J, NULL, testHomog, NULL);
+    if (!G) {
+        std::cerr << "Error: Failed to compute Gröbner basis!" << std::endl;
+        id_Delete(&I, r);
+        rDelete(r);
         return {0, nullptr};
     }
 
-    // Debugging output for Li
+    std::cout << "Gröbner basis computed." << std::endl;
+
+    // Print the size of the Gröbner basis
+    int tt = IDELEMS(G);
+    std::cout << "Gröbner basis has " << tt << " elements:" << std::endl;
+
+    // Print the Gröbner basis
     for (int i = 0; i < tt; i++) {
-        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+        char* polyStr = p_String(G->m[i], r);
+        if (polyStr) {
+            std::cout << "G[" << i << "]: " << polyStr << std::endl;
+            omFree(polyStr); // Free memory
+        } else {
+            std::cerr << "Failed to convert polynomial to string" << std::endl;
+        }
     }
 
     // Prepare the output token
     lists output = (lists)omAlloc0Bin(slists_bin);
+    if (!output) {
+        std::cerr << "Error: Failed to allocate memory for output!" << std::endl;
+        id_Delete(&I, r);
+        id_Delete(&G, r);
+        rDelete(r);
+        return {0, nullptr};
+    }
+
     output->Init(4);
 
     lists t = (lists)omAlloc0Bin(slists_bin);
     t->Init(2);
-    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
-    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_std");
+    t->m[0].rtyp = STRING_CMD; t->m[0].data = (void*)strdup("generators");
+    t->m[1].rtyp = STRING_CMD; t->m[1].data = (void*)strdup("module_std");
     output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
-    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+
+    output->m[0].rtyp = RING_CMD; output->m[0].data = (void*)r;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = (void*)r;
 
     t = (lists)omAlloc0Bin(slists_bin);
-    // Instead of using pr for the output size, use tt (the actual size of Li)
-t->Init(tt); // Initialize with the actual size of Li (51 in your case)
-
-for (int i = 0; i < tt; i++) {
-    t->m[i].rtyp = POLY_CMD;
-    t->m[i].data = pCopy((poly)Li->m[i]);
-}
-   
+    t->Init(tt); // Use the size of G to initialize t
+    for (int i = 0; i < tt; i++) {
+        t->m[i].rtyp = POLY_CMD; t->m[i].data = (void*)p_Copy(G->m[i], r);
+    }
     output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
 
     // Cleanup
-    id_Delete(&L, currRing); // Cleanup L if no longer needed
+    id_Delete(&I, r); // Cleanup the ideal
+    id_Delete(&G, r); // Cleanup the Gröbner basis
+    rDelete(r); // Cleanup the ring
 
-    return {p, output};
+    return {tt, output};
 }
-
 
 std::string singular_std_gpi(std::string const& res
     , std::string const& needed_library

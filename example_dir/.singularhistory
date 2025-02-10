@@ -2688,3 +2688,572 @@ def m7=read(l);
 def m8=read(l);
 quit;
 quit;
+s
+s
+quit;
+quit;
+;
+int j=1;
+link l="ssi:r hi.ssi";
+;
+int j=1;
+j;
+l=1;
+link l="ssi:r hi.ssi";
+ring r=0,(a,b,c,u,v,w,x,y,z),lp;
+ideal i=a+c+v+2x-1, ab+cu+2vw+2xy+2xz-2/3,  ab2+cu2+2vw2+2xy2+2xz2-2/5,
+ab3+cu3+2vw3+2xy3+2xz3-2/7, ab4+cu4+2vw4+2xy4+2xz4-2/9, vw2+2xyz-1/9,
+vw4+2xy2z2-1/25, vw3+xyz2+xy2z-1/15, vw4+xyz3+xy3z-1/21;
+link l_hilb,l_fglm = "ssi:fork","ssi:fork";  
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+$
+$
+$
+$
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+m3;
+m4;
+m5;
+$
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m3;
+m4;
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m4;
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+$
+link l="ssi:r hello.ssi";
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m1;
+m2;
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m2;
+m4;
+m5;
+m4;
+m6;
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m6;
+$
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m6;
+m5;
+m4;
+$
+$
+link l="ssi:r hello.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+m4;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+m3;
+m4;
+m4;
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m3;
+m4;
+m5;
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+m3;
+m4;
+m5;
+m6;
+m7;
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+m4;
+m3;
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m5;
+m6;
+m7;
+m8;
+m4;
+m5;
+m3;
+m2;
+m7;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+m3;
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m4;
+m3;
+m2;
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hallo.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+m4;
+m5;
+m6;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+proc testProc()
+{
+    int x = 5;
+    print("x before:", x);
+    x = x + 2;
+    print("x after:", x);
+}
+testProc();
+0
+$
+kstd(x);
+kStd(x);
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+"example.sing";
+<"example.sing";
+run
+;
+$
+$
+$
+$
+$
+bt
+;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
