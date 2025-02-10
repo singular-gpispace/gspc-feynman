@@ -23,6 +23,8 @@ gspc_template(list, configToken, configToken)    interface of the template frame
 
 proc mod_init()
 {
+    LIB "polylib.lib";
+    LIB "teachstd.lib"; // for spoly
     //Singular does not support fieldname containing underscore
     LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 
@@ -53,17 +55,16 @@ RETURN: a configToken containing a gspcConfigToken with the standard configurati
     ct.options = gc;
     return(ct);
 }
-
 proc configure_template()
-"USAGE: configure_template()
-RETURN: a configToken containing a templateConfigToken with the standard
-configuration for the template pattern.
-"
 {
     templateConfigToken tc;
     configToken ct;
     ct.tokentype = "templateConfigToken";
     ct.options = tc;
+
+    // Set redSB option to true
+    option(redSB);
+
     return(ct);
 }
 
@@ -171,10 +172,10 @@ static proc gspc_template(list l, configToken gc, configToken pc)
 
 proc gspc_template_SchRes(list L, configToken gc)
 {
+    
     configToken ct = configure_template();
     ct.options.neededLibrary = "templategp.lib";
     ct.options.functionName = "stdBasis";
-
 
     /*  int r = size(I);
      //intvec primeiv = primeList(I, nb_prime);
