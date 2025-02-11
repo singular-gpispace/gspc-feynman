@@ -12,7 +12,7 @@ function(add_petrinet in out module_name)
     --gen-cxxflags=-I"${CMAKE_SOURCE_DIR}/src"
     --gen-cxxflags=-I"${GSPC_HOME}/include"
     --gen-cxxflags=-I"${GSPC_HOME}/external/boost/include"
-
+    --gen-cxxflags=-I"${GSPC_HOME}"
     # --gen-cxxflags=-I"${FLINT_HOME}/include" # Add FLINT include directory
     --gen-ldflags="-L${CMAKE_BINARY_DIR}"
     --gen-ldflags="-L${CMAKE_BINARY_DIR}/src/util-generic"

@@ -23,6 +23,7 @@ gspc_template(list, configToken, configToken)    interface of the template frame
 
 proc mod_init()
 {
+    
 
     LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 

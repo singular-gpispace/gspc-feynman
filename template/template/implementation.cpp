@@ -1042,95 +1042,79 @@ ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
 }
   */
 
-
-std::pair<int, lists> std_gpi(leftv arg1) {
-
+  lists std_gpi(leftv arg1) {
 
     // Extract input list
     lists input = (lists)(arg1->Data());
 
-
     // Extract tmp list
     lists tmp = (lists)(input->m[3].Data());
 
-
     // Extract ideal M
     ideal M = (ideal)tmp->m[0].Data();
-   
 
-
-
-    ideal Li = kStd(M, currRing->qideal,  testHomog,  NULL);
-
-
-    // Check size of Li
+    // Compute Li
+    ideal Li = kStd(M, currRing->qideal, testHomog, NULL);
     int tt = IDELEMS(Li);
+    std::cout << "Li_size " << tt << std::endl;
 
-int p=1;
+    // Debugging output for Li
+    for (int i = 0; i < tt; i++) {
+        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
+    } 
 
     // Prepare the output token
-    lists output = (lists)omAlloc0Bin(slists_bin);
-    output->Init(4);
+lists output = (lists)omAlloc0Bin(slists_bin);
+output->Init(4);
 
-    lists t = (lists)omAlloc0Bin(slists_bin);
-    t->Init(2);
-    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
-    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_std");
-    output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
-    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+// Create and initialize the first sublist
+lists t1 = (lists)omAlloc0Bin(slists_bin);
+t1->Init(2);
+t1->m[0].rtyp = STRING_CMD; t1->m[0].data = strdup("generators");
+t1->m[1].rtyp = STRING_CMD; t1->m[1].data = strdup("module_std");
 
-    t = (lists)omAlloc0Bin(slists_bin);
-    t->Init(tt); // Use the size of Li to initialize t
-    for (int i = 0; i < tt; i++) {
-        t->m[i].rtyp = POLY_CMD; t->m[i].data = pCopy((poly)Li->m[i]);
-    }
-    output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
+output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
+output->m[1].rtyp = LIST_CMD; output->m[1].data = t1;
+output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
 
+// Create and initialize the second sublist for Li elements
+lists t2 = (lists)omAlloc0Bin(slists_bin);
+t2->Init(tt); // Use the size of Li to initialize t2
+for (int i = 0; i < tt; i++) {
+    t2->m[i].rtyp = POLY_CMD; 
+    t2->m[i].data = pCopy((poly)Li->m[i]);
+}
 
-    return {p, output};
+output->m[3].rtyp = LIST_CMD; output->m[3].data = t2;
+
+    return output;
 }
 
 
-std::string singular_std_gpi(std::string const& res
-    , std::string const& needed_library
-    , std::string const& base_filename)
+
+std::string singular_std_gpi(std::string const& res,
+    std::string const& needed_library,
+    std::string const& base_filename)
 {
-    init_singular(config::singularLibrary().string());
-    load_singular_library(needed_library);
-    std::pair<int, lists> Res;
+init_singular(config::singularLibrary().string());
+load_singular_library(needed_library);
 
-    std::pair<int, lists> out;
-    std::string ids;
-    std::string out_filename;
-    ids = worker();
-    //std::cout << ids << " in singular_..._compute" << std::endl;
+std::pair<int, lists> Res;
+lists out;  // Change type from std::pair<int, lists> to lists
+std::string ids;
+std::string out_filename;
 
-    Res = deserialize(res, ids);
+ids = worker();
+Res = deserialize(res, ids);
 
+ScopedLeftv args(Res.first, lCopy(Res.second));
 
-    ScopedLeftv args(Res.first, lCopy(Res.second));
-  /*
-    lists Token = (lists)(args.leftV()->data);
-std::string  out_filename1;
-   int L_size = lSize(Token) + 1;
-    for (int i = 0; i < L_size; i++) {
-        sleftv& listElement = Token->m[i];  // Access each element as `leftv`
-        if (listElement.data == NULL) {
-         std::cout << "Input: NULL" << std::endl;
-        }
-        else if (i == 3) {
-             out_filename1 = listElement.String();
-        std::cout << "out_filename1= " << out_filename1 << std::endl;
-        }
-    }  */
-   std::string function_name = "std_gpi";
-    out = call_user_proc(function_name, needed_library, args);  
-    //out = std_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+// Call std_gpi directly and assign to lists type
+out = std_gpi(args.leftV());  
 
+// Serialize the output
+out_filename = serialize(out, base_filename);
 
-    out_filename = serialize(out.second, base_filename);
-
-    return out_filename;
+return out_filename;
 }
 

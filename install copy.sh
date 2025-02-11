@@ -7,7 +7,7 @@ rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_d
 mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
 
 # Activate the Spack environment
-spack load gpi-space@24.12 || { echo "Failed to load GPI-Space"; exit 1; }
+spack load gpi-space@24.12
 
 # Generate SVG workflow diagram
 pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg
@@ -17,9 +17,10 @@ INSTALL_PREFIX="/home/atraore/gpi/try_gpi/feynman_ibp/install_dir/"
 BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 
-# Set GPI-Space root
+# Set GPI-Space root (for version 24.12)
 GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jz6b4m6ql54fmhkpq6gbico2neic3kd5"
-export GSPC_HOME=$GPISPACE_ROOT
+# Set GPI-Space root (for version 23.06)
+#GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-23.06-6oiwgcz4ou6sktku324hoesngmqoiv6b/"
 
 # Set FLINT home directory
 FLINT_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/flint-2.6.3-pb3i4qjyjz7pqkpf6cs7wk6ro5pl564i"
@@ -27,15 +28,14 @@ FLINT_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-sk
 # Set GMP home directory
 GMP_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gmp-6.2.1-gjqp7e3m3fik4wsuqqcxv2brlj2wkyza"
 
-# Set Singular install
+# Set Singular install 4.4.0p2
 SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-4.4.0p2-k7rgdkzo5prqsvxjckejvcdvxgjr64bk"
 
-# Set the library path correctly
-export LD_LIBRARY_PATH=$GPISPACE_ROOT/lib:$FLINT_HOME/lib:$GMP_HOME/lib:$SINGULAR_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+#old path 4.3.0
+#SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-snapshot_22_03-5jvwtprazqirywu2triw6rprjazzi3so/"
 
-# Verify paths before building
-#ls $GPISPACE_ROOT/gspc_version || { echo "GPI-Space version file missing!"; exit 1; }
-ls $GPISPACE_ROOT/gspc_version  echo "GPI-Space version is here!"; 
+# Set the library path
+export LD_LIBRARY_PATH=$FLINT_HOME/lib:$GMP_HOME/lib:$SINGULAR_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
 # Run CMake
 cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
