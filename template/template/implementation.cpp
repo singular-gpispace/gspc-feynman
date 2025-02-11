@@ -900,7 +900,7 @@ std::pair<int, lists> intersection_gpi(leftv arg1) {
     ideal M = idSect(M1, M2);
     int size_M= IDELEMS( M);
     std::cout<<"size_of_module_intersection "<<size_M<<std::endl;
-int p=13;
+int p=1;
     // Prepare the output token
     lists output = (lists)omAlloc0Bin(slists_bin);
     output->Init(4);
@@ -1044,88 +1044,29 @@ ideal Mi=kStd((ideal)M->m[i],currRing->qideal, testHomog, NULL);
 
 
 std::pair<int, lists> std_gpi(leftv arg1) {
-    // Validate input argument
-    if (!arg1 || !arg1->Data()) {
-        std::cerr << "Error: Invalid input argument!" << std::endl;
-        return {0, nullptr};
-    }
+
 
     // Extract input list
     lists input = (lists)(arg1->Data());
-    if (!input || input->nr < 3) {
-        std::cerr << "Error: Input list is invalid or too small!" << std::endl;
-        return {0, nullptr};
-    }
+
 
     // Extract tmp list
     lists tmp = (lists)(input->m[3].Data());
-    if (!tmp || tmp->nr < 0) {
-        std::cerr << "Error: Invalid tmp list!" << std::endl;
-        return {0, nullptr};
-    }
+
 
     // Extract ideal M
     ideal M = (ideal)tmp->m[0].Data();
-    if (!M) {
-        std::cerr << "Error: Ideal M is null!" << std::endl;
-        return {0, nullptr};
-    }
+   
 
-    // Check size of M
-    int p = IDELEMS(M);
-    if (p <= 0) {
-        std::cerr << "Error: Ideal M has no elements!" << std::endl;
-        return {0, nullptr};
-    }
 
-    // Set pr dynamically based on M
-    int pr = 21; // Use the size of M to determine pr
-    if (pr > IDELEMS(M)) {
-        std::cerr << "Error: pr exceeds the size of M!" << std::endl;
-        return {0, nullptr};
-    }
 
-    // Initialize ideal L
-    ideal L = idInit(pr, 1);
-    if (!L) {
-        std::cerr << "Error: Failed to initialize ideal L!" << std::endl;
-        return {0, nullptr};
-    }
+    ideal Li = kStd(M, currRing->qideal,  testHomog,  NULL);
 
-    // Copy polynomials from M to L
-    for (int i = 0; i < pr; i++) {
-        if (!M->m[i] || !p_Test((poly)M->m[i], currRing)) {
-            std::cerr << "Error: M->m[" << i << "] is invalid!" << std::endl;
-            return {0, nullptr};
-        }
-        L->m[i] = pCopy(M->m[i]);
-        std::cout << "L->m[" << i << "]: " << pString((poly)L->m[i]) << std::endl;
-    }
-
-    // Debugging output
-    std::cout << "M->rank = " << M->rank << ", pr = " << pr << std::endl;
-    std::cout << "L->rank after idInit: " << L->rank << std::endl;
-
-   //ideal MM=kStd(L,currRing->qideal, testHomog, NULL);
-
-    ideal Li = kStd(L, currRing->qideal,  testHomog,  NULL);
-    if (!Li) {
-        std::cerr << "Error: kStd returned null!" << std::endl;
-        return {0, nullptr};
-    }
 
     // Check size of Li
     int tt = IDELEMS(Li);
-    std::cout << "Li_size: " << tt << std::endl;
-    if (tt <= 0) {
-        std::cerr << "Error: Li has no elements!" << std::endl;
-        return {0, nullptr};
-    }
 
-    // Debugging output for Li
-    for (int i = 0; i < tt; i++) {
-        std::cout << "Li->m[" << i << "]: " << pString((poly)Li->m[i]) << std::endl;
-    }
+int p=1;
 
     // Prepare the output token
     lists output = (lists)omAlloc0Bin(slists_bin);
@@ -1146,8 +1087,6 @@ std::pair<int, lists> std_gpi(leftv arg1) {
     }
     output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
 
-    // Cleanup
-    id_Delete(&L, currRing); // Cleanup L if no longer needed
 
     return {p, output};
 }
@@ -1185,9 +1124,9 @@ std::string  out_filename1;
         std::cout << "out_filename1= " << out_filename1 << std::endl;
         }
     }  */
-    /* std::string function_name = "std_gpi";
-    out = call_user_proc(function_name, needed_library, args); */
-    out = std_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+   std::string function_name = "std_gpi";
+    out = call_user_proc(function_name, needed_library, args);  
+    //out = std_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
 
 
     out_filename = serialize(out.second, base_filename);
