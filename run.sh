@@ -6,7 +6,14 @@ export GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubun
 # Load correct GPI-Space version
 spack load gpi-space@24.12
 
+
+export GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-23.06-6oiwgcz4ou6sktku324hoesngmqoiv6b/"
+spack load gpi-space@23.06
+
 SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-4.4.0p2-k7rgdkzo5prqsvxjckejvcdvxgjr64bk"
+
+#old path
+SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-snapshot_22_03-5jvwtprazqirywu2triw6rprjazzi3so/"
 
 export PATH=$SINGULAR_INSTALL_DIR/bin:$PATH
 

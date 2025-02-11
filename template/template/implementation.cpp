@@ -1079,7 +1079,7 @@ std::pair<int, lists> std_gpi(leftv arg1) {
     }
 
     // Set pr dynamically based on M
-    int pr = 15; // Use the size of M to determine pr
+    int pr = 21; // Use the size of M to determine pr
     if (pr > IDELEMS(M)) {
         std::cerr << "Error: pr exceeds the size of M!" << std::endl;
         return {0, nullptr};

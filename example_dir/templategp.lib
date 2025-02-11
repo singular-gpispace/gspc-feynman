@@ -341,8 +341,8 @@ EXAMPLE : example labelGraph; shows an example
   int ct;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   int anzq = size(G.edges) - ct;
-  ring P = (ch), (p(1..ct), q(1..anzq)), ip;
-  ring R = (ch, p(1..ct)), (q(1..anzq)), ip;
+  ring P = (ch), (p(1..ct), q(1..anzq)), rp;
+  ring R = (ch, p(1..ct)), (q(1..anzq)), rp;
   list lab;
   int pidx = 1;
   int qidx = 1;

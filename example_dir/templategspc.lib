@@ -23,9 +23,7 @@ gspc_template(list, configToken, configToken)    interface of the template frame
 
 proc mod_init()
 {
-    LIB "polylib.lib";
-    LIB "teachstd.lib"; // for spoly
-    //Singular does not support fieldname containing underscore
+
     LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 
     newstruct("configToken", "string tokentype, def options");
