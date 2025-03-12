@@ -1,0 +1,260 @@
+<defun name="template">
+    <struct name="feynman">
+        <field name="MI" type="string"/>
+        <field name="reducedIBPs" type="string"/>
+        <field name="web" type="string"/>
+    </struct>
+  <in name="base_filename" type="string" place="place_base_filename"/>
+  <in name="library_name" type="string" place="place_library_name"/>
+  <in name="input" type="string" place="place_input"/>
+  <out name="output" type="string" place="totalIBP"/>
+  <net>
+    <place name="place_input" type="string"/>
+    <place name="data" type="feynman"/>
+
+    <place name="place_base_filename" type="string"/>
+    <place name="place_library_name" type="string"/>
+    <place name="input_control" type="control">
+      <token>
+        <value>[]</value>
+      </token>
+    </place>
+
+    <transition name="compute">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="input_control" type="control"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="input" type="string"/>
+        <out name="labeledgraph" type="string"/>
+        <out name="web_copy" type="string"/>
+        <out name="data" type="feynman"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute(input_control,input,library_name,base_filename,labeledgraph,data,web_copy)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+						labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);
+              data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);
+              data.reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);   
+              data.MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);
+
+             web_copy=data.web;
+             std::cout<<" web "<<data.web<<std::endl;
+    
+
+            		]]>          </code>
+        </module>
+      </defun>
+      <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
+      <connect-read port="input" place="place_input"/>
+      <connect-in port="input_control" place="input_control"/>
+      <connect-out port="labeledgraph" place="labeledgraph"/>
+      <connect-out port="web_copy" place="web_copy"/>
+      <connect-out port="data" place="data"/>
+
+    </transition>
+    <place name="web_copy" type="string"/>
+
+
+    <place name="labeledgraph" type="string"/>
+    <place name="web" type="string"/>
+    <place name="reducedIBPs" type="string"/>
+    <place name="MI" type="string"/>
+
+
+    <transition name="compute1">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="labeledgraph" type="string"/>
+        <in name="input" type="string"/>
+        <in name="number" type="control"/>
+
+        <inout name="data" type="feynman"/>
+
+
+        <out name="totalIBP" type="string"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute1(totalIBP,data,input,labeledgraph,library_name,base_filename)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+   
+    
+       
+ int j=1;
+ int k=1;
+ int te = 0;
+ std::string    reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)
+                  (
+                    data.reducedIBPs, library_name, base_filename
+                    );
+
+                /**********************************************************************************************/
+                std::string  targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInt_gpi)
+                  (
+                    input, library_name, base_filename
+                    );
+                /**********************************************************************************************/
+    
+
+           std::string  wjk = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)
+                  (
+                    data.web, j,k, library_name, base_filename
+                    );
+         
+         std::string  wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)
+                  (
+                    wjk, library_name, base_filename
+                    );
+            int size_wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+                  (
+                    wjk_targetInt, library_name, base_filename
+                    );
+
+          std::cout<<"size_wjk_targetInt="<<size_wjk_targetInt<<std::endl;
+                    /**********************************************************************************************/
+
+                reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_return_input_gpi)
+                  ( targetInt, library_name, base_filename
+                    );
+                /**********************************************************************************************/
+      
+         totalIBP = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBPjk_gpi)
+          (
+            labeledgraph, wjk_targetInt,  library_name, base_filename
+            );
+  /**********************************************************************************************/
+                 
+                if (te == 0) {
+                  std::string  reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)
+                    (data.reducedIBPs, library_name, base_filename);
+
+                  std::string  totalIBP_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)
+                    (totalIBP, library_name, base_filename);
+
+                    reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_return_input_gpi)
+                    ( totalIBP_over, library_name, base_filename);
+
+                  std::cout<<"reducedibp_over="<<reducedibp_over<<std::endl;
+                  te = te + 1;
+                }
+                  /**********************************************************************************************/
+
+                           /**********************************************************************************************/
+                int pp = 101;
+                std::string  L = RESOLVE_INTERFACE_FUNCTION(singular_getRedIBPs_gpi)
+                  (totalIBP, pp, library_name, base_filename
+                    );
+                std::string  indpndIBP = RESOLVE_INTERFACE_FUNCTION(singular_indpndIBP_gpi)
+                  (
+                    L, library_name, base_filename
+                    );
+                std::string  masterAndTailIntgrals = RESOLVE_INTERFACE_FUNCTION(singular_masterAndTailIntgrals_gpi)
+                  (
+                    L, library_name, base_filename
+                    );
+                std::string  reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)
+                  (
+                    data.reducedIBPs, library_name, base_filename
+                    );
+                int size_reducedIBPs_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+                  (
+                    reducedIBPs_IBP, library_name, base_filename
+                    );
+                /**********************************************************************************************/
+std::cout<<"reducedIBPs_IBP="<<reducedIBPs_IBP<<std::endl;
+
+
+                if (size_reducedIBPs_ibp == 0)
+                {
+           reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_return_input_gpi)
+                    (
+                 indpndIBP, library_name, base_filename
+                      );
+                  std::cout<<"reducedIBPs_IBPs_After="<<reducedIBPs_IBP<<std::endl;
+                }
+
+                else
+                {
+                  int indpndIBP_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+                    (
+                      indpndIBP, library_name, base_filename
+                      );
+                  for (int i = 1;i <= indpndIBP_size;i++)
+                  {
+                    std::string  reducedIBPs_IBP_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)
+                      (
+                        reducedIBPs_IBP, indpndIBP_size + 1, library_name, base_filename
+                        );
+                    std::string  indpndIBP_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)
+                      (
+                        indpndIBP, i, library_name, base_filename
+                        );
+      reducedIBPs_IBP_i = RESOLVE_INTERFACE_FUNCTION(singular_return_input_gpi)
+                      (
+                         indpndIBP_i, library_name, base_filename
+                        );
+                  }
+                  std::cout<<"reducedIBPs_IBP="<<reducedIBPs_IBP<<std::endl;
+                }
+  /****************************************************************************************************************** */
+  std::cout<<"updated web_before***="<<data.web<<std::endl;
+
+std::string  w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)
+(data.web, masterAndTailIntgrals, j, k, library_name, base_filename);
+/**********************************************************************************************/
+std::cout<<"updated w="<<w<<std::endl;
+
+
+
+  data.web = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)
+(w, 1, library_name, base_filename );
+
+
+ /**********************************************************************************************/
+    
+
+ std::string  wjkb = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)
+ (data.web, j,k, library_name, base_filename );
+
+std::string  wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)
+ (
+   wjkb, library_name, base_filename
+   );
+int size_wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+ (
+   wjk_targetIntb, library_name, base_filename
+   );
+
+std::cout<<"size_wjk_targetInt_b ="<<size_wjk_targetIntb<<std::endl;
+
+]]>
+
+                </code>
+                </module>
+              </defun>
+              <connect-read port="library_name" place="place_library_name"/>
+              <connect-read port="base_filename" place="place_base_filename"/>
+              <connect-read port="labeledgraph" place="labeledgraph"/>
+              <connect-read port="input" place="place_input"/>
+              <connect-out port="totalIBP" place="totalIBP"/>
+              <connect-inout port="data" place="data"/>
+              <connect-in port="number" place="number"/>
+
+            </transition>
+            
+            <place name="number" type="control">
+            <token>
+              <value>[]</value>
+            </token>
+          </place>
+    <place name="totalIBP" type="string"/>
+
+
+  </net>
+</defun>

@@ -11,12 +11,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 set(INSTALL_DO_NOT_BUNDLE ON CACHE BOOL "")
 
 find_package(GPISpace REQUIRED)
-
 find_package(util-generic REQUIRED)
 find_package(util-cmake REQUIRED)
 
 include(util-cmake/add_macros)
-
 include(util-cmake/beautify_find_boost)
 include(util-cmake/beautify_find_GPISpace)
 
@@ -38,24 +36,51 @@ find_boost(1.61 REQUIRED QUIET FROM_GPISPACE_INSTALLATION COMPONENTS
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 find_package(Singular REQUIRED)
 
-# FLINT include and library directories
-# set(FLINT_INCLUDE_DIR "/usr/local/include/flint")
-# set(FLINT_LIB_DIR "/usr/local/lib")
+# Define paths
+set(GENERATED_XPNET "${CMAKE_BINARY_DIR}/workflow/template.xpnet")
+set(COMPILED_PETRI_NET "${CMAKE_BINARY_DIR}/template.pnet")
+set(WRAPPER_DIRECTORY "${CMAKE_BINARY_DIR}/gen")
+set(WRAPPER_LIBRARY "${CMAKE_SOURCE_DIR}/bin/lib/libtemplate_module.so")
 
-# Add FLINT include directory
-# include_directories(${FLINT_INCLUDE_DIR})
+# -------------------- Ensure Interface Directory is Available --------------------
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/template/interface")
+file(COPY "${CMAKE_SOURCE_DIR}/interface/"
+     DESTINATION "${CMAKE_BINARY_DIR}/template/interface/")
 
-# FLINT library search
-# find_library(FLINT_LIB flint HINTS "${FLINT_LIB_DIR}")
+include_directories("${CMAKE_BINARY_DIR}/template/interface")
 
-# Check if FLINT library was found
-#[[ if(NOT FLINT_LIB)
-  message(FATAL_ERROR "FLINT library not found!")
-endif()
+message(STATUS "Checking if interface directory exists: ${CMAKE_BINARY_DIR}/template/interface/")
+execute_process(COMMAND ls -l "${CMAKE_BINARY_DIR}/template/interface/" RESULT_VARIABLE ls_result)
+message(STATUS "Interface directory contents: ${ls_result}")
 
-# Link FLINT library directory
-link_directories(${FLINT_LIB_DIR})
-]]
+# -------------------- Generate Executable --------------------
+add_executable(generate template/generate.cpp)
+target_include_directories(generate PUBLIC 
+    "${CMAKE_SOURCE_DIR}/src"
+    "${CMAKE_BINARY_DIR}/template/interface"
+)
+target_link_libraries(generate PRIVATE ${FLINT_LIB})
+
+# -------------------- Generate XPNet File --------------------
+add_custom_command(
+  OUTPUT "${CMAKE_BINARY_DIR}/workflow/template.xpnet"
+  COMMAND generate
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+  COMMENT "🔹 Running generate.cpp to create template.xpnet"
+  VERBATIM
+)
+
+# Ensure generate_xpnet target is executed first
+add_custom_target(generate_xpnet
+  DEPENDS "${CMAKE_BINARY_DIR}/workflow/template.xpnet"
+)
+
+# Ensure template.pnet waits for template.xpnet
+add_custom_target(generate_xpnet_and_petri_net
+  ALL
+  DEPENDS generate_xpnet template.pnet_and_wrapper-library
+)
+
 # Include directories for project
 include_directories("src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
@@ -77,11 +102,3 @@ add_custom_target(Config
   ALL
   DEPENDS "${CMAKE_BINARY_DIR}/template/config.hpp"
 )
-
-# Install the examples directory
-# install(DIRECTORY examples
-# DESTINATION "${CMAKE_INSTALL_PREFIX}/share"
-# )
-
-# Link the FLINT library to the  target  template_implementation
-# target_link_libraries(template_implementation PRIVATE ${FLINT_LIB})

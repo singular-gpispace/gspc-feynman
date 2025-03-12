@@ -8,30 +8,20 @@ function(add_petrinet in out module_name)
     --gen-cxxflags=-std=c++17
     --gen-cxxflags=-I"${CMAKE_BINARY_DIR}"
     --gen-cxxflags=-I"${CMAKE_BINARY_DIR}/template"
-    --gen-cxxflags=-I"${CMAKE_SOURCE_DIR}"
-    --gen-cxxflags=-I"${CMAKE_SOURCE_DIR}/src"
-    --gen-cxxflags=-I"${GSPC_HOME}/include"
-    --gen-cxxflags=-I"${GSPC_HOME}/external/boost/include"
-    --gen-cxxflags=-I"${GSPC_HOME}"
-    # --gen-cxxflags=-I"${FLINT_HOME}/include" # Add FLINT include directory
+    --gen-cxxflags=-I="${CMAKE_SOURCE_DIR}/src"
     --gen-ldflags="-L${CMAKE_BINARY_DIR}"
-    --gen-ldflags="-L${CMAKE_BINARY_DIR}/src/util-generic"
     --gen-ldflags="-Wl,-rpath='\\$\$\\$\$ORIGIN'"
-    --gen-ldflags="-Wl,-rpath='${GSPC_HOME}/lib'"
-    --gen-ldflags="-Wl,-rpath='${GSPC_HOME}/external/boost/lib'"
-
-    # --gen-ldflags="-Wl,-rpath='${FLINT_HOME}/lib'" # Add FLINT lib directory
-    # --gen-ldflags="-L${FLINT_HOME}/lib" # Link FLINT library
     --force-overwrite-file=true
-    --input="${CMAKE_SOURCE_DIR}/workflow/${in}"
+    --input="${CMAKE_BINARY_DIR}/workflow/template.xpnet"
     --output="${CMAKE_BINARY_DIR}/${out}"
     --path-to-cpp="${CMAKE_BINARY_DIR}/gen_${out}"
     --Wbackup-file=OFF
     --Woverwrite-file=OFF
     &&
     make -C "${CMAKE_BINARY_DIR}/gen_${out}"
-    DEPENDS "${in}"
+    DEPENDS generate_xpnet # 👈 Ensure it waits for template.xpnet
   )
+
   add_custom_target("${out}_and_wrapper-library"
     ALL
     DEPENDS "${CMAKE_BINARY_DIR}/gen_${out}/pnetc/op/libsingular_${module_name}.so"
@@ -40,13 +30,3 @@ function(add_petrinet in out module_name)
 endfunction()
 
 add_petrinet(template.xpnet template.pnet template)
-
-install(FILES
-  "${CMAKE_BINARY_DIR}/template.pnet"
-  DESTINATION libexec/workflow
-)
-
-install(FILES
-  "${CMAKE_BINARY_DIR}/gen_template.pnet/pnetc/op/libsingular_template.so"
-  DESTINATION libexec/workflow
-)

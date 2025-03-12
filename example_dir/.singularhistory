@@ -3320,3 +3320,390 @@ $
 $
 $
 $
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+size(m.IBP);
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m[1][2][1].targetInts;
+ link l="ssi:r temp/waas_1470330_1739376228477693008";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+ m.data[1][1][2][1];
+ m.data[1][1][2][1].targetInts;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r temp/waas_1599879_1739453089801077133";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+m.data[1].IBP;
+size(m.data[1].IBP);
+$
+$
+$
+$
+$
+link l="ssi:r temp/waas_1599879_1739453089801077133";
+link l="ssi:r temp/waas_1612243_1739457870038049486";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link l="ssi:r temp/waas_1612243_1739457870039674688";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link l="ssi:r temp/waas_1612243_1739457868269705098";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+$
+$
+link l="ssi:r temp/waas_1614812_1739458640646853337";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+=
+$
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+$
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m[1];
+m[2];
+m[1];
+m[2];
+$
+link l="ssi:r bonsoir.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+$
+$
+link l="ssi:r ali.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m.baikovmatrix;
+  def RB = G.r_baikovmatrix;
+  setring RB;
+  def RB = m.r_baikovmatrix;
+  setring RB;
+m.baikovmatrix;
+m1;
+m2;
+m3;
+m4;
+m4.IBP;
+m4;
+m4.seed;
+m4;
+$
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m.IBP;
+m2;
+$
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+$
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+m2;
+$
+link l="ssi:r nuit.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+$
+link l="ssi:r nuit.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m[1];
+m[2];
+m;
+$
+link l="ssi:r nuit.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+$
+link l="ssi:r bonjour.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m2;
+link l="ssi:r temp/waas_1636044_1739465345202330398";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link l="ssi:r hi.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m4;
+m;
+m1;
+m2;
+m3;
+m4;
+m;
+m1;
+m2;
+m4;
+$
+$
+link l="ssi:r temp/waas_1640292_1739466478922803103";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link l="ssi:r temp/waas_1640292_1739466478922803103";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link ll$="ssi:r temp/waas_1640292_1739466478922803103";
+$
+link ll$="ssi:r temp/waas_1642055_1739466922807622645";
+$
+link ll="ssi:r temp/waas_1642871_1739467056173307020";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+$
+$
+link ll="ssi:r temp/waas_1644205_1739467312720222954";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link l="ssi:r temp/waas_1644205_1739467312720222954";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+link ll="ssi:r temp/waas_1644205_1739467312719868318";
+def n=read(ll);
+n.r_data;
+def nr=n.r_data;
+setring nr;
+n.data[1];
+n.data[1][3].lab;
+n.data[1][3];
+n.data[1];
+n.data[1][3][3];
+n.data[1][3][3].lab;
+n.data[1][3][3].lab==m.data[1][3][3];
+n.data[1][3][3].lab==m.data[1][3][3].lab;
+m.data[1][3][3].lab;
+m.data[1][3][3].sectorMap;
+n.data[1][3][3].lab;
+n.data[1][3][3].sectorMap;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$

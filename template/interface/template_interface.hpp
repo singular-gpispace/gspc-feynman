@@ -121,8 +121,7 @@ std::string singular_seed_gpi(std::string const& res
       , std::string const& base_filename);
 NO_NAME_MANGLING
 
-std::string singular_equal_gpi(std::string const& res
-      , std::string const& res1
+std::string singular_return_input_gpi(std::string const& res
       , std::string const& needed_library
       , std::string const& base_filename);
 NO_NAME_MANGLING
@@ -197,3 +196,6 @@ std::string singular_intersection_gpi(std::string const& res
 std::string singular_std_gpi(std::string const& res
     , std::string const& needed_library
     , std::string const& base_filename);
+
+    int h(int input, int P0) ;    
+int g(int input, std::string& output);

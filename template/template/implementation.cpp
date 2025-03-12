@@ -439,15 +439,13 @@ std::string singular_seed_gpi(std::string const& res
     return out_filename;
 }
 
-std::string singular_equal_gpi(std::string const& res
-    , std::string const& res1
+std::string singular_return_input_gpi(std::string const& res
     , std::string const& needed_library
     , std::string const& base_filename)
 {
     init_singular(config::singularLibrary().string());
     load_singular_library(needed_library);
     std::pair<int, lists> Res;
-    std::pair<int, lists> Res1;
 
     std::pair<int, lists> out;
     std::string ids;
@@ -456,13 +454,11 @@ std::string singular_equal_gpi(std::string const& res
     //std::cout << ids << " in singular_..._compute" << std::endl;
 
     Res = deserialize(res, ids);
-    Res1 = deserialize(res1, ids);
 
 
     ScopedLeftv args(Res.first, lCopy(Res.second));
-    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
 
-    std::string function_name = "equal_gpi";
+    std::string function_name = "return_input_gpi";
     out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
 
@@ -895,8 +891,9 @@ std::pair<int, lists> intersection_gpi(leftv arg1) {
 
     // Extract ideal M
     ideal M1 = (ideal)tmp->m[0].Data();
+    std::cout<<"size_of_module1 "<<IDELEMS(M1)<<std::endl;
     ideal M2 = (ideal)tmp1->m[0].Data();
-
+std::cout<<"size_of_module2 "<<IDELEMS(M2)<<std::endl;
     ideal M = idSect(M1, M2);
     int size_M= IDELEMS( M);
     std::cout<<"size_of_module_intersection "<<size_M<<std::endl;
@@ -1118,3 +1115,19 @@ out_filename = serialize(out, base_filename);
 return out_filename;
 }
 
+
+int h(int input, int P0) {
+    std::cout << "DEBUG: h() called with input = " << input << ", P0 = " << P0 << std::endl;
+    int result = input + P0;
+    std::cout << "DEBUG: h() result = " << result << std::endl;
+    return result;
+}
+int g(int input, std::string& output) {
+    std::cout << "DEBUG: g() called with input = " << input << std::endl;
+    
+    int result = input * 2;  // Example transformation
+    output = std::to_string(result);  // **Explicitly set output!**
+
+    std::cout << "DEBUG: g() output = " << output << std::endl;
+    return result;
+}

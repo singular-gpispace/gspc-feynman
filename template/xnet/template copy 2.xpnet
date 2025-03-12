@@ -407,7 +407,7 @@ std::cout<<"total="<<total<<std::endl;
                         );
                   }
                 }
-                                /**********************************************************************************************/
+  /**********************************************************************************************/
     
 
            std::string  wjkb = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)
@@ -428,9 +428,7 @@ std::cout<<"total="<<total<<std::endl;
                     /**********************************************************************************************/
                 /**********************************************************************************************/
                 std::string  w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)
-                  (
-                    data.web, masterAndTailIntgrals, j, k, library_name, base_filename
-                    );
+                (data.web, masterAndTailIntgrals, j, k, library_name, base_filename);
 
                 
                       int w4jk = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_sizejk)
