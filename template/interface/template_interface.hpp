@@ -197,3 +197,9 @@ std::string singular_intersection_gpi(std::string const& res
 std::string singular_std_gpi(std::string const& res
     , std::string const& needed_library
     , std::string const& base_filename);
+      NO_NAME_MANGLING
+
+std::string singular_assign_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename
+);

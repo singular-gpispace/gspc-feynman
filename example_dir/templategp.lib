@@ -2601,6 +2601,17 @@ proc equal_gpi(token s, token P)
 
   return(output);
 }
+proc assign_gpi(token s)
+{
+  def S = s.data[1];
+
+  token output;
+  output.fieldnames = list("generators", "assign_gpi");
+
+  output.data[1] = S;
+
+  return(output);
+}
 
 proc setIBP_gpi(int s)
 {
@@ -2661,7 +2672,7 @@ int ss= size(w4[1][2][1].targetInts);
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
 
-
+link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";
   list web = Web.data[1];
 
   list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
