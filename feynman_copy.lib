@@ -341,8 +341,8 @@ EXAMPLE : example labelGraph; shows an example
   int ct;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   int anzq = size(G.edges) - ct;
-  ring P = (ch), (p(1..ct), q(1..anzq)), rp;
-  ring R = (ch, p(1..ct)), (q(1..anzq)), rp;
+  ring P = (ch), (p(1..ct), q(1..anzq)), ip;
+  ring R = (ch, p(1..ct)), (q(1..anzq)), ip;
   list lab;
   int pidx = 1;
   int qidx = 1;
@@ -831,20 +831,21 @@ EXAMPLE : removeElimVars G; shows an example
   int idx = 1;
   poly sumt;
   list pq;
- for (i=1; i<=m;i++){
-  for (j=i+1; j<=m;j++){
-    if (idx<=mt){
-      B[i,j]=1/2*t(idx);
-      sumt=sumt+1/2*t(idx);
-      pq[idx] = 1/2*t(idx);
-    } else {
-      B[i,j]=-sumt;
-      pq[idx]=-sumt;
+  for (i = 1; i <= m;i++) {
+    for (j = i + 1; j <= m;j++) {
+      if (idx <= mt) {
+        B[i, j] = 1/2 * t(idx);
+        sumt = sumt + 1/2 * t(idx);
+        pq[idx] = 1/2 * t(idx);
+      }
+      else {
+        B[i, j] = -sumt;
+        pq[idx] = -sumt;
+      }
+      B[j, i] = B[i, j];
+      idx++;
     }
-    B[j,i]=B[i,j];
-    idx++;
   }
-}
   matrix zvars[1][n + m2] = z(1..n), pq[1..m2];
   matrix A = imap(RP, A);
   matrix Bentries = zvars * A;
@@ -1005,6 +1006,9 @@ RETURN:  The module M2 over G1.baikovover that requires to compute IBP identitie
 KEYWORDS : Feynman graph
 "
 {
+   string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+
   if (typeof(G0) == "graph") {
     labeledgraph G1 = computeBaikovMatrix(G0);
     // return(computeM2(G1,Nu));
@@ -1018,11 +1022,20 @@ KEYWORDS : Feynman graph
   labeledgraph G = G0;
   def R = G.over;
   int m = npars(R);
-  ring RB = G.baikovover;
-  matrix B = G.baikovmatrix;
-  setring RB;
-  int n = nvars(RB);
+//  ring RB = G.baikovover;
 
+  def RB = G.r_baikovmatrix;
+  setring RB;
+
+  matrix B = G.baikovmatrix;
+
+  def RB = G.baikovover;
+  
+  setring RB;
+
+  int n = nvars(RB);
+write(l,"B",B);
+close(l);
   if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
@@ -1032,7 +1045,6 @@ KEYWORDS : Feynman graph
   int L = nvars(R);
 
   module M2;
-
   for (int i = 1;i <= n;i++) {
     if (Nu[i] > 0) {
       M2[i] = z(i) * gen(i);
@@ -1042,6 +1054,10 @@ KEYWORDS : Feynman graph
     }
   }
   M2[n + 1] = 1 * gen(n + 1);
+  write(l,"M2",M2);
+
+  close(l);
+
   return(M2);
 }
 example
@@ -1093,11 +1109,10 @@ KEYWORDS : Feynman graph
 
   module M1 = computeM1(G, Nu);
   module M2 = computeM2(G, Nu);
-  print("ring RB");
 
-print(RB);
+
   option(redSB);
-  module M = groebner(intersect(M1, M2));
+  module M = std(intersect(M1, M2));
 
   // testing the generators satisfy the relation
   poly F = det(B);
@@ -2041,7 +2056,9 @@ KEYWORDS : Feynman graph, IBPs
 
 {
 
-
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/bonjour.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+  
   if (typeof(G0) == "graph") {
     labeledgraph G1 = computeBaikovMatrix(G0);
     //return(computeM2(G1,Nu));
@@ -2069,7 +2086,8 @@ KEYWORDS : Feynman graph, IBPs
   matrix B = G.baikovmatrix;
 
   def RB = G.baikovover;
-  //setring RB;
+  
+  setring RB;
 
   int n = nvars(RB);
   int E = m;
@@ -2077,23 +2095,17 @@ KEYWORDS : Feynman graph, IBPs
   if (size(Nu) != n) {
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
-module M1=computeM1(G,Nu);
-module M2=computeM2(G,Nu);
-module M=intersect(M1,M2);
+ module M1 = computeM1(G, Nu);
+write(l,size(M1),"size of M1");
 
-//***********************************************
-ring RU = 0,(z(1..n),t(1..(npars(RB)-1)),D),(rp(n),rp(npars(RB))); //lp(dp, dp, dp);
+  module M2 = computeM2(G, Nu);
+  setring RB;
+write(l,size(M2),"size of M2");
+  option(redSB);
+  module M = std(intersect(M1, M2));
 
-module M3=imap(RB,M);
-option(redSB);
-//degBound = 5; // Setting an appropreate degree bound is bit hard! depend on the target integrals
-//option();
-module M4=std(M3);
- M4=simplify(M4,32);
-setring RB;
-module M=imap(RU,M4);
-print("size of M in Many");
-print(size(M));
+  write(l,size(M),"size of M");
+  close(l);
   // testing the generators satisfy the relation
   poly F = det(B);
   for (int j = 1;j < size(M);j++) {
@@ -2439,21 +2451,6 @@ proc computeManyIBP_gpi(token g, token Web, int j, int k)
 
   return(output);
 }
-
-proc computeManyIBPjk_gpi(token g, token Webjk_targetInts)
-{
-  labeledgraph G = g.data[1];
-  list wjk = Webjk_targetInts.data[1];
-
-  setIBP bp = computeManyIBP(G, wjk);
-
-  token output;
-  output.fieldnames = list("generators", "computeManyIBPjk_gpi");
-
-  output.data[1] = bp;
-
-  return(output);
-}
 proc size_gpi(token ibp)
 {
   list v = ibp.data[1];
@@ -2609,6 +2606,17 @@ proc equal_gpi(token s, token P)
 
   return(output);
 }
+proc assign_gpi(token s)
+{
+  def S = s.data[1];
+
+  token output;
+  output.fieldnames = list("generators", "assign_gpi");
+
+  output.data[1] = S;
+
+  return(output);
+}
 
 proc setIBP_gpi(int s)
 {
@@ -2650,22 +2658,36 @@ proc replace_two(token s, int j,int k)
 
   return(output);
 }
+
+
+proc updateWeb_sizejk(token Web)
+{
+ 
+  list w4 = Web.data[1];
+
+int ss= size(w4[1][2][1].targetInts);
+
+  token output;
+  output.fieldnames = list("generators", "updateWeb_sizejk");
+
+  output.data[1] = ss;
+
+  return(output);
+}
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
- string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
-  link l = "ssi:w " + path;
 
+link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";
   list web = Web.data[1];
-        write(l, web, "web");
 
   list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
-     write(l, "masterAndTailIntgrals", masterAndTailIntgrals);
+     write(l, "masterAndTailIntgrals", size(masterAndTailIntgrals));
 
   list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
      write(l, (j,k), "(j,k)");
 
    write(l, w4, "w4");
-   write(l, w4[1], "w4[1]");
+   write(l,size( w4[1][2][1].targetInts), "size( w4[1][2][1].targetInts");
 
   close(l);
 
@@ -2696,14 +2718,68 @@ proc computeM2_gpi(token G0,token Web, int j, int k)
 
 
   def G = G0.data[1];
+
+  def RB = G.r_baikovmatrix;
+  setring RB;
+
   def web= Web.data[1];
- list l=web[j][k].lab;
-module ML = computeM2(G,l);
+ list l=web[j][k].targetInts[1];
+
+def M2 = computeM2(G,l);
+
+   token output;
+  output.fieldnames = list("generators", "computeM2_gpi");
+
+  output.data[1] = M2;
+
+  return(output);
+}
+
+proc computeManyIBPjk_gpi(token g, token Webjk_targetInts)
+{
+  labeledgraph G = g.data[1];
+  list wjk = Webjk_targetInts.data[1];
+
+  setIBP bp = computeManyIBP(G, wjk);
 
   token output;
-  output.fieldnames = list("generators", "IBP_gpi");
+  output.fieldnames = list("generators", "computeManyIBPjk_gpi");
 
-  output.data[1] = ML;
+  output.data[1] = bp;
 
+  return(output);
+}
+
+
+proc intersection_gpi(token m1, token m2)
+{
+  module M1 = m1.data[1];
+  module M2 = m2.data[1];
+
+  def M = intersect(M1, M2);
+  token output;
+  output.fieldnames = list("generators", "intersection_gpi");
+
+  output.data[1] = M;
+
+  return(output);
+}
+
+proc std_gpi(token m1)
+{
+
+ string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";  // Ensure the path ends with a "/"
+  link ll = "ssi:w " + path;
+module M= m1.data[1];
+write(ll,M, "M_coeff");
+
+option(redSB);
+
+def MM=std(M);
+  token output;
+  output.fieldnames = list("generators", "std_gpi");
+
+  output.data[1] = MM;
+close(ll);
   return(output);
 }

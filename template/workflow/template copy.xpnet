@@ -288,11 +288,11 @@ std::cout<<"total="<<total<<std::endl;
               }
             }
 
-         int j = c[0];
-          int k = c[1]; 
+     int j = c[0];
+          int k = c[1];  
        
-          /*   int j=1;
-            int k=1; */
+       /*   int j=1;
+            int k=1;  */
                 std::string    reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)
                   (
                     data.reducedIBPs, library_name, base_filename
@@ -323,9 +323,9 @@ std::cout<<"total="<<total<<std::endl;
           std::cout<<"size_wjk_targetInt="<<size_wjk_targetInt<<std::endl;
                     /**********************************************************************************************/
 
-                std::string  reducedIbp_seeds = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                 reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                   (
-                    reducedIBPs_seed, targetInt, library_name, base_filename
+                     targetInt, library_name, base_filename
                     );
                 /**********************************************************************************************/
             if(size_wjk_targetInt>=1)
@@ -347,9 +347,9 @@ std::cout<<"total="<<total<<std::endl;
                       totalIBP, library_name, base_filename
                       );
                   /**********************************************************************************************/
-                  std::string  reducedIbp_seeds = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                  reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                     (
-                      reducedibp_over, totalIBP_over, library_name, base_filename
+                       totalIBP_over, library_name, base_filename
                       );
                   te = te + 1;
                 }
@@ -379,9 +379,9 @@ std::cout<<"total="<<total<<std::endl;
 
                 if (size_reducedIBPs_ibp == 0)
                 {
-                  std::string  reducedIBPs_IBPs = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                     (
-                      reducedIBPs_IBP, indpndIBP, library_name, base_filename
+                       indpndIBP, library_name, base_filename
                       );
                 }
 
@@ -401,31 +401,67 @@ std::cout<<"total="<<total<<std::endl;
                       (
                         indpndIBP, i, library_name, base_filename
                         );
-                    std::string  reducedIBPs_IBP_place_i = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                    reducedIBPs_IBP_i = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                       (
-                        reducedIBPs_IBP_i, indpndIBP_i, library_name, base_filename
+                         indpndIBP_i, library_name, base_filename
                         );
                   }
                 }
+                                /**********************************************************************************************/
+    
+
+           std::string  wjkb = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)
+                  (
+                    data.web, j,k, library_name, base_filename
+                    );
+         
+         std::string  wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)
+                  (
+                    wjkb, library_name, base_filename
+                    );
+            int size_wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+                  (
+                    wjk_targetIntb, library_name, base_filename
+                    );
+
+          std::cout<<"size_wjk_targetInt_b ="<<size_wjk_targetIntb<<std::endl;
+                    /**********************************************************************************************/
+
+                    int masterAndTailIntgrals_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(
+                    masterAndTailIntgrals, library_name, base_filename
+                    );
+                    std::cout<<"masterAndTailIntgrals_size="<<masterAndTailIntgrals_size<<std::endl;
                 /**********************************************************************************************/
                 std::string  w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)
                   (
                     data.web, masterAndTailIntgrals, j, k, library_name, base_filename
                     );
-                     std::cout<<" web, j, k "<<data.web<<"  "<< j<<","<<k<<std::endl;
+
+                
+                      int w4jk = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_sizejk)
+                  (
+                    w, library_name, base_filename
+                    );
+                     std::cout<<" w4jk, j, k "<<w4jk<<"  "<< j<<","<<k<<std::endl;
 
                 std::string  w1 = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)
                   (
                     w, 1, library_name, base_filename
                     );
-                std::string  web1 = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                    data.web = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                   (
-                    data.web, w1, library_name, base_filename
+                   w1, library_name, base_filename
                     );
+ 
+
                 std::string  masterIntgralsInSector = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)
                   (
                     w, 2, library_name, base_filename
                     );
+                    int masterIntgralsInSector_size= RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(
+                    masterIntgralsInSector, library_name, base_filename
+                    );
+                    std::cout<<"masterIntgralsInSector_size="<<masterIntgralsInSector_size<<std::endl;
                 /**********************************************************************************************/
                 int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
                   (
@@ -434,9 +470,9 @@ std::cout<<"total="<<total<<std::endl;
 
                 if (MI_size == 0)
                 {
-                  std::string  MI_update = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                  data.MI= RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                     (
-                      data.MI, masterIntgralsInSector, library_name, base_filename
+                       masterIntgralsInSector, library_name, base_filename
                       );
                 }
                 else
@@ -461,16 +497,37 @@ std::cout<<"total="<<total<<std::endl;
                         (
                           data.MI, MI_size + 1, library_name, base_filename
                           );
-                      std::string  masterIntgralsInSector_i = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)
+                          MI_i = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)
                         (
-                          MI_i, masterIntgralsInSector_i, library_name, base_filename
+                        masterIntgralsInSector_i, library_name, base_filename
                           );
 
                     }
                   }
                 }
         }
+         /**********************************************************************************************/
+    
+
+           std::string  wjka = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)
+                  (
+                    data.web, j,k, library_name, base_filename
+                    );
+         
+         std::string  wjk_targetInta = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)
+                  (
+                    wjka, library_name, base_filename
+                    );
+            int size_wjk_targetInta = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)
+                  (
+                    wjk_targetInta, library_name, base_filename
+                    );
+
+          std::cout<<"size_wjk_targetInta="<<size_wjk_targetInta<<std::endl;
+                    /**********************************************************************************************/
+            
             data_copy=data;
+            data=data_copy;
 
                         		]]>
           </code>

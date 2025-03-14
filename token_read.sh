@@ -44,7 +44,7 @@ m1;
 m2;
 
 
-link l="ssi:r hi.ssi";
+link l="ssi:r bonjour.ssi";
 def m=read(l);
 def m1=read(l);
 def m2=read(l);

@@ -2056,7 +2056,9 @@ KEYWORDS : Feynman graph, IBPs
 
 {
 
-
+  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/bonjour.ssi";  // Ensure the path ends with a "/"
+  link l = "ssi:w " + path;
+  
   if (typeof(G0) == "graph") {
     labeledgraph G1 = computeBaikovMatrix(G0);
     //return(computeM2(G1,Nu));
@@ -2094,13 +2096,16 @@ KEYWORDS : Feynman graph, IBPs
     ERROR("The length of the vector nu must equal to number of Baikov variables");
   }
  module M1 = computeM1(G, Nu);
+write(l,size(M1),"size of M1");
 
   module M2 = computeM2(G, Nu);
   setring RB;
-
+write(l,size(M2),"size of M2");
   option(redSB);
   module M = std(intersect(M1, M2));
 
+  write(l,size(M),"size of M");
+  close(l);
   // testing the generators satisfy the relation
   poly F = det(B);
   for (int j = 1;j < size(M);j++) {
