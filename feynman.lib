@@ -2343,9 +2343,9 @@ KEYWORDS: Feynman graph,IBPs
 
   list w4=updateWeb(web,list(1,1),targetInt); 
   web=w4[1];
-print("web=w4[1]"); 
-print(web);
-print(" ");
+  print("web=w4[1]"); 
+  print(web);
+  print(" ");
  
   labeledgraph G1=computeBaikovMatrix(G);
   setIBP reducedIBPs;
@@ -2406,7 +2406,6 @@ int k=1;
             {
              // reducedIBPs.IBP[size(reducedIBPs.IBP)+1]=imap(reducedIBPs.over,indpndIBP[i]);
                reducedIBPs.IBP[size(reducedIBPs.IBP)+1]=indpndIBP[i];
-
             }
             print("reducedIBPs.IBP_After");
             print(size(reducedIBPs.IBP));
@@ -2415,9 +2414,6 @@ int k=1;
 //Update the sectors below to the current sector using masterAndTailIntgrals. In this step, we can also.. 
 //..distingush the master integrals which will be assigned to MI.
           list w=updateWeb(web,list(j,k),masterAndTailIntgrals);
-
-
-
           web=w[1]; //here the web is updated
 
           print("size(web[j][k].targetInts) after updateweb");

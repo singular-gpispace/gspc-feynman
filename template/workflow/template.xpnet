@@ -5,299 +5,294 @@
         <field name="reducedIBPs" type="string"/>
         <field name="web" type="string"/>
     </struct>
+
     <in name="base_filename" type="string" place="base_filename"/>
     <in name="library_name" type="string" place="library_name"/>
     <in name="input" type="string" place="input"/>
-    <out name="output" type="feynman" place="mi_ibp"/>
-    <out name="result" type="string" place="P_41"/>
+    <out name="output" type="feynman" place="final_data"/>
+
     <net>
-        <place name="data" type="feynman"/>
-        <place name="base_filename" type="string"/>
-        <place name="library_name" type="string"/>
-        <place name="mi_ibp" type="feynman"/>
-        <place name="input_control" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+        <place name="base_filename" type="string">
         </place>
-        <transition name="compute">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="input_control" type="control"/>
-                <in name="library_name" type="string"/>
-                <in name="base_filename" type="string"/>
-                <in name="input" type="string"/>
-                <out name="labeledgraph" type="string"/>
-                <out name="data" type="feynman"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="compute(input_control,input,library_name,base_filename,labeledgraph,data)">
-                    <cinclude href="interface/template_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <code><![CDATA[
-                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);
-                        data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);
-                        data.reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);
-                        data.MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);
-                        std::cout << " web " << data.web << std::endl;
-                    ]]></code>
-                </module>
-            </defun>
-            <connect-read port="library_name" place="library_name"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="input" place="input"/>
-            <connect-in port="input_control" place="input_control"/>
-            <connect-out port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="data" place="data"/>
-        </transition>
-        <place name="labeledgraph" type="string"/>
-        <place name="input" type="string"/>
+        <place name="library_name" type="string">
+        </place>
+        <place name="input" type="string">
+        </place>
+        <place name="labeledgraph" type="string">
+        </place>
         <place name="control_11" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_11" type="feynman">
         </place>
         <place name="control_21" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_21" type="feynman">
         </place>
         <place name="control_22" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_22" type="feynman">
         </place>
         <place name="control_23" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_23" type="feynman">
         </place>
         <place name="control_31" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_31" type="feynman">
         </place>
         <place name="control_32" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
+        </place>
+        <place name="data_32" type="feynman">
         </place>
         <place name="control_41" type="control">
-            <token>
-                <value>[]</value>
-            </token>
+            <token><value>[]</value></token>
         </place>
-        <place name="P_11" type="string"/>
-        <place name="P_21" type="string"/>
-        <place name="P_22" type="string"/>
-        <place name="P_23" type="string"/>
-        <place name="P_31" type="string"/>
-        <place name="P_32" type="string"/>
-        <place name="P_41" type="string"/>
+        <place name="data_41" type="feynman">
+        </place>
+        <place name="control_T_0" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="data" type="feynman">
+        </place>
+        <place name="control_T_end" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="final_data" type="feynman">
+        </place>
         <transition name="T_11">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <out name="data_11" type="feynman"/>
                 <in name="base_filename" type="string"/>
-                <in name="control_11" type="control"/>
+                <in name="library_name" type="string"/>
                 <in name="input" type="string"/>
-                <out name="P_11" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11 (control_11, input, P_11, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_11 starting." << std::endl;
-                        int res = h(4, 5);
-                        std::cout << "T11: Result = " << res << std::endl;
-                        P_11 = std::to_string(res);
-                        std::cout << "DEBUG: T_11 output assigned to P_11 with value " << res << std::endl;
-                        std::cout << "DEBUG: Transition T_11 finished." << std::endl;
-                    ]]></code>
+                <in name="labeledgraph" type="string"/>
+                <in name="control_11" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, base_filename, library_name, input, labeledgraph, data_11)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_11.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-out port="data_11" place="data_11"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_11" place="control_11"/>
-            <connect-in port="input" place="input"/>
-            <connect-out port="P_11" place="P_11"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_21">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <inout name="data_21" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_21" type="control"/>
-                <in name="P_11" type="string"/>
-                <out name="P_21" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_21 (control_21, P_11, P_21, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_21 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_11 << "'" << std::endl;
-                        int input = std::stoi(P_11);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_21 result = " << result << std::endl;
-                        P_21 = std::to_string(result);
-                        std::cout << "DEBUG: T_21 output assigned to P_21 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_21(control_21, base_filename, library_name, input, labeledgraph, data_21)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_21.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_21" place="data_11"/>
+            <connect-out port="data_21" place="data_21"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_21" place="control_21"/>
-            <connect-read port="P_11" place="P_11"/>
-            <connect-out port="P_21" place="P_21"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_22">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <inout name="data_22" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_22" type="control"/>
-                <in name="P_11" type="string"/>
-                <out name="P_22" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_22 (control_22, P_11, P_22, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_22 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_11 << "'" << std::endl;
-                        int input = std::stoi(P_11);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_22 result = " << result << std::endl;
-                        P_22 = std::to_string(result);
-                        std::cout << "DEBUG: T_22 output assigned to P_22 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_22(control_22, base_filename, library_name, input, labeledgraph, data_22)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_22.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_22" place="data_11"/>
+            <connect-out port="data_22" place="data_22"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_22" place="control_22"/>
-            <connect-read port="P_11" place="P_11"/>
-            <connect-out port="P_22" place="P_22"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_23">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <inout name="data_23" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_23" type="control"/>
-                <in name="P_11" type="string"/>
-                <out name="P_23" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_23 (control_23, P_11, P_23, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_23 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_11 << "'" << std::endl;
-                        int input = std::stoi(P_11);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_23 result = " << result << std::endl;
-                        P_23 = std::to_string(result);
-                        std::cout << "DEBUG: T_23 output assigned to P_23 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_23(control_23, base_filename, library_name, input, labeledgraph, data_23)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_23.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_23" place="data_11"/>
+            <connect-out port="data_23" place="data_23"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_23" place="control_23"/>
-            <connect-read port="P_11" place="P_11"/>
-            <connect-out port="P_23" place="P_23"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_31">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <in name="data_in_1" type="feynman"/>
+                <in name="data_in_2" type="feynman"/>
+                <out name="data_31" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_31" type="control"/>
-                <in name="P_21" type="string"/>
-                <in name="P_22" type="string"/>
-                <out name="P_31" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31 (control_31, P_21, P_22, P_31, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_31 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_21 << "'" << std::endl;
-                        int input = std::stoi(P_21);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_31 result = " << result << std::endl;
-                        P_31 = std::to_string(result);
-                        std::cout << "DEBUG: T_31 output assigned to P_31 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, base_filename, library_name, input, labeledgraph,  data_in_1,  data_in_2, data_31)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_31.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_in_1" place="data_21"/>
+            <connect-read port="data_in_2" place="data_22"/>
+            <connect-out port="data_31" place="data_31"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_31" place="control_31"/>
-            <connect-in port="P_21" place="P_21"/>
-            <connect-read port="P_22" place="P_22"/>
-            <connect-out port="P_31" place="P_31"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_32">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <in name="data_in_1" type="feynman"/>
+                <in name="data_in_2" type="feynman"/>
+                <out name="data_32" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_32" type="control"/>
-                <in name="P_22" type="string"/>
-                <in name="P_23" type="string"/>
-                <out name="P_32" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32 (control_32, P_22, P_23, P_32, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_32 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_22 << "'" << std::endl;
-                        int input = std::stoi(P_22);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_32 result = " << result << std::endl;
-                        P_32 = std::to_string(result);
-                        std::cout << "DEBUG: T_32 output assigned to P_32 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32(control_32, base_filename, library_name, input, labeledgraph,  data_in_1,  data_in_2, data_32)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_32.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_in_1" place="data_22"/>
+            <connect-read port="data_in_2" place="data_23"/>
+            <connect-out port="data_32" place="data_32"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_32" place="control_32"/>
-            <connect-read port="P_22" place="P_22"/>
-            <connect-in port="P_23" place="P_23"/>
-            <connect-out port="P_32" place="P_32"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
         </transition>
         <transition name="T_41">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="library_name" type="string"/>
+                <in name="data_in_1" type="feynman"/>
+                <in name="data_in_2" type="feynman"/>
+                <out name="data_41" type="feynman"/>
                 <in name="base_filename" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="labeledgraph" type="string"/>
                 <in name="control_41" type="control"/>
-                <in name="P_31" type="string"/>
-                <in name="P_32" type="string"/>
-                <out name="P_41" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_41 (control_41, P_31, P_32, P_41, library_name, base_filename)">
-              <cinclude href="interface/template_interface.hpp"/> 
-              <cinclude href="util-generic/dynamic_linking.hpp"/> 
-                    <code><![CDATA[
-                        std::cout << "DEBUG: Transition T_41 starting." << std::endl;
-                        std::cout << "DEBUG: function_args[1] = '" << P_31 << "'" << std::endl;
-                        int input = std::stoi(P_31);
-                        std::string output_value;
-                        int result = g(input, output_value);
-                        std::cout << "DEBUG: Transition T_41 result = " << result << std::endl;
-                        P_41 = std::to_string(result);
-                        std::cout << "DEBUG: T_41 output assigned to P_41 with value " << result << std::endl;
-                    ]]></code>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_41(control_41, base_filename, library_name, input, labeledgraph,  data_in_1,  data_in_2, data_41)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Modify parameter (example)
+                        data_41.web = "updated_web"; // Adjust computation
+ ]]></code>
                 </module>
             </defun>
+            <connect-read port="data_in_1" place="data_31"/>
+            <connect-read port="data_in_2" place="data_32"/>
+            <connect-out port="data_41" place="data_41"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
             <connect-in port="control_41" place="control_41"/>
-            <connect-in port="P_31" place="P_31"/>
-            <connect-in port="P_32" place="P_32"/>
-            <connect-out port="P_41" place="P_41"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="base_filename" place="base_filename"/>
+        </transition>
+        <transition name="T_0">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <out name="labeledgraph" type="string"/>
+                <out name="data" type="feynman"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="control_T_0" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_0(control_T_0, library_name, base_filename, input, labeledgraph, data)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);
+                        data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);
+                        data.reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);
+                        data.MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);
+                        std::cout << " web " << data.web << std::endl;
+ ]]></code>
+                </module>
+            </defun>
+            <connect-out port="labeledgraph" place="labeledgraph"/>
+            <connect-out port="data" place="data"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>
+            <connect-in port="control_T_0" place="control_T_0"/>
+        </transition>
+        <transition name="T_end">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="data_in_1" type="feynman"/>
+                <out name="final_data" type="feynman"/>
+                <in name="control_T_end" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_end(control_T_end,  data_in_1, final_data)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[                         // Combine all data inputs into final_data
+                        final_data.web = ""; // Initialize final_data.web
+                        final_data.web += data_in_1.web;
+ ]]></code>
+                </module>
+            </defun>
+            <connect-read port="data_in_1" place="data_41"/>
+            <connect-out port="final_data" place="final_data"/>
+            <connect-in port="control_T_end" place="control_T_end"/>
         </transition>
     </net>
 </defun>

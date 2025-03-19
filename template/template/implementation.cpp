@@ -20,7 +20,41 @@
 #include <string>
 
 NO_NAME_MANGLING
+std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library)
+{
+    // Initialize and load the Singular library.
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
 
+    // Deserialize the token. Here 'worker()' returns an ID string.
+    std::pair<int, lists> inputPair = deserialize(tokenString, worker());
+
+    // Create a scoped left-value from the deserialized token.
+    ScopedLeftv args(inputPair.first, lCopy(inputPair.second));
+    lists Token = (lists)(args.leftV()->data);
+
+    // Determine the number of elements in the token list.
+    int L_size = lSize(Token) + 1;
+    std::string outputContent;
+
+    // Iterate over the list elements. 
+    // In your system, element at index 3 holds the full content you wish to print.
+    for (int i = 0; i < L_size; i++) {
+        sleftv & listElement = Token->m[i];  // Access each element
+
+        if (listElement.data != NULL) {
+            // When i==3, print and store the element's string representation.
+            if (i == 3) {
+                outputContent = listElement.String();
+                
+            }
+        }
+        else {
+            std::cout << "Token element at index " << i << " is NULL." << std::endl;
+        }
+    }
+    return outputContent;
+}
 
 std::string singular_template_compute_StdBasis(std::string const& input_filename
     , std::string const& needed_library
@@ -1130,4 +1164,28 @@ int g(int input, std::string& output) {
 
     std::cout << "DEBUG: g() output = " << output << std::endl;
     return result;
+}
+
+std::string singular_assign_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "assign_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
 }
