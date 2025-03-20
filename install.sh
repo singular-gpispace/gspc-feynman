@@ -62,6 +62,18 @@ if [[ -f "$TEMPLATE_XPNET_SRC" ]]; then
 else
     echo "❌ ERROR: template.xpnet not found in build_dir!"
 fi
+# After the build and install commands
+install_dir="/home/atraore/gpi/try_gpi/feynman_ibp/install_dir/libexec/workflow"
+if [ ! -f "$install_dir/libsingular_template.so" ]; then
+    echo "⚠️  libsingular_template.so not found in install directory. Copying from build_dir..."
+    cp "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/gen_template.pnet/pnetc/op/libsingular_template.so" "$install_dir/libsingular_template.so"
+    if [ $? -eq 0 ]; then
+        echo "✅ libsingular_template.so copied successfully."
+    else
+        echo "❌ Failed to copy libsingular_template.so!"
+        exit 1
+    fi
+fi
 
 # Generate SVG workflow diagram
 pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg

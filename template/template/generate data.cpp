@@ -47,36 +47,38 @@ std::string find_root_node(const DAG& dag) {
     }
     return root_nodes.empty() ? "" : *root_nodes.begin();
 }
+
 PetriNet generate_petri_net(const DAG& dag) {
     PetriNet net;
 
-    // Add all transitions, including T_0 and T_end
-    net.transitions = dag.vertices;           // DAG transitions (e.g., T_11, T_21)
+    // **Add all transitions, including T_0 and T_end**
+    net.transitions = dag.vertices;           // Add DAG transitions (e.g., T_11, T_21)
     net.transitions.push_back("T_0");         // Initial transition
     net.transitions.push_back("T_end");       // Final transition
 
-    // Define global places (read-only)
+    // **Define global places (read-only)**
     std::vector<std::string> globals = {"base_filename", "library_name", "input", "labeledgraph"};
     for (const auto& g : globals) {
         net.places.push_back(g);
         net.place_types[g] = "string";
     }
 
-    // Add "data" place globally (written by T_0, read by others)
+    // **Add "data" place globally (inout for most transitions)**
     net.places.push_back("data");
     net.place_types["data"] = "feynman";
 
-    // Add places and connections for DAG transitions
+    // **Add places and connections for DAG transitions**
     for (const auto& transition : dag.vertices) {
         std::string ctrl = "control_" + transition.substr(2);  // e.g., control_11 for T_11
         std::string data_out = "data_" + transition.substr(2); // e.g., data_11 for T_11
 
+        // Add control and data output places
         net.places.push_back(ctrl);
         net.place_types[ctrl] = "control";
         net.places.push_back(data_out);
         net.place_types[data_out] = "feynman";
 
-        // Inputs: control (consumed), globals (read-only), "data" (read-only), parent data places
+        // **Inputs**: control (consumed), globals (read-only), "data" (inout), parent data places (read-only)
         net.transition_inputs[transition] = {ctrl, "data"};
         net.transition_inputs[transition].insert(net.transition_inputs[transition].end(), globals.begin(), globals.end());
         if (dag.parents.find(transition) != dag.parents.end()) {
@@ -85,22 +87,23 @@ PetriNet generate_petri_net(const DAG& dag) {
             }
         }
 
-        // Outputs: specific data_out only (no "data")
-        net.transition_outputs[transition] = {data_out};
+        // **Outputs**: specific data_out (produced), "data" (inout)
+        net.transition_outputs[transition] = {data_out, "data"};
     }
 
-    // Set up T_0 (initial transition, outputs "data")
+    // **Set up T_0 (initial transition)**
     net.places.push_back("control_T_0");
     net.place_types["control_T_0"] = "control";
     net.transition_inputs["T_0"] = {"control_T_0", "library_name", "base_filename", "input"};
     net.transition_outputs["T_0"] = {"labeledgraph", "data"};
 
-    // Set up T_end (final transition)
+    // **Set up T_end (final transition)**
     net.places.push_back("control_T_end");
     net.place_types["control_T_end"] = "control";
     net.places.push_back("final_data");
     net.place_types["final_data"] = "feynman";
     net.transition_inputs["T_end"] = {"control_T_end"};
+    // Dynamically add leaf node data places as inputs (read-only)
     for (const auto& transition : dag.vertices) {
         bool is_leaf = true;
         for (const auto& edge : dag.edges) {
@@ -162,7 +165,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         // Identify control, global, and data ports
         std::string control_input;
         std::vector<std::string> global_inputs;
-        std::vector<std::string> data_inputs, data_outputs;
+        std::vector<std::string> data_inputs, data_outputs, data_inouts;
         std::set<std::string> inputs_set;
 
         if (net.transition_inputs.count(transition)) {
@@ -173,8 +176,6 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                         control_input = input;
                     } else if (globals.count(input)) {
                         global_inputs.push_back(input);
-                    } else if (input == "data" && transition != "T_0") {
-                        global_inputs.push_back(input); // "data" is read-only except for T_0
                     } else {
                         inputs_set.insert(input);
                         data_inputs.push_back(input);
@@ -184,8 +185,17 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         }
         if (net.transition_outputs.count(transition)) {
             for (const auto& output : net.transition_outputs.at(transition)) {
-                data_outputs.push_back(output);
+                if (inputs_set.count(output)) {
+                    data_inouts.push_back(output);
+                } else {
+                    data_outputs.push_back(output);
+                }
             }
+            data_inputs.erase(
+                std::remove_if(data_inputs.begin(), data_inputs.end(),
+                    [&](const std::string& input) { return std::find(data_inouts.begin(), data_inouts.end(), input) != data_inouts.end(); }),
+                data_inputs.end()
+            );
         }
 
         // Define ports
@@ -195,8 +205,11 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         for (const auto& output : data_outputs) {
             xml << "                <out name=\"" << output << "\" type=\"" << net.place_types.at(output) << "\"/>\n";
         }
+        for (const auto& inout : data_inouts) {
+            xml << "                <inout name=\"" << inout << "\" type=\"" << net.place_types.at(inout) << "\"/>\n";
+        }
         for (const auto& global : global_inputs) {
-            xml << "                <in name=\"" << global << "\" type=\"" << (global == "data" ? "feynman" : "string") << "\"/>\n";
+            xml << "                <in name=\"" << global << "\" type=\"string\"/>\n";
         }
         if (!control_input.empty()) {
             xml << "                <in name=\"" << control_input << "\" type=\"control\"/>\n";
@@ -208,8 +221,9 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         function_args.insert(function_args.end(), global_inputs.begin(), global_inputs.end());
         function_args.insert(function_args.end(), data_inputs.begin(), data_inputs.end());
         function_args.insert(function_args.end(), data_outputs.begin(), data_outputs.end());
+        function_args.insert(function_args.end(), data_inouts.begin(), data_inouts.end());
 
-        // Module definition (simplified for brevity)
+        // Module definition
         xml << "                <module name=\"singular_template\" require_function_unloads_without_rest=\"false\" function=\"f_" << transition << "(";
         for (size_t i = 0; i < function_args.size(); ++i) {
             xml << function_args[i] << (i < function_args.size() - 1 ? ", " : "");
@@ -219,7 +233,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         xml << "                    <cinclude href=\"util-generic/dynamic_linking.hpp\"/>\n";
         xml << "                    <code><![CDATA[\n";
 
-        // Transition-specific code (simplified)
+        // Transition-specific code
         if (transition == "T_0") {
             xml << "                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);\n";
             xml << "                        data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);\n";
@@ -339,18 +353,16 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
             xml << "            <connect-in port=\"" << control_input << "\" place=\"" << control_input << "\"/>\n";
         }
         for (const auto& input : data_inputs) {
-            xml << "            <connect-in port=\"" << input << "\" place=\"" << input << "\"/>\n";
+            xml << "            <connect-read port=\"" << input << "\" place=\"" << input << "\"/>\n";
         }
         for (const auto& global : global_inputs) {
-            if (global == "data" && transition == "T_0") {
-                // T_0 writes to data
-                xml << "            <connect-out port=\"data\" place=\"data\"/>\n";
-            } else {
-                xml << "            <connect-read port=\"" << global << "\" place=\"" << global << "\"/>\n";
-            }
+            xml << "            <connect-read port=\"" << global << "\" place=\"" << global << "\"/>\n";
         }
         for (const auto& output : data_outputs) {
             xml << "            <connect-out port=\"" << output << "\" place=\"" << output << "\"/>\n";
+        }
+        for (const auto& inout : data_inouts) {
+            xml << "            <connect-inout port=\"" << inout << "\" place=\"" << inout << "\"/>\n";
         }
 
         xml << "        </transition>\n";

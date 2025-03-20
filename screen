@@ -1,19 +1,96 @@
-[2025-02-13 18:21:50] waas: pid 1644217 tid1644222: I:  web /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644217_1739467310549921701
-[2025-02-13 18:21:50] waas: pid 1644217 tid1644222: T: task finished: waas.job.1644197.1
-[2025-02-13 18:21:50] waas: pid 1644205 tid1644210: I: size_wjk_targetInt=1
-[2025-02-13 18:21:50] waas: pid 1644205 tid1644210: I: reducedIbp_seeds=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644205_1739467310891993616
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: reducedIBPs_IBP=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644205_1739467312658148697
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: reducedIBPs_IBPs_After=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644205_1739467312659989516
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: updated web_before***=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644217_1739467310549921701
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: updated w=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644205_1739467312718946994
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: web1=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644205_1739467312720222954
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: updated web_after***=/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_1644217_1739467310549921701
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: I: size_wjk_targetInt_b =1
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644210: T: task finished: waas.job.1644197.2
-[2025-02-13 18:21:52] waas: pid 1644235 tid1644238: T: worker-waas 41623 1644187-6 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644229 tid1644232: T: worker-waas 41623 1644187-5 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644223 tid1644226: T: worker-waas 41623 1644187-4 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644217 tid1644220: T: worker-waas 41623 1644187-3 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644241 tid1644244: T: worker-waas 41623 1644187-7 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644211 tid1644214: T: worker-waas 41623 1644187-2 is shutting down
-[2025-02-13 18:21:52] waas: pid 1644205 tid1644208: T: worker-waas 41623 1644187-1 is shutting down
+[2025-03-20 16:55:58] waas: pid 10528 tid10533: I: web: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10528_1742486158019326760
+[2025-03-20 16:55:58] waas: pid 10528 tid10533: T: task finished: waas.job.10514.1
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: web[1,1].TARGET = 
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: size_wjk_targetInt = 1
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: Size of totalIBP_IBP: 31
+[2025-03-20 16:55:58] waas: pid 10546 tid10551: I: Updated reducedibp_over: (0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10546_1742486160207430329
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I: size of indpndIBP: 19
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I:  size of  Master and Tail Integrals: 74
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I: masterIntgralsInSector_size: 36
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: I: Assigned master integrals to MI.
+[2025-03-20 16:56:00] waas: pid 10546 tid10551: T: task finished: waas.job.10514.2
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: web[2,1].TARGET = 
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: size_wjk_targetInt = 12
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:56:00] waas: pid 10540 tid10545: I: Size of totalIBP_IBP: 336
+[2025-03-20 16:57:28] waas: pid 10540 tid10545: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10540_1742486248608423294
+[2025-03-20 16:57:28] waas: pid 10540 tid10545: I: size of indpndIBP: 154
+[2025-03-20 16:57:28] waas: pid 10540 tid10545: I:  size of  Master and Tail Integrals: 364
+[2025-03-20 16:57:28] waas: pid 10540 tid10545: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 16:57:28] waas: pid 10540 tid10545: I: masterIntgralsInSector_size: 200
+[2025-03-20 16:57:29] waas: pid 10540 tid10545: T: task finished: waas.job.10514.3
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: web[2,3].TARGET = 
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: size_wjk_targetInt = 8
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:29] waas: pid 10558 tid10563: I: Size of totalIBP_IBP: 189
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10558_1742486267383092789
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: I: size of indpndIBP: 83
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: I:  size of  Master and Tail Integrals: 194
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: I: masterIntgralsInSector_size: 112
+[2025-03-20 16:57:47] waas: pid 10558 tid10563: T: task finished: waas.job.10514.4
+[2025-03-20 16:57:47] waas: pid 10528 tid10533: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:47] waas: pid 10528 tid10533: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:47] waas: pid 10528 tid10533: I: web[2,2].TARGET = 
+[2025-03-20 16:57:47] waas: pid 10528 tid10533: I: size_wjk_targetInt = 14
+[2025-03-20 16:57:47] waas: pid 10528 tid10533: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:57:48] waas: pid 10528 tid10533: I: Size of totalIBP_IBP: 308
+[2025-03-20 16:59:51] waas: pid 10528 tid10533: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10528_1742486391538074323
+[2025-03-20 16:59:51] waas: pid 10528 tid10533: I: size of indpndIBP: 153
+[2025-03-20 16:59:51] waas: pid 10528 tid10533: I:  size of  Master and Tail Integrals: 468
+[2025-03-20 16:59:51] waas: pid 10528 tid10533: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 16:59:51] waas: pid 10528 tid10533: I: masterIntgralsInSector_size: 307
+[2025-03-20 16:59:52] waas: pid 10528 tid10533: T: task finished: waas.job.10514.5
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: web[3,3].TARGET = 
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: size_wjk_targetInt = 45
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 16:59:52] waas: pid 10534 tid10539: I: Size of totalIBP_IBP: 893
+[2025-03-20 17:02:05] waas: pid 10534 tid10539: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10534_1742486525866326570
+[2025-03-20 17:02:05] waas: pid 10534 tid10539: I: size of indpndIBP: 218
+[2025-03-20 17:02:05] waas: pid 10534 tid10539: I:  size of  Master and Tail Integrals: 290
+[2025-03-20 17:02:05] waas: pid 10534 tid10539: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 17:02:06] waas: pid 10534 tid10539: I: masterIntgralsInSector_size: 210
+[2025-03-20 17:02:06] waas: pid 10534 tid10539: T: task finished: waas.job.10514.6
+[2025-03-20 17:02:06] waas: pid 10522 tid10527: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:02:06] waas: pid 10522 tid10527: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:02:06] waas: pid 10522 tid10527: I: web[3,1].TARGET = 
+[2025-03-20 17:02:06] waas: pid 10522 tid10527: I: size_wjk_targetInt = 79
+[2025-03-20 17:02:06] waas: pid 10522 tid10527: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:02:07] waas: pid 10522 tid10527: I: Size of totalIBP_IBP: 1720
+[2025-03-20 17:36:09] waas: pid 10522 tid10527: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10522_1742488569523049210
+[2025-03-20 17:36:09] waas: pid 10522 tid10527: I: size of indpndIBP: 536
+[2025-03-20 17:36:09] waas: pid 10522 tid10527: I:  size of  Master and Tail Integrals: 954
+[2025-03-20 17:36:09] waas: pid 10522 tid10527: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 17:36:10] waas: pid 10522 tid10527: I: masterIntgralsInSector_size: 878
+[2025-03-20 17:36:11] waas: pid 10522 tid10527: T: task finished: waas.job.10514.7
+[2025-03-20 17:36:11] waas: pid 10534 tid10539: I: reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:36:11] waas: pid 10534 tid10539: I: Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:36:11] waas: pid 10534 tid10539: I: web[3,2].TARGET = 
+[2025-03-20 17:36:11] waas: pid 10534 tid10539: I: size_wjk_targetInt = 77
+[2025-03-20 17:36:11] waas: pid 10534 tid10539: I: Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+[2025-03-20 17:36:12] waas: pid 10534 tid10539: I: Size of totalIBP_IBP: 1539
+[2025-03-20 18:07:36] waas: pid 10534 tid10539: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_10534_1742490456216739342
+[2025-03-20 18:07:36] waas: pid 10534 tid10539: I: size of indpndIBP: 497
+[2025-03-20 18:07:36] waas: pid 10534 tid10539: I:  size of  Master and Tail Integrals: 1020
+[2025-03-20 18:07:36] waas: pid 10534 tid10539: I: Assigned indpndIBP to reducedIBPs_IBP.
+[2025-03-20 18:07:37] waas: pid 10534 tid10539: I: masterIntgralsInSector_size: 882
+[2025-03-20 18:07:38] waas: pid 10534 tid10539: T: task finished: waas.job.10514.8
+[2025-03-20 18:07:38] waas: pid 10546 tid10551: T: task finished: waas.job.10514.9
+[2025-03-20 18:07:38] waas: pid 10552 tid10555: T: worker-waas 35575 10504-6 is shutting down
+[2025-03-20 18:07:38] waas: pid 10546 tid10549: T: worker-waas 35575 10504-5 is shutting down
+[2025-03-20 18:07:38] waas: pid 10540 tid10543: T: worker-waas 35575 10504-4 is shutting down
+[2025-03-20 18:07:38] waas: pid 10534 tid10537: T: worker-waas 35575 10504-3 is shutting down
+[2025-03-20 18:07:38] waas: pid 10528 tid10531: T: worker-waas 35575 10504-2 is shutting down
+[2025-03-20 18:07:38] waas: pid 10522 tid10525: T: worker-waas 35575 10504-1 is shutting down
+[2025-03-20 18:07:38] waas: pid 10558 tid10561: T: worker-waas 35575 10504-7 is shutting down

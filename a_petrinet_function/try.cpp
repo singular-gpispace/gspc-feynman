@@ -236,99 +236,14 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                 xml << "                        final_data.MI = " << data_inputs[0] << ".MI;\n";
             }
         } else {
-            int j = 0, k = 0;
-            if (transition.size() >= 4 && transition[0] == 'T' && transition[1] == '_' &&
-                std::isdigit(transition[2]) && std::isdigit(transition[3])) {
-                j = transition[2] - '0';
-                k = transition[3] - '0';
-            } else {
-                std::cerr << "Warning: Unexpected transition format: " << transition << std::endl;
-            }
-        
-            // Seed computation
-            xml << "                        std::string reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)(data.reducedIBPs, library_name, base_filename);\n";
-            xml << "                        std::cout << \"reducedIBPs_seed: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_seed, library_name) << std::endl;\n";
-        
-            // Target integrals
-            xml << "                        std::string targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInt_gpi)(input, library_name, base_filename);\n";
-            xml << "                        std::cout << \"Target Integrals: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(targetInt, library_name) << std::endl;\n";
-        
-            // Explicitly include j and k in the generated code
+            // Example for T_11, etc.
+            int j = transition[2] - '0', k = transition[3] - '0';
+            std::string data_out = "data_" + std::to_string(j) + std::to_string(k);
             xml << "                        int j = " << j << ", k = " << k << ";\n";
-        
-            // Web replacement and target integrals
             xml << "                        std::string wjk = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(data.web, j, k, library_name, base_filename);\n";
-            xml << "                        std::string wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)(wjk, library_name, base_filename);\n";
-            xml << "                        std::cout << \"web[\" << j << \",\" << k << \"].TARGET = \" <<std::endl;\n";
-            xml << "                        int size_wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(wjk_targetInt, library_name, base_filename);\n";
-            xml << "                        std::cout << \"size_wjk_targetInt = \" << size_wjk_targetInt << std::endl;\n";
-        
-            // Update seed and compute IBP if size >= 1
-            xml << "                        reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(targetInt, library_name, base_filename);\n";
-            xml << "                        std::cout << \"Updated reducedIBPs_seed: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_seed, library_name) << std::endl;\n";
-            xml << "                        if (size_wjk_targetInt >= 1) {\n";
-            xml << "                            std::string totalIBP = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBPjk_gpi)(labeledgraph, wjk_targetInt, library_name, base_filename);\n";
-            xml << "                            std::string totalIBP_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(totalIBP, library_name, base_filename);\n";
-            xml << "                            int size_totalIBP_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(totalIBP_IBP, library_name, base_filename);\n";
-            xml << "                            std::cout << \"Size of totalIBP_IBP: \" << size_totalIBP_ibp << std::endl;\n";
-                // Update reducedIBPs if condition met
-                if(transition=="T_11"){
-
-
-                xml << "                                std::string reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(data.reducedIBPs, library_name, base_filename);\n";
-                xml << "                                std::string totalIBP_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(totalIBP, library_name, base_filename);\n";
-                xml << "                                reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(totalIBP_over, library_name, base_filename);\n";
-                xml << "                                std::cout << \"Updated reducedibp_over: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedibp_over, library_name) << std::endl;\n";
-            
-                }
-                // Compute independent IBPs and masters
-                xml << "                            std::string L = RESOLVE_INTERFACE_FUNCTION(singular_getRedIBPs_gpi)(totalIBP, 101, library_name, base_filename);\n";
-                xml << "                            std::string indpndIBP = RESOLVE_INTERFACE_FUNCTION(singular_indpndIBP_gpi)(L, library_name, base_filename);\n";
-                xml << "                            std::string masterAndTailIntgrals = RESOLVE_INTERFACE_FUNCTION(singular_masterAndTailIntgrals_gpi)(L, library_name, base_filename);\n";
-                xml << "                            std::cout << \"size of indpndIBP: \" << RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(indpndIBP, library_name, base_filename) << std::endl;\n";
-                xml << "                            std::cout  << \" size of  Master and Tail Integrals: \" << RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterAndTailIntgrals, library_name, base_filename) << std::endl;\n";
-            
-                // Update reducedIBPs_IBP
-                xml << "                            std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(data.reducedIBPs, library_name, base_filename);\n";
-                xml << "                            int size_reducedIBPs_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename);\n";
-                xml << "                            if (size_reducedIBPs_ibp == 0) {\n";
-                xml << "                                reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(indpndIBP, library_name, base_filename);\n";
-                xml << "                                std::cout << \"Assigned indpndIBP to reducedIBPs_IBP.\" << std::endl;\n";
-                xml << "                            } else {\n";
-                xml << "                                int indpndIBP_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(indpndIBP, library_name, base_filename);\n";
-                xml << "                                for (int i = 1; i <= indpndIBP_size; ++i) {\n";
-                xml << "                                    std::string indpndIBP_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(indpndIBP, i, library_name, base_filename);\n";
-                xml << "                                    reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(indpndIBP_i, library_name, base_filename);\n";
-                xml << "                                    std::cout << \"Assigned independent IBP at index \" << i << std::endl;\n";
-                xml << "                                }\n";
-                xml << "                            }\n";
-            
-                // Update web and masters
-                xml << "                            std::string w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)(data.web, masterAndTailIntgrals, j, k, library_name, base_filename);\n";
-                xml << "                            std::string w1 = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 1, library_name, base_filename);\n";
-                xml << "                           data.web = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(w1, library_name, base_filename);\n";
-                xml << "                            std::string masterIntgralsInSector = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 2, library_name, base_filename);\n";
-                xml << "                            int masterIntgralsInSector_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterIntgralsInSector, library_name, base_filename);\n";
-                xml << "                            std::cout << \"masterIntgralsInSector_size: \" << masterIntgralsInSector_size << std::endl;\n";
-            
-                // Update MI
-                xml << "                            int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(data.MI, library_name, base_filename);\n";
-                xml << "                            if (MI_size == 0) {\n";
-                xml << "                               data.MI = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector, library_name, base_filename);\n";
-                xml << "                                std::cout << \"Assigned master integrals to MI.\" << std::endl;\n";
-                xml << "                            } else {\n";
-                xml << "                                for (int i = 1; i <= masterIntgralsInSector_size; ++i) {\n";
-                xml << "                                    std::string masterIntgralsInSector_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(masterIntgralsInSector, i, library_name, base_filename);\n";
-                xml << "                                    int alreadyIntheList = RESOLVE_INTERFACE_FUNCTION(singular_alreadyIntheList_gpi)(data.MI, masterIntgralsInSector_i, library_name);\n";
-                xml << "                                    if (!alreadyIntheList) {\n";
-                xml << "                                       data.MI = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector_i, library_name, base_filename);\n";
-                xml << "                                        std::cout << \"Added master integral from sector index \" << i << std::endl;\n";
-                xml << "                                    }\n";
-                xml << "                                }\n";
-                xml << "                            }\n";
-                xml << "                        }\n";
-            
-            }
+            xml << "                        " << data_out << ".web = wjk;\n"; // Write to data_11, etc.
+            // Add more logic as needed
+        }
 
         xml << "                    ]]></code>\n";
         xml << "                </module>\n";
@@ -422,7 +337,7 @@ int main() {
    // print_petri_net(myPetriNet);
 
     std::string xml = generateXPNetXMLWithT0Tend(myPetriNet);
-    std::ofstream file("workflow/template.xpnet");
+    std::ofstream file("template.xpnet");
     file << xml;
     file.close();
 
