@@ -1,0 +1,37 @@
+59397.59403@waas 2025-03-20 23:37:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 24 agent-waas 43051 59387-0 16 waas.job.59397.0 8 template 0
+59417.59422@waas 2025-03-20 23:37:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-3 16 waas.job.59397.1 3 T_0 0
+59417.59422@waas 2025-03-20 23:37:47 legacy-level-info web: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_59417_1742510267338694333
+59417.59422@waas 2025-03-20 23:37:47 legacy-level-trace task finished: waas.job.59397.1
+59417.59422@waas 2025-03-20 23:37:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-3 16 waas.job.59397.1 0  1
+59405.59410@waas 2025-03-20 23:37:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-1 16 waas.job.59397.2 4 T_11 0
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info web[1,1].TARGET = 
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info size_wjk_targetInt = 1
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info Size of totalIBP_IBP: 31
+59405.59410@waas 2025-03-20 23:37:47 legacy-level-info Updated reducedibp_over: (0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-info size of indpndIBP: 19
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-info  size of  Master and Tail Integrals: 73
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-info Assigned indpndIBP to reducedIBPs_IBP.
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-info masterIntgralsInSector_size: 36
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-info Assigned master integrals to MI.
+59405.59410@waas 2025-03-20 23:37:49 legacy-level-trace task finished: waas.job.59397.2
+59405.59410@waas 2025-03-20 23:37:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-1 16 waas.job.59397.2 0  1
+59417.59422@waas 2025-03-20 23:37:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-3 16 waas.job.59397.3 4 T_21 0
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-info reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-info Target Integrals: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-info web[2,1].TARGET = 
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-info size_wjk_targetInt = 0
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-info Updated reducedIBPs_seed: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
+59417.59422@waas 2025-03-20 23:37:49 legacy-level-trace task finished: waas.job.59397.3
+59417.59422@waas 2025-03-20 23:37:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 worker-waas 43051 59387-3 16 waas.job.59397.3 0  1
+59397.59403@waas 2025-03-20 23:37:49 gantt-job-events 22 serialization::archive 14 0 0 1 0 24 agent-waas 43051 59387-0 16 waas.job.59397.0 8 template 1
+59441.59444@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-7 is shutting down
+59435.59438@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-6 is shutting down
+59429.59432@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-5 is shutting down
+59423.59426@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-4 is shutting down
+59417.59420@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-3 is shutting down
+59411.59414@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-2 is shutting down
+59405.59408@waas 2025-03-20 23:37:49 legacy-level-trace worker-waas 43051 59387-1 is shutting down
+59652.59658@waas 2025-03-20 23:38:06 gantt-job-events 22 serialization::archive 1

@@ -306,7 +306,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                 // Update web and masters
                 xml << "                            std::string w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)(data.web, masterAndTailIntgrals, j, k, library_name, base_filename);\n";
                 xml << "                            std::string w1 = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 1, library_name, base_filename);\n";
-                xml << "                           data.web = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(w1, library_name, base_filename);\n";
+                xml << "                            RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.web , w1, library_name, base_filename);\n";
                 xml << "                            std::string masterIntgralsInSector = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 2, library_name, base_filename);\n";
                 xml << "                            int masterIntgralsInSector_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterIntgralsInSector, library_name, base_filename);\n";
                 xml << "                            std::cout << \"masterIntgralsInSector_size: \" << masterIntgralsInSector_size << std::endl;\n";
@@ -314,15 +314,14 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                 // Update MI
                 xml << "                            int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(data.MI, library_name, base_filename);\n";
                 xml << "                            if (MI_size == 0) {\n";
-                xml << "                               data.MI = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector, library_name, base_filename);\n";
+                xml << "                                RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.MI ,masterIntgralsInSector, library_name, base_filename);\n";
                 xml << "                                std::cout << \"Assigned master integrals to MI.\" << std::endl;\n";
                 xml << "                            } else {\n";
                 xml << "                                for (int i = 1; i <= masterIntgralsInSector_size; ++i) {\n";
                 xml << "                                    std::string masterIntgralsInSector_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(masterIntgralsInSector, i, library_name, base_filename);\n";
                 xml << "                                    int alreadyIntheList = RESOLVE_INTERFACE_FUNCTION(singular_alreadyIntheList_gpi)(data.MI, masterIntgralsInSector_i, library_name);\n";
                 xml << "                                    if (!alreadyIntheList) {\n";
-                xml << "                                       data.MI = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector_i, library_name, base_filename);\n";
-                xml << "                                        std::cout << \"Added master integral from sector index \" << i << std::endl;\n";
+                xml << "                                        data.MI = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.MI, masterIntgralsInSector_i, library_name, base_filename);\n";                xml << "                                        std::cout << \"Added master integral from sector index \" << i << std::endl;\n";
                 xml << "                                    }\n";
                 xml << "                                }\n";
                 xml << "                            }\n";

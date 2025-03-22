@@ -206,3 +206,8 @@ std::string singular_assign_gpi(std::string const& res
   );
 NO_NAME_MANGLING
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library);
+NO_NAME_MANGLING
+std::string singular_equal_gpi(std::string const& res
+      , std::string const& res1
+      , std::string const& needed_library
+      , std::string const& base_filename);

@@ -1,53 +1,6 @@
-<transition name="T_11">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <out name="data_11" type="feynman"/>
-                <in name="base_filename" type="string"/>
-                <in name="library_name" type="string"/>
-                <in name="input" type="string"/>
-                <in name="labeledgraph" type="string"/>
-                <in name="control_11" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, base_filename, library_name, input, labeledgraph, data_11)">
-                    <cinclude href="interface/template_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <code><![CDATA[                    .........
-...........
+// Inside T_31’s logic
+std::string combined_web = data_21.web + "_" + data_22.web; // Example: concatenate webs
+data_31.web = combined_web; // Set output
+data_31.MI = data_21.MI; // Example: inherit MI from one parent
+data_31.reducedIBPs = data_22.reducedIBPs; // Example: inherit reducedIBPs from another one of  two
 
- ]]></code>
-                </module>
-            </defun>
-            <connect-out port="data_11" place="data_11"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
-            <connect-read port="input" place="input"/>
-            <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-in port="control_11" place="control_11"/>
-        </transition>
-should be like this but only for T_11
- <transition name="T_11">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <out name="data_11" type="feynman"/>
-                <in name="data" type="feynman"/>
-                <in name="base_filename" type="string"/>
-                <in name="library_name" type="string"/>
-                <in name="input" type="string"/>
-                <in name="labeledgraph" type="string"/>
-                <in name="control_11" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, base_filename, library_name, input, labeledgraph, data,data_11)">
-                    <cinclude href="interface/template_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <code><![CDATA[                    .........
-...........
-
- ]]></code>
-                </module>
-            </defun>
-            <connect-out port="data_11" place="data_11"/>
-            <connect-in port="data" place="data"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
-            <connect-read port="input" place="input"/>
-            <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-in port="control_11" place="control_11"/>
-        </transition>
