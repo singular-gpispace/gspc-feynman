@@ -211,3 +211,9 @@ std::string singular_equal_gpi(std::string const& res
       , std::string const& res1
       , std::string const& needed_library
       , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_mergeFeynman_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+NO_NAME_MANGLING
+            

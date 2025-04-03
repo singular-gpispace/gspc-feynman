@@ -1218,3 +1218,29 @@ std::string singular_equal_gpi(std::string const& res
 
     return out_filename;
 }
+
+std::string singular_mergeFeynman_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+
+    Res = deserialize(res, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "mergeFeynman_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}

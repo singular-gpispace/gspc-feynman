@@ -1103,3 +1103,797 @@ LIB "feynman.lib";
   list targetInt = list(list(1, 1, 1, -1, -3, 1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
  
   list finalset=getReducedIBPSystem(G,targetInt);
+Singular
+;
+LIB "feynman.lib";
+$
+LIB "feynman.lib";
+$
+LIB "feynman.lib";
+$
+LIB "feynman.lib";
+graph G = makeGraph(
+  list(1,2,3,4,5,6), 
+  list(
+      list(6,1), list(4,6), list(1,2), list(3,5), 
+      list(4,3), list(2,5), list(5,6), list(1), 
+      list(2), list(3), list(4)
+  )
+);
+// Define a list of target integrals
+list targetInt = list(
+  list(1, 1, 1, -1, -3, 1, -1, -1, -1), 
+  list(1, -1, 1, -1, -3, -1, -1, -4, -1)
+);
+    if (size(targetInt) == 0) {
+        ERROR("Empty target integral list provided.");
+    }
+    // Debug: Ensure the input graph G and target integrals are correctly passed
+    print("Graph G: " + string(G));
+    print("Target Integrals: " + string(targetInt));
+    list L = pickHighestSector(targetInt);
+    if (size(L) == 0) {
+        ERROR("pickHighestSector returned an empty list.");
+    }
+    if (size(L) > 1) {
+        ERROR("Provided integrals belong to more than one integral class.");
+    }
+    list web = generateWebSectors(L[1][1]);
+    web = setSectorMap(web);
+    print("Generated web: " + string(web));
+    list w4 = updateWeb(web, list(1,1), targetInt);
+    web = w4[1];
+    print("Size of updated web: " + string(size(web)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+    setIBP reducedIBPs;
+    list MI;
+    print("Size of targetInt: " + string(size(targetInt)));
+    int te = 0;
+    reducedIBPs.seed = targetInt;
+    int j = 1;
+    if (size(web) < j) {
+        ERROR("Web list does not contain layer j=" + string(j));
+    }
+    int nSectors = size(web[j]);
+    if (nSectors == 0) {
+        ERROR("No sectors available in web[" + string(j) + "]");
+    }
+    int k = 1;
+    if (size(web[j]) < k) {
+        ERROR("Web[" + string(j) + "] does not contain sector k=" + string(k));
+    }
+    print("Computing IBP for sector: " + string(web[j][k].targetInts));
+    setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
+    print("Size of totalIBP.IBP: " + string(size(totalIBP.IBP)));
+    if (te == 0) {
+        reducedIBPs.over = totalIBP.over;
+        te = 1;
+    }
+    if (reducedIBPs.over == 0) {
+        ERROR("totalIBP.over is not initialized correctly.");
+    }
+    ring R = reducedIBPs.over;
+    setring R;
+    list L = getRedIBPs(totalIBP, 101);
+    if (size(L) < 2) {
+        ERROR("getRedIBPs did not return expected two lists.");
+    }
+    list indpndIBP = L[1];
+    print("Size of indpndIBP: " + string(size(indpndIBP)));
+    list masterAndTailIntgrals = L[2];
+    print("Size of masterAndTailIntgrals: " + string(size(masterAndTailIntgrals)));
+    if (size(reducedIBPs.IBP) == 0) {
+        reducedIBPs.IBP = indpndIBP;
+    } else {
+        for (int i = 1; i <= size(indpndIBP); i++) {
+            reducedIBPs.IBP[size(reducedIBPs.IBP) + 1] = indpndIBP[i];
+        }
+    }
+    kill R;
+    print("Size of masterAndTailIntgrals = " + string(size(masterAndTailIntgrals)));
+    list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
+    web = w[1];
+    print("w[2] = " + string(w[2])); // Fixed debug message
+    list masterIntgralsInSector = w[2];
+    print("Size of masterIntgralsInSector = " + string(size(masterIntgralsInSector)));
+    if (size(MI) == 0) {
+        MI = masterIntgralsInSector;
+    } else {
+        for (int i = 1; i <= size(masterIntgralsInSector); i++) {
+            if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0) {
+                MI[size(MI) + 1] = masterIntgralsInSector[i];
+            }
+        }
+    }
+    print("Completed computation in sector: " + string(k) + " at layer " + string(j) + ".");
+reducedIBPs.IBP;
+reducedIBPs.IBP[1];
+reducedIBPs.IBP[1].c;
+reducedIBPs.IBP[1].i;
+reducedIBPs.IBP[1].i;$
+// Helper procedure to compare two integer lists for equality
+proc eq_int_list(list a, list b) {
+    if (size(a) != size(b)) {
+        return(0);
+    }
+    for (int i = 1; i <= size(a); i++) {
+        if (a[i] != b[i]) {
+            return(0);
+        }
+    }
+    return(1);
+}
+// Helper procedure to merge two lists of integer vectors, removing duplicates
+proc merge_int_vectors(list A, list B) {
+    if (size(A) == 0 && size(B) == 0) {
+        return(list());
+    }
+    list C = A;
+    for (int i = 1; i <= size(B); i++) {
+        int found = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j], B[i])) {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0) {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+// Simplified merge_sector_lists with minimal debugging
+proc merge_sector_lists(list A, list B) {
+    if (size(A) < 0 || size(B) < 0) {
+        print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+        return(list());
+    }
+    list C = list();
+    for (int i = 1; i <= size(A); i++) {
+        if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+            print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+            return(list());
+        }
+        C[i] = A[i];
+    }
+    for (int i = 1; i <= size(B); i++) {
+        if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+            print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+            return(list());
+        }
+        int found = 0;
+        int idx = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j].lab, B[i].lab)) {
+                found = 1;
+                idx = j;
+                break;
+            }
+        }
+        if (found) {
+            C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+        } else {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+// Simplified mergeFeynman
+proc mergeFeynman(feynman d1, feynman d2)
+"USAGE: mergeFeynman(d1, d2); d1 feynman, d2 feynman
+ASSUME: d1 and d2 are feynman structures with compatible rings and web structures.
+RETURN: A single feynman structure combining d1 and d2, with IBPs appended without detailed duplicate removal.
+KEYWORDS: Feynman graph, merge, IBPs"
+{
+    feynman out;
+    // Basic input validation
+    if (size(d1.web) == 0 || size(d2.web) == 0) {
+        print("mergeFeynman: Error: One or both webs are empty (d1.web: " + string(size(d1.web)) + ", d2.web: " + string(size(d2.web)) + ")");
+        return(out);
+    }
+    // Merge MI
+    out.MI = merge_int_vectors(d1.MI, d2.MI);
+    // Set ring
+    out.reducedIBPs.over = d1.reducedIBPs.over;
+    // Merge seeds
+    out.reducedIBPs.seed = merge_int_vectors(d1.reducedIBPs.seed, d2.reducedIBPs.seed);
+    // Append IBPs
+    out.reducedIBPs.IBP = list();
+    int idx = 0;
+    for (int i = 1; i <= size(d1.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d1.reducedIBPs.IBP[i];
+    }
+    for (int i = 1; i <= size(d2.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d2.reducedIBPs.IBP[i];
+    }
+    // Merge web
+    out.web = list();
+    int layers = min(size(d1.web), size(d2.web));
+    for (int i = 1; i <= layers; i++) {
+        out.web[i] = merge_sector_lists(d1.web[i], d2.web[i]);
+        if (size(out.web[i]) == 0 && (size(d1.web[i]) > 0 || size(d2.web[i]) > 0)) {
+            print("mergeFeynman: Warning: Web layer " + string(i) + " merge resulted in empty list");
+        }
+    }
+    return(out);
+}
+$
+LIB "feynman_example.lib";
+$
+LIB "feynman_example.lib";
+$
+LIB "feynman_example.lib";
+$
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Create first feynman data (data_a)
+feynman data_a;
+data_a.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+data_a.reducedIBPs.over = R;
+data_a.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_a.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+data_a.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Create second feynman data (data_b)
+feynman data_b;
+data_b.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+data_b.reducedIBPs.over = R;
+data_b.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_b.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+data_b.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+}
+// Merge procedures
+proc eq_int_list(list a, list b) {
+    if (size(a) != size(b)) {
+        return(0);
+    }
+    for (int i = 1; i <= size(a); i++) {
+        if (a[i] != b[i]) {
+            return(0);
+        }
+    }
+    return(1);
+}
+proc merge_int_vectors(list A, list B) {
+    if (size(A) == 0 && size(B) == 0) {
+        return(list());
+    }
+    list C = A;
+    for (int i = 1; i <= size(B); i++) {
+        int found = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j], B[i])) {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0) {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+$
+LIB "feynman_example.lib";
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Create first feynman data (data_a)
+feynman data_a;
+data_a.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+data_a.reducedIBPs.over = R;
+data_a.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_a.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+data_a.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Create second feynman data (data_b)
+feynman data_b;
+data_b.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+data_b.reducedIBPs.over = R;
+data_b.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_b.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+data_b.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+}
+// Merge procedures
+proc eq_int_list(list a, list b) {
+    if (size(a) != size(b)) {
+        return(0);
+    }
+    for (int i = 1; i <= size(a); i++) {
+        if (a[i] != b[i]) {
+            return(0);
+        }
+    }
+    return(1);
+}
+proc merge_int_vectors(list A, list B) {
+    if (size(A) == 0 && size(B) == 0) {
+        return(list());
+    }
+    list C = A;
+    for (int i = 1; i <= size(B); i++) {
+        int found = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j], B[i])) {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0) {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+proc createSector(list lab, list sectorMap, list targetInts) {
+    oneSector s;
+    s.lab = lab;
+    s.sectorMap = sectorMap;
+    s.targetInts = targetInts;
+    return(s);
+}
+;
+proc createSector(list lab, list sectorMap, list targetInts) {
+    oneSector s;
+    s.lab = lab;
+    s.sectorMap = sectorMap;
+    s.targetInts = targetInts;
+    return(s);
+}
+proc createIBP(list coeff, list integrals) {
+    oneIBP ibp;
+    ibp.c = coeff;
+    ibp.i = integrals;
+    return(ibp);
+}
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Create first feynman data (data_a)
+feynman data_a;
+data_a.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+data_a.reducedIBPs.over = R;
+data_a.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_a.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+data_a.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Create second feynman data (data_b)
+feynman data_b;
+data_b.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+data_b.reducedIBPs.over = R;
+data_b.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_b.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+data_b.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+proc eq_int_list(list a, list b) {
+    if (size(a) != size(b)) {
+        return(0);
+    }
+    for (int i = 1; i <= size(a); i++) {
+        if (a[i] != b[i]) {
+            return(0);
+        }
+    }
+    return(1);
+}
+proc merge_int_vectors(list A, list B) {
+    if (size(A) == 0 && size(B) == 0) {
+        return(list());
+    }
+    list C = A;
+    for (int i = 1; i <= size(B); i++) {
+        int found = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j], B[i])) {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0) {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+proc merge_sector_lists(list A, list B) {
+    if (size(A) < 0 || size(B) < 0) {
+        print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+        return(list());
+    }
+    list C = list();
+    for (int i = 1; i <= size(A); i++) {
+        if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+            print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+            return(list());
+        }
+        C[i] = A[i];
+    }
+    for (int i = 1; i <= size(B); i++) {
+        if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+            print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+            return(list());
+        }
+        int found = 0;
+        int idx = 0;
+        for (int j = 1; j <= size(A); j++) {
+            if (eq_int_list(A[j].lab, B[i].lab)) {
+                found = 1;
+                idx = j;
+                break;
+            }
+        }
+        if (found) {
+            C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+        } else {
+            C[size(C) + 1] = B[i];
+        }
+    }
+    return(C);
+}
+proc mergeFeynman(feynman d1, feynman d2) {
+    feynman out;
+    if (size(d1.web) == 0 || size(d2.web) == 0) {
+        print("mergeFeynman: Error: One or both webs are empty (d1.web: " + string(size(d1.web)) + ", d2.web: " + string(size(d2.web)) + ")");
+        return(out);
+    }
+    out.MI = merge_int_vectors(d1.MI, d2.MI);
+    out.reducedIBPs.over = d1.reducedIBPs.over;
+    out.reducedIBPs.seed = merge_int_vectors(d1.reducedIBPs.seed, d2.reducedIBPs.seed);
+    out.reducedIBPs.IBP = list();
+    int idx = 0;
+    for (int i = 1; i <= size(d1.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d1.reducedIBPs.IBP[i];
+    }
+    for (int i = 1; i <= size(d2.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d2.reducedIBPs.IBP[i];
+    }
+    out.web = list();
+    int layers = min(size(d1.web), size(d2.web));
+    for (int i = 1; i <= layers; i++) {
+        out.web[i] = merge_sector_lists(d1.web[i], d2.web[i]);
+        if (size(out.web[i]) == 0 && (size(d1.web[i]) > 0 || size(d2.web[i]) > 0)) {
+            print("mergeFeynman: Warning: Web layer " + string(i) + " merge resulted in empty list");
+        }
+    }
+    return(out);
+}
+feynman merged_ab = mergeFeynman(data_a, data_b);
+print("Merged data_a and data_b MI size: " + string(size(merged_ab.MI)));
+print("Merged data_a and data_b IBP size: " + string(size(merged_ab.reducedIBPs.IBP)));
+print("Merged data_a and data_b web size: " + string(size(merged_ab.web)));
+for (int i = 1; i <= size(merged_ab.web); i++) {
+    print("Merged web layer " + string(i) + " size: " + string(size(merged_ab.web[i])));
+    for (int j = 1; j <= size(merged_ab.web[i]); j++) {
+        print("  Sector " + string(j) + " lab: " + string(merged_ab.web[i][j].lab));
+        print("  Sector " + string(j) + " targetInts size: " + string(size(merged_ab.web[i][j].targetInts)));
+    }
+}
+proc mergeFeynman(feynman d1, feynman d2) {
+    feynman out;
+    if (size(d1.web) == 0 || size(d2.web) == 0) {
+        print("mergeFeynman: Error: One or both webs are empty (d1.web: " + string(size(d1.web)) + ", d2.web: " + string(size(d2.web)) + ")");
+        return(out);
+    }
+    // print("mergeFeynman: Merging MI");
+    out.MI = merge_int_vectors(d1.MI, d2.MI);
+    out.reducedIBPs.over = d1.reducedIBPs.over;
+    // print("mergeFeynman: Merging seeds");
+    out.reducedIBPs.seed = merge_int_vectors(d1.reducedIBPs.seed, d2.reducedIBPs.seed);
+    out.reducedIBPs.IBP = list();
+    int idx = 0;
+    for (int i = 1; i <= size(d1.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d1.reducedIBPs.IBP[i];
+    }
+    for (int i = 1; i <= size(d2.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d2.reducedIBPs.IBP[i];
+    }
+    out.web = list();
+    int layers = min(size(d1.web), size(d2.web));
+    for (int i = 1; i <= layers; i++) {
+        // print("mergeFeynman: Merging web layer " + string(i));
+        out.web[i] = merge_sector_lists(d1.web[i], d2.web[i]);
+        if (size(out.web[i]) == 0 && (size(d1.web[i]) > 0 || size(d2.web[i]) > 0)) {
+            print("mergeFeynman: Warning: Web layer " + string(i) + " merge resulted in empty list");
+        }
+    }
+    // print("mergeFeynman: Merge complete");
+    return(out);
+}
+feynman merged_ab = mergeFeynman(data_a, data_b);
+print("Merged data_a and data_b MI size: " + string(size(merged_ab.MI)));
+print("Merged data_a and data_b IBP size: " + string(size(merged_ab.reducedIBPs.IBP)));
+print("Merged data_a and data_b web size: " + string(size(merged_ab.web)));
+proc mergeFeynman(feynman d1, feynman d2) {
+    feynman out;
+    if (size(d1.web) == 0 || size(d2.web) == 0) {
+        print("mergeFeynman: Error: One or both webs are empty (d1.web: " + string(size(d1.web)) + ", d2.web: " + string(size(d2.web)) + ")");
+        return(out);
+    }
+    print("mergeFeynman: Merging MI");
+    out.MI = merge_int_vectors(d1.MI, d2.MI);
+    out.reducedIBPs.over = d1.reducedIBPs.over;
+     print("mergeFeynman: Merging seeds");
+    out.reducedIBPs.seed = merge_int_vectors(d1.reducedIBPs.seed, d2.reducedIBPs.seed);
+    out.reducedIBPs.IBP = list();
+    int idx = 0;
+    for (int i = 1; i <= size(d1.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d1.reducedIBPs.IBP[i];
+    }
+    for (int i = 1; i <= size(d2.reducedIBPs.IBP); i++) {
+        idx = idx + 1;
+        out.reducedIBPs.IBP[idx] = d2.reducedIBPs.IBP[i];
+    }
+    out.web = list();
+    int layers = min(size(d1.web), size(d2.web));
+    for (int i = 1; i <= layers; i++) {
+         print("mergeFeynman: Merging web layer " + string(i));
+        out.web[i] = merge_sector_lists(d1.web[i], d2.web[i]);
+        if (size(out.web[i]) == 0 && (size(d1.web[i]) > 0 || size(d2.web[i]) > 0)) {
+            print("mergeFeynman: Warning: Web layer " + string(i) + " merge resulted in empty list");
+        }
+    }
+    // print("mergeFeynman: Merge complete");
+    return(out);
+}
+print("Merged data_a and data_b MI size: " + string(size(merged_ab.MI)));
+print("Merged data_a and data_b IBP size: " + string(size(merged_ab.reducedIBPs.IBP)));
+print("Merged data_a and data_b web size: " + string(size(merged_ab.web)));
+print("Merged data_a and data_b MI size: " + string(size(merged_ab.MI)));
+print("Merged data_a and data_b IBP size: " + string(size(merged_ab.reducedIBPs.IBP)));
+print("Merged data_a and data_b web size: " + string(size(merged_ab.web)));
+feynman merged_ab = mergeFeynman(data_a, data_b);
+print("Merged data_a and data_b MI size: " + string(size(merged_ab.MI)));
+print("Merged data_a and data_b IBP size: " + string(size(merged_ab.reducedIBPs.IBP)));
+print("Merged data_a and data_b web size: " + string(size(merged_ab.web)));
+$
+Singular
+;
+LIB "feynman_example.lib";
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+
+    // Helper to create a oneSector struct
+    proc createSector(list lab, list sectorMap, list targetInts) {
+        oneSector s;
+        s.lab = lab;
+        s.sectorMap = sectorMap;
+        s.targetInts = targetInts;
+        return(s);
+    }
+
+    // Helper to create a oneIBP struct
+    proc createIBP(list coeff, list integrals) {
+        oneIBP ibp;
+        ibp.c = coeff;
+        ibp.i = integrals;
+        return(ibp);
+    }
+
+    // Create data_a
+    feynman data_a;
+    data_a.MI = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    data_a.reducedIBPs.over = R;
+    data_a.reducedIBPs.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    data_a.reducedIBPs.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        )
+    );
+    data_a.web = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1)))
+        )
+    );
+
+data_a;
+
+    // Create data_b
+    feynman data_b;
+    data_b.MI = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    data_b.reducedIBPs.over = R;
+    data_b.reducedIBPs.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    data_b.reducedIBPs.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        )
+    );
+    data_b.web = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2)))
+        )
+    );
+
+    // Create data_c (third dataset)
+    feynman data_c;
+    data_c.MI = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -4)
+    );
+    data_c.reducedIBPs.over = R;
+    data_c.reducedIBPs.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    data_c.reducedIBPs.IBP = list(
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    data_c.web = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -3))),
+            createSector(list(1, 5), list(1, 5), list(list(1, 1, 1, -1, -5, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -3)))
+        )
+    );
+
+    // Merge all three datasets
+    list data_to_merge = list(data_a, data_b, data_c);
+    feynman merged_abc = mergeFeynman(data_to_merge);
+    list data_to_merge = list(data_a, data_b, data_c);
+
+    feynman merged_abc = mergeFeynman(data_to_merge);
+
+$
