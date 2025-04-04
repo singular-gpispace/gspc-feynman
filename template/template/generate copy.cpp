@@ -47,7 +47,6 @@ std::string find_root_node(const DAG& dag) {
     }
     return root_nodes.empty() ? "" : *root_nodes.begin();
 }
-
 PetriNet generate_petri_net(const DAG& dag) {
     PetriNet net;
 
@@ -63,60 +62,44 @@ PetriNet generate_petri_net(const DAG& dag) {
         net.place_types[g] = "string";
     }
 
-    // Add individual field places globally (written by T_0, read by others)
-    net.places.push_back("MI");
-    net.places.push_back("web");
-    net.places.push_back("reducedIBPs");
-    net.place_types["MI"] = "string";
-    net.place_types["web"] = "string";
-    net.place_types["reducedIBPs"] = "string";
+    // Add "data" place globally (written by T_0, read by others)
+    net.places.push_back("data");
+    net.place_types["data"] = "feynman";
 
     // Add places and connections for DAG transitions
     for (const auto& transition : dag.vertices) {
         std::string ctrl = "control_" + transition.substr(2);  // e.g., control_11 for T_11
-        std::string mi_out = "MI_" + transition.substr(2);     // e.g., MI_11 for T_11
-        std::string web_out = "web_" + transition.substr(2);   // e.g., web_11 for T_11
-        std::string ribps_out = "reducedIBPs_" + transition.substr(2); // e.g., reducedIBPs_11 for T_11
+        std::string data_out = "data_" + transition.substr(2); // e.g., data_11 for T_11
 
         net.places.push_back(ctrl);
         net.place_types[ctrl] = "control";
-        net.places.push_back(mi_out);
-        net.places.push_back(web_out);
-        net.places.push_back(ribps_out);
-        net.place_types[mi_out] = "string";
-        net.place_types[web_out] = "string";
-        net.place_types[ribps_out] = "string";
+        net.places.push_back(data_out);
+        net.place_types[data_out] = "feynman";
 
-        // Inputs: control (consumed), globals (read-only), global MI/web/reducedIBPs (read-only), parent field places
-        net.transition_inputs[transition] = {ctrl, "MI", "web", "reducedIBPs"};
+        // Inputs: control (consumed), globals (read-only), "data" (read-only), parent data places
+        net.transition_inputs[transition] = {ctrl, "data"};
         net.transition_inputs[transition].insert(net.transition_inputs[transition].end(), globals.begin(), globals.end());
         if (dag.parents.find(transition) != dag.parents.end()) {
             for (const auto& parent : dag.parents.at(transition)) {
-                net.transition_inputs[transition].push_back("MI_" + parent.substr(2));
-                net.transition_inputs[transition].push_back("web_" + parent.substr(2));
-                net.transition_inputs[transition].push_back("reducedIBPs_" + parent.substr(2));
+                net.transition_inputs[transition].push_back("data_" + parent.substr(2));
             }
         }
 
-        // Outputs: specific field outputs only
-        net.transition_outputs[transition] = {mi_out, web_out, ribps_out};
+        // Outputs: specific data_out only (no "data")
+        net.transition_outputs[transition] = {data_out};
     }
 
-    // Set up T_0 (initial transition, outputs global MI/web/reducedIBPs)
+    // Set up T_0 (initial transition, outputs "data")
     net.places.push_back("control_T_0");
     net.place_types["control_T_0"] = "control";
     net.transition_inputs["T_0"] = {"control_T_0", "library_name", "base_filename", "input"};
-    net.transition_outputs["T_0"] = {"labeledgraph", "MI", "web", "reducedIBPs"};
+    net.transition_outputs["T_0"] = {"labeledgraph", "data"};
 
     // Set up T_end (final transition)
     net.places.push_back("control_T_end");
-    net.places.push_back("final_MI");
-    net.places.push_back("final_web");
-    net.places.push_back("final_reducedIBPs");
     net.place_types["control_T_end"] = "control";
-    net.place_types["final_MI"] = "string";
-    net.place_types["final_web"] = "string";
-    net.place_types["final_reducedIBPs"] = "string";
+    net.places.push_back("final_data");
+    net.place_types["final_data"] = "feynman";
     net.transition_inputs["T_end"] = {"control_T_end"};
     for (const auto& transition : dag.vertices) {
         bool is_leaf = true;
@@ -127,12 +110,10 @@ PetriNet generate_petri_net(const DAG& dag) {
             }
         }
         if (is_leaf) {
-            net.transition_inputs["T_end"].push_back("MI_" + transition.substr(2));
-            net.transition_inputs["T_end"].push_back("web_" + transition.substr(2));
-            net.transition_inputs["T_end"].push_back("reducedIBPs_" + transition.substr(2));
+            net.transition_inputs["T_end"].push_back("data_" + transition.substr(2));
         }
     }
-    net.transition_outputs["T_end"] = {"final_MI", "final_web", "final_reducedIBPs"};
+    net.transition_outputs["T_end"] = {"final_data"};
 
     return net;
 }
@@ -141,17 +122,20 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
     std::ostringstream xml;
     std::set<std::string> globals = {"base_filename", "library_name", "input", "labeledgraph"};
 
-    // XML header (no feynman struct anymore)
+    // XML header and struct definition
     xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    xml << "<defun name=\"template\">\n\n";
+    xml << "<defun name=\"template\">\n";
+    xml << "    <struct name=\"feynman\">\n";
+    xml << "        <field name=\"MI\" type=\"string\"/>\n";
+    xml << "        <field name=\"reducedIBPs\" type=\"string\"/>\n";
+    xml << "        <field name=\"web\" type=\"string\"/>\n";
+    xml << "    </struct>\n\n";
 
-    // Top-level inputs and outputs (individual fields)
+    // Top-level inputs and outputs
     xml << "    <in name=\"base_filename\" type=\"string\" place=\"base_filename\"/>\n";
     xml << "    <in name=\"library_name\" type=\"string\" place=\"library_name\"/>\n";
     xml << "    <in name=\"input\" type=\"string\" place=\"input\"/>\n";
-    xml << "    <out name=\"output_MI\" type=\"string\" place=\"final_MI\"/>\n";
-    xml << "    <out name=\"output_web\" type=\"string\" place=\"final_web\"/>\n";
-    xml << "    <out name=\"output_reducedIBPs\" type=\"string\" place=\"final_reducedIBPs\"/>\n\n";
+    xml << "    <out name=\"output\" type=\"feynman\" place=\"final_data\"/>\n\n";
     xml << "    <net>\n";
 
     // Declare places
@@ -175,10 +159,10 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         xml << "            <defun>\n";
         xml << "                <require key=\"worker\" mandatory=\"true\"/>\n";
 
-        // Identify control, global, and field ports
+        // Identify control, global, and data ports
         std::string control_input;
         std::vector<std::string> global_inputs;
-        std::vector<std::string> field_inputs, field_outputs;
+        std::vector<std::string> data_inputs, data_outputs;
         std::set<std::string> inputs_set;
 
         if (net.transition_inputs.count(transition)) {
@@ -189,30 +173,30 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                         control_input = input;
                     } else if (globals.count(input)) {
                         global_inputs.push_back(input);
-                    } else if ((input == "MI" || input == "web" || input == "reducedIBPs") && transition != "T_0") {
-                        global_inputs.push_back(input); // Global fields are read-only except for T_0
+                    } else if (input == "data" && transition != "T_0") {
+                        global_inputs.push_back(input); // "data" is read-only except for T_0
                     } else {
                         inputs_set.insert(input);
-                        field_inputs.push_back(input);
+                        data_inputs.push_back(input);
                     }
                 }
             }
         }
         if (net.transition_outputs.count(transition)) {
             for (const auto& output : net.transition_outputs.at(transition)) {
-                field_outputs.push_back(output);
+                data_outputs.push_back(output);
             }
         }
 
         // Define ports
-        for (const auto& input : field_inputs) {
+        for (const auto& input : data_inputs) {
             xml << "                <in name=\"" << input << "\" type=\"" << net.place_types.at(input) << "\"/>\n";
         }
-        for (const auto& output : field_outputs) {
+        for (const auto& output : data_outputs) {
             xml << "                <out name=\"" << output << "\" type=\"" << net.place_types.at(output) << "\"/>\n";
         }
         for (const auto& global : global_inputs) {
-            xml << "                <in name=\"" << global << "\" type=\"string\"/>\n";
+            xml << "                <in name=\"" << global << "\" type=\"" << (global == "data" ? "feynman" : "string") << "\"/>\n";
         }
         if (!control_input.empty()) {
             xml << "                <in name=\"" << control_input << "\" type=\"control\"/>\n";
@@ -222,8 +206,8 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         std::vector<std::string> function_args;
         if (!control_input.empty()) function_args.push_back(control_input);
         function_args.insert(function_args.end(), global_inputs.begin(), global_inputs.end());
-        function_args.insert(function_args.end(), field_inputs.begin(), field_inputs.end());
-        function_args.insert(function_args.end(), field_outputs.begin(), field_outputs.end());
+        function_args.insert(function_args.end(), data_inputs.begin(), data_inputs.end());
+        function_args.insert(function_args.end(), data_outputs.begin(), data_outputs.end());
 
         // Module definition
         xml << "                <module name=\"singular_template\" require_function_unloads_without_rest=\"false\" function=\"f_" << transition << "(";
@@ -238,18 +222,18 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         // Transition-specific code
         if (transition == "T_0") {
             xml << "                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);\n";
-            xml << "                        web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);\n";
-            xml << "                        reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);\n";
-            xml << "                        MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);\n";
-            xml << "                        std::cout << \"web: \" << web << std::endl;\n";
+            xml << "                        data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);\n";
+            xml << "                        data.reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);\n";
+            xml << "                        data.MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);\n";
+            xml << "                        std::cout << \"web: \" << data.web << std::endl;\n";
         } else if (transition == "T_end") {
-            xml << "                        final_web = \"\";\n";
-            for (size_t i = 0; i < field_inputs.size(); i += 3) { // Step by 3 for MI, web, reducedIBPs
-                xml << "                        final_web += " << field_inputs[i + 1] << ";\n"; // web field
+            xml << "                        final_data.web = \"\";\n";
+            for (size_t i = 0; i < data_inputs.size(); ++i) {
+                xml << "                        final_data.web += " << data_inputs[i] << ".web;\n";
             }
-            if (!field_inputs.empty()) {
-                xml << "                        final_reducedIBPs = " << field_inputs[2] << ";\n"; // reducedIBPs field
-                xml << "                        final_MI = " << field_inputs[0] << ";\n";         // MI field
+            if (!data_inputs.empty()) {
+                xml << "                        final_data.reducedIBPs = " << data_inputs[0] << ".reducedIBPs;\n";
+                xml << "                        final_data.MI = " << data_inputs[0] << ".MI;\n";
             }
         } else {
             int j = 0, k = 0;
@@ -261,24 +245,18 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
                 std::cerr << "Warning: Unexpected transition format: " << transition << std::endl;
             }
 
-            // Create lists of field inputs for merging (assuming mergeFeynman_gpi is adapted)
-            xml << "                        std::list<std::string> mi_list, web_list, ribps_list;\n";
-            for (size_t i = 0; i < field_inputs.size(); i += 3) { // Step by 3 for MI, web, reducedIBPs
-                xml << "                        mi_list.push_back(" << field_inputs[i] << ");\n";
-                xml << "                        web_list.push_back(" << field_inputs[i + 1] << ");\n";
-                xml << "                        ribps_list.push_back(" << field_inputs[i + 2] << ");\n";
+            // Create a list of data inputs for mergeFeynman_gpi
+            xml << "                        std::list<std::string> data_list;\n";
+            for (size_t i = 0; i < data_inputs.size(); ++i) {
+                xml << "                        data_list.push_back(" << data_inputs[i] << ");\n";
             }
 
-            // Call mergeFeynman_gpi with individual lists (assuming it’s modified to return separate fields)
-            xml << "                        std::string merged_mi = RESOLVE_INTERFACE_FUNCTION(singular_mergeFeynman_gpi)(mi_list, library_name, base_filename);\n";
-            xml << "                        std::string merged_web = RESOLVE_INTERFACE_FUNCTION(singular_mergeFeynman_gpi)(web_list, library_name, base_filename);\n";
-            xml << "                        std::string merged_ribps = RESOLVE_INTERFACE_FUNCTION(singular_mergeFeynman_gpi)(ribps_list, library_name, base_filename);\n";
-            xml << "                        " << field_outputs[0] << " = merged_mi;\n";   // MI output
-            xml << "                        " << field_outputs[1] << " = merged_web;\n"; // web output
-            xml << "                        " << field_outputs[2] << " = merged_ribps;\n"; // reducedIBPs output
+            // Call mergeFeynman_gpi with the list
+            xml << "                        std::string merged_data = RESOLVE_INTERFACE_FUNCTION(singular_mergeFeynman_gpi)(data_list, library_name, base_filename);\n";
+            xml << "                        data = merged_data;\n";
 
             // Seed computation
-            xml << "                        std::string reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)(reducedIBPs, library_name, base_filename);\n";
+            xml << "                        std::string reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)(data.reducedIBPs, library_name, base_filename);\n";
             xml << "                        std::cout << \"reducedIBPs_seed: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_seed, library_name) << std::endl;\n";
 
             // Target integrals
@@ -289,7 +267,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
             xml << "                        int j = " << j << ", k = " << k << ";\n";
 
             // Web replacement and target integrals
-            xml << "                        std::string wjk = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(web, j, k, library_name, base_filename);\n";
+            xml << "                        std::string wjk = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(data.web, j, k, library_name, base_filename);\n";
             xml << "                        std::string wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)(wjk, library_name, base_filename);\n";
             xml << "                        std::cout << \"web[\" << j << \",\" << k << \"].TARGET = \" << std::endl;\n";
             xml << "                        int size_wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(wjk_targetInt, library_name, base_filename);\n";
@@ -305,7 +283,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
             xml << "                            std::cout << \"Size of totalIBP_IBP: \" << size_totalIBP_ibp << std::endl;\n";
 
             if (transition == "T_11") {
-                xml << "                            std::string reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(reducedIBPs, library_name, base_filename);\n";
+                xml << "                            std::string reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(data.reducedIBPs, library_name, base_filename);\n";
                 xml << "                            std::string totalIBP_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(totalIBP, library_name, base_filename);\n";
                 xml << "                            reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(totalIBP_over, library_name, base_filename);\n";
                 xml << "                            std::cout << \"Updated reducedibp_over: \" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedibp_over, library_name) << std::endl;\n";
@@ -317,7 +295,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
             xml << "                            std::cout << \"size of indpndIBP: \" << RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(indpndIBP, library_name, base_filename) << std::endl;\n";
             xml << "                            std::cout << \"size of Master and Tail Integrals: \" << RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterAndTailIntgrals, library_name, base_filename) << std::endl;\n";
 
-            xml << "                            std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs, library_name, base_filename);\n";
+            xml << "                            std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(data.reducedIBPs, library_name, base_filename);\n";
             xml << "                            int size_reducedIBPs_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename);\n";
             xml << "                            if (size_reducedIBPs_ibp == 0) {\n";
             xml << "                                reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(indpndIBP, library_name, base_filename);\n";
@@ -331,33 +309,28 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
             xml << "                                }\n";
             xml << "                            }\n";
 
-            xml << "                            std::string w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)(web, masterAndTailIntgrals, j, k, library_name, base_filename);\n";
+            xml << "                            std::string w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)(data.web, masterAndTailIntgrals, j, k, library_name, base_filename);\n";
             xml << "                            std::string w1 = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 1, library_name, base_filename);\n";
-            xml << "                            RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(web, w1, library_name, base_filename);\n";
+            xml << "                            RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.web, w1, library_name, base_filename);\n";
             xml << "                            std::string masterIntgralsInSector = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 2, library_name, base_filename);\n";
             xml << "                            int masterIntgralsInSector_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterIntgralsInSector, library_name, base_filename);\n";
             xml << "                            std::cout << \"masterIntgralsInSector_size: \" << masterIntgralsInSector_size << std::endl;\n";
 
-            xml << "                            int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI, library_name, base_filename);\n";
+            xml << "                            int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(data.MI, library_name, base_filename);\n";
             xml << "                            if (MI_size == 0) {\n";
-            xml << "                                RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(MI, masterIntgralsInSector, library_name, base_filename);\n";
+            xml << "                                RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.MI, masterIntgralsInSector, library_name, base_filename);\n";
             xml << "                                std::cout << \"Assigned master integrals to MI.\" << std::endl;\n";
             xml << "                            } else {\n";
             xml << "                                for (int i = 1; i <= masterIntgralsInSector_size; ++i) {\n";
             xml << "                                    std::string masterIntgralsInSector_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(masterIntgralsInSector, i, library_name, base_filename);\n";
-            xml << "                                    int alreadyIntheList = RESOLVE_INTERFACE_FUNCTION(singular_alreadyIntheList_gpi)(MI, masterIntgralsInSector_i, library_name);\n";
+            xml << "                                    int alreadyIntheList = RESOLVE_INTERFACE_FUNCTION(singular_alreadyIntheList_gpi)(data.MI, masterIntgralsInSector_i, library_name);\n";
             xml << "                                    if (!alreadyIntheList) {\n";
-            xml << "                                        MI = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(MI, masterIntgralsInSector_i, library_name, base_filename);\n";
+            xml << "                                        data.MI = RESOLVE_INTERFACE_FUNCTION(singular_equal_gpi)(data.MI, masterIntgralsInSector_i, library_name, base_filename);\n";
             xml << "                                        std::cout << \"Added master integral from sector index \" << i << std::endl;\n";
             xml << "                                    }\n";
             xml << "                                }\n";
             xml << "                            }\n";
             xml << "                        }\n";
-
-            // Assign updated fields to outputs
-            xml << "                        " << field_outputs[0] << " = MI;\n";
-            xml << "                        " << field_outputs[1] << " = web;\n";
-            xml << "                        " << field_outputs[2] << " = reducedIBPs;\n";
         }
 
         xml << "                    ]]></code>\n";
@@ -368,17 +341,17 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
         if (!control_input.empty()) {
             xml << "            <connect-in port=\"" << control_input << "\" place=\"" << control_input << "\"/>\n";
         }
-        for (const auto& input : field_inputs) {
+        for (const auto& input : data_inputs) {
             xml << "            <connect-in port=\"" << input << "\" place=\"" << input << "\"/>\n";
         }
         for (const auto& global : global_inputs) {
-            if ((global == "MI" || global == "web" || global == "reducedIBPs") && transition == "T_0") {
-                xml << "            <connect-out port=\"" << global << "\" place=\"" << global << "\"/>\n";
+            if (global == "data" && transition == "T_0") {
+                xml << "            <connect-out port=\"data\" place=\"data\"/>\n";
             } else {
                 xml << "            <connect-read port=\"" << global << "\" place=\"" << global << "\"/>\n";
             }
         }
-        for (const auto& output : field_outputs) {
+        for (const auto& output : data_outputs) {
             xml << "            <connect-out port=\"" << output << "\" place=\"" << output << "\"/>\n";
         }
 
@@ -390,7 +363,7 @@ std::string generateXPNetXMLWithT0Tend(const PetriNet& net) {
     return xml.str();
 }
 
-// Print Petri net details (unchanged)
+// Print Petri net details
 void print_petri_net(const PetriNet& net) {
     std::cout << "\nGenerated PetriNet:\n";
     std::cout << "Places:\n";
@@ -414,8 +387,29 @@ void print_petri_net(const PetriNet& net) {
     }
 }
 
-// Main function (unchanged)
+// Main function
 int main() {
+    /* std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "41"};
+    std::vector<std::pair<std::string, std::string>> edges = {
+        {"11", "21"}, {"11", "22"}, {"11", "23"},
+        {"21", "31"}, {"22", "31"}, {"22", "32"},
+        {"23", "32"}, {"31", "41"}, {"32", "41"}
+    }; */
+  /*   std::vector<std::string> vertices = {"11", "21", "22", "23", "24", "31", "32"};
+    std::vector<std::pair<std::string, std::string>> edges = {
+        {"11", "21"}, {"11", "22"}, {"11", "23"},
+        {"11", "24"}, {"21", "31"}, {"22", "32"},
+        {"23", "31"}, {"24", "32"}
+    }; */
+
+/*     std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "33", "34","35","41","42"};
+    std::vector<std::pair<std::string, std::string>> edges = {
+        {"11", "21"}, {"11", "22"}, {"11", "23"},
+        {"21", "31"}, {"21", "33"}, {"22", "32"},{"22", "33"}, {"22", "34"}, {"23", "34"},{"23", "35"}, 
+        {"31", "41"}, {"33", "41"},  {"33", "42"}, {"34", "42"}, {"35", "42"}
+    }; */
+
+
     std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "33"};
     std::vector<std::pair<std::string, std::string>> edges = {
         {"11", "21"}, {"11", "22"}, {"11", "23"},
@@ -427,7 +421,7 @@ int main() {
     std::cout << "Root Node: " << root_node << "\n";
 
     PetriNet myPetriNet = generate_petri_net(myDAG);
-    // print_petri_net(myPetriNet);
+   // print_petri_net(myPetriNet);
 
     std::string xml = generateXPNetXMLWithT0Tend(myPetriNet);
     std::ofstream file("workflow/template.xpnet");
