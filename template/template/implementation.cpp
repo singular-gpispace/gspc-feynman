@@ -1176,3 +1176,125 @@ std::string singular_assign_gpi(std::string const& res
 
     return out_filename;
 }
+// implementation.cpp
+
+// Function to create a serialized data_list from multiple feynman struct strings
+
+/******************************************************************************************************** */
+// Helper function to get struct field by name (based on newstruct example)
+char* get_struct_field(sleftv* s, const char* field_name, blackbox* bb) {
+    if (bb && bb->data) {
+        newstruct_desc desc = static_cast<newstruct_desc>(bb->data);
+        newstruct_member member = desc->member;
+        while (member != nullptr) {
+            if (strcmp(member->name, field_name) == 0) {
+                lists l = static_cast<lists>(s->Data());
+                if (member->pos < l->nr + 1) {
+                    return l->m[member->pos].String(); // Returns a dynamically allocated string
+                }
+            }
+            member = member->next;
+        }
+    }
+    std::cerr << "Error: Field " << field_name << " not found in struct" << std::endl;
+    return nullptr;
+}
+
+std::string singular_deserialize_feynman_token(
+    const std::string& token_str,
+    const std::string& library_name,
+    const std::string& base_filename
+) {
+    // Initialize Singular
+    init_singular(config::singularLibrary().string());
+    load_singular_library(library_name);
+
+    // Deserialize the token string
+    std::pair<int, void*> merged_res = deserialize(token_str, worker());
+    if (merged_res.first != LIST_CMD) {
+        std::cerr << "Error: Expected LIST_CMD for token, got " << merged_res.first << std::endl;
+        omFree(merged_res.second);
+        return "";
+    }
+
+    lists token_list = static_cast<lists>(merged_res.second);
+    if (token_list->nr < 0 || token_list->m[0].rtyp != LIST_CMD) {
+        std::cerr << "Error: Token data list invalid" << std::endl;
+        omFreeBin(token_list, slists_bin);
+        return "";
+    }
+
+    lists feynman_list = static_cast<lists>(token_list->m[0].data);
+    if (feynman_list->nr < 0 || feynman_list->m[0].rtyp != STRUCT_CMD) {
+        std::cerr << "Error: Feynman struct invalid" << std::endl;
+        omFreeBin(token_list, slists_bin);
+        return "";
+    }
+
+    sleftv* feynman_struct = &feynman_list->m[0];
+    blackbox* bb = getBlackboxStuff(feynman_struct->Typ());
+    std::ostringstream result;
+
+    // Serialize fields into a string (e.g., JSON-like format)
+    result << "{";
+    char* mi = get_struct_field(feynman_struct, "MI", bb);
+    if (mi) {
+        result << "\"MI\":\"" << mi << "\"";
+        omFree(mi);
+    }
+    char* reducedIBPs = get_struct_field(feynman_struct, "reducedIBPs", bb);
+    if (reducedIBPs) {
+        result << ",\"reducedIBPs\":\"" << reducedIBPs << "\"";
+        omFree(reducedIBPs);
+    }
+    char* web = get_struct_field(feynman_struct, "web", bb);
+    if (web) {
+        result << ",\"web\":\"" << web << "\"";
+        omFree(web);
+    }
+    result << "}";
+
+    // Clean up
+    omFreeBin(token_list, slists_bin);
+    omFree(merged_res.second);
+
+    return result.str();
+}
+
+std::string create_feynman_data_list(
+    const std::vector<std::string>& feynman_inputs,
+    const std::string& library_name,
+    const std::string& base_filename
+) {
+    init_singular(config::singularLibrary().string());
+    load_singular_library(library_name);
+
+    lists L = (lists)omAlloc0Bin(slists_bin);
+    L->Init(feynman_inputs.size());
+
+    std::string ids = worker();
+    for (size_t i = 0; i < feynman_inputs.size(); ++i) {
+        std::pair<int, lists> res = deserialize(feynman_inputs[i], ids); // Expect "struct feynman {web=..., ...}"
+        L->m[i].rtyp = res.first; // Should be STRUCT_CMD for feynman
+        L->m[i].data = lCopy(res.second);
+    }
+
+    std::string data_list = serialize(L, base_filename + "_temp");
+    omFreeBin(L, slists_bin);
+    return data_list;
+}
+std::string singular_mergeFeynman_gpi(
+    const std::string& res,
+    const std::string& needed_library,
+    const std::string& base_filename
+) {
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res = deserialize(res, worker()); // Deserialize list of feynman structs
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    std::string function_name = "mergeFeynman_gpi";
+    std::pair<int, lists> out = call_user_proc(function_name, needed_library, args);
+    std::string out_filename = serialize(out.second, base_filename);
+    omFreeBin(out.second, slists_bin);
+    return out_filename;
+}

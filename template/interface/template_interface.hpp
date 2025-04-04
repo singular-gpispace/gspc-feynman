@@ -205,3 +205,20 @@ std::string singular_assign_gpi(std::string const& res
 );
 NO_NAME_MANGLING
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library);
+NO_NAME_MANGLING
+std::string create_feynman_data_list(
+    const std::vector<std::string>& feynman_inputs,  // Vector of serialized feynman structs
+    const std::string& library_name,                 // Singular library name
+    const std::string& base_filename                 // Base filename for serialization
+);
+NO_NAME_MANGLING
+std::string singular_mergeFeynman_gpi(std::string const& res
+      , std::string const& needed_library
+      , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_deserialize_feynman_token(
+      const std::string& token_str,
+      const std::string& library_name,
+      const std::string& base_filename
+  );
