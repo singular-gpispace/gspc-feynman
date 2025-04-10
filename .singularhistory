@@ -1889,7 +1889,6 @@ data_a;
 $
 LIB "feynman_example.lib";
  ring R = (0,t1,t2,D), (z(1..9)), dp;
-
     // Helper to create a oneSector struct
     proc createSector(list lab, list sectorMap, list targetInts) {
         oneSector s;
@@ -1898,7 +1897,6 @@ LIB "feynman_example.lib";
         s.targetInts = targetInts;
         return(s);
     }
-
     // Helper to create a oneIBP struct
     proc createIBP(list coeff, list integrals) {
         oneIBP ibp;
@@ -1906,7 +1904,6 @@ LIB "feynman_example.lib";
         ibp.i = integrals;
         return(ibp);
     }
-
     // Create data_a
     feynman data_a;
     data_a.MI = list(
@@ -1932,7 +1929,6 @@ LIB "feynman_example.lib";
             createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1)))
         )
     );
-
     // Create data_b
     feynman data_b;
     data_b.MI = list(
@@ -1958,7 +1954,6 @@ LIB "feynman_example.lib";
             createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2)))
         )
     );
-
     // Create data_c (third dataset)
     feynman data_c;
     data_c.MI = list(
@@ -1984,7 +1979,6 @@ LIB "feynman_example.lib";
             createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -3)))
         )
     );
-
   list data_to_merge = list(data_a, data_b, data_c);
     feynman merged_abc = mergeFeynman(data_to_merge);
  print("Merged data_a, data_b, and data_c MI size: " + string(size(merged_abc.MI)));
@@ -1998,4 +1992,1926 @@ LIB "feynman_example.lib";
         }
     }
 }
+$
+LIB "feynman_example.lib";
+$
+LIB "feynman_example.lib";
+$
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Define first set of data (formerly data_a)
+list MI_a = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+setIBP reducedIBPs_a;
+reducedIBPs_a.over = R;
+reducedIBPs_a.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+reducedIBPs_a.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+list web_a = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Define second set of data (formerly data_b)
+list MI_b = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+setIBP reducedIBPs_b;
+reducedIBPs_b.over = R;
+reducedIBPs_b.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+reducedIBPs_b.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+list web_b = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+print("Merged MI: " + string(merged_MI.data[1]));
+// Helper procedure to compare two integer lists for equality
+proc eq_int_list(list a, list b) 
+"USAGE: eq_int_list(a, b); a, b lists of integers
+RETURN: 1 if lists are equal, 0 otherwise"
+{
+  if (typeof(a) != "list" || typeof(b) != "list") {
+      print("eq_int_list: Error: Inputs must be lists (a: " + typeof(a) + ", b: " + typeof(b) + ")");
+      return(0);
+  }
+  if (size(a) != size(b)) {
+      return(0);
+  }
+  for (int i = 1; i <= size(a); i++) {
+      if (typeof(a[i]) != "int" || typeof(b[i]) != "int") {
+          print("eq_int_list: Error: Non-integer element at index " + string(i));
+          return(0);
+      }
+      if (a[i] != b[i]) {
+          return(0);
+      }
+  }
+  return(1);
+}
+// Helper procedure to merge two lists of integer vectors, removing duplicates
+proc merge_int_vectors(list A, list B) 
+"USAGE: merge_int_vectors(A, B); A, B lists of integer vectors
+RETURN: A new list containing all unique integer vectors from A and B"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_int_vectors: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) == 0 && size(B) == 0) {
+      return(list());
+  }
+  list C = A;
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list") {
+          print("merge_int_vectors: Warning: Skipping non-list element B[" + string(i) + "]");
+          continue;
+      }
+      int found = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (typeof(A[j]) != "list") {
+              print("merge_int_vectors: Warning: Skipping non-list element A[" + string(j) + "]");
+              continue;
+          }
+          if (eq_int_list(A[j], B[i])) {
+              found = 1;
+              break;
+          }
+      }
+      if (!found) {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Helper procedure to merge two lists of sectors, combining targetInts where labs match
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) < 0 || size(B) < 0) {
+      print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      return(list());
+  }
+  list C = list();
+  for (int i = 1; i <= size(A); i++) {
+      if (typeof(A[i]) != "list" || defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts or not a list");
+          return(list());
+      }
+      C[i] = A[i];
+  }
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list" || defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts or not a list");
+          return(list());
+      }
+      int found = 0;
+      int idx = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (eq_int_list(A[j].lab, B[i].lab)) {
+              found = 1;
+              idx = j;
+              break;
+          }
+      }
+      if (found) {
+          C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+      } else {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+  list merged = list();
+  int max_layers = size(web1) > size(web2) ? size(web1) : size(web2);
+  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+// Procedure to merge two MI lists
+proc mergeMI(list MI1, list MI2) 
+"USAGE: mergeMI(MI1, MI2); MI1, MI2 lists of integer vectors
+RETURN: A merged MI list with unique integer vectors"
+{
+  if (typeof(MI1) != "list" || typeof(MI2) != "list") {
+      print("mergeMI: Error: Inputs must be lists (MI1: " + typeof(MI1) + ", MI2: " + typeof(MI2) + ")");
+      return(list());
+  }
+  return(merge_int_vectors(MI1, MI2));
+}
+// Procedure to merge two reducedIBPs structures of type setIBP
+proc mergeRedIBPs(setIBP redIBPs1, setIBP redIBPs2) 
+"USAGE: mergeRedIBPs(redIBPs1, redIBPs2); redIBPs1, redIBPs2 setIBP structs with over, seed, and IBP fields
+RETURN: A merged setIBP struct with combined seeds and IBPs
+DESCRIPTION: Merges two reducedIBPs fields, ensuring ring compatibility, merging seeds, and appending IBPs."
+{
+  if (typeof(redIBPs1) != "setIBP" || typeof(redIBPs2) != "setIBP") {
+      print("mergeRedIBPs: Error: Inputs must be setIBP type (redIBPs1: " + typeof(redIBPs1) + ", redIBPs2: " + typeof(redIBPs2) + ")");
+      setIBP empty;
+      return(empty);
+  }
+  if (redIBPs1.over != redIBPs2.over) {
+      print("mergeRedIBPs: Error: Incompatible rings");
+      setIBP empty;
+      return(empty);
+  }
+  setIBP merged;
+  merged.over = redIBPs1.over; // Use the ring from the first input
+  merged.seed = merge_int_vectors(redIBPs1.seed, redIBPs2.seed); // Merge seeds
+  merged.IBP = list(); // Initialize IBP list
+  int idx = 0;
+  
+  // Append all IBPs from redIBPs1
+  for (int i = 1; i <= size(redIBPs1.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs1.IBP[i];
+  }
+  // Append all IBPs from redIBPs2
+  for (int i = 1; i <= size(redIBPs2.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs2.IBP[i];
+  }
+  return(merged);
+}
+$
+LIB "feynman_example.lib";
+// Define the ring
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Define first set of variables (formerly data_a)
+list MI_a = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+setIBP reducedIBPs_a;
+reducedIBPs_a.over = R;
+reducedIBPs_a.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+reducedIBPs_a.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+list web_a = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Define second set of variables (formerly data_b)
+list MI_b = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+setIBP reducedIBPs_b;
+reducedIBPs_b.over = R;
+reducedIBPs_b.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+reducedIBPs_b.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+list web_b = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+// Helper procedure to compare two integer lists for equality
+proc eq_int_list(list a, list b) 
+"USAGE: eq_int_list(a, b); a, b lists of integers
+RETURN: 1 if lists are equal, 0 otherwise"
+{
+  if (typeof(a) != "list" || typeof(b) != "list") {
+      print("eq_int_list: Error: Inputs must be lists (a: " + typeof(a) + ", b: " + typeof(b) + ")");
+      return(0);
+  }
+  if (size(a) != size(b)) {
+      return(0);
+  }
+  for (int i = 1; i <= size(a); i++) {
+      if (typeof(a[i]) != "int" || typeof(b[i]) != "int") {
+          print("eq_int_list: Error: Non-integer element at index " + string(i));
+          return(0);
+      }
+      if (a[i] != b[i]) {
+          return(0);
+      }
+  }
+  return(1);
+}
+// Helper procedure to merge two lists of integer vectors, removing duplicates
+proc merge_int_vectors(list A, list B) 
+"USAGE: merge_int_vectors(A, B); A, B lists of integer vectors
+RETURN: A new list containing all unique integer vectors from A and B"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_int_vectors: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) == 0 && size(B) == 0) {
+      return(list());
+  }
+  list C = A;
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list") {
+          print("merge_int_vectors: Warning: Skipping non-list element B[" + string(i) + "]");
+          continue;
+      }
+      int found = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (typeof(A[j]) != "list") {
+              print("merge_int_vectors: Warning: Skipping non-list element A[" + string(j) + "]");
+              continue;
+          }
+          if (eq_int_list(A[j], B[i])) {
+              found = 1;
+              break;
+          }
+      }
+      if (!found) {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Helper procedure to merge two lists of sectors, combining targetInts where labs match
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) < 0 || size(B) < 0) {
+      print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      return(list());
+  }
+  list C = list();
+  for (int i = 1; i <= size(A); i++) {
+      if (typeof(A[i]) != "list" || defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts or not a list");
+          return(list());
+      }
+      C[i] = A[i];
+  }
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list" || defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts or not a list");
+          return(list());
+      }
+      int found = 0;
+      int idx = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (eq_int_list(A[j].lab, B[i].lab)) {
+              found = 1;
+              idx = j;
+              break;
+          }
+      }
+      if (found) {
+          C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+      } else {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+  list merged = list();
+  int max_layers = size(web1) > size(web2) ? size(web1) : size(web2);
+  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+// Procedure to merge two MI lists
+proc mergeMI(list MI1, list MI2) 
+"USAGE: mergeMI(MI1, MI2); MI1, MI2 lists of integer vectors
+RETURN: A merged MI list with unique integer vectors"
+{
+  if (typeof(MI1) != "list" || typeof(MI2) != "list") {
+      print("mergeMI: Error: Inputs must be lists (MI1: " + typeof(MI1) + ", MI2: " + typeof(MI2) + ")");
+      return(list());
+  }
+  return(merge_int_vectors(MI1, MI2));
+}
+// Procedure to merge two reducedIBPs structures of type setIBP
+proc mergeRedIBPs(setIBP redIBPs1, setIBP redIBPs2) 
+"USAGE: mergeRedIBPs(redIBPs1, redIBPs2); redIBPs1, redIBPs2 setIBP structs with over, seed, and IBP fields
+RETURN: A merged setIBP struct with combined seeds and IBPs"
+{
+  if (typeof(redIBPs1) != "setIBP" || typeof(redIBPs2) != "setIBP") {
+      print("mergeRedIBPs: Error: Inputs must be setIBP type (redIBPs1: " + typeof(redIBPs1) + ", redIBPs2: " + typeof(redIBPs2) + ")");
+      setIBP empty;
+      return(empty);
+  }
+  if (redIBPs1.over != redIBPs2.over) {
+      print("mergeRedIBPs: Error: Incompatible rings");
+      setIBP empty;
+      return(empty);
+  }
+  setIBP merged;
+  merged.over = redIBPs1.over; // Use the ring from the first input
+  merged.seed = merge_int_vectors(redIBPs1.seed, redIBPs2.seed); // Merge seeds
+  merged.IBP = list(); // Initialize IBP list
+  int idx = 0;
+  
+  // Append all IBPs from redIBPs1
+  for (int i = 1; i <= size(redIBPs1.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs1.IBP[i];
+  }
+  // Append all IBPs from redIBPs2
+  for (int i = 1; i <= size(redIBPs2.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs2.IBP[i];
+  }
+  return(merged);
+}
+// Example usage
+list merged_MI = mergeMI(MI_a, MI_b);
+list merged_web = merge_web(web_a, web_b);
+setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+list web_a = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Example usage
+list merged_MI = mergeMI(MI_a, MI_b);
+list merged_web = merge_web(web_a, web_b);
+setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+web_a;
+R;
+MI_a;
+reducedIBPs_a;
+web_a;
+ list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+web_a;
+$
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+web_a;
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+  list merged = list();
+  int max_layers;
+  if (size(web1) > size(web2)) {
+      max_layers = size(web1);
+  } else {
+      max_layers = size(web2);
+  }  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+// Helper procedure to merge two lists of sectors, combining targetInts where labs match
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) < 0 || size(B) < 0) {
+      print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      return(list());
+  }
+  list C = list();
+  // Copy sectors from A
+  for (int i = 1; i <= size(A); i++) {
+      if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      C[i] = A[i]; // Directly copy the oneSector struct
+  }
+  // Merge sectors from B
+  for (int i = 1; i <= size(B); i++) {
+      if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      int found = 0;
+      int idx = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (eq_int_list(A[j].lab, B[i].lab)) {
+              found = 1;
+              idx = j;
+              break;
+          }
+      }
+      if (found) {
+          C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+      } else {
+          C[size(C) + 1] = B[i]; // Append the oneSector struct directly
+      }
+  }
+  return(C);
+}
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+  list merged = list();
+  int max_layers;
+  if (size(web1) > size(web2)) {
+      max_layers = size(web1);
+  } else {
+      max_layers = size(web2);
+  }  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+ // Print results for verification
+    print("Merged MI: " + string(merged_MI));
+    print("Merged web: " + string(merged_web));
+    print("Merged reducedIBPs.seed: " + string(merged_reducedIBPs.seed));
+    print("Merged reducedIBPs.IBP: " + string(merged_reducedIBPs.IBP));
+// New procedure to print detailed contents of lists and setIBP structs
+proc print_detailed(string name, def obj)
+"USAGE: print_detailed(name, obj); name string label, obj any object (list or setIBP)
+PURPOSE: Prints detailed contents of nested structures"
+{
+  print(name + ":");
+  if (typeof(obj) == "list") {
+      if (size(obj) == 0) {
+          print("  (empty list)");
+          return;
+      }
+      for (int i = 1; i <= size(obj); i++) {
+          if (typeof(obj[i]) == "list") {
+              string s = "  [" + string(i) + "] = ";
+              for (int j = 1; j <= size(obj[i]); j++) {
+                  s = s + string(obj[i][j]);
+                  if (j < size(obj[i])) { s = s + ","; }
+              }
+              print(s);
+          } else if (typeof(obj[i]) == "oneSector") {
+              print("  [" + string(i) + "].lab = " + string(obj[i].lab));
+              print("  [" + string(i) + "].sectorMap = " + string(obj[i].sectorMap));
+              print("  [" + string(i) + "].targetInts = " + string(obj[i].targetInts));
+          } else {
+              print("  [" + string(i) + "] = " + string(obj[i]));
+          }
+      }
+  } else if (typeof(obj) == "setIBP") {
+      print("  over = " + string(obj.over));
+      print("  seed:");
+      for (int i = 1; i <= size(obj.seed); i++) {
+          string s = "    [" + string(i) + "] = ";
+          for (int j = 1; j <= size(obj.seed[i]); j++) {
+              s = s + string(obj.seed[i][j]);
+              if (j < size(obj.seed[i])) { s = s + ","; }
+          }
+          print(s);
+      }
+      print("  IBP:");
+      for (int i = 1; i <= size(obj.IBP); i++) {
+          print("    [" + string(i) + "].c = " + string(obj.IBP[i].c));
+          print("    [" + string(i) + "].i:");
+          for (int j = 1; j <= size(obj.IBP[i].i); j++) {
+              string s = "      [" + string(j) + "] = ";
+              for (int k = 1; k <= size(obj.IBP[i].i[j]); k++) {
+                  s = s + string(obj.IBP[i].i[j][k]);
+                  if (k < size(obj.IBP[i].i[j])) { s = s + ","; }
+              }
+              print(s);
+          }
+      }
+  } else {
+      print("  " + string(obj));
+  }
+}
+// Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+}
+merged_reducedIBPs.seed;
+merged_reducedIBPs;
+merged_reducedIBPs[1];
+merged_reducedIBPs.seed;
+merged_reducedIBPs.IBP;
+merged_reducedIBPs.IBP.c;
+merged_reducedIBPs.IBP[1].c;
+merged_reducedIBPs.IBP[1].c[1];
+merged_reducedIBPs.IBP[1].i[1];
+merged_web;
+merged_web[2];
+merged_web[2][2];
+merged_web[2][2].targetInts;
+merged_web[2][2].lab;
+merged_MI;
+// New procedure to print detailed contents of lists and setIBP structs
+proc print_detailed(string name, def obj)
+"USAGE: print_detailed(name, obj); name string label, obj any object (list or setIBP)
+PURPOSE: Prints detailed contents of nested structures"
+{
+  print(name + ":");
+  if (typeof(obj) == "list") {
+    if (size(obj) == 0) {
+      print("  (empty list)");
+    } else {
+      for (int i = 1; i <= size(obj); i++) {
+        if (typeof(obj[i]) == "list") {
+          string s = "  [" + string(i) + "] = ";
+          for (int j = 1; j <= size(obj[i]); j++) {
+            if (typeof(obj[i][j]) == "list") {
+              s = s + "[";
+              for (int k = 1; k <= size(obj[i][j]); k++) {
+                s = s + string(obj[i][j][k]);
+                if (k < size(obj[i][j])) { s = s + ","; }
+              }
+              s = s + "]";
+            } else {
+              s = s + string(obj[i][j]);
+            }
+            if (j < size(obj[i])) { s = s + ","; }
+          }
+          print(s);
+        } else if (typeof(obj[i]) == "oneSector") {
+          print("  [" + string(i) + "].lab = " + string(obj[i].lab));
+          print("  [" + string(i) + "].sectorMap = " + string(obj[i].sectorMap));
+          print("  [" + string(i) + "].targetInts = " + string(obj[i].targetInts));
+        } else {
+          print("  [" + string(i) + "] = " + string(obj[i]));
+        }
+      }
+    }
+  } else if (typeof(obj) == "setIBP") {
+    print("  over = " + string(obj.over));
+    print("  seed:");
+    if (size(obj.seed) == 0) {
+      print("    (empty list)");
+    } else {
+      for (int i = 1; i <= size(obj.seed); i++) {
+        string s = "    [" + string(i) + "] = ";
+        for (int j = 1; j <= size(obj.seed[i]); j++) {
+          s = s + string(obj.seed[i][j]);
+          if (j < size(obj.seed[i])) { s = s + ","; }
+        }
+        print(s);
+      }
+    }
+    print("  IBP:");
+    if (size(obj.IBP) == 0) {
+      print("    (empty list)");
+    } else {
+      for (int i = 1; i <= size(obj.IBP); i++) {
+        print("    [" + string(i) + "].c = " + string(obj.IBP[i].c));
+        print("    [" + string(i) + "].i:");
+        for (int j = 1; j <= size(obj.IBP[i].i); j++) {
+          string s = "      [" + string(j) + "] = ";
+          for (int k = 1; k <= size(obj.IBP[i].i[j]); k++) {
+            s = s + string(obj.IBP[i].i[j][k]);
+            if (k < size(obj.IBP[i].i[j])) { s = s + ","; }
+          }
+          print(s);
+        }
+      }
+    }
+  } else {
+    print("  " + string(obj));
+  }
+}
+// Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+}
+// Example block demonstrating the merge procedures with detailed printing
+example {
+    // Define the ring
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+}
+// Example block demonstrating the merge procedures with detailed printing
+example {
+    // Define the ring
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+}
+// Example block demonstrating the merge procedures with detailed printing
+example {
+    // Define the ring
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+}
+$
+LIB "feynman_example.lib";
+graph G = makeGraph(
+  list(1,2,3,4,5,6), 
+  list(
+      list(6,1), list(4,6), list(1,2), list(3,5), 
+      list(4,3), list(2,5), list(5,6), list(1), 
+      list(2), list(3), list(4)
+  )
+);
+// Define a list of target integrals
+list targetInt = list(
+  list(1, 1, 1, -1, -3, 1, -1, -1, -1), 
+  list(1, -1, 1, -1, -3, -1, -1, -4, -1)
+);
+    if (size(targetInt) == 0) {
+        ERROR("Empty target integral list provided.");
+    }
+    // Debug: Ensure the input graph G and target integrals are correctly passed
+    print("Graph G: " + string(G));
+    print("Target Integrals: " + string(targetInt));
+    list L = pickHighestSector(targetInt);
+    if (size(L) == 0) {
+        ERROR("pickHighestSector returned an empty list.");
+    }
+    if (size(L) > 1) {
+        ERROR("Provided integrals belong to more than one integral class.");
+    }
+    list web = generateWebSectors(L[1][1]);
+    web = setSectorMap(web);
+    print("Generated web: " + string(web));
+    list w4 = updateWeb(web, list(1,1), targetInt);
+    web = w4[1];
+    print("Size of updated web: " + string(size(web)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+    setIBP reducedIBPs;
+    list MI;
+    print("Size of targetInt: " + string(size(targetInt)));
+    int te = 0;
+    reducedIBPs.seed = targetInt;
+    int j = 1;
+    if (size(web) < j) {
+        ERROR("Web list does not contain layer j=" + string(j));
+    }
+    int nSectors = size(web[j]);
+    if (nSectors == 0) {
+        ERROR("No sectors available in web[" + string(j) + "]");
+    }
+    int k = 1;
+    if (size(web[j]) < k) {
+        ERROR("Web[" + string(j) + "] does not contain sector k=" + string(k));
+    }
+    print("Computing IBP for sector: " + string(web[j][k].targetInts));
+    setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
+    print("Size of totalIBP.IBP: " + string(size(totalIBP.IBP)));
+    if (te == 0) {
+        reducedIBPs.over = totalIBP.over;
+        te = 1;
+    }
+    if (reducedIBPs.over == 0) {
+        ERROR("totalIBP.over is not initialized correctly.");
+    }
+    ring R = reducedIBPs.over;
+    setring R;
+    list L = getRedIBPs(totalIBP, 101);
+    if (size(L) < 2) {
+        ERROR("getRedIBPs did not return expected two lists.");
+    }
+    list indpndIBP = L[1];
+    print("Size of indpndIBP: " + string(size(indpndIBP)));
+    list masterAndTailIntgrals = L[2];
+    print("Size of masterAndTailIntgrals: " + string(size(masterAndTailIntgrals)));
+    if (size(reducedIBPs.IBP) == 0) {
+        reducedIBPs.IBP = indpndIBP;
+    } else {
+        for (int i = 1; i <= size(indpndIBP); i++) {
+            reducedIBPs.IBP[size(reducedIBPs.IBP) + 1] = indpndIBP[i];
+        }
+    }
+    kill R;
+    print("Size of masterAndTailIntgrals = " + string(size(masterAndTailIntgrals)));
+    list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
+    web = w[1];
+    print("w[2] = " + string(w[2])); // Fixed debug message
+    list masterIntgralsInSector = w[2];
+    print("Size of masterIntgralsInSector = " + string(size(masterIntgralsInSector)));
+    if (size(MI) == 0) {
+        print("MI is empty, assigning masterIntgralsInSector to MI");
+        MI = masterIntgralsInSector;
+        print("MI is now: " + string(MI));
+    } else {
+        for (int i = 1; i <= size(masterIntgralsInSector); i++) {
+            if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0) {
+                print("Adding master integral to MI: " + string(masterIntgralsInSector[i]));
+                MI[size(MI) + 1] = masterIntgralsInSector[i];
+            }
+        }
+    }
+    print("Completed computation in sector: " + string(k) + " at layer " + string(j) + ".");
+    return list(reducedIBPs, MI);
+graph G = makeGraph(
+  list(1,2,3,4,5,6), 
+  list(
+      list(6,1), list(4,6), list(1,2), list(3,5), 
+      list(4,3), list(2,5), list(5,6), list(1), 
+      list(2), list(3), list(4)
+  )
+);
+// Define a list of target integrals
+list targetInt = list(
+  list(1, 1, 1, -1, -3, 1, -1, -1, -1), 
+  list(1, -1, 1, -1, -3, -1, -1, -4, -1)
+);
+    if (size(targetInt) == 0) {
+        ERROR("Empty target integral list provided.");
+    }
+    // Debug: Ensure the input graph G and target integrals are correctly passed
+    print("Graph G: " + string(G));
+    print("Target Integrals: " + string(targetInt));
+    list L = pickHighestSector(targetInt);
+    if (size(L) == 0) {
+        ERROR("pickHighestSector returned an empty list.");
+    }
+    if (size(L) > 1) {
+        ERROR("Provided integrals belong to more than one integral class.");
+    }
+    list web = generateWebSectors(L[1][1]);
+    web = setSectorMap(web);
+    print("Generated web: " + string(web));
+    list w4 = updateWeb(web, list(1,1), targetInt);
+    web = w4[1];
+    print("Size of updated web: " + string(size(web)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+    setIBP reducedIBPs;
+    list MI;
+    print("Size of targetInt: " + string(size(targetInt)));
+    int te = 0;
+    reducedIBPs.seed = targetInt;
+    int j = 1;
+    if (size(web) < j) {
+        ERROR("Web list does not contain layer j=" + string(j));
+    }
+    int nSectors = size(web[j]);
+    if (nSectors == 0) {
+        ERROR("No sectors available in web[" + string(j) + "]");
+    }
+    int k = 1;
+    if (size(web[j]) < k) {
+        ERROR("Web[" + string(j) + "] does not contain sector k=" + string(k));
+    }
+    print("Computing IBP for sector: " + string(web[j][k].targetInts));
+    setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
+    print("Size of totalIBP.IBP: " + string(size(totalIBP.IBP)));
+    if (te == 0) {
+        reducedIBPs.over = totalIBP.over;
+        te = 1;
+    }
+    if (reducedIBPs.over == 0) {
+        ERROR("totalIBP.over is not initialized correctly.");
+    }
+    ring R = reducedIBPs.over;
+    setring R;
+    list L = getRedIBPs(totalIBP, 101);
+    if (size(L) < 2) {
+        ERROR("getRedIBPs did not return expected two lists.");
+    }
+    list indpndIBP = L[1];
+    print("Size of indpndIBP: " + string(size(indpndIBP)));
+    list masterAndTailIntgrals = L[2];
+    print("Size of masterAndTailIntgrals: " + string(size(masterAndTailIntgrals)));
+    if (size(reducedIBPs.IBP) == 0) {
+        reducedIBPs.IBP = indpndIBP;
+    } else {
+        for (int i = 1; i <= size(indpndIBP); i++) {
+            reducedIBPs.IBP[size(reducedIBPs.IBP) + 1] = indpndIBP[i];
+        }
+    }
+    kill R;
+    print("Size of masterAndTailIntgrals = " + string(size(masterAndTailIntgrals)));
+    list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
+    web = w[1];
+    print("w[2] = " + string(w[2])); // Fixed debug message
+    list masterIntgralsInSector = w[2];
+    print("Size of masterIntgralsInSector = " + string(size(masterIntgralsInSector)));
+    if (size(MI) == 0) {
+        print("MI is empty, assigning masterIntgralsInSector to MI");
+        MI = masterIntgralsInSector;
+        print("MI is now: " + string(MI));
+    } else {
+        for (int i = 1; i <= size(masterIntgralsInSector); i++) {
+            if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0) {
+                print("Adding master integral to MI: " + string(masterIntgralsInSector[i]));
+                MI[size(MI) + 1] = masterIntgralsInSector[i];
+            }
+        }
+    }
+    print("Completed computation in sector: " + string(k) + " at layer " + string(j) + ".");
+    return list(reducedIBPs, MI);
+LIB "feynman_example.lib";
+  ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+$
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+$
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+    print_detailed("Merged MI", merged_MI);
+MI_a;
+    print_detailed("Merged MI", merged_MI);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged MI", merged_MI);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged MI", merged_MI);
+ print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+    print_detailed("Merged MI", merged_MI);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables (formerly data_a)
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        ),
+        createIBP(
+            list(2*t1, t2),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+        )
+    );
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+            createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables (formerly data_b)
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        ),
+        createIBP(
+            list(t2^2, -t1),
+            list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+        )
+    );
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        ),
+        list(
+            createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+            createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Example usage of merge procedures
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print detailed results for verification
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+$
+LIB "feynman_example.lib";
+ ring R = (0,t1,t2,D), (z(1..9)), dp;
+    // Define first set of variables
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        )
+    );
+    
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+    // Define second set of variables
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        )
+    );
+    
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+    // Perform merges
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+    // Print results
+    print_detailed("Merged MI", merged_MI);
+    print_detailed("Merged web", merged_web);
+    print_detailed("Merged reducedIBPs", merged_reducedIBPs);
+    print_detailed("Merged MI", merged_MI);
+$
 $
