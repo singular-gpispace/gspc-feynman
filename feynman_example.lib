@@ -1,0 +1,378 @@
+// Load required library
+LIB "feynman.lib";
+
+  proc createSector(list lab, list sectorMap, list targetInts) {
+    oneSector s;
+    s.lab = lab;
+    s.sectorMap = sectorMap;
+    s.targetInts = targetInts;
+    return(s);
+}
+// Helper to create a oneIBP struct
+proc createIBP(list coeff, list integrals) {
+    oneIBP ibp;
+    ibp.c = coeff;
+    ibp.i = integrals;
+    return(ibp);
+}
+// Helper procedure to compare two integer lists for equality
+proc eq_int_list(list a, list b) 
+"USAGE: eq_int_list(a, b); a, b lists of integers
+RETURN: 1 if lists are equal, 0 otherwise"
+{
+  if (typeof(a) != "list" || typeof(b) != "list") {
+      print("eq_int_list: Error: Inputs must be lists (a: " + typeof(a) + ", b: " + typeof(b) + ")");
+      return(0);
+  }
+  if (size(a) != size(b)) {
+      return(0);
+  }
+  for (int i = 1; i <= size(a); i++) {
+      if (typeof(a[i]) != "int" || typeof(b[i]) != "int") {
+          print("eq_int_list: Error: Non-integer element at index " + string(i));
+          return(0);
+      }
+      if (a[i] != b[i]) {
+          return(0);
+      }
+  }
+  return(1);
+}
+
+// Helper procedure to merge two lists of integer vectors, removing duplicates
+proc merge_int_vectors(list A, list B) 
+"USAGE: merge_int_vectors(A, B); A, B lists of integer vectors
+RETURN: A new list containing all unique integer vectors from A and B"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_int_vectors: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) == 0 && size(B) == 0) {
+      return(list());
+  }
+  list C = A;
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list") {
+          print("merge_int_vectors: Warning: Skipping non-list element B[" + string(i) + "]");
+          continue;
+      }
+      int found = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (typeof(A[j]) != "list") {
+              print("merge_int_vectors: Warning: Skipping non-list element A[" + string(j) + "]");
+              continue;
+          }
+          if (eq_int_list(A[j], B[i])) {
+              found = 1;
+              break;
+          }
+      }
+      if (!found) {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Helper procedure to merge two lists of sectors, combining targetInts where labs match
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) < 0 || size(B) < 0) {
+      print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      return(list());
+  }
+  list C = list();
+  // Copy sectors from A
+  for (int i = 1; i <= size(A); i++) {
+      if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      C[i] = A[i]; // Directly copy the oneSector struct
+  }
+  // Merge sectors from B
+  for (int i = 1; i <= size(B); i++) {
+      if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+          print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      int found = 0;
+      int idx = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (eq_int_list(A[j].lab, B[i].lab)) {
+              found = 1;
+              idx = j;
+              break;
+          }
+      }
+      if (found) {
+          C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+      } else {
+          C[size(C) + 1] = B[i]; // Append the oneSector struct directly
+      }
+  }
+  return(C);
+}
+
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+
+  list merged = list();
+  int max_layers;
+  if (size(web1) > size(web2)) {
+      max_layers = size(web1);
+  } else {
+      max_layers = size(web2);
+  }  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+
+// Procedure to merge two MI lists
+proc mergeMI(list MI1, list MI2) 
+"USAGE: mergeMI(MI1, MI2); MI1, MI2 lists of integer vectors
+RETURN: A merged MI list with unique integer vectors"
+{
+  if (typeof(MI1) != "list" || typeof(MI2) != "list") {
+      print("mergeMI: Error: Inputs must be lists (MI1: " + typeof(MI1) + ", MI2: " + typeof(MI2) + ")");
+      return(list());
+  }
+  return(merge_int_vectors(MI1, MI2));
+}
+
+// Procedure to merge two reducedIBPs structures of type setIBP
+proc mergeRedIBPs(setIBP redIBPs1, setIBP redIBPs2) 
+"USAGE: mergeRedIBPs(redIBPs1, redIBPs2); redIBPs1, redIBPs2 setIBP structs with over, seed, and IBP fields
+RETURN: A merged setIBP struct with combined seeds and IBPs"
+{
+  if (typeof(redIBPs1) != "setIBP" || typeof(redIBPs2) != "setIBP") {
+      print("mergeRedIBPs: Error: Inputs must be setIBP type (redIBPs1: " + typeof(redIBPs1) + ", redIBPs2: " + typeof(redIBPs2) + ")");
+      setIBP empty;
+      return(empty);
+  }
+  if (redIBPs1.over != redIBPs2.over) {
+      print("mergeRedIBPs: Error: Incompatible rings");
+      setIBP empty;
+      return(empty);
+  }
+
+  setIBP merged;
+  merged.over = redIBPs1.over; // Use the ring from the first input
+  merged.seed = merge_int_vectors(redIBPs1.seed, redIBPs2.seed); // Merge seeds
+  merged.IBP = list(); // Initialize IBP list
+  int idx = 0;
+  
+  // Append all IBPs from redIBPs1
+  for (int i = 1; i <= size(redIBPs1.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs1.IBP[i];
+  }
+  // Append all IBPs from redIBPs2
+  for (int i = 1; i <= size(redIBPs2.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs2.IBP[i];
+  }
+  return(merged);
+}
+
+proc print_MI(list mi)
+"USAGE: print_MI(mi); mi = list of integer vectors"
+{
+  print("Merged MI:");
+  if (size(mi) == 0) {
+    print("  (empty list)");
+    return;
+  }
+  for (int i = 1; i <= size(mi); i++) {
+    string s = "  [" + string(i) + "] = ";
+    for (int j = 1; j <= size(mi[i]); j++) {
+      s = s + string(mi[i][j]);
+      if (j < size(mi[i])) { s = s + ","; }
+    }
+    print(s);
+  }
+}
+proc print_web(list web)
+"USAGE: print_web(web); web = list of lists of oneSector structs"
+{
+  print(" web is :");
+  if (size(web) == 0) {
+    print("  (empty list)");
+    return;
+  }
+  for (int i = 1; i <= size(web); i++) {
+    print("  Layer " + string(i) + ":");
+    list layer = web[i];
+    for (int j = 1; j <= size(layer); j++) {
+      if (typeof(layer[j]) == "oneSector" && defined(layer[j].lab)) {
+        print("    Sector " + string(j) + ":");
+        print("      lab = " + string(layer[j].lab));
+        print("      sectorMap = " + string(layer[j].sectorMap));
+        print("      targetInts:");
+        for (int k = 1; k <= size(layer[j].targetInts); k++) {
+          string s = "        [" + string(k) + "] = ";
+          for (int l = 1; l <= size(layer[j].targetInts[k]); l++) {
+            s = s + string(layer[j].targetInts[k][l]);
+            if (l < size(layer[j].targetInts[k])) { s = s + ","; }
+          }
+          print(s);
+        }
+      } else {
+        print("    Sector " + string(j) + " = (invalid or undefined)");
+      }
+    }
+  }
+}
+
+proc print_reducedIBPs(setIBP r)
+"USAGE: print_reducedIBPs(r); r = setIBP struct"
+{
+  print(" reducedIBPs is :");
+  print("  over = " + string(r.over));
+  print("  seed:");
+  if (size(r.seed) == 0) {
+    print("    (empty list)");
+  } else {
+    for (int i = 1; i <= size(r.seed); i++) {
+      string s = "    [" + string(i) + "] = ";
+      for (int j = 1; j <= size(r.seed[i]); j++) {
+        s = s + string(r.seed[i][j]);
+        if (j < size(r.seed[i])) { s = s + ","; }
+      }
+      print(s);
+    }
+  }
+  print("  IBP:");
+  if (size(r.IBP) == 0) {
+    print("    (empty list)");
+  } else {
+    for (int i = 1; i <= size(r.IBP); i++) {
+      print("    [" + string(i) + "].c = " + string(r.IBP[i].c));
+      print("    [" + string(i) + "].i:");
+      for (int j = 1; j <= size(r.IBP[i].i); j++) {
+        string s = "      [" + string(j) + "] = ";
+        for (int k = 1; k <= size(r.IBP[i].i[j]); k++) {
+          s = s + string(r.IBP[i].i[j][k]);
+          if (k < size(r.IBP[i].i[j])) { s = s + ","; }
+        }
+        print(s);
+      }
+    }
+  }
+}
+
+example {
+    // Define the ring
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+
+    // Define first set of variables
+    list MI_a = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+    );
+    
+    setIBP reducedIBPs_a;
+    reducedIBPs_a.over = R;
+    reducedIBPs_a.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_a.IBP = list(
+        createIBP(
+            list(t1*t2, -t2^2),
+            list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+        )
+    );
+    
+    list web_a = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+            createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+        )
+    );
+
+    // Define second set of variables
+    list MI_b = list(
+        list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+        list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+    );
+    
+    setIBP reducedIBPs_b;
+    reducedIBPs_b.over = R;
+    reducedIBPs_b.seed = list(
+        list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+    );
+    reducedIBPs_b.IBP = list(
+        createIBP(
+            list(t1^2, -t1*t2),
+            list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+        )
+    );
+    
+    list web_b = list(
+        list(
+            createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+            createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+        )
+    );
+
+    // Perform merges
+    list merged_MI = mergeMI(MI_a, MI_b);
+    list merged_web = merge_web(web_a, web_b);
+    setIBP merged_reducedIBPs = mergeRedIBPs(reducedIBPs_a, reducedIBPs_b);
+
+  print_MI(merged_MI);
+print_web(merged_web);
+print_reducedIBPs(merged_reducedIBPs);
+
+
+//printing the web
+print_web(web_a);
+print_web(web_b);
+
+//printing the reducedIBPs
+print_reducedIBPs(reducedIBPs_a);
+print_reducedIBPs(reducedIBPs_b);
+
+//printing the MI
+print_MI(MI_a);
+print_MI(MI_b);
+
+}

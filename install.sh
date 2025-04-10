@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # Clean previous build and install directories
-rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
+#rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
 
 # Create necessary directories
-mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
+#mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
 
 # Activate the Spack environment
-spack load gpi-space@24.12 || { echo "Failed to load GPI-Space"; exit 1; }
-
+spack load gpi-space@24.12 
 # Generate SVG workflow diagram
 pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg
 

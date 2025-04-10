@@ -2783,3 +2783,69 @@ def MM=std(M);
 close(ll);
   return(output);
 }
+
+
+LIB "feynman_example.lib";
+ring R = (0,t1,t2,D), (z(1..9)), dp;
+    ring R = (0,t1,t2,D), (z(1..9)), dp;
+// Create first feynman data (data_a)
+feynman data_a;
+data_a.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
+);
+data_a.reducedIBPs.over = R;
+data_a.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_a.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1*t2, -t2^2),
+        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
+    ),
+    createIBP(
+        list(2*t1, t2),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
+    )
+);
+data_a.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
+        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
+        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
+    )
+);
+// Create second feynman data (data_b)
+feynman data_b;
+data_b.MI = list(
+    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
+    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
+);
+data_b.reducedIBPs.over = R;
+data_b.reducedIBPs.seed = list(
+    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
+);
+data_b.reducedIBPs.IBP = list(
+    createIBP(
+        list(t1^2, -t1*t2),
+        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
+    ),
+    createIBP(
+        list(t2^2, -t1),
+        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
+    )
+);
+data_b.web = list(
+    list(
+        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
+        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
+    ),
+    list(
+        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
+        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
+    )
+);
+}

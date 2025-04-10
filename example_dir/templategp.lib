@@ -106,7 +106,7 @@ static proc printNet(Net N)
   list L = N.rows;
   for (int j = 1; j <= size(L); j++)
   {
-    print(L[j]);
+    //print(L[j]);
   }
 }
 
@@ -171,7 +171,7 @@ EXAMPLE : example printMat; shows an example
 
     }
     rstar = rstar + "]";
-    print(rstar);
+    //print(rstar);
   }
 }
 example
@@ -189,15 +189,15 @@ KEYWORDS : graph
 EXAMPLE : example printGraph; shows an example
 "
 {
-  print(netList(G.edges));
+  //print(netList(G.edges));
   int ct = 0;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   if (ct != 0)
   {
-    print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
   }
   else {
-    print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
   }
 }
 example
@@ -215,15 +215,15 @@ KEYWORDS : Feynman graph
 EXAMPLE : example printLabeledGraph; shows an example
 "
 {
-  print(netList(G.edges));
+  //print(netList(G.edges));
   int ct;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   if (ct != 0)
   {
-    print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
   }
   else {
-    print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
   }
   int ringdef = (typeof(basering) == "ring");
   if (ringdef) { def R1 = basering; }
@@ -231,14 +231,14 @@ EXAMPLE : example printLabeledGraph; shows an example
   setring R2;
   list labels = G.labels;
   "";
-  print("Edgeterms: ");
+  //print("Edgeterms: ");
   list ev;
   Net ne;
   for (i = 1; i <= size(G.edges);i++) {
     ne = net(G.edges[i]) + net(" => ") + net(string(labels[i]));
     ev[i] = ne;
   }
-  print(netList(ev));
+  //print(netList(ev));
   kill labels;
   if (ringdef) { setring R1; }
 
@@ -277,8 +277,8 @@ EXAMPLE : example printLabeledGraph; shows an example
 "
 {
   setring I.over;
-  print("Collection of IBP identities of the given graph with respect to the seed " + string(I.seed) + ".");
-  print("Total number of identities= " + string(size(I.IBP)));
+  //print("Collection of IBP identities of the given graph with respect to the seed " + string(I.seed) + ".");
+  //print("Total number of identities= " + string(size(I.IBP)));
 }
 
 
@@ -1950,7 +1950,7 @@ EXAMPLE : getRedIBPs; shows an example
   timer = 0;
   list Z = gaussred_pivot(N);
   int elapsed_time = timer;
-  print("Elapsed time to compute rref in seconds:" + string(elapsed_time) + ". size of the matrix:" + string(nrows(N)) + " * " + string(ncols(N)));
+  //print("Elapsed time to compute rref in seconds:" + string(elapsed_time) + ". size of the matrix:" + string(nrows(N)) + " * " + string(ncols(N)));
   setring R;
   list Z = imap(RZ, Z);
   for (int j = 1;j <= Z[4];j++)
@@ -2114,9 +2114,9 @@ write(l,size(M2),"size of M2");
       testP = testP + M[j][i] * diff(F, z(i));
     }
     testP = testP + M[j][n + 1] * F;
-    //print(testP);
+    ////print(testP);
     if (testP != 0) {
-      print("Something wrong");
+      //print("Something wrong");
     }
   }
   //
@@ -2317,7 +2317,7 @@ KEYWORDS : Feynman graph, IBPs
             //MI[size(MI)+1]=masterIntgralsInSector[i];
           }
         }
-        print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
+        //print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
 
       }
     }
@@ -2339,6 +2339,181 @@ size(finalset[2]);
 }
 
 
+/****************************************************************************/
+
+
+proc getReducedIBPSystemInitial(graph G, list targetInt)
+"USAGE:  getReducedIBPSystemInitial(G,targetInt); targetInt list,G graph@*,
+ASSUME:  G is a graph and targetInt is a list of seeds of target integrals.
+RETURN : list(G1, web, reducedIBPs, MI) where G1::labeledgraph, web::list, reducedIBPs::setIBP, MI::list.
+KEYWORDS : Feynman graph, IBPs
+"
+{
+  list L = pickHighestSector(targetInt);
+  if (size(L) > 1)
+  {
+    ERROR("provided integrals belong to more than one integral class");
+  }
+
+  list web = generateWebSectors(L[1][1]);
+  web = setSectorMap(web);
+  list w4 = updateWeb(web, list(1, 1), targetInt);
+  web = w4[1];
+
+  labeledgraph G1 = computeBaikovMatrix(G);
+
+  setIBP reducedIBPs;
+  reducedIBPs.seed = targetInt;
+  list MI;
+
+  if (size(web[1][1].targetInts) >= 1)
+  {
+    setIBP totalIBP = computeManyIBP(G1, web[1][1].targetInts);
+
+    reducedIBPs.over = totalIBP.over;
+    ring R = reducedIBPs.over;
+
+    list L = getRedIBPs(totalIBP, 101);
+    list indpndIBP = L[1];
+    list masterAndTailIntgrals = L[2];
+
+    setring R;
+    reducedIBPs.IBP = indpndIBP;
+    kill R;
+
+    list w = updateWeb(web, list(1, 1), masterAndTailIntgrals);
+    web = w[1];
+    list masterIntgralsInSector = w[2];
+    MI = masterIntgralsInSector;
+
+    ////print("completed the computation in the sector: 1 at layer 1.");
+  }
+
+  return(list(G1, web, reducedIBPs, MI));
+}
+
+proc getReducedIBPSystemInitial_gpi(token input)
+{
+  list v = input.data[1];
+  list e = input.data[2];
+  list targetInt = input.data[3];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+
+  list d = getReducedIBPSystemInitial(G, targetInt);
+  labeledgraph G1 = d[1];
+  list web = d[2];
+  setIBP reducedIBPs = d[3];
+  list MI = d[4];
+
+  token output;
+  output.fieldnames = list("generators", "getReducedIBPSystemInitial_gpi");
+  output.data[1] = G1;
+  output.data[2] = web;
+  output.data[3] = reducedIBPs;
+  output.data[4] = MI;
+  return(output);
+}
+
+proc getReducedIBPSystemCompute(labeledgraph G1, list web, setIBP reducedIBPs, list MI, int j, int k)
+"USAGE:  getReducedIBPSystemCompute(G1,web,reducedIBPs,MI,j,k); G1 labeledgraph, web list, reducedIBPs setIBP, MI list, j int, k int@*,
+ASSUME:  Inputs are precomputed from getReducedIBPSystemInitial, j >= 2.
+RETURN : list(G1, web, reducedIBPs, MI) where G1::labeledgraph, web::list, reducedIBPs::setIBP, MI::list.
+KEYWORDS : Feynman graph, IBPs
+"
+{
+  setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
+
+  ring R = reducedIBPs.over;
+
+  list L = getRedIBPs(totalIBP, 101);
+  list indpndIBP = L[1];
+  list masterAndTailIntgrals = L[2];
+
+  setring R;
+  for (int i = 1; i <= size(indpndIBP); i++)
+  {
+    reducedIBPs.IBP[size(reducedIBPs.IBP) + 1] = indpndIBP[i];
+  }
+  kill R;
+
+  list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
+  web = w[1];
+  list masterIntgralsInSector = w[2];
+  for (int i = 1; i <= size(masterIntgralsInSector); i++)
+  {
+    if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0)
+    {
+      MI[size(MI) + 1] = masterIntgralsInSector[i];
+    }
+  }
+  ////print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
+
+  return(list(G1, web, reducedIBPs, MI));
+}
+
+proc getReducedIBPSystemCompute_gpi(token g, token webs, token reducedIBP, token MIs, int j, int k)
+{
+  labeledgraph G1 = g.data[1];
+  list web = webs.data[1];
+  setIBP reducedIBPs = reducedIBP.data[1];
+  list MI = MIs.data[1];
+
+  list d = getReducedIBPSystemCompute(G1, web, reducedIBPs, MI, j, k);
+  labeledgraph G1 = d[1];
+  list web = d[2];
+  setIBP reducedIBPs = d[3];
+  list MI = d[4];
+  token output;
+  output.fieldnames = list("G1", "web", "reducedIBPs", "MI");
+  output.data[1] = G1;
+  output.data[2] = web;
+  output.data[3] = reducedIBPs;
+  output.data[4] = MI;
+  return(output);
+}
+
+
+proc getLabeledGraph_gpi(token input)
+{
+  labeledgraph G1 = input.data[1];
+
+  token output;
+  output.fieldnames = list("generators", "getLabeledGraph_gpi");
+  output.data[1] = G1;
+  return(output);
+}
+proc getWeb_gpi(token input)
+{
+  list web = input.data[2];
+  token output;
+  output.fieldnames = list("generators", "getWeb_gpi");
+  output.data[1] = web;
+  return(output);
+}
+proc getReducedIBPs_gpi(token input)
+{
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/getreducedibps.ssi";
+  write(l, input, "getReducedIBPs_gpi");
+
+  def reducedIBPs = input.data[3];
+  write(l, reducedIBPs, "getReducedIBPs_gpi");  
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "getReducedIBPs_gpi");
+  output.data[1] = reducedIBPs;
+  return(output);
+} 
+  
+proc getMI_gpi(token input)
+{
+  list MI = input.data[4];
+  token output;
+  output.fieldnames = list("generators", "getMI_gpi");
+  output.data[1] = MI;
+  return(output);
+}
 
 proc getReducedIBPSystem_gpi(token ibp)
 {
@@ -2501,6 +2676,26 @@ proc over_gpi(token ibp)
 
   return(output);
 }
+proc set_over_gpi(token setibp1, token setibp2)
+{
+  setIBP S1 = setibp1.data[1];
+  setIBP S2 = setibp2.data[1];
+  S1.over = S2.over;
+  token output;
+  output.fieldnames = list("generators", "set_over_gpi");
+  output.data[1] = S1.over;
+  return(output);
+}
+proc set_seed_gpi(token setibp1, token setibp2  )
+{
+  setIBP S1 = setibp1.data[1];
+  list S2 = setibp2.data[1];
+  S1.seed = S2;
+  token output;
+  output.fieldnames = list("generators", "set_seed_gpi");
+  output.data[1] = S1.seed;
+  return(output);
+}
 proc seed_gpi(token ibp)
 {
   setIBP v = ibp.data[1];
@@ -2527,10 +2722,23 @@ proc IBP_gpi(token ibp)
 
   return(output);
 }
-
+proc IBP_size(setIBP r)
+"USAGE: get_IBP_size(r); r = setIBP struct
+RETURN: Integer size of the IBP list"
+{
+  return(size(r.IBP));
+}
+proc IBP_size_gpi(token s)
+{
+  setIBP S = s.data[1];
+  int size = IBP_size(S);
+  token output;
+  output.fieldnames = list("generators", "IBP_size_gpi");
+  output.data[1] = size;
+  return(output);
+}
 proc getRedIBPs_gpi(token s, int p)
 {
-
 
   setIBP S = s.data[1];
 
@@ -2677,19 +2885,11 @@ int ss= size(w4[1][2][1].targetInts);
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
 
-link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";
   list web = Web.data[1];
 
   list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
-     write(l, "masterAndTailIntgrals", size(masterAndTailIntgrals));
 
   list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
-     write(l, (j,k), "(j,k)");
-
-   write(l, w4, "w4");
-   write(l,size( w4[1][2][1].targetInts), "size( w4[1][2][1].targetInts");
-
-  close(l);
 
   token output;
   output.fieldnames = list("generators", "updateWeb_later");
@@ -2768,10 +2968,7 @@ proc intersection_gpi(token m1, token m2)
 proc std_gpi(token m1)
 {
 
- string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";  // Ensure the path ends with a "/"
-  link ll = "ssi:w " + path;
 module M= m1.data[1];
-write(ll,M, "M_coeff");
 
 option(redSB);
 
@@ -2780,7 +2977,6 @@ def MM=std(M);
   output.fieldnames = list("generators", "std_gpi");
 
   output.data[1] = MM;
-close(ll);
   return(output);
 }
 
@@ -2790,12 +2986,24 @@ close(ll);
 
 /****************************************************************************************************** */
 
-// Helper procedure to compare two integer lists for equality
-proc eq_int_list(list a, list b) {
+
+
+proc eq_int_list(list a, list b) 
+"USAGE: eq_int_list(a, b); a, b lists of integers
+RETURN: 1 if lists are equal, 0 otherwise"
+{
+  if (typeof(a) != "list" || typeof(b) != "list") {
+     // print("eq_int_list: Error: Inputs must be lists (a: " + typeof(a) + ", b: " + typeof(b) + ")");
+      return(0);
+  }
   if (size(a) != size(b)) {
       return(0);
   }
   for (int i = 1; i <= size(a); i++) {
+      if (typeof(a[i]) != "int" || typeof(b[i]) != "int") {
+         // print("eq_int_list: Error: Non-integer element at index " + string(i));
+          return(0);
+      }
       if (a[i] != b[i]) {
           return(0);
       }
@@ -2804,43 +3012,66 @@ proc eq_int_list(list a, list b) {
 }
 
 // Helper procedure to merge two lists of integer vectors, removing duplicates
-proc merge_int_vectors(list A, list B) {
+proc merge_int_vectors(list A, list B) 
+"USAGE: merge_int_vectors(A, B); A, B lists of integer vectors
+RETURN: A new list containing all unique integer vectors from A and B"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      // print("merge_int_vectors: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
   if (size(A) == 0 && size(B) == 0) {
       return(list());
   }
   list C = A;
   for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list") {
+          // print("merge_int_vectors: Warning: Skipping non-list element B[" + string(i) + "]");
+          continue;
+      }
       int found = 0;
       for (int j = 1; j <= size(A); j++) {
+          if (typeof(A[j]) != "list") {
+              // print("merge_int_vectors: Warning: Skipping non-list element A[" + string(j) + "]");
+              continue;
+          }
           if (eq_int_list(A[j], B[i])) {
               found = 1;
               break;
           }
       }
-      if (found == 0) {
+      if (!found) {
           C[size(C) + 1] = B[i];
       }
   }
   return(C);
 }
-
 // Helper procedure to merge two lists of sectors, combining targetInts where labs match
-proc merge_sector_lists(list A, list B) {
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      // print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
   if (size(A) < 0 || size(B) < 0) {
-      print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      // print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
       return(list());
   }
   list C = list();
+  // Copy sectors from A
   for (int i = 1; i <= size(A); i++) {
       if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
-          print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+          // print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
           return(list());
       }
-      C[i] = A[i];
+      C[i] = A[i]; // Directly copy the oneSector struct
   }
+  // Merge sectors from B
   for (int i = 1; i <= size(B); i++) {
       if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
-          print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+          // print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
           return(list());
       }
       int found = 0;
@@ -2855,101 +3086,138 @@ proc merge_sector_lists(list A, list B) {
       if (found) {
           C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
       } else {
-          C[size(C) + 1] = B[i];
+          C[size(C) + 1] = B[i]; // Append the oneSector struct directly
       }
   }
   return(C);
 }
 
-// Modified mergeFeynman to accept a list of feynman structs
-proc mergeFeynman(list data_list)
-"USAGE: mergeFeynman(data_list); data_list list of feynman structs
-ASSUME: All feynman structs in data_list have compatible rings and web structures.
-RETURN: A single feynman structure combining all inputs, with IBPs appended without detailed duplicate removal.
-KEYWORDS: Feynman graph, merge, IBPs"
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
 {
-  if (size(data_list) == 0) {
-      print("mergeFeynman: Error: Empty input list");
-      feynman empty;
-      return(empty);
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      // print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
   }
-  if (size(data_list) == 1) {
-      return(data_list[1]); // Return the single item as-is
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
   }
-
-  feynman out;
-  // Initialize with the first data's ring
-  out.reducedIBPs.over = data_list[1].reducedIBPs.over;
-
-  // Merge MI
-  print("mergeFeynman: Merging MI");
-  out.MI = list();
-  for (int k = 1; k <= size(data_list); k++) {
-      if (size(data_list[k].web) == 0) {
-          print("mergeFeynman: Error: Web is empty for data " + string(k));
-          return(out);
-      }
-      out.MI = merge_int_vectors(out.MI, data_list[k].MI);
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
   }
 
-  // Merge seeds
-  print("mergeFeynman: Merging seeds");
-  out.reducedIBPs.seed = list();
-  for (int k = 1; k <= size(data_list); k++) {
-      out.reducedIBPs.seed = merge_int_vectors(out.reducedIBPs.seed, data_list[k].reducedIBPs.seed);
-  }
-
-  // Merge IBPs
-  out.reducedIBPs.IBP = list();
-  int idx = 0;
-  for (int k = 1; k <= size(data_list); k++) {
-      for (int i = 1; i <= size(data_list[k].reducedIBPs.IBP); i++) {
-          idx = idx + 1;
-          out.reducedIBPs.IBP[idx] = data_list[k].reducedIBPs.IBP[i];
-      }
-  }
-
-  // Determine maximum number of web layers
-  int max_layers = size(data_list[1].web);
-  for (int k = 2; k <= size(data_list); k++) {
-      if (size(data_list[k].web) > max_layers) {
-          max_layers = size(data_list[k].web);
-      }
-  }
-
-  // Merge web
-  out.web = list();
+  list merged = list();
+  int max_layers;
+  if (size(web1) > size(web2)) {
+      max_layers = size(web1);
+  } else {
+      max_layers = size(web2);
+  }  
   for (int i = 1; i <= max_layers; i++) {
-      print("mergeFeynman: Merging web layer " + string(i));
       list layer_sectors = list();
-      for (int k = 1; k <= size(data_list); k++) {
-          if (i <= size(data_list[k].web)) {
-              if (size(layer_sectors) == 0) {
-                  layer_sectors = data_list[k].web[i];
-              } else {
-                  layer_sectors = merge_sector_lists(layer_sectors, data_list[k].web[i]);
-              }
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
           }
       }
-      out.web[i] = layer_sectors;
-      if (size(out.web[i]) == 0) {
-          print("mergeFeynman: Warning: Web layer " + string(i) + " merge resulted in empty list");
+      if (size(layer_sectors) == 0) {
+          // print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
       }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+
+// Procedure to merge two MI lists
+proc mergeMI(list MI1, list MI2) 
+"USAGE: mergeMI(MI1, MI2); MI1, MI2 lists of integer vectors
+RETURN: A merged MI list with unique integer vectors"
+{
+  if (typeof(MI1) != "list" || typeof(MI2) != "list") {
+      // print("mergeMI: Error: Inputs must be lists (MI1: " + typeof(MI1) + ", MI2: " + typeof(MI2) + ")");
+      return(list());
+  }
+  return(merge_int_vectors(MI1, MI2));
+}
+
+// Procedure to merge two reducedIBPs structures of type setIBP
+proc mergeRedIBPs(setIBP redIBPs1, setIBP redIBPs2) 
+"USAGE: mergeRedIBPs(redIBPs1, redIBPs2); redIBPs1, redIBPs2 setIBP structs with over, seed, and IBP fields
+RETURN: A merged setIBP struct with combined seeds and IBPs"
+{
+  if (typeof(redIBPs1) != "setIBP" || typeof(redIBPs2) != "setIBP") {
+      // print("mergeRedIBPs: Error: Inputs must be setIBP type (redIBPs1: " + typeof(redIBPs1) + ", redIBPs2: " + typeof(redIBPs2) + ")");
+      setIBP empty;
+      return(empty);
+  }
+  if (redIBPs1.over != redIBPs2.over) {
+      // print("mergeRedIBPs: Error: Incompatible rings");
+      setIBP empty;
+      return(empty);
   }
 
-  // print("mergeFeynman: Merge complete");
-  return(out);
-}
-proc mergeFeynman_gpi(list token_list) {
-  list feynman_data = list();
-  for (int i = 1; i <= size(token_list); i++) {
-      if (size(token_list[i].data) > 0) {
-          feynman_data[i] = token_list[i].data[1];
-      }
+  setIBP merged;
+  merged.over = redIBPs1.over; // Use the ring from the first input
+  merged.seed = merge_int_vectors(redIBPs1.seed, redIBPs2.seed); // Merge seeds
+  merged.IBP = list(); // Initialize IBP list
+  int idx = 0;
+  
+  // Append all IBPs from redIBPs1
+  for (int i = 1; i <= size(redIBPs1.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs1.IBP[i];
   }
-  feynman merged_data = mergeFeynman(feynman_data);
+  // Append all IBPs from redIBPs2
+  for (int i = 1; i <= size(redIBPs2.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs2.IBP[i];
+  }
+  return(merged);
+}
+
+proc mergeMI_gpi(token MI_prev, token MI_new)
+{
+  list MI1 = MI_prev.data[1];
+  list MI2 = MI_new.data[1];
+
+  list MI = MI1;
+ 
   token output;
-  output.fieldnames = list("generators", "mergeFeynman_gpi");
-  output.data = list(merged_data);
+  output.fieldnames = list("MI");
+  output.data[1] = MI;
+  return(output);
+}
+proc merge_web_gpi(token web_prev, token web_new)
+{
+  list web1 = web_prev.data[1];
+  list web2 = web_new.data[1];
+  
+  list merged = merge_web(web1, web2);
+  
+  token output;
+  output.fieldnames = list("web");
+  output.data[1] = merged;
+  return(output);
+}
+proc mergeRedIBPs_gpi(token redIBPs_prev, token redIBPs_new)
+{
+  setIBP redIBPs1 = redIBPs_prev.data[1];
+  setIBP redIBPs2 = redIBPs_new.data[1];
+  
+  setIBP merged = mergeRedIBPs(redIBPs1, redIBPs2);
+  
+  token output;
+  output.fieldnames = list("reducedIBPs");
+  output.data[1] = merged;
   return(output);
 }

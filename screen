@@ -1,29 +1,14 @@
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: ================== START: IBP System Computation ==================
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: tokenString: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214611126156 is: 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: Target Integrals: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214611784738
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: After replace_two, wjk: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214612337414
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: size_wjk_targetInt = 1
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: Updated reducedIBPs_seed: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214613549623
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: Computed totalIBP: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214934829033
-[2025-03-14 16:30:14] waas: pid 507850 tid507855: I: Updated reducedibp_over after assignment: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966214937882735
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: L from getRedIBPs_gpi: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966216697136345
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Independent IBP: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966216699617239
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Master and Tail Integrals: /home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp/waas_507850_1741966216701719685
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Size of reducedIBPs_IBP: 0
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Assigned indpndIBP to reducedIBPs_IBP.
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: size_wjk_targetInt_b = 1
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: masterAndTailIntgrals_size = 74
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: w4jk = 12, j = 1, k = 1
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: masterIntgralsInSector_size = 36
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Initial MI size = 0
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: Assigned master integrals to MI.
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: size_wjk_targetInta = 37
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: I: ================== End of IBP System Computation ==================
-[2025-03-14 16:30:16] waas: pid 507850 tid507855: T: task finished: waas.job.507806.1
-[2025-03-14 16:30:16] waas: pid 507850 tid507853: T: worker-waas 40745 507796-7 is shutting down
-[2025-03-14 16:30:16] waas: pid 507844 tid507847: T: worker-waas 40745 507796-6 is shutting down
-[2025-03-14 16:30:16] waas: pid 507832 tid507835: T: worker-waas 40745 507796-4 is shutting down
-[2025-03-14 16:30:16] waas: pid 507838 tid507841: T: worker-waas 40745 507796-5 is shutting down
-[2025-03-14 16:30:16] waas: pid 507826 tid507829: T: worker-waas 40745 507796-3 is shutting down
-[2025-03-14 16:30:16] waas: pid 507820 tid507823: T: worker-waas 40745 507796-2 is shutting down
-[2025-03-14 16:30:16] waas: pid 507814 tid507817: T: worker-waas 40745 507796-1 is shutting down
+[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: Starting T_11...
+[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: graph is: 1,2,3,4,5,6,6,1,4,6,1,2,3,5,4,3,2,5,5,6,1,2,3,4
+[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: Finished T_11
+[2025-04-09 18:18:44] waas: pid 257386 tid257391: T: task finished: waas.job.257354.1
+[2025-04-09 18:18:44] waas: pid 257386 tid257391: T: task finished: waas.job.257354.4
+[2025-04-09 18:18:44] waas: pid 257374 tid257379: T: task finished: waas.job.257354.3
+[2025-04-09 18:18:44] waas: pid 257362 tid257367: T: task finished: waas.job.257354.2
+[2025-04-09 18:18:44] waas: pid 257392 tid257395: T: worker-waas 41315 257344-6 is shutting down
+[2025-04-09 18:18:44] waas: pid 257386 tid257389: T: worker-waas 41315 257344-5 is shutting down
+[2025-04-09 18:18:44] waas: pid 257380 tid257383: T: worker-waas 41315 257344-4 is shutting down
+[2025-04-09 18:18:44] waas: pid 257374 tid257377: T: worker-waas 41315 257344-3 is shutting down
+[2025-04-09 18:18:44] waas: pid 257368 tid257371: T: worker-waas 41315 257344-2 is shutting down
+[2025-04-09 18:18:44] waas: pid 257362 tid257365: T: worker-waas 41315 257344-1 is shutting down
+[2025-04-09 18:18:44] waas: pid 257398 tid257401: T: worker-waas 41315 257344-7 is shutting down

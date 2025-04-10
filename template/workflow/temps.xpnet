@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defun name="template">
+
+    <in name="base_filename" type="string" place="base_filename"/>
+    <in name="library_name" type="string" place="library_name"/>
+    <in name="input" type="string" place="input"/>
+    <out name="output_MI" type="string" place="final_MI"/>
+    <out name="output_web" type="string" place="final_web"/>
+    <out name="output_reducedIBPs" type="string" place="final_reducedIBPs"/>
+
+    <net>
+        <place name="base_filename" type="string">
+        </place>
+        <place name="library_name" type="string">
+        </place>
+        <place name="input" type="string">
+        </place>
+        <place name="labeledgraph" type="string">
+        </place>
+        <place name="control_11" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_11" type="string">
+        </place>
+        <place name="web_11" type="string">
+        </place>
+        <place name="reducedIBPs_11" type="string">
+        </place>
+        <place name="control_21" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_21" type="string">
+        </place>
+        <place name="web_21" type="string">
+        </place>
+        <place name="reducedIBPs_21" type="string">
+        </place>
+        <place name="control_22" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_22" type="string">
+        </place>
+        <place name="web_22" type="string">
+        </place>
+        <place name="reducedIBPs_22" type="string">
+        </place>
+        <place name="control_23" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_23" type="string">
+        </place>
+        <place name="web_23" type="string">
+        </place>
+        <place name="reducedIBPs_23" type="string">
+        </place>
+        <place name="control_31" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_31" type="string">
+        </place>
+        <place name="web_31" type="string">
+        </place>
+        <place name="reducedIBPs_31" type="string">
+        </place>
+        <place name="control_32" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_32" type="string">
+        </place>
+        <place name="web_32" type="string">
+        </place>
+        <place name="reducedIBPs_32" type="string">
+        </place>
+        <place name="control_33" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="MI_33" type="string">
+        </place>
+        <place name="web_33" type="string">
+        </place>
+        <place name="reducedIBPs_33" type="string">
+        </place>
+        <place name="control_end" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="final_MI" type="string">
+        </place>
+        <place name="final_web" type="string">
+        </place>
+        <place name="final_reducedIBPs" type="string">
+        </place>
+        <transition name="T_11">
+            <defun>
+               <require key="worker" mandatory="true"/>
+                <out name="labeledgraph" type="string"/>
+                <out name="MI_11" type="string"/>
+                <out name="web_11" type="string"/>
+                <out name="reducedIBPs_11" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="control_11" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, library_name, base_filename, input, labeledgraph, MI_11, web_11, reducedIBPs_11)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout<<"Starting T_11..."<<std::endl;
+                        std::string input_gpi = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemInitial_gpi)(input, library_name, base_filename);
+                         labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getLabeledGraph_gpi)(input_gpi, library_name, base_filename);
+                        std::cout << "labeledgraph: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name) << std::endl;
+                         web_11 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(input_gpi , library_name, base_filename);
+                       //  std::cout << "web_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_11, library_name) << std::endl;
+                         reducedIBPs_11 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(input_gpi, library_name, base_filename);
+                        std::cout << "reducedIBPs_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_11, library_name) << std::endl;
+                        MI_11 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(input_gpi, library_name, base_filename);
+                        //std::cout << "MI_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_11, library_name) << std::endl;
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_11" place="control_11"/>
+            <connect-out port="MI_11" place="MI_11"/>
+            <connect-out port="web_11" place="web_11"/>
+            <connect-out port="reducedIBPs_11" place="reducedIBPs_11"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="input" place="input"/>
+            <connect-out port="labeledgraph" place="labeledgraph"/>
+        </transition>
+
+        
+        <transition name="T_31">
+        <defun>
+            <require key="worker" mandatory="true"/>
+            <in name="MI_21" type="string"/>
+            <in name="web_21" type="string"/>
+            <in name="reducedIBPs_21" type="string"/>
+            <in name="MI_23" type="string"/>
+            <in name="web_23" type="string"/>
+            <in name="reducedIBPs_23" type="string"/>
+            <out name="MI_31" type="string"/>
+            <out name="web_31" type="string"/>
+            <out name="reducedIBPs_31" type="string"/>
+            <in name="base_filename" type="string"/>
+            <in name="library_name" type="string"/>
+            <in name="labeledgraph" type="string"/>
+            <in name="control_31" type="control"/>
+            <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, base_filename, library_name, labeledgraph, MI_21, web_21, reducedIBPs_21, MI_23, web_23, reducedIBPs_23, MI_31, web_31, reducedIBPs_31)">
+                <cinclude href="interface/template_interface.hpp"/>
+                <cinclude href="util-generic/dynamic_linking.hpp"/>
+                <code><![CDATA[
+                    std::cout << "Starting T_31..." << std::endl;
+    
+                    std::string MI = MI_21;
+                    std::string web = web_21;
+                    std::string reducedIBPs = reducedIBPs_21;
+                    std::cout << "MI in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
+                    std::cout << "web in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
+                    std::cout << "reducedIBPs in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
+    
+                    std::vector<std::pair<int, int>> jk_pairs = {{2, 1}, {2, 3}};
+                    std::map<std::pair<int, int>, std::tuple<std::string, std::string, std::string>> jk_inputs;
+                    jk_inputs[{2, 1}] = {MI_21, web_21, reducedIBPs_21};
+                    jk_inputs[{2, 3}] = {MI_23, web_23, reducedIBPs_23};
+    
+                    for (const auto& pair : jk_pairs) {
+                        int j = pair.first;
+                        int k = pair.second;
+    
+                        auto [MI_jk, web_jk, reducedIBPs_jk] = jk_inputs[{j, k}];
+                        std::cout << "Merging for j=" << j << ", k=" << k << std::endl;
+                        std::cout << "MI_jk: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_jk, library_name) << std::endl;
+    
+
+                        std::cout << "Starting mergeRedIBPs_gpi..." << std::endl;
+                        reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(reducedIBPs, reducedIBPs_jk, library_name, base_filename);
+                        std::cout << "Merged reducedIBPs: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
+              
+                        std::cout << "Starting mergeMI_gpi..." << std::endl;
+                        MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(MI, MI_jk, library_name, base_filename);
+                        std::cout << "Merged MI: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
+    
+                        std::cout << "Starting merge_web_gpi..." << std::endl;
+                        web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(web, web_jk, library_name, base_filename);
+                        std::cout << "Merged web: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
+    
+                             }
+    
+                    int j = 3, k = 1;
+                    std::cout << "Computing j=3, k=1..." << std::endl;
+                    std::string data_31 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(
+                        labeledgraph, web, reducedIBPs, MI, j, k, library_name, base_filename
+                    );
+                    std::cout << "data_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_31, library_name) << std::endl;
+    
+                    web_31 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_31, library_name, base_filename);
+                    std::cout << "web_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_31, library_name) << std::endl;
+                    reducedIBPs_31 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_31, library_name, base_filename);
+                    std::cout << "reducedIBPs_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_31, library_name) << std::endl;
+                    MI_31 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_31, library_name, base_filename);
+                    std::cout << "MI_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_31, library_name) << std::endl;
+                ]]></code>
+            </module>
+        </defun>
+        <connect-in port="control_31" place="control_31"/>
+        <connect-read port="MI_21" place="MI_21"/>
+        <connect-read port="web_21" place="web_21"/>
+        <connect-read port="reducedIBPs_21" place="reducedIBPs_21"/>
+        <connect-read port="MI_23" place="MI_23"/>
+        <connect-read port="web_23" place="web_23"/>
+        <connect-read port="reducedIBPs_23" place="reducedIBPs_23"/>
+        <connect-read port="base_filename" place="base_filename"/>
+        <connect-read port="library_name" place="library_name"/>
+        <connect-read port="labeledgraph" place="labeledgraph"/>
+        <connect-out port="MI_31" place="MI_31"/>
+        <connect-out port="web_31" place="web_31"/>
+        <connect-out port="reducedIBPs_31" place="reducedIBPs_31"/>
+    </transition>
+       
+        <transition name="T_end">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="MI_31" type="string"/>
+                <in name="web_31" type="string"/>
+                <in name="reducedIBPs_31" type="string"/>
+                <in name="MI_32" type="string"/>
+                <in name="web_32" type="string"/>
+                <in name="reducedIBPs_32" type="string"/>
+                <in name="MI_33" type="string"/>
+                <in name="web_33" type="string"/>
+                <in name="reducedIBPs_33" type="string"/>
+                <out name="final_MI" type="string"/>
+                <out name="final_web" type="string"/>
+                <out name="final_reducedIBPs" type="string"/>
+                <in name="control_end" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_end(control_end, MI_31, web_31, reducedIBPs_31, MI_32, web_32, reducedIBPs_32, MI_33, web_33, reducedIBPs_33, final_MI, final_web, final_reducedIBPs)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        final_web = "";
+                        final_web += web_31;
+                        final_web += web_32;
+                        final_web += web_33;
+                        final_reducedIBPs = reducedIBPs_31;
+                        final_MI = MI_31;
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_end" place="control_end"/>
+            <connect-read port="MI_31" place="MI_31"/>
+            <connect-read port="web_31" place="web_31"/>
+            <connect-read port="reducedIBPs_31" place="reducedIBPs_31"/>
+            <connect-read port="MI_32" place="MI_32"/>
+            <connect-read port="web_32" place="web_32"/>
+            <connect-read port="reducedIBPs_32" place="reducedIBPs_32"/>
+            <connect-read port="MI_33" place="MI_33"/>
+            <connect-read port="web_33" place="web_33"/>
+            <connect-read port="reducedIBPs_33" place="reducedIBPs_33"/>
+            <connect-out port="final_MI" place="final_MI"/>
+            <connect-out port="final_web" place="final_web"/>
+            <connect-out port="final_reducedIBPs" place="final_reducedIBPs"/>
+        </transition>
+    </net>
+</defun>

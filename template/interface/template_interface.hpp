@@ -206,19 +206,83 @@ std::string singular_assign_gpi(std::string const& res
 NO_NAME_MANGLING
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library);
 NO_NAME_MANGLING
-std::string create_feynman_data_list(
-    const std::vector<std::string>& feynman_inputs,  // Vector of serialized feynman structs
-    const std::string& library_name,                 // Singular library name
-    const std::string& base_filename                 // Base filename for serialization
-);
+std::string singular_merge_web_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
 NO_NAME_MANGLING
-std::string singular_mergeFeynman_gpi(std::string const& res
+std::string singular_mergeMI_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_mergeRedIBPs_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_set_over_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_set_seed_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getReducedIBPSystemInitial_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getReducedIBPSystemCompute_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& res3
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename);
+    NO_NAME_MANGLING
+std::string singular_getLabeledGraph_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getWeb_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);  
+NO_NAME_MANGLING
+std::string singular_getReducedIBPs_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getMI_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);        
+NO_NAME_MANGLING
+int singular_IBP_size_gpi(std::string const& res
+    , std::string const& needed_library
+   );
+NO_NAME_MANGLING
+std::string singular_makegraph(std::string const& input_filename 
       , std::string const& needed_library
       , std::string const& base_filename);
 
+// Add graph labeling function declarations
 NO_NAME_MANGLING
-std::string singular_deserialize_feynman_token(
-      const std::string& token_str,
-      const std::string& library_name,
-      const std::string& base_filename
-  );
+std::string singular_template_graph(std::string const& input_filename
+    , std::string const& needed_library
+    , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_process_graph(std::string const& input_filename
+    , std::string const& needed_library
+    , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_makegraph(std::string const& input_filename
+    , std::string const& needed_library
+    , std::string const& base_filename);
+
+NO_NAME_MANGLING
+void printGraphStructure(const std::string& graph_str);
