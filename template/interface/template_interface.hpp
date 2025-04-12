@@ -178,11 +178,13 @@ NO_NAME_MANGLING
     , std::string const& needed_library
     , std::string const& base_filename);
     NO_NAME_MANGLING
-     
-std::string singular_computeM2_gpi(std::string const& res
+  std::string singular_computeM2_gpi(std::string const& res,
+    std::string const& targetInts,
+    std::string const& needed_library,
+    std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_computeM2(std::string const& res
     , std::string const& res1
-    , int const& j
-    , int const& k
     , std::string const& needed_library
     , std::string const& base_filename);
 
@@ -263,12 +265,12 @@ NO_NAME_MANGLING
 int singular_IBP_size_gpi(std::string const& res
     , std::string const& needed_library
    );
-NO_NAME_MANGLING
-std::string singular_makegraph(std::string const& input_filename 
-      , std::string const& needed_library
-      , std::string const& base_filename);
-
-// Add graph labeling function declarations
+    NO_NAME_MANGLING
+   std::string singular_getTargetInts_gpi(std::string const& res,
+    int const& j,
+    int const& k,   
+    std::string const& needed_library,
+    std::string const& base_filename);
 NO_NAME_MANGLING
 std::string singular_template_graph(std::string const& input_filename
     , std::string const& needed_library
@@ -286,3 +288,13 @@ std::string singular_makegraph(std::string const& input_filename
 
 NO_NAME_MANGLING
 void printGraphStructure(const std::string& graph_str);
+NO_NAME_MANGLING
+
+NO_NAME_MANGLING
+std::string singular_labelGraph(std::string const& input_filename,
+                             std::string const& needed_library,
+                             std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_computeBaikovMatrix_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);

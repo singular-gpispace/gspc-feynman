@@ -2714,7 +2714,6 @@ RETURN: A merged list of sectors, combining targetInts for matching labs"
               idx = j;
               break;
           }
-      }
       if (found) {
           C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
       } else {
@@ -3914,4 +3913,134 @@ LIB "feynman_example.lib";
     print_detailed("Merged reducedIBPs", merged_reducedIBPs);
     print_detailed("Merged MI", merged_MI);
 $
+$
+LIB "feynman_example.lib";
+LIB "feynman.lib";
+exit;
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    RB;
+    module ML=computeM1(G1);
+Ml;
+RB;
+    module ML=computeM1(G1);
+ML;
+$
+LIB "feynman.lib";
+graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+ring RB=G1.baikovover;
+    RB;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    RB;
+G1.baikovmatrix;
+R=G1.over;
+ring R=G1.over;
+setring R;
+G1.baikovmatrix;
+def m=fetch(G1.baikovmatrix,R);
+ labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    RB;
+    module ML=computeM1(G1);
+    ML;
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    RB;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+    module ML=computeM1(G1);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    RB;
+    module ML=computeM1(G1);
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+ML;
+ML;$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+ML;
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+    labeledgraph G1 = computeBaikovMatrix(G);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+$
+LIB "feynman.lib";
+ graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+    labeledgraph G1 = computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
+    module ML=computeM1(G1);
+ML;
 $

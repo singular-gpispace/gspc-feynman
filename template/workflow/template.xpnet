@@ -20,7 +20,8 @@
         </place>
         <place name="output" type="string">
         </place>
-       
+        <place name="web" type="string">
+        </place>
 
         <!-- Graph creation and labeling transition -->
         <transition name="T_11">
@@ -28,35 +29,43 @@
                 <require key="worker" mandatory="true"/>
 
                 <out name="labeledgraph" type="string"/>
+                <out name="output" type="string"/>          
                 <in name="library_name" type="string"/>
                 <in name="base_filename" type="string"/>
+                <out name="web" type="string"/>
                 <in name="input" type="string"/>
                 <in name="control_11" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, library_name, base_filename, input, labeledgraph)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, web, library_name, base_filename, input, labeledgraph, output    )">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
-                        std::cout << "Starting T_11..." << std::endl;
-                        
-                        // Create the graph
-                        std::string graph = RESOLVE_INTERFACE_FUNCTION(singular_makegraph)(input, library_name, base_filename);
-                        std::cout << "Graph structure (using printGpiTokenContent):" << std::endl;
-                        std::string tokenContent = RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(graph, library_name);
-                        std::cout << tokenContent << std::endl;
+                     
+                            std::cout << "Starting T_11..." << std::endl;
+                            
+                            // Create the graph with proper ring initialization
+                             labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_computeBaikovMatrix_gpi)(input, library_name, base_filename);
+                            std::cout << "singular_computeBaikovMatrix_gpi:" << std::endl;
+                          std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name)<<std::endl;
+                            web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)
+            				( 
+							   input, library_name, base_filename
+							);
+                            std::cout << "computing_M1" << std::endl;
+                            std::string module1 = RESOLVE_INTERFACE_FUNCTION(singular_computeM1_gpi)(labeledgraph, library_name, base_filename);
+                            std::cout << "printing module1:" << std::endl;
+                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(module1, library_name)<<std::endl;
+                           
+                            std::cout << "computing_target_ints" << std::endl;
+                            std::string target_ints = RESOLVE_INTERFACE_FUNCTION(singular_getTargetInts_gpi)(web, 1, 1, library_name, base_filename);
+                            std::cout << "printing target_ints:" << std::endl;
+                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(target_ints, library_name)<<std::endl;
 
-                        // Label the graph
-                        std::string labeled = RESOLVE_INTERFACE_FUNCTION(singular_template_graph)(graph, library_name, base_filename);
-                        std::cout << "Labeled graph structure (using printGpiTokenContent):" << std::endl;
-                        std::string labeledTokenContent = RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeled, library_name);
-                        std::cout << labeledTokenContent << std::endl;
-                        
-                        // Compute Baikov matrix
-                        std::string baikov = RESOLVE_INTERFACE_FUNCTION(singular_process_graph)(labeled, library_name, base_filename);
-                        std::cout << "Baikov matrix (using printGpiTokenContent):" << std::endl;
-                        std::string baikovTokenContent = RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(baikov, library_name);
-                        std::cout << baikovTokenContent << std::endl;
-                      
-                        std::cout << "Finished T_11" << std::endl;
+                            std::cout << "computing_M2 in T_11" << std::endl;
+                            std::string m2 = RESOLVE_INTERFACE_FUNCTION(singular_computeM2)(labeledgraph, target_ints, library_name, base_filename);
+                            std::cout << "printing module2 in T_11:" << std::endl;
+                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(m2, library_name)<<std::endl;
+
+                        std::cout << "T_11 completed" << std::endl;
                     ]]></code>
                 </module>
             </defun>
@@ -65,6 +74,8 @@
             <connect-read port="base_filename" place="base_filename"/>
             <connect-read port="input" place="input"/>
             <connect-out port="labeledgraph" place="labeledgraph"/>
+            <connect-out port="output" place="output"/>
+            <connect-out port="web" place="web"/>
         </transition>
 
     </net>

@@ -874,126 +874,125 @@ example
 
 proc computeM1(def G0)
 "USAGE:  computeM1(G0); G labeledgraph, or G graph@*
-ASSUME:  G is a Graph, or @ *
-G is a labeled graph where redundant variables have been eliminated by
-the procedure eliminateVariables, and deleted from the ring by the
-procedure removeElimVars.
-RETURN:  The module M1 over G1.baikovover that requires to compute IBP identities
-KEYWORDS : Feynman graph
+ASSUME:  G is a Graph, or@*
+         G is a labeled graph where redundant variables have been eliminated by 
+         the procedure eliminateVariables, and deleted from the ring by the 
+         procedure removeElimVars.
+RETURN:  The module M1 over G1.baikovover that requires to compute IBP identities 
+KEYWORDS: Feynman graph
 "
 
 {
-  if (typeof(G0) == "graph") {
-    labeledgraph G1 = computeBaikovMatrix(G0);
-    // return(computeM1(G1));
-    kill G0;
-    labeledgraph G0 = G1;
-
-  }
-  if (typeof(G0) != "labeledgraph") {
-    ERROR("expected a graph or labeledgraph");
-  }
-  labeledgraph G = G0;
-  def R = G.over;
-  int m = npars(R);
-  ring RB = G.baikovover;
-  matrix B = G.baikovmatrix;
-  setring RB;
-  int n = nvars(RB);
-  matrix C[n][n];
-  int tem = 0;
-  int E = m;
-  int L = nvars(R);
-  list x;
-  for (int i = 1;i <= E;i++) {
-    for (int j = E + 1;j <= E + L;j++) {
-      tem = tem + 1;
-      x[tem] = [i, j];
-      for (int k = 1;k <= n;k++) {
-        C[tem, k] = diff(B[i, j], z(k));
-      }
+if (typeof(G0)=="graph"){
+  labeledgraph G1 =computeBaikovMatrix(G0);
+ // return(computeM1(G1));
+ kill G0;
+ labeledgraph G0=G1;
+ 
+}
+if (typeof(G0) != "labeledgraph"){
+  ERROR("expected a graph or labeledgraph");
+}
+labeledgraph G = G0;
+def R = G.over;
+int m=npars(R);
+ring RB=G.baikovover;
+matrix B=G.baikovmatrix;
+setring RB;
+int n=nvars(RB);
+matrix C[n][n];
+int tem=0;
+int E = m;
+int L = nvars(R);
+list x;
+for(int i=1;i<=E;i++){
+  for(int j=E+1;j<=E+L;j++){ 
+    tem=tem+1;
+    x[tem]=[i,j];   
+    for(int k=1;k<=n;k++){
+      C[tem,k]=diff(B[i,j],z(k));
     }
   }
-  for (int i = E + 1;i <= E + L;i++) {
-    for (int j = i;j <= E + L;j++) {
-      tem = tem + 1;
-      x[tem] = [i, j];
-      for (int k = 1;k <= n;k++) {
-        C[tem, k] = diff(B[i, j], z(k));
-      }
+}
+for(int i=E+1;i<=E+L;i++){
+  for(int j=i;j<=E+L;j++){ 
+    tem=tem+1;   
+    x[tem]=[i,j];
+    for(int k=1;k<=n;k++){
+      C[tem,k]=diff(B[i,j],z(k));
     }
   }
+}
 
-  matrix D = inverse(C);
-  module M;
-  int tem = 1;
-  for (int i = E + 1;i <= E + L;i++) {
-    for (int j = 1;j <= E + L;j++) {
-
-      vector t = 0 * gen(n + 1);
-      for (int l = 1;l <= n;l++) {
-        poly a = 0;
-        for (int k = 1;k <= E + L;k++) {
-          //find the right row correspond to derivative
-          int o = 0;
-          int c1;
-          poly c2 = 0;
-          if (i == k) {
-            c1 = 2;
-          }
-          else {
-            c1 = 1;
-          }
-
-          for (int r = 1;r <= size(x);r++) {
-            if ([i, k] == x[r] or [k, i] == x[r]) {
-              o = r;
-
+matrix D=inverse(C);
+module M;
+int tem=1;
+for(int i=E+1;i<=E+L;i++){
+  for(int j=1;j<=E+L;j++){
+    
+    vector t=0*gen(n+1);
+    for(int l=1;l<=n;l++){
+      poly a=0;
+      for(int k=1;k<=E+L;k++){
+        //find the right row correspond to derivative
+            int o=0;
+            int c1;
+            poly c2=0;
+            if(i==k){
+              c1=2;
+            } else {
+              c1=1;
+            }
+            
+          for(int r=1;r<=size(x);r++){
+            if([i,k]==x[r] or [k,i]==x[r] ){
+              o=r;
+              
             }
           }
 
-          if (o != 0) {
-            c2 = D[l, o];
+          if(o != 0){
+            c2=D[l,o];
           }
-          a = a + c1 * c2 * B[j, k];
-        }
-        t = t + a * gen(l);
+          a=a+c1*c2*B[j,k];
       }
-      if (i == j) {
-        t = t - 2 * gen(n + 1);
-      }
-      else {
-        t = t + 0 * gen(n + 1);
-      }
-      M[tem] = t;
-      tem = tem + 1;
+    t=t+a*gen(l);
     }
+    if(i==j){
+      t=t-2*gen(n+1);
+    } else {
+      t=t+0*gen(n+1);
+    }
+    M[tem]=t;
+    tem=tem+1;
   }
-  //Test the computation
-  poly F = det(B);
-  for (int j = 1;j < size(M);j++) {
-    poly testP = 0;
-    for (int i = 1;i <= n;i++) {
-      testP = testP + M[j][i] * diff(F, z(i));
+}
+//Test the computation
+poly F=det(B);
+for(int j=1;j<size(M);j++){
+  poly testP=0;
+  for(int i=1;i<=n;i++){
+    testP=testP+M[j][i]*diff(F,z(i));
     }
-    testP = testP + M[j][n + 1] * F;
-    if (testP != 0) {
-      print("Something wrong");
-    }
-
+  testP=testP+M[j][n+1]*F;
+  if(testP != 0){
+    print("Something wrong");
   }
 
-  return(M);
+}
+
+return(M);
 }
 
 example
-{ "EXAMPLE:"; echo = 2;labeledgraph G1 = computeBaikovMatrix(G);
+{ "EXAMPLE:"; echo=2;
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
-    labeledgraph G1 = computeBaikovMatrix(G);
-   ring RB = G1.baikovover;
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
     RB;
-    module ML = computeM1(G1);
+    module ML=computeM1(G1);
 }
+
 
 proc computeM2(def G0, list Nu)
 "USAGE:  computeM2(G,Nu); G labeledgraph, or G graph@*
@@ -1008,7 +1007,7 @@ KEYWORDS : Feynman graph
 {
    string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
-
+write(l,"G0",-11);
   if (typeof(G0) == "graph") {
     labeledgraph G1 = computeBaikovMatrix(G0);
     // return(computeM2(G1,Nu));
@@ -1020,6 +1019,7 @@ KEYWORDS : Feynman graph
   }
 
   labeledgraph G = G0;
+  write(l,"G",G);
   def R = G.over;
   int m = npars(R);
 //  ring RB = G.baikovover;
@@ -2515,6 +2515,44 @@ proc getMI_gpi(token input)
   return(output);
 }
 
+proc computeBaikovMatrix_gpi(token input)
+{
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computebaikovmatrix.ssi";
+  list v = input.data[1];
+  list e = input.data[2];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+  labeledgraph G1 = computeBaikovMatrix(G);
+  
+
+  ring over = G1.over;
+  list labels ;
+  ring overpoly = G1.overpoly;
+  list elimvars = G1.elimvars;
+  ring baikovover = G1.baikovover;
+  matrix baikovmatrix = G1.baikovmatrix;
+  write(l, G1, "G1");
+  write(l, over, "over");
+  write(l, labels, "labels");
+  write(l, overpoly, "overpoly");
+  write(l, elimvars, "elimvars");
+  write(l, baikovover, "baikovover");
+  write(l, baikovmatrix, "baikovmatrix");
+  close(l);
+
+  token output;
+  output.fieldnames = list("generators", "computeBaikovMatrix_gpi");
+  output.data[1] = G1;
+  output.data[2] = over;
+  output.data[3] = labels;
+  output.data[4] = overpoly;
+  output.data[5] = elimvars;
+  output.data[6] = baikovover;
+  output.data[7] = baikovmatrix;
+  return(output);
+}
+
 proc getReducedIBPSystem_gpi(token ibp)
 {
   list v = ibp.data[1];
@@ -2606,6 +2644,19 @@ proc MI_gpi(token ibp)
 
   return(output);
 }
+
+proc getTargetInts_gpi(token Web, int j, int k)
+{
+  list web = Web.data[1];
+  list v = web[j][k].targetInts;
+
+  token output; 
+  output.fieldnames = list("generators", "getTargetInts_gpi");
+  
+  output.data[1] = v;
+  return(output);
+}
+
 
 proc computeManyIBP_gpi(token g, token Web, int j, int k)
 {
@@ -2901,18 +2952,20 @@ proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 
 proc computeM1_gpi(token G0)
 {
-
-
+ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM1.ssi";
+  write(l, G0, "computeM1_gpi");
   def G = G0.data[1];
-module ML = computeM1(G);
+  module ML = computeM1(G);
+  write(l, ML, "computeM1_gpi");
+  close(l);
 
   token output;
-  output.fieldnames = list("generators", "IBP_gpi");
-
+  output.fieldnames = list("generators", "computeM1_gpi");
   output.data[1] = ML;
 
   return(output);
 }
+
 proc computeM2_gpi(token G0,token Web, int j, int k)
 {
 
@@ -2934,7 +2987,28 @@ def M2 = computeM2(G,l);
 
   return(output);
 }
+proc computeM2_gpi1(token G0,token l)
+{
+link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM2.ssi";
+write(l,-11111 "computeM2_gpi1");
+  labeledgraph G = G0.data[1];
+  write(l, G, "computeM2_gpi1");
+  /* def RB = G.r_baikovmatrix;
+  setring RB;
+ */
+  list l= l.data[1];
+  write(l, l, "computeM2_gpi1");  
+def M2 = computeM2(G,l);
+  write(l, M2, "computeM2_gpi1");
+  close(l);
 
+   token output;
+  output.fieldnames = list("generators", "computeM2_gpi1");
+
+  output.data[1] = M2;
+
+  return(output);
+}
 proc computeManyIBPjk_gpi(token g, token Webjk_targetInts)
 {
   labeledgraph G = g.data[1];
