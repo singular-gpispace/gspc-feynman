@@ -21,6 +21,18 @@
 
 NO_NAME_MANGLING
 
+
+void printListElements(lists output) {
+    int L_size = lSize(output) + 1;
+    
+    for (int i = 0; i < L_size; i++) {
+        sleftv& listElement = output->m[i];
+
+        if (listElement.data != NULL) {
+            std::cout << "Token element at index " << i << ": " << listElement.String() << std::endl;
+        }
+    }
+}
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library)
 {
     // Initialize and load the Singular library.
@@ -1173,6 +1185,125 @@ std::string singular_assign_gpi(std::string const& res
     std::string function_name = "assign_gpi";
     out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::string  singular_computeBaikovMatrix_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+        load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "computeBaikovMatrix_gpi";
+    out  = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::string singular_getTargetInts_gpi(std::string const& res,
+    int const& j,
+    int const& k,   
+    std::string const& needed_library,
+    std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+        load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    
+    void* p = (char*)(long)(j);
+    void* p1 = (char*)(long)(k);
+    ids = worker();
+
+    Res = deserialize(res, ids);
+ 
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    ScopedLeftv args1(args, INT_CMD, p);
+    ScopedLeftv args2(args, INT_CMD, p1);
+
+    std::string function_name = "getTargetInts_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    
+    return out_filename;
+}
+
+std::string singular_getBaikovMatrix_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);   
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "getBaikovMatrix_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::string singular_computeM2_gp(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+
+    std::string function_name = "computeM2_gp";
+    std::cout<<"applying function_name"<<std::endl;
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    std::pair<int, lists> ras= deserialize(out_filename, ids);
+
+    std::cout << "Deserialized output:" << std::endl;
+    printListElements(ras.second);
 
     return out_filename;
 }

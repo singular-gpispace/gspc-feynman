@@ -1035,18 +1035,21 @@ KEYWORDS : Feynman graph
 
   int n = nvars(RB);
 write(l,"B",B);
-close(l);
-  if (size(Nu) != n) {
-    ERROR("The length of the vector nu must equal to number of Baikov variables");
-  }
+
+
 
   int tem = 0;
   int E = m;
   int L = nvars(R);
+write(l,"E",E);
 
   module M2;
+write(l,"Nu[1]",Nu[1]);
   for (int i = 1;i <= n;i++) {
+
     if (Nu[i] > 0) {
+      write(l,"M2",111);
+
       M2[i] = z(i) * gen(i);
     }
     else {
@@ -1054,7 +1057,7 @@ close(l);
     }
   }
   M2[n + 1] = 1 * gen(n + 1);
-  write(l,"M2",M2);
+  write(l,"Module2",M2);
 
   close(l);
 
@@ -2781,5 +2784,82 @@ def MM=std(M);
 
   output.data[1] = MM;
 close(ll);
+  return(output);
+}
+
+proc computeBaikovMatrix_gpi(token input)
+{
+  list v = input.data[1];
+  list e = input.data[2];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+  labeledgraph G1 = computeBaikovMatrix(G);
+  
+
+  ring over = G1.over;
+  list labels ;
+  ring overpoly = G1.overpoly;
+  list elimvars = G1.elimvars;
+  ring baikovover = G1.baikovover;
+  matrix baikovmatrix = G1.baikovmatrix;
+  
+
+  token output;
+  output.fieldnames = list("generators", "computeBaikovMatrix_gpi");
+  output.data[1] = G1;
+  output.data[2] = over;
+  output.data[3] = labels;
+  output.data[4] = overpoly;
+  output.data[5] = elimvars;
+  output.data[6] = baikovover;
+  output.data[7] = baikovmatrix;
+  return(output);
+}
+
+proc getBaikovMatrix_gpi(token input)
+{
+  list v = input.data[1];
+  list e = input.data[2];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+  labeledgraph G1 = computeBaikovMatrix(G);
+  
+  token output;
+  output.fieldnames = list("generators", "getBaikovMatrix_gpi");
+  output.data[1] = G1;
+  return(output);
+}
+proc getTargetInts_gpi(token Web, int j, int k)
+{
+  list web = Web.data[1];
+  list v = web[j][k].targetInts;
+
+  token output; 
+  output.fieldnames = list("generators", "getTargetInts_gpi");
+  
+  output.data[1] = v[1];
+  return(output);
+}
+
+proc computeM2_gp(token G0,token targ)
+{
+link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/m2.ssi";
+
+  def G = G0.data[1];
+  def RB = G.r_baikovmatrix;
+  setring RB;
+write(l, RB, "RB");
+  def Nu= targ.data[1];
+write(l, Nu, "targetInts");
+  def m2 = computeM2(G,Nu);
+write(l, m2, "m2");
+close(l);
+   token output;
+  output.fieldnames = list("generators", "computeM2_gp");
+
+  output.data[1] = m2;
+
   return(output);
 }

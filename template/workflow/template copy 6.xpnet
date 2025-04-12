@@ -1,0 +1,505 @@
+<defun name="template">
+    <struct name="feynman">
+        <field name="MI" type="string"/>
+        <field name="reducedIBPs" type="string"/>
+        <field name="web" type="string"/>
+    </struct>
+  <in name="base_filename" type="string" place="place_base_filename"/>
+  <in name="library_name" type="string" place="place_library_name"/>
+  <in name="input" type="string" place="place_input"/>
+  <out name="output" type="feynman" place="mi_ibp"/>
+  <net>
+    <place name="place_input" type="string"/>
+    <place name="data" type="feynman"/>
+
+    <place name="place_base_filename" type="string"/>
+    <place name="place_library_name" type="string"/>
+    <place name="input_control" type="control">
+      <token>
+        <value>[]</value>
+      </token>
+    </place>
+
+    <transition name="compute">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="input_control" type="control"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="input" type="string"/>
+        <out name="labeledgraph" type="string"/>
+        <out name="web_copy" type="string"/>
+        <out name="data" type="feynman"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute(input_control,input,library_name,base_filename,labeledgraph,data,web_copy)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+						labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystem_gpi)(input, library_name, base_filename);
+              data.web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)(input, library_name, base_filename);
+              data.reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_reducedIBPs_gpi)(input, library_name, base_filename);   
+              data.MI = RESOLVE_INTERFACE_FUNCTION(singular_MI_gpi)(input, library_name, base_filename);
+
+             web_copy=data.web;
+             std::cout<<" web "<<data.web<<std::endl;
+    
+
+            		]]>          </code>
+        </module>
+      </defun>
+      <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
+      <connect-read port="input" place="place_input"/>
+      <connect-in port="input_control" place="input_control"/>
+      <connect-out port="labeledgraph" place="labeledgraph"/>
+      <connect-out port="web_copy" place="web_copy"/>
+      <connect-out port="data" place="data"/>
+
+    </transition>
+    <place name="web_copy" type="string"/>
+
+    <transition name="compute_size">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="web_copy" type="string"/>
+        <out name="total" type="int"/>
+
+        <out name="myvec" type="string"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute_size(total,myvec,web_copy,library_name,base_filename)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <cinclude href="iostream"/>
+          <code><![CDATA[
+            
+         using vector = std::vector<int>;
+  using vector2d = std::vector<vector>;
+  vector2d vec;
+
+int nLayers = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_copy, library_name, base_filename);
+int count=0;
+for (int j = 1; j <= nLayers; j++) {
+
+  vector v;
+    std::string web_copy_j = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(
+        web_copy, j, library_name, base_filename);
+
+    int nSectors = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(
+        web_copy_j, library_name, base_filename);
+
+    for (int k = 1; k <= nSectors; k++) {
+        v.push_back(j);
+        v.push_back(k);
+        count+=1;
+    }
+      vec.push_back(v);
+}
+total=count;
+std::cout<<"total="<<total<<std::endl;
+ /* std::cout << "vec before = " << std::endl;
+    for (const auto& inner_vec : vec) {
+        for (int vi : inner_vec) {
+            std::cout << vi << " ";
+        }
+        std::cout << std::endl;
+    }  */
+
+ myvec = RESOLVE_INTERFACE_FUNCTION(vector2dToString)(vec);
+                       ]]>
+                </code>
+        </module>
+      </defun>
+        <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
+      <connect-in port="web_copy" place="web_copy"/>
+      
+      <connect-out port="myvec" place="myvec"/>
+      <connect-out port="total" place="total"/>
+    </transition>
+
+    <place name="labeledgraph" type="string"/>
+    <place name="myvec" type="string"/>
+    <place name="total" type="int"/>
+
+    <transition name="compute_vec">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <out name="Sectors" type="list"/>
+        <out name="m" type="int"/>
+        <in name="counter" type="int"/>
+        <inout name="myvec" type="string"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute_vec(m,Sectors,myvec)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <cinclude href="iostream"/>
+          <code><![CDATA[
+  using pnet_value = pnet::type::value::value_type;
+            using pnet_list = std::list<pnet_value>;
+
+            using vector = std::vector<int>;
+            using vector2d = std::vector<vector>;
+            vector2d vec;
+            vector v;
+            vec = RESOLVE_INTERFACE_FUNCTION(stringToVector2d)(myvec);
+            int mysize = vec.size();
+
+            v = RESOLVE_INTERFACE_FUNCTION(getFirstList)(vec);
+
+
+
+            /* if (!v.empty()) {
+              Layers = v.front(); // Extract the first element
+
+              v.erase(v.begin()); // Remove the first element
+
+            } */
+            using pnet_value = pnet::type::value::value_type;
+            using pnet_list = std::list<pnet_value>;
+
+            using pair = std::pair<pnet_value, pnet_value>;
+         
+            for (size_t i = 0; i < v.size(); i += 2) {
+              // pair p = {pnet_value(v[i]), pnet_value(v[i + 1])};
+              pnet_list tmp;
+
+              // Sectors.push_back(pnet_list{});
+              tmp.push_back(pnet_value(v[i]));
+              tmp.push_back(pnet_value(v[i + 1]));
+              Sectors.push_back(tmp);
+            }
+            std::cout << " Before =" ;
+
+            for (const auto& tmp : Sectors) {
+              if (auto list_ptr = boost::get<pnet_list>(&tmp)) {
+                for (const auto& val : *list_ptr) {
+                  if (auto int_val = boost::get<int>(&val)) {
+                    std::cout << *int_val << " , ";
+                  }
+                }
+              }
+            }
+            std::cout << std::endl;
+
+
+            myvec = RESOLVE_INTERFACE_FUNCTION(vector2dToString)(vec);
+            if (mysize == 0) {
+              myvec = "Done";
+            }
+              m=v.size()/2;
+           std::cout<<"m="<<m<<std::endl;
+                       ]]>
+                </code>
+        </module>
+      </defun>
+    <condition>
+        ${myvec} :ne: "Done" :and: ${counter} :gt: 0
+
+    </condition>
+    <connect-out port="m" place="m"/>
+    <connect-in port="counter" place="counter"/>
+
+    <connect-inout port="myvec" place="myvec"/>
+    <connect-out-many port="Sectors" place="Sectors"/>
+
+    </transition>
+
+    
+    <place name="Sectors" type="list"/>
+    <place name="m" type="int"/>
+
+<place name="limit" type="int">
+      <token>
+        <value>0</value>
+      </token>
+    </place>
+
+  <place name="counter" type="int">
+      <token>
+        <value>3</value>
+      </token>
+    </place>
+
+  <place name="slow" type="control"/>
+    
+  <transition name="counting">
+      <defun>
+        <require key="worker" mandatory="true"/>
+         <in name="slow" type="control"/>
+        <in name="m" type="int"/>
+        <out name="counter" type="int"/>
+        <inout name="limit" type="int"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="counting(slow,counter,limit,m)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <cinclude href="iostream"/>
+                    <code><![CDATA[
+
+              limit+=1;
+            if(limit==m){
+              limit=0;
+               counter=m;
+            }
+
+            else{
+              counter=0;
+            }   
+
+         ]]>
+          </code>
+        </module>
+      </defun>
+      <connect-read port="m" place="m"/>
+    <connect-in port="slow" place="slow"/>
+      <connect-inout port="limit" place="limit"/>
+      <connect-out port="counter" place="counter"/>
+    </transition>
+
+    <transition name="compute1">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="library_name" type="string"/>
+        <in name="base_filename" type="string"/>
+        <in name="labeledgraph" type="string"/>
+        <in name="input" type="string"/>
+        <in name="Sectors" type="list"/>
+
+        <inout name="data" type="feynman"/>
+        <out name="slow" type="control"/>
+        <out name="number" type="control"/>
+
+        <out name="data_copy" type="feynman"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="compute1(number,slow,Sectors,data,input,labeledgraph,data_copy,library_name,base_filename)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+   
+            std::cout << " afterSector= ";
+            std::pair<int, int> p;
+            std::vector<int> c;
+            for (const auto& val : Sectors) {
+              if (auto str_val = boost::get<int>(&val)) {
+                std::cout << *str_val << " , ";
+                c.push_back(*str_val);
+              }
+            }
+
+         int j = c[0];
+            int k = c[1]; 
+       
+            
+            std::string reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_seed_gpi)(data.reducedIBPs, library_name, base_filename);
+            std::cout << " reducedIBPs_seed: " <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_seed, library_name)<< std::endl;
+            // -------------------------------------------------------------------------
+            // Step 3: Extract target integrals from input
+            // -------------------------------------------------------------------------
+            std::string targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInt_gpi)(input, library_name, base_filename);
+            std::cout << "Target Integrals: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(targetInt, library_name) << std::endl;
+            
+            // -------------------------------------------------------------------------
+            // Step 4: Process Web Replacement: Replace two entries at indices (j,k)
+            // -------------------------------------------------------------------------
+            std::string wjk = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(data.web, j, k, library_name, base_filename);
+            
+            std::string wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)(wjk, library_name, base_filename);
+            std::cout<<"web["<<j<<","<<k<<"].TARGET = "<<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(wjk_targetInt, library_name)<<std::endl;
+        
+            int size_wjk_targetInt = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(wjk_targetInt, library_name, base_filename);
+        
+            std::cout << "size_wjk_targetInt = " << size_wjk_targetInt << std::endl;
+            
+            // -------------------------------------------------------------------------
+            // Step 5: Assign target integrals to the reduced IBP seed
+            // -------------------------------------------------------------------------
+            reducedIBPs_seed = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(targetInt, library_name, base_filename);
+            std::cout << "Updated reducedIBPs_seed: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_seed, library_name) << std::endl;
+            
+            // -------------------------------------------------------------------------
+            // Step 6: Compute Many IBP (if there is at least one target integral in the web)
+            // -------------------------------------------------------------------------
+            if (size_wjk_targetInt >= 1)
+            {
+                std::string totalIBP = RESOLVE_INTERFACE_FUNCTION(singular_computeManyIBPjk_gpi)(labeledgraph, wjk_targetInt, library_name, base_filename);
+                
+                std::string totalIBP_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(totalIBP, library_name, base_filename);
+               int size_totalIBP_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(totalIBP_IBP, library_name, base_filename);
+                std::cout << "Size of totalIBP_IBP: " << size_totalIBP_ibp << std::endl;
+                
+                int te = 0;
+                if (te == 0)
+                {
+                    std::string reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(data.reducedIBPs, library_name, base_filename);
+                    std::string totalIBP_over   = RESOLVE_INTERFACE_FUNCTION(singular_over_gpi)(totalIBP, library_name, base_filename);
+                    
+                    reducedibp_over = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(totalIBP_over, library_name, base_filename);
+                    te = te + 1;
+                    std::cout << "Updated reducedibp_over after assignment: " << reducedibp_over << std::endl;
+                }
+                
+                // ---------------------------------------------------------------------
+                // Step 7: Get Reduced IBPs (split into independent IBPs and master/tail integrals)
+                // ---------------------------------------------------------------------
+                int pp = 101;
+                std::string L = RESOLVE_INTERFACE_FUNCTION(singular_getRedIBPs_gpi)(totalIBP, pp, library_name, base_filename);
+                std::cout << "L from getRedIBPs_gpi: " << L << std::endl;
+                
+                std::string indpndIBP = RESOLVE_INTERFACE_FUNCTION(singular_indpndIBP_gpi)(L, library_name, base_filename);
+                std::cout << "Independent IBP: " << indpndIBP << std::endl;
+                
+                std::string masterAndTailIntgrals = RESOLVE_INTERFACE_FUNCTION(singular_masterAndTailIntgrals_gpi)(L, library_name, base_filename);
+                std::cout << "Master and Tail Integrals: " << masterAndTailIntgrals << std::endl;
+                
+                // ---------------------------------------------------------------------
+                // Step 8: Update reduced IBP set
+                // ---------------------------------------------------------------------
+                std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(data.reducedIBPs, library_name, base_filename);
+                int size_reducedIBPs_ibp = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename);
+                std::cout << "Size of reducedIBPs_IBP: " << size_reducedIBPs_ibp << std::endl;
+                
+                if (size_reducedIBPs_ibp == 0)
+                {
+                    reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(indpndIBP, library_name, base_filename);
+                    std::cout << "Assigned indpndIBP to reducedIBPs_IBP." << std::endl;
+                }
+                else
+                {
+                    int indpndIBP_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(indpndIBP, library_name, base_filename);
+                    std::cout << "indpndIBP_size = " << indpndIBP_size << std::endl;
+                    for (int i = 1; i <= indpndIBP_size; i++)
+                    {
+                        std::string reducedIBPs_IBP_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(reducedIBPs_IBP, indpndIBP_size + 1, library_name, base_filename);
+                        std::string indpndIBP_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(indpndIBP, i, library_name, base_filename);
+                        reducedIBPs_IBP_i = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(indpndIBP_i, library_name, base_filename);
+                        std::cout << "Assigned independent IBP at index " << i << std::endl;
+                    }
+                }
+                
+                // ---------------------------------------------------------------------
+                // Step 9: Update Web sectors with new master/tail integrals and extract master integrals
+                // ---------------------------------------------------------------------
+                std::string wjkb = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(data.web, j, k, library_name, base_filename);
+                std::string wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)(wjkb, library_name, base_filename);
+                int size_wjk_targetIntb = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(wjk_targetIntb, library_name, base_filename);
+                std::cout << "size_wjk_targetInt_b = " << size_wjk_targetIntb << std::endl;
+                
+                int masterAndTailIntgrals_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterAndTailIntgrals, library_name, base_filename);
+                std::cout << "masterAndTailIntgrals_size = " << masterAndTailIntgrals_size << std::endl;
+                
+                std::string w = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_later)(data.web, masterAndTailIntgrals, j, k, library_name, base_filename);
+                int w4jk = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_sizejk)(w, library_name, base_filename);
+                std::cout << "w4jk = " << w4jk << ", j = " << j << ", k = " << k << std::endl;
+                
+                std::string w1 = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 1, library_name, base_filename);
+                data.web = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(w1, library_name, base_filename);
+                
+                std::string masterIntgralsInSector = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(w, 2, library_name, base_filename);
+                int masterIntgralsInSector_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterIntgralsInSector, library_name, base_filename);
+                std::cout << "masterIntgralsInSector_size = " << masterIntgralsInSector_size << std::endl;
+                
+                // ---------------------------------------------------------------------
+                // Step 10: Update Master Integrals (MI)
+                // ---------------------------------------------------------------------
+                int MI_size = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(data.MI, library_name, base_filename);
+                std::cout << "Initial MI size = " << MI_size << std::endl;
+                
+                if (MI_size == 0)
+                {
+                    data.MI = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector, library_name, base_filename);
+                    std::cout << "Assigned master integrals to MI." << std::endl;
+                }
+                else
+                {
+                    int masterIntgralsInSector_size2 = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(masterIntgralsInSector, library_name, base_filename);
+                    std::cout << "Re-checked masterIntgralsInSector_size = " << masterIntgralsInSector_size2 << std::endl;
+                    for (int i = 1; i <= masterIntgralsInSector_size2; i++)
+                    {
+                        std::string masterIntgralsInSector_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(masterIntgralsInSector, i, library_name, base_filename);
+                        int alreadyIntheList = RESOLVE_INTERFACE_FUNCTION(singular_alreadyIntheList_gpi)(data.MI, masterIntgralsInSector_i, library_name);
+                        if (alreadyIntheList == 0)
+                        {
+                            std::string MI_i = RESOLVE_INTERFACE_FUNCTION(singular_Return_place)(data.MI, MI_size + 1, library_name, base_filename);
+                            MI_i = RESOLVE_INTERFACE_FUNCTION(singular_assign_gpi)(masterIntgralsInSector_i, library_name, base_filename);
+                            std::cout << "Added master integral from sector index " << i << std::endl;
+                        }
+                    }
+                }
+            }
+            
+            // -------------------------------------------------------------------------
+            // Final Step: Additional Debug on Web Update
+            // -------------------------------------------------------------------------
+            std::string wjka = RESOLVE_INTERFACE_FUNCTION(singular_replace_two)(data.web, j, k, library_name, base_filename);
+            std::string wjk_targetInta = RESOLVE_INTERFACE_FUNCTION(singular_targetInts_gpi)(wjka, library_name, base_filename);
+            int size_wjk_targetInta = RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(wjk_targetInta, library_name, base_filename);
+            std::cout << "size_wjk_targetInta = " << size_wjk_targetInta << std::endl;
+            
+            std::cout << "================== End of IBP System Computation ==================" << std::endl;
+            data_copy=data;
+                        		]]>
+          </code>
+        </module>
+      </defun>
+      <connect-read port="library_name" place="place_library_name"/>
+      <connect-read port="base_filename" place="place_base_filename"/>
+      <connect-read port="labeledgraph" place="labeledgraph"/>
+      <connect-read port="input" place="place_input"/>
+      <connect-out port="data_copy" place="data_copy"/>
+      <connect-inout port="data" place="data"/>
+    <connect-in port="Sectors" place="Sectors"/>
+      <connect-out port="slow" place="slow"/>
+    <connect-out port="number" place="number"/>
+
+    </transition>
+
+    <place name="mi_ibp" type="feynman"/>
+    <place name="data_copy" type="feynman"/>
+
+  <place name="number" type="control"/>
+
+<place name="counting" type="int">
+      <token>
+        <value>0</value>
+      </token>
+    </place>
+
+ <transition name="output">
+      <defun>
+        <require key="worker" mandatory="true"/>
+         <in name="number" type="control"/>
+        <in name="total" type="int"/>
+          <in name="data_copy" type="feynman"/>
+
+      <inout name="counting" type="int"/>
+        <inout name="mi_ibp" type="feynman"/>
+
+        <module name="singular_template" require_function_unloads_without_rest="false" function="output(data_copy,counting,number,total,mi_ibp)">
+          <cinclude href="interface/template_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <cinclude href="iostream"/>
+                    <code><![CDATA[
+
+              counting+=1;
+            mi_ibp.MI=data_copy.MI;
+            mi_ibp.reducedIBPs=data_copy.reducedIBPs;
+
+         ]]>
+          </code>
+        </module>
+      </defun>
+          <condition>
+        ${total} :eq:  ${counting} 
+
+    </condition>
+      <connect-read port="total" place="total"/>
+    <connect-in port="number" place="number"/>
+        <connect-in port="data_copy" place="data_copy"/>
+      <connect-inout port="counting" place="counting"/>
+      <connect-out port="mi_ibp" place="mi_ibp"/>
+    </transition>
+
+  </net>
+</defun>
