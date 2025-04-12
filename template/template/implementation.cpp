@@ -28,18 +28,6 @@ extern "C" {
     // This will be called when the library is unloaded
   }
 }
-void printListElements(lists output) {
-    int L_size = lSize(output) + 1;
-    
-    for (int i = 0; i < L_size; i++) {
-        sleftv& listElement = output->m[i];
-
-        if (listElement.data != NULL) {
-            std::cout << "Token element at index " << i << ": " << listElement.String() << std::endl;
-        }
-    }
-}
-
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library)
 {
     // Initialize and load the Singular library.
@@ -1172,7 +1160,6 @@ lists computeM1_gpi(leftv arg1) {
     ideal M = idInit(n + 1, 1);
     M->rank = n + 1;
     tem = 1;  // Start from 1 like in feynman.lib
-    std::cout<<"starting to compute module M"<<std::endl;
     for(int i=E+1; i<=E+L; i++) {
         for(int j=1; j<=E+L; j++) {
             //std::cout << "i=" << i << " j=" << j << std::endl;
@@ -1244,10 +1231,7 @@ lists computeM1_gpi(leftv arg1) {
             tem++;
         }
     }
-    std::cout << "size M in M1" << IDELEMS(M) << std::endl;
-    for(int i=1; i<=IDELEMS(M); i++) {
-        std::cout << "M[" << i << "]=" << p_String(M->m[i-1], RB) << std::endl;
-    }
+ 
      // Prepare the output token
     lists output = (lists)omAlloc0Bin(slists_bin);
     output->Init(4);
@@ -1261,16 +1245,7 @@ lists computeM1_gpi(leftv arg1) {
     output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
     output->m[1].rtyp = LIST_CMD; output->m[1].data = t1;
     output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
-    
-// Create and initialize the second sublist for Li elements
-    lists t2 = (lists)omAlloc0Bin(slists_bin);
-    t2->Init(IDELEMS(M)); // Use the size of Li to initialize t2
-    for (int i = 0; i < IDELEMS(M); i++) {
-        t2->m[i].rtyp = POLY_CMD; 
-        t2->m[i].data = pCopy((poly)M->m[i]);
-    }
-
-    output->m[3].rtyp = LIST_CMD; output->m[3].data = t2;
+    output->m[3].rtyp = MODUL_CMD; output->m[3].data = idCopy(M);
     
     // Clean up
     mp_Delete(&C, RB);
@@ -1305,42 +1280,6 @@ out = computeM1_gpi(args.leftV());
     
     return out_filename;
 }
-
-std::string singular_getTargetInts_gpi(std::string const& res,
-    int const& j,
-    int const& k,   
-    std::string const& needed_library,
-    std::string const& base_filename)
-{
-    init_singular(config::singularLibrary().string());
-        load_singular_library(needed_library);
-
-    std::pair<int, lists> Res;
-    
-    std::pair<int, lists> out;
-    std::string ids;
-    std::string out_filename;
-    
-    void* p = (char*)(long)(j);
-    void* p1 = (char*)(long)(k);
-    ids = worker();
-
-    Res = deserialize(res, ids);
- 
-
-    ScopedLeftv args(Res.first, lCopy(Res.second));
-
-    ScopedLeftv args5(args, INT_CMD, p);
-    ScopedLeftv arg6(args, INT_CMD, p1);
-
-    std::string function_name = "getTargetInts_gpi";
-    out = call_user_proc(function_name, needed_library, args);
-    out_filename = serialize(out.second, base_filename);
-
-    
-    return out_filename;
-}
-
 void printlists(lists l, ring RB) {
     for (int i = 0; i < lSize(l)+1; i++) {
         std::cout << "l[" << i << "]=" << p_String((poly)l->m[i].Data(), RB) << std::endl;
@@ -1372,165 +1311,161 @@ void printIdeal(const ideal I)
     std::cout<<std::endl;
     rChangeCurrRing(savedRing);
 }
-std::vector<int> parseNuValues(const std::string& nuString) {
-    std::vector<int> nuValues;
-    std::string token;
-    std::string delimiter = ",";
-    size_t pos = 0;
-    std::string s = nuString;
+#include <Singular/libsingular.h>
+#include <iostream>
+#include <vector>
+#include <sstream>
 
-    std::cout << "Parsing nu string: " << s << std::endl;
-
-    while ((pos = s.find(delimiter)) != std::string::npos) {
-        token = s.substr(0, pos);
-        nuValues.push_back(std::stoi(token));
-        s.erase(0, pos + delimiter.length());
+// Parse nu values from string (e.g., "[1,1,1,-1,-3,1,-1,-1,-1]")
+std::vector<int> parseNuValues(const std::string& str) {
+    std::vector<int> values;
+    std::string cleaned = str;
+    cleaned.erase(std::remove(cleaned.begin(), cleaned.end(), '['), cleaned.end());
+    cleaned.erase(std::remove(cleaned.begin(), cleaned.end(), ']'), cleaned.end());
+    std::stringstream ss(cleaned);
+    std::string item;
+    while (std::getline(ss, item, ',')) {
+        if (!item.empty()) {
+            values.push_back(std::stoi(item));
+        }
     }
-    if (!s.empty()) {
-        nuValues.push_back(std::stoi(s));
-    }
-
-  /*   std::cout << "Parsed " << nuValues.size() << " values" << std::endl;
-    for (size_t i = 0; i < nuValues.size(); i++) {
-        std::cout << "nuValues[" << i << "]=" << nuValues[i] << std::endl;
-    }
- */
-    return nuValues;
+    return values;
 }
+
+// Print list elements for debugging
+void printListElements(lists output) {
+    if (!output) {
+        std::cerr << "ERROR: Null list in printListElements" << std::endl;
+        return;
+    }
+    int L_size = lSize(output) + 1;
+    for (int i = 0; i < L_size; i++) {
+        sleftv& listElement = output->m[i];
+        if (listElement.data && listElement.String()) {
+            std::cout << "Token element at index " << i << ": " << listElement.String() << std::endl;
+        } else {
+            std::cout << "Token element at index " << i << ": <null or invalid>" << std::endl;
+        }
+    }
+}
+
 lists computeM2_gpi(leftv arg) {
-    std::cout << "DEBUG: Starting computeM2_gpi" << std::endl;
-    
-    
+    // Validate input
+    if (!arg || !arg->Data() || !arg->next || !arg->next->Data()) {
+        std::cerr << "ERROR: Invalid arguments" << std::endl;
+        return nullptr;
+    }
+
+    // Get labeledgraph (check for token wrapper)
     lists graphList1 = (lists)(arg->Data());
-  
-    std::cout << "DEBUG: graphList1 size: " << graphList1->nr + 1 << std::endl;
-  
-    
+    lists graphList = graphList1;
+    if (graphList1->nr >= 3 && graphList1->m[3].rtyp == LIST_CMD && graphList1->m[3].Data()) {
+        graphList = (lists)(graphList1->m[3].Data());
+    }
+
+    // Debug: Print graphList
+    std::cout << "DEBUG: graphList contents:" << std::endl;
+    printListElements(graphList);
+
+    // Validate labeledgraph
+    if (!graphList || graphList->nr < 7) { // labeledgraph has 8 fields
+        std::cerr << "ERROR: Invalid labeledgraph (expected 8 fields, got " 
+                  << (graphList ? graphList->nr + 1 : 0) << ")" << std::endl;
+        return nullptr;
+    }
+
+    // Get target integrals (check for token wrapper)
     lists targetInt1 = (lists)(arg->next->Data());
-  
-    std::cout << "DEBUG: targetInt1 size: " << targetInt1->nr + 1 << std::endl;
-   
-    
-    lists graphList = (lists)(graphList1->m[3].Data());
-  
-    std::cout << "DEBUG: graphList size: " << graphList->nr + 1 << std::endl;
-    
+    lists targetInt = targetInt1;
+    if (targetInt1->nr >= 3 && targetInt1->m[3].rtyp == LIST_CMD && targetInt1->m[3].Data()) {
+        targetInt = (lists)(targetInt1->m[3].Data());
+    }
 
-    
-    lists targetInt = (lists)(targetInt1->m[3].Data());
-    if (!targetInt) {
-        std::cout << "DEBUG: Error - targetInt is NULL" << std::endl;
-        return NULL;
+    // Debug: Print targetInt
+    std::cout << "DEBUG: targetInt contents:" << std::endl;
+    printListElements(targetInt);
+
+    // Validate target integrals
+    if (!targetInt || targetInt->nr < 0 || !targetInt->m[0].Data()) {
+        std::cerr << "ERROR: Invalid target integrals" << std::endl;
+        return nullptr;
     }
-    std::cout << "DEBUG: targetInt size: " << targetInt->nr + 1 << std::endl;
+
+    // Extract rings
+    ring RB = nullptr;
+    ring baikovRing = nullptr;
     
-    if (graphList->nr < 5 || !graphList->m[5].Data()) {
-        std::cout << "DEBUG: Error - graphList[5] is invalid" << std::endl;
-        return NULL;
+    // According to the debug output, the rings are in the labeledgraph structure
+    // labeledgraph = (list vertices, list edges, ring over, list labels, ring overpoly, list elimvars, ring baikovover, matrix baikovmatrix)
+    
+    // Extract the 'over' ring (position 2)
+    if (graphList->m[2].rtyp == RING_CMD && graphList->m[2].Data()) {
+        RB = (ring)graphList->m[2].Data();
+        std::cout << "DEBUG: Found over ring: " << rString(RB) << std::endl;
     }
     
-    ring RB = (ring)graphList->m[5].Data();
-   
-    std::cout << "DEBUG: Got ring RB" << std::endl;
+    // Extract the 'baikovover' ring (position 6)
+    if (graphList->m[6].rtyp == RING_CMD && graphList->m[6].Data()) {
+        baikovRing = (ring)graphList->m[6].Data();
+        std::cout << "DEBUG: Found baikovover ring: " << rString(baikovRing) << std::endl;
+    }
     
-    // Save current ring and switch to RB
+    if (!RB || !baikovRing) {
+        std::cerr << "ERROR: Missing rings (over=" << (RB ? "present" : "missing") 
+                  << ", baikovover=" << (baikovRing ? "present" : "missing") << ")" << std::endl;
+        return nullptr;
+    }
+
+    // Switch to RB ring
     ring savedRing = currRing;
-    std::cout << "savedRing=" << rString(savedRing) << std::endl;
     rChangeCurrRing(RB);
-    std::cout << "RB=" << rString(currRing) << std::endl;
 
+    // Get number of variables
     int n = rVar(RB);
-    std::cout << "DEBUG: Number of variables in ring: " << n << std::endl;
-    
-    if (targetInt->nr < 0 || !targetInt->m[0].Data()) {
-        std::cout << "DEBUG: Error - targetInt[0] is invalid" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
+
     // Parse nu values
     std::string nuString = targetInt->m[0].String();
-    std::cout << "DEBUG: nuString: " << nuString << std::endl;
     std::vector<int> nuValues = parseNuValues(nuString);
-    std::cout << "DEBUG: Parsed " << nuValues.size() << " nu values" << std::endl;
-    
-    if (nuValues.size() != static_cast<size_t>(n)) {
-        std::cout << "DEBUG: Error - nu values size mismatch. Expected " << n << ", got " << nuValues.size() << std::endl;
-        WerrorS("The length of the vector nu must equal to number of Baikov variables");
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
+
+    // Create M2 ideal
     ideal M2 = idInit(n + 1, 1);
-  
     M2->rank = n + 1;
-    
-    std::cout << "DEBUG: Filling M2" << std::endl;
-    
-    for(int i = 1; i <= n; i++) {
-        poly term;
-        int nuVal = nuValues[i-1];
-        std::cout << "DEBUG: Processing i=" << i << ", nuVal=" << nuVal << std::endl;
-        
-        if (nuVal > 0) {
-            term = p_ISet(1, RB);
-            
+
+    for (int i = 1; i <= n; i++) {
+        poly term = nuValues[i-1] > 0 ? p_ISet(1, RB) : p_One(RB);
+        if (nuValues[i-1] > 0) {
             p_SetExp(term, i, 1, RB);
-            p_SetComp(term, i, RB);
-            p_Setm(term, RB);
-        } else {
-            term = p_One(RB);
-           
-            p_SetComp(term, i, RB);
-            p_Setm(term, RB);
         }
+        p_SetComp(term, i, RB);
+        p_Setm(term, RB);
         M2->m[i-1] = term;
     }
-    
+
     poly last_term = p_One(RB);
-    
-    p_SetComp(last_term, n+1, RB);
+    p_SetComp(last_term, n + 1, RB);
     p_Setm(last_term, RB);
     M2->m[n] = last_term;
-    
-    std::cout << "DEBUG: M2 created successfully" << std::endl;
-    printIdeal(M2);
-    
-    std::cout << "DEBUG: Creating output" << std::endl;
-    lists output = (lists)omAlloc0Bin(slists_bin);
-  
 
+    // Create output list
+    lists output = (lists)omAlloc0Bin(slists_bin);
     output->Init(4);
-    
+
     lists t1 = (lists)omAlloc0Bin(slists_bin);
-    
     t1->Init(2);
-    t1->m[0].rtyp = STRING_CMD; t1->m[0].data = strdup("generators");
-    t1->m[1].rtyp = STRING_CMD; t1->m[1].data = strdup("module_M2");
-    
+    t1->m[0].rtyp = STRING_CMD; t1->m[0].data = omStrDup("generators");
+    t1->m[1].rtyp = STRING_CMD; t1->m[1].data = omStrDup("module_M2");
+
     output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
     output->m[1].rtyp = LIST_CMD; output->m[1].data = t1;
     output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
-    
-    //lists t2 = (lists)omAlloc0Bin(slists_bin);
-    
-     /*t2->Init(IDELEMS(M2));
-    for (int i = 0; i < IDELEMS(M2); i++) {
-        t2->m[i].rtyp = POLY_CMD;
-        t2->m[i].data = pCopy((poly)M2->m[i]);
-    } */
-    
-
     output->m[3].rtyp = MODUL_CMD; output->m[3].data = idCopy(M2);
-    
-    printListElements(output);
-    // Determine the number of elements in the token list.
-   
-    // Restore the original ring
-    
+
+    // Clean up
+    id_Delete(&M2, RB);
+    rChangeCurrRing(savedRing);
+
     return output;
 }
-
 std::string singular_computeM2_gpi(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
@@ -1564,12 +1499,8 @@ std::string singular_computeM2_gpi(std::string const& res
     
     // Serialize the copy
     std::string out_filename = serialize(outCopy, base_filename);
-    std::cout << "Serialized output to: " << out_filename << std::endl;
     // Deserialize the output to verify
-    std::pair<int, lists> ras= deserialize(out_filename, ids);
 
-std::cout << "Deserialized output:" << std::endl;
-    printListElements(ras.second);
 
     // Clean up the copy after serialization
 
@@ -1578,88 +1509,52 @@ std::cout << "Deserialized output:" << std::endl;
 
 
 
-
-std::string singular_computeM2_gp(std::string const& res
-    , std::string const& res1
-    , std::string const& needed_library
-    , std::string const& base_filename)
-{
-    init_singular(config::singularLibrary().string());
-    load_singular_library(needed_library);
-    std::pair<int, lists> Res;
-    std::pair<int, lists> Res1;
-
-    std::pair<int, lists> out;
-    std::string ids;
-    std::string out_filename;
-    ids = worker();
-    //std::cout << ids << " in singular_..._compute" << std::endl;
-
-    Res = deserialize(res, ids);
-    Res1 = deserialize(res1, ids);
-
-
-    ScopedLeftv args(Res.first, lCopy(Res.second));
-    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
-
-    std::string function_name = "computeM2_gp";
-    std::cout<<"applying function_name"<<std::endl;
-    out = call_user_proc(function_name, needed_library, args);
-    out_filename = serialize(out.second, base_filename);
-
-    std::pair<int, lists> ras= deserialize(out_filename, ids);
-
-    std::cout << "Deserialized output:" << std::endl;
-    printListElements(ras.second);
-
-    return out_filename;
-}
-
-NO_NAME_MANGLING
-std::pair<int, lists> intersection_gpi(leftv arg1) {
-   
-
+lists intersection_gpi(leftv arg1) {
+    std::cout<<"starting to intersection module M"<<std::endl;
     // Extract input list
-    lists input = (lists)(arg1->Data());
+    lists input1 = (lists)(arg1->Data());
+    lists m1 = (lists)(input1->m[3].Data());
+
+    lists input2 = (lists)(arg1->next->Data()); // extract Tok
+    lists m2 = (lists)(input2->m[3].Data()); // Tok.data
+
+    std::cout << "printListElements of m1 in intersection:" << std::endl;
+    printListElements(input1);
+    std::cout << "printListElements of m2 in intersection:" << std::endl;
+    printListElements(input2);
+    ideal M11 = (ideal)input1->m[3].Data();
+    ideal M22 = (ideal)input2->m[3].Data();
+    std::cout << "printIdeal of M11 in intersection:" << std::endl;
+    printIdeal(M11);
+    std::cout << "printIdeal of M22 in intersection:" << std::endl;
+    printIdeal(M22);
+    
+    // Check if m1[0] or m2[0] is NULL
    
-        // Extract tmp list
-    lists tmp = (lists)(input->m[3].Data());
-
-    lists Tok = (lists)(arg1->next->Data()); // extract Tok
-    lists tmp1 = (lists)(Tok->m[3].Data()); // Tok.data
-
-
-  
-
     // Extract ideal M
-    ideal M1 = (ideal)tmp->m[0].Data();
-    ideal M2 = (ideal)tmp1->m[0].Data();
-
+    ideal M1 = (ideal)m1->m[0].Data();
+    ideal M2 = (ideal)m2->m[0].Data();
+    std::cout << "M1 in intersection:" << std::endl;
+    printIdeal(M1);
+    std::cout << "M2 in intersection:" << std::endl;
+    printIdeal(M2);
+    
+    
+    // Compute the intersection
     ideal M = idSect(M1, M2);
-    int size_M= IDELEMS( M);
-    std::cout<<"size_of_module_intersection "<<size_M<<std::endl;
-int p=1;
-    // Prepare the output token
+    int size_M = IDELEMS(M);
+    std::cout << "size_of_module_intersection " << size_M << std::endl;
+    
+    // Create output list
     lists output = (lists)omAlloc0Bin(slists_bin);
-    output->Init(4);
-
-    lists t = (lists)omAlloc0Bin(slists_bin);
-    t->Init(2);
-    t->m[0].rtyp = STRING_CMD; t->m[0].data = strdup("generators");
-    t->m[1].rtyp = STRING_CMD; t->m[1].data = strdup("module_intersection");
-    output->m[1].rtyp = LIST_CMD; output->m[1].data = t;
-    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
-
-    t = (lists)omAlloc0Bin(slists_bin);
-    t->Init(1); // Use the size of Li to initialize t
-        t->m[0].rtyp = MODUL_CMD; t->m[0].data = M;
-
-    output->m[3].rtyp = LIST_CMD; output->m[3].data = t;
-
-    // Cleanup
-
-    return {p, output};
+    output->Init(1);
+    output->m[0].rtyp = MODUL_CMD;
+    output->m[0].data = M;
+    
+    std::cout << "inters:" << std::endl;
+    printIdeal(M);
+    
+    return output;
 }
 
 std::string singular_intersection_gpi(std::string const& res
@@ -1672,7 +1567,6 @@ std::string singular_intersection_gpi(std::string const& res
     std::pair<int, lists> Res;
     std::pair<int, lists> Res1;
 
-    std::pair<int, lists> out;
     std::string ids;
     std::string out_filename;
     ids = worker();
@@ -1685,11 +1579,13 @@ std::string singular_intersection_gpi(std::string const& res
     ScopedLeftv args(Res.first, lCopy(Res.second));
     ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
 
-    out = intersection_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
+    lists out = intersection_gpi(args.leftV());  // Call reduce_GPI with the raw pointer
 
    // std::string function_name = "intersection_gpi";
     //out = call_user_proc(function_name, needed_library, args);
-    out_filename = serialize(out.second, base_filename);
+    
+
+    out_filename = serialize(out, base_filename);
 
     return out_filename;
 }
@@ -1883,6 +1779,119 @@ std::string singular_assign_gpi(std::string const& res
 
 // Function to create a serialized data_list from multiple feynman struct strings
 
+ std::string  singular_computeBaikovMatrix_gpi(std::string const& res
+     , std::string const& needed_library
+     , std::string const& base_filename)
+ {
+     init_singular(config::singularLibrary().string());
+         load_singular_library(needed_library);
+ 
+     std::pair<int, lists> Res;
+     std::pair<int, lists> out;
+     std::string ids;
+     std::string out_filename;
+ 
+     ids = worker();
+     Res = deserialize(res, ids);
+ 
+     ScopedLeftv args(Res.first, lCopy(Res.second));
+ 
+     std::string function_name = "computeBaikovMatrix_gpi";
+     out  = call_user_proc(function_name, needed_library, args);
+     out_filename = serialize(out.second, base_filename);
+ 
+     return out_filename;
+ }
+ 
+ std::string singular_getTargetInts_gpi(std::string const& res,
+     int const& j,
+     int const& k,   
+     std::string const& needed_library,
+     std::string const& base_filename)
+ {
+     init_singular(config::singularLibrary().string());
+         load_singular_library(needed_library);
+ 
+     std::pair<int, lists> Res;
+     
+     std::pair<int, lists> out;
+     std::string ids;
+     std::string out_filename;
+     
+     void* p = (char*)(long)(j);
+     void* p1 = (char*)(long)(k);
+     ids = worker();
+ 
+     Res = deserialize(res, ids);
+  
+ 
+     ScopedLeftv args(Res.first, lCopy(Res.second));
+ 
+     ScopedLeftv args1(args, INT_CMD, p);
+     ScopedLeftv args2(args, INT_CMD, p1);
+ 
+     std::string function_name = "getTargetInts_gpi";
+     out = call_user_proc(function_name, needed_library, args);
+     out_filename = serialize(out.second, base_filename);
+ 
+     
+     return out_filename;
+ }
+ 
+ std::string singular_getBaikovMatrix_gpi(std::string const& res
+     , std::string const& needed_library
+     , std::string const& base_filename)
+ {
+     init_singular(config::singularLibrary().string());
+     load_singular_library(needed_library);   
+ 
+     std::pair<int, lists> Res;
+     std::pair<int, lists> out;
+     std::string ids;
+     std::string out_filename;
+ 
+     ids = worker();
+     Res = deserialize(res, ids);
+ 
+     ScopedLeftv args(Res.first, lCopy(Res.second));
+ 
+     std::string function_name = "getBaikovMatrix_gpi";
+     out = call_user_proc(function_name, needed_library, args);
+     out_filename = serialize(out.second, base_filename);
+ 
+     return out_filename;
+ }
+ 
+ std::string singular_computeM2_gp(std::string const& res
+     , std::string const& res1
+     , std::string const& needed_library
+     , std::string const& base_filename)
+ {
+     init_singular(config::singularLibrary().string());
+     load_singular_library(needed_library);
+     std::pair<int, lists> Res;
+     std::pair<int, lists> Res1;
+ 
+     std::pair<int, lists> out;
+     std::string ids;
+     std::string out_filename;
+     ids = worker();
+     //std::cout << ids << " in singular_..._compute" << std::endl;
+ 
+     Res = deserialize(res, ids);
+     Res1 = deserialize(res1, ids);
+ 
+ 
+     ScopedLeftv args(Res.first, lCopy(Res.second));
+     ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+ 
+     std::string function_name = "computeM2_gp";
+     std::cout<<"applying function_name"<<std::endl;
+     out = call_user_proc(function_name, needed_library, args);
+     out_filename = serialize(out.second, base_filename);
+ 
+     return out_filename;
+ }
 /******************************************************************************************************** */
 NO_NAME_MANGLING
 std::string singular_merge_web_gpi(std::string const& res
@@ -2164,30 +2173,6 @@ int singular_IBP_size_gpi(std::string const& res
 
     return ss;
 }
-std::string  singular_computeBaikovMatrix_gpi(std::string const& res
-    , std::string const& needed_library
-    , std::string const& base_filename)
-{
-    init_singular(config::singularLibrary().string());
-        load_singular_library(needed_library);
-
-    std::pair<int, lists> Res;
-    std::pair<int, lists> out;
-    std::string ids;
-    std::string out_filename;
-
-    ids = worker();
-    Res = deserialize(res, ids);
-
-    ScopedLeftv args(Res.first, lCopy(Res.second));
-
-    std::string function_name = "computeBaikovMatrix_gpi";
-    out  = call_user_proc(function_name, needed_library, args);
-    out_filename = serialize(out.second, base_filename);
-
-    return out_filename;
-}
-
 void printGraphStructure(const std::string& graph_str) {
     try {
         std::cout << "Graph Structure:" << std::endl;

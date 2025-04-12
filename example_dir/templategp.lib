@@ -1005,7 +1005,7 @@ RETURN:  The module M2 over G1.baikovover that requires to compute IBP identitie
 KEYWORDS : Feynman graph
 "
 {
-   string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+   string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  
   link l = "ssi:w " + path;
 write(l,"G0",-11);
 
@@ -2637,18 +2637,6 @@ proc MI_gpi(token ibp)
   return(output);
 }
 
-proc getTargetInts_gpi(token Web, int j, int k)
-{
-  list web = Web.data[1];
-  list v = web[j][k].targetInts;
-
-  token output; 
-  output.fieldnames = list("generators", "getTargetInts_gpi");
-  
-  output.data[1] = v;
-  return(output);
-}
-
 
 proc computeManyIBP_gpi(token g, token Web, int j, int k)
 {
@@ -2970,31 +2958,10 @@ proc computeM2_gpi(token G0,token Web, int j, int k)
   def web= Web.data[1];
  list l=web[j][k].targetInts[1];
 
-def M2 = computeM2(G,l);
+module M2 = computeM2(G,l);
 
    token output;
   output.fieldnames = list("generators", "computeM2_gpi");
-
-  output.data[1] = M2;
-
-  return(output);
-}
-proc computeM2_gp(token G0,token l)
-{
-
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM2.ssi";
-  write(l, G0, "computeM2_gp");
-  close(l);
-  def G = G0.data[1];
-  /* def RB = G.r_baikovmatrix;
-  setring RB;
- */
-  list l= l.data[1];
-def M2 = computeM2(G,l);
-
-
-   token output;
-  output.fieldnames = list("generators", "computeM2_gp");
 
   output.data[1] = M2;
 
@@ -3047,6 +3014,52 @@ def MM=std(M);
 
 
 
+ proc getBaikovMatrix_gpi(token input)
+ {
+   list v = input.data[1];
+   list e = input.data[2];
+   graph G;
+   G.vertices = v;
+   G.edges = e;
+   labeledgraph G1 = computeBaikovMatrix(G);
+   
+   token output;
+   output.fieldnames = list("generators", "getBaikovMatrix_gpi");
+   output.data[1] = G1;
+   return(output);
+ }
+ proc getTargetInts_gpi(token Web, int j, int k)
+ {
+   list web = Web.data[1];
+   list v = web[j][k].targetInts;
+ 
+   token output; 
+   output.fieldnames = list("generators", "getTargetInts_gpi");
+   
+   output.data[1] = v[1];
+   return(output);
+ }
+ 
+ proc computeM2_gp(token G0,token targ)
+ {
+ link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/m2.ssi";
+ 
+   def G = G0.data[1];
+   def RB = G.r_baikovmatrix;
+   setring RB;
+ write(l, RB, "RB");
+   def Nu= targ.data[1];
+ write(l, Nu, "targetInts");
+   module m2 = computeM2(G,Nu);
+ write(l, m2, "m2");
+ close(l);
+    token output;
+   output.fieldnames = list("generators", "computeM2_gp");
+ 
+   output.data[1] = m2;
+ 
+   return(output);
+ }
 
 
 /****************************************************************************************************** */

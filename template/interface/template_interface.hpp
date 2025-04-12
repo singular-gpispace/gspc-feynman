@@ -182,11 +182,6 @@ NO_NAME_MANGLING
     std::string const& targetInts,
     std::string const& needed_library,
     std::string const& base_filename);
-NO_NAME_MANGLING
-std::string singular_computeM2_gp(std::string const& res
-    , std::string const& res1
-    , std::string const& needed_library
-    , std::string const& base_filename);
 
     NO_NAME_MANGLING
 std::string singular_intersection_gpi(std::string const& res
@@ -265,12 +260,7 @@ NO_NAME_MANGLING
 int singular_IBP_size_gpi(std::string const& res
     , std::string const& needed_library
    );
-    NO_NAME_MANGLING
-   std::string singular_getTargetInts_gpi(std::string const& res,
-    int const& j,
-    int const& k,   
-    std::string const& needed_library,
-    std::string const& base_filename);
+    
 NO_NAME_MANGLING
 std::string singular_template_graph(std::string const& input_filename
     , std::string const& needed_library
@@ -295,6 +285,22 @@ std::string singular_labelGraph(std::string const& input_filename,
                              std::string const& needed_library,
                              std::string const& base_filename);
 NO_NAME_MANGLING
-std::string singular_computeBaikovMatrix_gpi(std::string const& res
-    , std::string const& needed_library
-    , std::string const& base_filename);
+ 
+ std::string  singular_computeBaikovMatrix_gpi(std::string const& res
+       , std::string const& needed_library
+       , std::string const& base_filename);
+ NO_NAME_MANGLING
+ std::string singular_getTargetInts_gpi(std::string const& res
+       , int const& j
+       , int const& k
+       , std::string const& needed_library
+       , std::string const& base_filename);
+ NO_NAME_MANGLING  
+ std::string singular_getBaikovMatrix_gpi(std::string const& res
+             , std::string const& needed_library
+             , std::string const& base_filename);
+ NO_NAME_MANGLING
+ std::string singular_computeM2_gp(std::string const& res
+       , std::string const& res1
+       , std::string const& needed_library
+       , std::string const& base_filename);
