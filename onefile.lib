@@ -49,12 +49,14 @@ list targetInt = list(
     int te = 0;
     reducedIBPs.seed = targetInt;
 
+     list layers=list(1,2,3);
     int j = 1;
     if (size(web) < j) {
         ERROR("Web list does not contain layer j=" + string(j));
     }
 
     int nSectors = size(web[j]);
+    list sector=list(1,2);
     if (nSectors == 0) {
         ERROR("No sectors available in web[" + string(j) + "]");
     }
@@ -82,15 +84,9 @@ list targetInt = list(
     setring R;
 
     list L = getRedIBPs(totalIBP, 101);
-    if (size(L) < 2) {
-        ERROR("getRedIBPs did not return expected two lists.");
-    }
 
     list indpndIBP = L[1];
-    print("Size of indpndIBP: " + string(size(indpndIBP)));
-
     list masterAndTailIntgrals = L[2];
-    print("Size of masterAndTailIntgrals: " + string(size(masterAndTailIntgrals)));
 
     if (size(reducedIBPs.IBP) == 0) {
         reducedIBPs.IBP = indpndIBP;
@@ -102,24 +98,18 @@ list targetInt = list(
 
     kill R;
 
-    print("Size of masterAndTailIntgrals = " + string(size(masterAndTailIntgrals)));
-
     list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
     web = w[1];
 
-    print("w[2] = " + string(w[2])); // Fixed debug message
 
     list masterIntgralsInSector = w[2];
     print("Size of masterIntgralsInSector = " + string(size(masterIntgralsInSector)));
 
     if (size(MI) == 0) {
-        print("MI is empty, assigning masterIntgralsInSector to MI");
         MI = masterIntgralsInSector;
-        print("MI is now: " + string(MI));
     } else {
         for (int i = 1; i <= size(masterIntgralsInSector); i++) {
             if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0) {
-                print("Adding master integral to MI: " + string(masterIntgralsInSector[i]));
                 MI[size(MI) + 1] = masterIntgralsInSector[i];
             }
         }

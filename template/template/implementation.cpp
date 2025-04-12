@@ -28,6 +28,17 @@ extern "C" {
     // This will be called when the library is unloaded
   }
 }
+void printListElements(lists output) {
+    int L_size = lSize(output) + 1;
+    
+    for (int i = 0; i < L_size; i++) {
+        sleftv& listElement = output->m[i];
+
+        if (listElement.data != NULL) {
+            std::cout << "Token element at index " << i << ": " << listElement.String() << std::endl;
+        }
+    }
+}
 
 std::string printGpiTokenContent(const std::string & tokenString, const std::string & needed_library)
 {
@@ -1078,14 +1089,15 @@ lists computeM1_gpi(leftv arg1) {
     lists input = (lists)(arg1->Data());
     lists graphList = (lists)(input->m[3].Data());
     
+    ring savedRing = currRing;
+    std::cout << "savedRing=" << rString(savedRing) << std::endl;
     // Get rings and matrix
     ring R = (ring)graphList->m[1].Data();
     ring RB = (ring)graphList->m[5].Data();
     matrix B = (matrix)graphList->m[6].Data();
 
     // Save current ring and switch to RB
-    ring savedRing = currRing;
-    std::cout << "savedRing=" << rString(savedRing) << std::endl;
+  
     rChangeCurrRing(RB);
     std::cout << "RB=" << rString(currRing) << std::endl;
 
@@ -1388,46 +1400,22 @@ std::vector<int> parseNuValues(const std::string& nuString) {
 lists computeM2_gpi(leftv arg) {
     std::cout << "DEBUG: Starting computeM2_gpi" << std::endl;
     
-    if (!arg || !arg->Data()) {
-        std::cout << "DEBUG: Error - arg or arg->Data is NULL" << std::endl;
-        return NULL;
-    }
     
     lists graphList1 = (lists)(arg->Data());
-    if (!graphList1) {
-        std::cout << "DEBUG: Error - graphList1 is NULL" << std::endl;
-        return NULL;
-    }
+  
     std::cout << "DEBUG: graphList1 size: " << graphList1->nr + 1 << std::endl;
-    
-    if (!arg->next || !arg->next->Data()) {
-        std::cout << "DEBUG: Error - arg->next or arg->next->Data is NULL" << std::endl;
-        return NULL;
-    }
+  
     
     lists targetInt1 = (lists)(arg->next->Data());
-    if (!targetInt1) {
-        std::cout << "DEBUG: Error - targetInt1 is NULL" << std::endl;
-        return NULL;
-    }
+  
     std::cout << "DEBUG: targetInt1 size: " << targetInt1->nr + 1 << std::endl;
-    
-    if (graphList1->nr < 3 || !graphList1->m[3].Data()) {
-        std::cout << "DEBUG: Error - graphList1[3] is invalid" << std::endl;
-        return NULL;
-    }
+   
     
     lists graphList = (lists)(graphList1->m[3].Data());
-    if (!graphList) {
-        std::cout << "DEBUG: Error - graphList is NULL" << std::endl;
-        return NULL;
-    }
+  
     std::cout << "DEBUG: graphList size: " << graphList->nr + 1 << std::endl;
     
-    if (targetInt1->nr < 3 || !targetInt1->m[3].Data()) {
-        std::cout << "DEBUG: Error - targetInt1[3] is invalid" << std::endl;
-        return NULL;
-    }
+
     
     lists targetInt = (lists)(targetInt1->m[3].Data());
     if (!targetInt) {
@@ -1442,10 +1430,7 @@ lists computeM2_gpi(leftv arg) {
     }
     
     ring RB = (ring)graphList->m[5].Data();
-    if (!RB) {
-        std::cout << "DEBUG: Error - RB is NULL" << std::endl;
-        return NULL;
-    }
+   
     std::cout << "DEBUG: Got ring RB" << std::endl;
     
     // Save current ring and switch to RB
@@ -1477,11 +1462,7 @@ lists computeM2_gpi(leftv arg) {
     }
     
     ideal M2 = idInit(n + 1, 1);
-    if (!M2) {
-        std::cout << "DEBUG: Error - Failed to initialize M2" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
+  
     M2->rank = n + 1;
     
     std::cout << "DEBUG: Filling M2" << std::endl;
@@ -1493,23 +1474,13 @@ lists computeM2_gpi(leftv arg) {
         
         if (nuVal > 0) {
             term = p_ISet(1, RB);
-            if (!term) {
-                std::cout << "DEBUG: Error - Failed to create term for i=" << i << std::endl;
-                id_Delete(&M2, RB);
-                rChangeCurrRing(savedRing);
-                return NULL;
-            }
+            
             p_SetExp(term, i, 1, RB);
             p_SetComp(term, i, RB);
             p_Setm(term, RB);
         } else {
             term = p_One(RB);
-            if (!term) {
-                std::cout << "DEBUG: Error - Failed to create term for i=" << i << std::endl;
-                id_Delete(&M2, RB);
-                rChangeCurrRing(savedRing);
-                return NULL;
-            }
+           
             p_SetComp(term, i, RB);
             p_Setm(term, RB);
         }
@@ -1517,12 +1488,7 @@ lists computeM2_gpi(leftv arg) {
     }
     
     poly last_term = p_One(RB);
-    if (!last_term) {
-        std::cout << "DEBUG: Error - Failed to create last term" << std::endl;
-        id_Delete(&M2, RB);
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
+    
     p_SetComp(last_term, n+1, RB);
     p_Setm(last_term, RB);
     M2->m[n] = last_term;
@@ -1532,48 +1498,35 @@ lists computeM2_gpi(leftv arg) {
     
     std::cout << "DEBUG: Creating output" << std::endl;
     lists output = (lists)omAlloc0Bin(slists_bin);
-    if (!output) {
-        std::cout << "DEBUG: Error - Failed to allocate output" << std::endl;
-        id_Delete(&M2, RB);
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
+  
+
     output->Init(4);
     
     lists t1 = (lists)omAlloc0Bin(slists_bin);
-    if (!t1) {
-        std::cout << "DEBUG: Error - Failed to allocate t1" << std::endl;
-        id_Delete(&M2, RB);
-        omFreeBin(output, slists_bin);
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
+    
     t1->Init(2);
     t1->m[0].rtyp = STRING_CMD; t1->m[0].data = strdup("generators");
     t1->m[1].rtyp = STRING_CMD; t1->m[1].data = strdup("module_M2");
     
-    output->m[0].rtyp = RING_CMD; output->m[0].data = RB;
+    output->m[0].rtyp = RING_CMD; output->m[0].data = currRing;
     output->m[1].rtyp = LIST_CMD; output->m[1].data = t1;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = RB;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
     
-    lists t2 = (lists)omAlloc0Bin(slists_bin);
-    if (!t2) {
-        std::cout << "DEBUG: Error - Failed to allocate t2" << std::endl;
-        id_Delete(&M2, RB);
-        omFreeBin(output, slists_bin);
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    t2->Init(IDELEMS(M2));
+    //lists t2 = (lists)omAlloc0Bin(slists_bin);
+    
+     /*t2->Init(IDELEMS(M2));
     for (int i = 0; i < IDELEMS(M2); i++) {
         t2->m[i].rtyp = POLY_CMD;
         t2->m[i].data = pCopy((poly)M2->m[i]);
-    }
+    } */
     
-    output->m[3].rtyp = LIST_CMD; output->m[3].data = t2;
+
+    output->m[3].rtyp = MODUL_CMD; output->m[3].data = idCopy(M2);
     
+    printListElements(output);
+    // Determine the number of elements in the token list.
+   
     // Restore the original ring
-    rChangeCurrRing(savedRing);
     
     return output;
 }
@@ -1611,7 +1564,13 @@ std::string singular_computeM2_gpi(std::string const& res
     
     // Serialize the copy
     std::string out_filename = serialize(outCopy, base_filename);
-    
+    std::cout << "Serialized output to: " << out_filename << std::endl;
+    // Deserialize the output to verify
+    std::pair<int, lists> ras= deserialize(out_filename, ids);
+
+std::cout << "Deserialized output:" << std::endl;
+    printListElements(ras.second);
+
     // Clean up the copy after serialization
 
     return out_filename;
@@ -1620,7 +1579,7 @@ std::string singular_computeM2_gpi(std::string const& res
 
 
 
-std::string singular_computeM2(std::string const& res
+std::string singular_computeM2_gp(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
     , std::string const& base_filename)
@@ -1643,9 +1602,15 @@ std::string singular_computeM2(std::string const& res
     ScopedLeftv args(Res.first, lCopy(Res.second));
     ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
 
-    std::string function_name = "computeM2_gpi1";
+    std::string function_name = "computeM2_gp";
+    std::cout<<"applying function_name"<<std::endl;
     out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
+
+    std::pair<int, lists> ras= deserialize(out_filename, ids);
+
+    std::cout << "Deserialized output:" << std::endl;
+    printListElements(ras.second);
 
     return out_filename;
 }
@@ -2275,7 +2240,7 @@ typedef struct {
     lists c;
     lists i;
 } oneIBP;
-
+/* 
 // Forward declarations for helper functions
 lists getSortedIntegrals(setIBP* S);
 lists getRandom(int p, int s);
@@ -2524,3 +2489,4 @@ matrix setMat(setIBP* S, lists val, lists ind) {
     
     return X;
 }
+ */

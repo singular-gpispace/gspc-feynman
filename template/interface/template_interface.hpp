@@ -183,7 +183,7 @@ NO_NAME_MANGLING
     std::string const& needed_library,
     std::string const& base_filename);
 NO_NAME_MANGLING
-std::string singular_computeM2(std::string const& res
+std::string singular_computeM2_gp(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
     , std::string const& base_filename);

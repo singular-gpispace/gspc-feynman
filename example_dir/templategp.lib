@@ -1008,15 +1008,7 @@ KEYWORDS : Feynman graph
    string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
 write(l,"G0",-11);
-  if (typeof(G0) == "graph") {
-    labeledgraph G1 = computeBaikovMatrix(G0);
-    // return(computeM2(G1,Nu));
-    kill G0;
-    labeledgraph G0 = G1;
-  }
-  if (typeof(G0) != "labeledgraph") {
-    ERROR("expected a graph or labeledgraph");
-  }
+
 
   labeledgraph G = G0;
   write(l,"G",G);
@@ -2987,23 +2979,22 @@ def M2 = computeM2(G,l);
 
   return(output);
 }
-proc computeM2_gpi1(token G0,token l)
+proc computeM2_gp(token G0,token l)
 {
-link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM2.ssi";
-write(l,-11111 "computeM2_gpi1");
-  labeledgraph G = G0.data[1];
-  write(l, G, "computeM2_gpi1");
+
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM2.ssi";
+  write(l, G0, "computeM2_gp");
+  close(l);
+  def G = G0.data[1];
   /* def RB = G.r_baikovmatrix;
   setring RB;
  */
   list l= l.data[1];
-  write(l, l, "computeM2_gpi1");  
 def M2 = computeM2(G,l);
-  write(l, M2, "computeM2_gpi1");
-  close(l);
+
 
    token output;
-  output.fieldnames = list("generators", "computeM2_gpi1");
+  output.fieldnames = list("generators", "computeM2_gp");
 
   output.data[1] = M2;
 
