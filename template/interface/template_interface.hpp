@@ -1,7 +1,7 @@
 #pragma once
 
 #define NO_NAME_MANGLING extern "C"
-#include <config.hpp>
+#include "template/config.hpp"
 #include <boost/variant.hpp>
 
 #include <we/type/literal/control.hpp>
@@ -46,7 +46,6 @@ using list_type = std::list<std::string>; // Define list_type as std::list<std::
 #include <flint/fmpz.h>
 #include <flint/flint.h>
 #include <string>
-#include <config.hpp>
 using vector2d = std::vector<std::vector<int>>;
 
 #define RESOLVE_INTERFACE_FUNCTION(function) \
@@ -304,3 +303,9 @@ NO_NAME_MANGLING
        , std::string const& res1
        , std::string const& needed_library
        , std::string const& base_filename);
+
+// Add our new function declaration
+NO_NAME_MANGLING
+std::string singular_computeFeynmanIntegral_gpi(std::string const& res,
+    std::string const& needed_library,
+    std::string const& base_filename);

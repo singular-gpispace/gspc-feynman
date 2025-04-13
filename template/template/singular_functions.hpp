@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <Singular/libsingular.h>
 #include <Singular/links/ssiLink.h> // for ssiInfo etc.

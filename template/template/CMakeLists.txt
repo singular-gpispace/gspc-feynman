@@ -1,7 +1,7 @@
 # Add the FLINT library to the linking process
 extended_add_library(NAME template_implementation
   TYPE MODULE
-  SOURCES "implementation.cpp" "singular_functions.cpp"
+  SOURCES "implementation.cpp" "singular_functions.cpp" "feynman.cpp"
   INCLUDE_DIRECTORIES PRIVATE
   "${CMAKE_BINARY_DIR}"
   "${CMAKE_BINARY_DIR}/gen"

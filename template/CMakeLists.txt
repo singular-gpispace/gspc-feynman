@@ -60,6 +60,7 @@ link_directories(${FLINT_LIB_DIR})
 include_directories("src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
+include_directories("${CMAKE_BINARY_DIR}")
 
 # Add subdirectories
 add_subdirectory(src)

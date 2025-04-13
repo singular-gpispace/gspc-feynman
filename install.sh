@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Clean previous build and install directories
-#rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
+rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
 
 # Create necessary directories
-#mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
+mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
 
 # Activate the Spack environment
 spack load gpi-space@24.12 
@@ -33,8 +33,7 @@ SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubun
 export LD_LIBRARY_PATH=$GPISPACE_ROOT/lib:$FLINT_HOME/lib:$GMP_HOME/lib:$SINGULAR_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
 # Verify paths before building
-#ls $GPISPACE_ROOT/gspc_version || { echo "GPI-Space version file missing!"; exit 1; }
-ls $GPISPACE_ROOT/gspc_version  echo "GPI-Space version is here!"; 
+ls $GPISPACE_ROOT/gspc_version && echo "GPI-Space version is here!" || { echo "GPI-Space version file missing!"; exit 1; }
 
 # Run CMake
 cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
