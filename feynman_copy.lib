@@ -106,7 +106,7 @@ static proc printNet(Net N)
   list L = N.rows;
   for (int j = 1; j <= size(L); j++)
   {
-    print(L[j]);
+    //print(L[j]);
   }
 }
 
@@ -171,7 +171,7 @@ EXAMPLE : example printMat; shows an example
 
     }
     rstar = rstar + "]";
-    print(rstar);
+    //print(rstar);
   }
 }
 example
@@ -189,15 +189,15 @@ KEYWORDS : graph
 EXAMPLE : example printGraph; shows an example
 "
 {
-  print(netList(G.edges));
+  //print(netList(G.edges));
   int ct = 0;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   if (ct != 0)
   {
-    print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
   }
   else {
-    print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
   }
 }
 example
@@ -215,15 +215,15 @@ KEYWORDS : Feynman graph
 EXAMPLE : example printLabeledGraph; shows an example
 "
 {
-  print(netList(G.edges));
+  //print(netList(G.edges));
   int ct;
   for (int i = 1; i <= size(G.edges); i++) { if (size((G.edges)[i]) == 1) { ct = ct + 1; } }
   if (ct != 0)
   {
-    print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices, " + string(size(G.edges) - ct) + " bounded edges and " + string(ct) + " unbounded edges");
   }
   else {
-    print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
+    //print("Graph with " + string(size(G.vertices)) + " vertices and " + string(size(G.edges)) + " edges");
   }
   int ringdef = (typeof(basering) == "ring");
   if (ringdef) { def R1 = basering; }
@@ -231,14 +231,14 @@ EXAMPLE : example printLabeledGraph; shows an example
   setring R2;
   list labels = G.labels;
   "";
-  print("Edgeterms: ");
+  //print("Edgeterms: ");
   list ev;
   Net ne;
   for (i = 1; i <= size(G.edges);i++) {
     ne = net(G.edges[i]) + net(" => ") + net(string(labels[i]));
     ev[i] = ne;
   }
-  print(netList(ev));
+  //print(netList(ev));
   kill labels;
   if (ringdef) { setring R1; }
 
@@ -277,8 +277,8 @@ EXAMPLE : example printLabeledGraph; shows an example
 "
 {
   setring I.over;
-  print("Collection of IBP identities of the given graph with respect to the seed " + string(I.seed) + ".");
-  print("Total number of identities= " + string(size(I.IBP)));
+  //print("Collection of IBP identities of the given graph with respect to the seed " + string(I.seed) + ".");
+  //print("Total number of identities= " + string(size(I.IBP)));
 }
 
 
@@ -874,126 +874,125 @@ example
 
 proc computeM1(def G0)
 "USAGE:  computeM1(G0); G labeledgraph, or G graph@*
-ASSUME:  G is a Graph, or @ *
-G is a labeled graph where redundant variables have been eliminated by
-the procedure eliminateVariables, and deleted from the ring by the
-procedure removeElimVars.
-RETURN:  The module M1 over G1.baikovover that requires to compute IBP identities
-KEYWORDS : Feynman graph
+ASSUME:  G is a Graph, or@*
+         G is a labeled graph where redundant variables have been eliminated by 
+         the procedure eliminateVariables, and deleted from the ring by the 
+         procedure removeElimVars.
+RETURN:  The module M1 over G1.baikovover that requires to compute IBP identities 
+KEYWORDS: Feynman graph
 "
 
 {
-  if (typeof(G0) == "graph") {
-    labeledgraph G1 = computeBaikovMatrix(G0);
-    // return(computeM1(G1));
-    kill G0;
-    labeledgraph G0 = G1;
-
-  }
-  if (typeof(G0) != "labeledgraph") {
-    ERROR("expected a graph or labeledgraph");
-  }
-  labeledgraph G = G0;
-  def R = G.over;
-  int m = npars(R);
-  ring RB = G.baikovover;
-  matrix B = G.baikovmatrix;
-  setring RB;
-  int n = nvars(RB);
-  matrix C[n][n];
-  int tem = 0;
-  int E = m;
-  int L = nvars(R);
-  list x;
-  for (int i = 1;i <= E;i++) {
-    for (int j = E + 1;j <= E + L;j++) {
-      tem = tem + 1;
-      x[tem] = [i, j];
-      for (int k = 1;k <= n;k++) {
-        C[tem, k] = diff(B[i, j], z(k));
-      }
+if (typeof(G0)=="graph"){
+  labeledgraph G1 =computeBaikovMatrix(G0);
+ // return(computeM1(G1));
+ kill G0;
+ labeledgraph G0=G1;
+ 
+}
+if (typeof(G0) != "labeledgraph"){
+  ERROR("expected a graph or labeledgraph");
+}
+labeledgraph G = G0;
+def R = G.over;
+int m=npars(R);
+ring RB=G.baikovover;
+matrix B=G.baikovmatrix;
+setring RB;
+int n=nvars(RB);
+matrix C[n][n];
+int tem=0;
+int E = m;
+int L = nvars(R);
+list x;
+for(int i=1;i<=E;i++){
+  for(int j=E+1;j<=E+L;j++){ 
+    tem=tem+1;
+    x[tem]=[i,j];   
+    for(int k=1;k<=n;k++){
+      C[tem,k]=diff(B[i,j],z(k));
     }
   }
-  for (int i = E + 1;i <= E + L;i++) {
-    for (int j = i;j <= E + L;j++) {
-      tem = tem + 1;
-      x[tem] = [i, j];
-      for (int k = 1;k <= n;k++) {
-        C[tem, k] = diff(B[i, j], z(k));
-      }
+}
+for(int i=E+1;i<=E+L;i++){
+  for(int j=i;j<=E+L;j++){ 
+    tem=tem+1;   
+    x[tem]=[i,j];
+    for(int k=1;k<=n;k++){
+      C[tem,k]=diff(B[i,j],z(k));
     }
   }
+}
 
-  matrix D = inverse(C);
-  module M;
-  int tem = 1;
-  for (int i = E + 1;i <= E + L;i++) {
-    for (int j = 1;j <= E + L;j++) {
-
-      vector t = 0 * gen(n + 1);
-      for (int l = 1;l <= n;l++) {
-        poly a = 0;
-        for (int k = 1;k <= E + L;k++) {
-          //find the right row correspond to derivative
-          int o = 0;
-          int c1;
-          poly c2 = 0;
-          if (i == k) {
-            c1 = 2;
-          }
-          else {
-            c1 = 1;
-          }
-
-          for (int r = 1;r <= size(x);r++) {
-            if ([i, k] == x[r] or [k, i] == x[r]) {
-              o = r;
-
+matrix D=inverse(C);
+module M;
+int tem=1;
+for(int i=E+1;i<=E+L;i++){
+  for(int j=1;j<=E+L;j++){
+    
+    vector t=0*gen(n+1);
+    for(int l=1;l<=n;l++){
+      poly a=0;
+      for(int k=1;k<=E+L;k++){
+        //find the right row correspond to derivative
+            int o=0;
+            int c1;
+            poly c2=0;
+            if(i==k){
+              c1=2;
+            } else {
+              c1=1;
+            }
+            
+          for(int r=1;r<=size(x);r++){
+            if([i,k]==x[r] or [k,i]==x[r] ){
+              o=r;
+              
             }
           }
 
-          if (o != 0) {
-            c2 = D[l, o];
+          if(o != 0){
+            c2=D[l,o];
           }
-          a = a + c1 * c2 * B[j, k];
-        }
-        t = t + a * gen(l);
+          a=a+c1*c2*B[j,k];
       }
-      if (i == j) {
-        t = t - 2 * gen(n + 1);
-      }
-      else {
-        t = t + 0 * gen(n + 1);
-      }
-      M[tem] = t;
-      tem = tem + 1;
+    t=t+a*gen(l);
     }
+    if(i==j){
+      t=t-2*gen(n+1);
+    } else {
+      t=t+0*gen(n+1);
+    }
+    M[tem]=t;
+    tem=tem+1;
   }
-  //Test the computation
-  poly F = det(B);
-  for (int j = 1;j < size(M);j++) {
-    poly testP = 0;
-    for (int i = 1;i <= n;i++) {
-      testP = testP + M[j][i] * diff(F, z(i));
+}
+//Test the computation
+poly F=det(B);
+for(int j=1;j<size(M);j++){
+  poly testP=0;
+  for(int i=1;i<=n;i++){
+    testP=testP+M[j][i]*diff(F,z(i));
     }
-    testP = testP + M[j][n + 1] * F;
-    if (testP != 0) {
-      print("Something wrong");
-    }
-
+  testP=testP+M[j][n+1]*F;
+  if(testP != 0){
+    print("Something wrong");
   }
 
-  return(M);
+}
+
+return(M);
 }
 
 example
-{ "EXAMPLE:"; echo = 2;labeledgraph G1 = computeBaikovMatrix(G);
+{ "EXAMPLE:"; echo=2;
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
-    labeledgraph G1 = computeBaikovMatrix(G);
-   ring RB = G1.baikovover;
+    labeledgraph G1=computeBaikovMatrix(G);
+   ring RB=G1.baikovover;
     RB;
-    module ML = computeM1(G1);
+    module ML=computeM1(G1);
 }
+
 
 proc computeM2(def G0, list Nu)
 "USAGE:  computeM2(G,Nu); G labeledgraph, or G graph@*
@@ -1006,20 +1005,13 @@ RETURN:  The module M2 over G1.baikovover that requires to compute IBP identitie
 KEYWORDS : Feynman graph
 "
 {
-   string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+   string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  
   link l = "ssi:w " + path;
+write(l,"G0",-11);
 
-  if (typeof(G0) == "graph") {
-    labeledgraph G1 = computeBaikovMatrix(G0);
-    // return(computeM2(G1,Nu));
-    kill G0;
-    labeledgraph G0 = G1;
-  }
-  if (typeof(G0) != "labeledgraph") {
-    ERROR("expected a graph or labeledgraph");
-  }
 
   labeledgraph G = G0;
+  write(l,"G",G);
   def R = G.over;
   int m = npars(R);
 //  ring RB = G.baikovover;
@@ -1143,9 +1135,9 @@ KEYWORDS : Feynman graph
     //computation of polynomial
     poly f = 0;
     for (int j = 1;j <= n;j++) {
-      f = f + (diff(M[i][j], z(j)) - Nu[j] * M[i][j] / z(j));
+      f = f + (diff(M[i][j], z(j)) - Nu[j] * M[i][j]/z(j));
     }
-    poly h = (D - L - E - 1) / 2;
+    poly h = (D - L - E - 1)/2;
     f = f - M[i][n + 1] * h;
     if (f != 0) {
       int t = 1;
@@ -1763,10 +1755,10 @@ EXAMPLE : getSortMeasures; shows an example
   int   r = 0;
   int   s = 0;
   for (int j = 1;j <= size(l);j++) {
-    Nprop = Nprop + heaviside(l[j] - 1 / 2);
-    Nid = Nid + heaviside(l[j] - 1 / 2) * 2 ^ (j - 1);
-    r = r + l[j] * heaviside(l[j] - 1 / 2);
-    s = s + absValue(l[j]) * heaviside(-l[j] + 1 / 2);
+    Nprop = Nprop + heaviside(l[j] - 1/2);
+    Nid = Nid + heaviside(l[j] - 1/2) * 2 ^ (j - 1);
+    r = r + l[j] * heaviside(l[j] - 1/2);
+    s = s + absValue(l[j]) * heaviside(-l[j] + 1/2);
   }
   return(list(Nprop, Nid, r, s));
 }
@@ -1950,7 +1942,7 @@ EXAMPLE : getRedIBPs; shows an example
   timer = 0;
   list Z = gaussred_pivot(N);
   int elapsed_time = timer;
-  print("Elapsed time to compute rref in seconds:" + string(elapsed_time) + ". size of the matrix:" + string(nrows(N)) + " * " + string(ncols(N)));
+  //print("Elapsed time to compute rref in seconds:" + string(elapsed_time) + ". size of the matrix:" + string(nrows(N)) + " * " + string(ncols(N)));
   setring R;
   list Z = imap(RZ, Z);
   for (int j = 1;j <= Z[4];j++)
@@ -2114,9 +2106,9 @@ write(l,size(M2),"size of M2");
       testP = testP + M[j][i] * diff(F, z(i));
     }
     testP = testP + M[j][n + 1] * F;
-    //print(testP);
+    ////print(testP);
     if (testP != 0) {
-      print("Something wrong");
+      //print("Something wrong");
     }
   }
   //
@@ -2145,10 +2137,10 @@ write(l,size(M2),"size of M2");
 
       for (int j = 1;j <= n;j++)
       {
-        f = f + (diff(M[i][j], z(j)) - Nu[j] * M[i][j] / z(j));
+        f = f + (diff(M[i][j], z(j)) - Nu[j] * M[i][j]/z(j));
       }
 
-      poly h = (D - L - E - 1) / 2;
+      poly h = (D - L - E - 1)/2;
 
       f = f - M[i][n + 1] * h;
 
@@ -2317,7 +2309,7 @@ KEYWORDS : Feynman graph, IBPs
             //MI[size(MI)+1]=masterIntgralsInSector[i];
           }
         }
-        print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
+        //print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
 
       }
     }
@@ -2327,8 +2319,8 @@ KEYWORDS : Feynman graph, IBPs
 }
 example{
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
-//list targetInt=list(list(1,1,1,-1,-3,1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
-list targetInt = list(list(1,2,1,-1,-3,-1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
+list targetInt=list(list(1,1,1,-1,-3,-1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
+//list targetInt = list(list(1,2,1,-1,-3,-1,-1,-1,-1),list(1,-1,1,-1,-3,-1,-1,-4,-1));
 list finalset = getReducedIBPSystem(G,targetInt);
 setIBP S = finalset[1];
 ring R = S.over;
@@ -2339,6 +2331,219 @@ size(finalset[2]);
 }
 
 
+/****************************************************************************/
+
+
+proc getReducedIBPSystemInitial(graph G, list targetInt)
+"USAGE:  getReducedIBPSystemInitial(G,targetInt); targetInt list,G graph@*,
+ASSUME:  G is a graph and targetInt is a list of seeds of target integrals.
+RETURN : list(G1, web, reducedIBPs, MI) where G1::labeledgraph, web::list, reducedIBPs::setIBP, MI::list.
+KEYWORDS : Feynman graph, IBPs
+"
+{
+  list L = pickHighestSector(targetInt);
+  if (size(L) > 1)
+  {
+    ERROR("provided integrals belong to more than one integral class");
+  }
+
+  list web = generateWebSectors(L[1][1]);
+  web = setSectorMap(web);
+  list w4 = updateWeb(web, list(1, 1), targetInt);
+  web = w4[1];
+
+  labeledgraph G1 = computeBaikovMatrix(G);
+
+  setIBP reducedIBPs;
+  reducedIBPs.seed = targetInt;
+  list MI;
+
+  if (size(web[1][1].targetInts) >= 1)
+  {
+    setIBP totalIBP = computeManyIBP(G1, web[1][1].targetInts);
+
+    reducedIBPs.over = totalIBP.over;
+    ring R = reducedIBPs.over;
+
+    list L = getRedIBPs(totalIBP, 101);
+    list indpndIBP = L[1];
+    list masterAndTailIntgrals = L[2];
+
+    setring R;
+    reducedIBPs.IBP = indpndIBP;
+    kill R;
+
+    list w = updateWeb(web, list(1, 1), masterAndTailIntgrals);
+    web = w[1];
+    list masterIntgralsInSector = w[2];
+    MI = masterIntgralsInSector;
+
+    ////print("completed the computation in the sector: 1 at layer 1.");
+  }
+
+  return(list(G1, web, reducedIBPs, MI));
+}
+
+proc getReducedIBPSystemInitial_gpi(token input)
+{
+  list v = input.data[1];
+  list e = input.data[2];
+  list targetInt = input.data[3];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+
+  list d = getReducedIBPSystemInitial(G, targetInt);
+  labeledgraph G1 = d[1];
+  list web = d[2];
+  setIBP reducedIBPs = d[3];
+  list MI = d[4];
+
+  token output;
+  output.fieldnames = list("generators", "getReducedIBPSystemInitial_gpi");
+  output.data[1] = G1;
+  output.data[2] = web;
+  output.data[3] = reducedIBPs;
+  output.data[4] = MI;
+  return(output);
+}
+
+proc getReducedIBPSystemCompute(labeledgraph G1, list web, setIBP reducedIBPs, list MI, int j, int k)
+"USAGE:  getReducedIBPSystemCompute(G1,web,reducedIBPs,MI,j,k); G1 labeledgraph, web list, reducedIBPs setIBP, MI list, j int, k int@*,
+ASSUME:  Inputs are precomputed from getReducedIBPSystemInitial, j >= 2.
+RETURN : list(G1, web, reducedIBPs, MI) where G1::labeledgraph, web::list, reducedIBPs::setIBP, MI::list.
+KEYWORDS : Feynman graph, IBPs
+"
+{
+  setIBP totalIBP = computeManyIBP(G1, web[j][k].targetInts);
+
+  ring R = reducedIBPs.over;
+
+  list L = getRedIBPs(totalIBP, 101);
+  list indpndIBP = L[1];
+  list masterAndTailIntgrals = L[2];
+
+  setring R;
+  for (int i = 1; i <= size(indpndIBP); i++)
+  {
+    reducedIBPs.IBP[size(reducedIBPs.IBP) + 1] = indpndIBP[i];
+  }
+  kill R;
+
+  list w = updateWeb(web, list(j, k), masterAndTailIntgrals);
+  web = w[1];
+  list masterIntgralsInSector = w[2];
+  for (int i = 1; i <= size(masterIntgralsInSector); i++)
+  {
+    if (alreadyIntheList(MI, masterIntgralsInSector[i]) == 0)
+    {
+      MI[size(MI) + 1] = masterIntgralsInSector[i];
+    }
+  }
+  ////print("completed the computation in the sector:" + string(k) + " at layer " + string(j) + ". ");
+
+  return(list(G1, web, reducedIBPs, MI));
+}
+
+proc getReducedIBPSystemCompute_gpi(token g, token webs, token reducedIBP, token MIs, int j, int k)
+{
+  labeledgraph G1 = g.data[1];
+  list web = webs.data[1];
+  setIBP reducedIBPs = reducedIBP.data[1];
+  list MI = MIs.data[1];
+
+  list d = getReducedIBPSystemCompute(G1, web, reducedIBPs, MI, j, k);
+  labeledgraph G1 = d[1];
+  list web = d[2];
+  setIBP reducedIBPs = d[3];
+  list MI = d[4];
+  token output;
+  output.fieldnames = list("G1", "web", "reducedIBPs", "MI");
+  output.data[1] = G1;
+  output.data[2] = web;
+  output.data[3] = reducedIBPs;
+  output.data[4] = MI;
+  return(output);
+}
+
+
+proc getLabeledGraph_gpi(token input)
+{
+  labeledgraph G1 = input.data[1];
+
+  token output;
+  output.fieldnames = list("generators", "getLabeledGraph_gpi");
+  output.data[1] = G1;
+  return(output);
+}
+proc getWeb_gpi(token input)
+{
+  list web = input.data[2];
+  token output;
+  output.fieldnames = list("generators", "getWeb_gpi");
+  output.data[1] = web;
+  return(output);
+}
+proc getReducedIBPs_gpi(token input)
+{
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/getreducedibps.ssi";
+  write(l, input, "getReducedIBPs_gpi");
+
+  def reducedIBPs = input.data[3];
+  write(l, reducedIBPs, "getReducedIBPs_gpi");  
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "getReducedIBPs_gpi");
+  output.data[1] = reducedIBPs;
+  return(output);
+} 
+  
+proc getMI_gpi(token input)
+{
+  list MI = input.data[4];
+  token output;
+  output.fieldnames = list("generators", "getMI_gpi");
+  output.data[1] = MI;
+  return(output);
+}
+
+proc computeBaikovMatrix_gpi(token input)
+{
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computebaikovmatrix.ssi";
+  list v = input.data[1];
+  list e = input.data[2];
+  graph G;
+  G.vertices = v;
+  G.edges = e;
+  labeledgraph G1 = computeBaikovMatrix(G);
+  
+
+  ring over = G1.over;
+  list labels ;
+  ring overpoly = G1.overpoly;
+  list elimvars = G1.elimvars;
+  ring baikovover = G1.baikovover;
+  matrix baikovmatrix = G1.baikovmatrix;
+  write(l, G1, "G1");
+  write(l, over, "over");
+  write(l, labels, "labels");
+  write(l, overpoly, "overpoly");
+  write(l, elimvars, "elimvars");
+  write(l, baikovover, "baikovover");
+  write(l, baikovmatrix, "baikovmatrix");
+  close(l);
+
+  token output;
+  output.fieldnames = list("generators", "computeBaikovMatrix_gpi");
+  output.data[1] = G1;
+  output.data[2] = over;
+  output.data[3] = labels;
+  output.data[4] = overpoly;
+  output.data[5] = elimvars;
+  output.data[6] = baikovover;
+  output.data[7] = baikovmatrix;
+  return(output);
+}
 
 proc getReducedIBPSystem_gpi(token ibp)
 {
@@ -2432,6 +2637,7 @@ proc MI_gpi(token ibp)
   return(output);
 }
 
+
 proc computeManyIBP_gpi(token g, token Web, int j, int k)
 {
   labeledgraph G = g.data[1];
@@ -2501,6 +2707,26 @@ proc over_gpi(token ibp)
 
   return(output);
 }
+proc set_over_gpi(token setibp1, token setibp2)
+{
+  setIBP S1 = setibp1.data[1];
+  setIBP S2 = setibp2.data[1];
+  S1.over = S2.over;
+  token output;
+  output.fieldnames = list("generators", "set_over_gpi");
+  output.data[1] = S1.over;
+  return(output);
+}
+proc set_seed_gpi(token setibp1, token setibp2  )
+{
+  setIBP S1 = setibp1.data[1];
+  list S2 = setibp2.data[1];
+  S1.seed = S2;
+  token output;
+  output.fieldnames = list("generators", "set_seed_gpi");
+  output.data[1] = S1.seed;
+  return(output);
+}
 proc seed_gpi(token ibp)
 {
   setIBP v = ibp.data[1];
@@ -2527,10 +2753,23 @@ proc IBP_gpi(token ibp)
 
   return(output);
 }
-
+proc IBP_size(setIBP r)
+"USAGE: get_IBP_size(r); r = setIBP struct
+RETURN: Integer size of the IBP list"
+{
+  return(size(r.IBP));
+}
+proc IBP_size_gpi(token s)
+{
+  setIBP S = s.data[1];
+  int size = IBP_size(S);
+  token output;
+  output.fieldnames = list("generators", "IBP_size_gpi");
+  output.data[1] = size;
+  return(output);
+}
 proc getRedIBPs_gpi(token s, int p)
 {
-
 
   setIBP S = s.data[1];
 
@@ -2677,19 +2916,11 @@ int ss= size(w4[1][2][1].targetInts);
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
 
-link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";
   list web = Web.data[1];
 
   list masterAndTailIntgrals = MasterAndTailIntgrals.data[1];
-     write(l, "masterAndTailIntgrals", size(masterAndTailIntgrals));
 
   list w4 = updateWeb(web, list(j, k), masterAndTailIntgrals);
-     write(l, (j,k), "(j,k)");
-
-   write(l, w4, "w4");
-   write(l,size( w4[1][2][1].targetInts), "size( w4[1][2][1].targetInts");
-
-  close(l);
 
   token output;
   output.fieldnames = list("generators", "updateWeb_later");
@@ -2701,18 +2932,20 @@ link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";
 
 proc computeM1_gpi(token G0)
 {
-
-
+ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM1.ssi";
+  write(l, G0, "computeM1_gpi");
   def G = G0.data[1];
-module ML = computeM1(G);
+  module ML = computeM1(G);
+  write(l, ML, "computeM1_gpi");
+  close(l);
 
   token output;
-  output.fieldnames = list("generators", "IBP_gpi");
-
+  output.fieldnames = list("generators", "computeM1_gpi");
   output.data[1] = ML;
 
   return(output);
 }
+
 proc computeM2_gpi(token G0,token Web, int j, int k)
 {
 
@@ -2725,7 +2958,7 @@ proc computeM2_gpi(token G0,token Web, int j, int k)
   def web= Web.data[1];
  list l=web[j][k].targetInts[1];
 
-def M2 = computeM2(G,l);
+module M2 = computeM2(G,l);
 
    token output;
   output.fieldnames = list("generators", "computeM2_gpi");
@@ -2734,7 +2967,6 @@ def M2 = computeM2(G,l);
 
   return(output);
 }
-
 proc computeManyIBPjk_gpi(token g, token Webjk_targetInts)
 {
   labeledgraph G = g.data[1];
@@ -2768,10 +3000,7 @@ proc intersection_gpi(token m1, token m2)
 proc std_gpi(token m1)
 {
 
- string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hallo.ssi";  // Ensure the path ends with a "/"
-  link ll = "ssi:w " + path;
 module M= m1.data[1];
-write(ll,M, "M_coeff");
 
 option(redSB);
 
@@ -2780,72 +3009,566 @@ def MM=std(M);
   output.fieldnames = list("generators", "std_gpi");
 
   output.data[1] = MM;
-close(ll);
   return(output);
 }
 
 
-LIB "feynman_example.lib";
-ring R = (0,t1,t2,D), (z(1..9)), dp;
-    ring R = (0,t1,t2,D), (z(1..9)), dp;
-// Create first feynman data (data_a)
-feynman data_a;
-data_a.MI = list(
-    list(1, 1, 1, -1, -3, 0, -1, -1, -1),
-    list(1, 1, 1, -1, -3, 0, -1, -1, -2)
-);
-data_a.reducedIBPs.over = R;
-data_a.reducedIBPs.seed = list(
-    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
-);
-data_a.reducedIBPs.IBP = list(
-    createIBP(
-        list(t1*t2, -t2^2),
-        list(list(1, 1, 0, -2, -3, 0, -1, -1, -1), list(1, 1, 0, -1, -4, 0, -1, -1, -1))
-    ),
-    createIBP(
-        list(2*t1, t2),
-        list(list(1, 0, 1, -1, -3, 0, -1, -1, -1), list(1, 0, 1, -2, -3, 0, -1, -1, -1))
-    )
-);
-data_a.web = list(
-    list(
-        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -1))),
-        createSector(list(1, 3), list(1, 3), list(list(1, 1, 1, -2, -3, 0, -1, -1, -1)))
-    ),
-    list(
-        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -1))),
-        createSector(list(2, 4), list(2, 4), list(list(1, 1, 0, -2, -3, 0, -1, -1, -1)))
-    )
-);
-// Create second feynman data (data_b)
-feynman data_b;
-data_b.MI = list(
-    list(1, 1, 1, -1, -3, 0, -1, -1, -2),
-    list(1, 1, 1, -1, -3, 0, -1, -1, -3)
-);
-data_b.reducedIBPs.over = R;
-data_b.reducedIBPs.seed = list(
-    list(1, 1, 1, -1, -3, 1, -1, -1, -1)
-);
-data_b.reducedIBPs.IBP = list(
-    createIBP(
-        list(t1^2, -t1*t2),
-        list(list(1, 1, 1, -1, -3, 0, -1, -1, -2), list(1, 1, 1, -2, -3, 0, -1, -1, -2))
-    ),
-    createIBP(
-        list(t2^2, -t1),
-        list(list(1, 0, 1, -1, -3, 0, -1, -1, -2), list(1, 0, 1, -1, -4, 0, -1, -1, -2))
-    )
-);
-data_b.web = list(
-    list(
-        createSector(list(1, 2), list(1, 2), list(list(1, 1, 1, -1, -3, 0, -1, -1, -2))),
-        createSector(list(1, 4), list(1, 4), list(list(1, 1, 1, -1, -4, 0, -1, -1, -1)))
-    ),
-    list(
-        createSector(list(2, 3), list(2, 3), list(list(1, 1, 0, -1, -3, 0, -1, -1, -2))),
-        createSector(list(2, 5), list(2, 5), list(list(1, 1, 0, -1, -4, 0, -1, -1, -1)))
-    )
-);
+
+ proc getBaikovMatrix_gpi(token input)
+ {
+   list v = input.data[1];
+   list e = input.data[2];
+   graph G;
+   G.vertices = v;
+   G.edges = e;
+   labeledgraph G1 = computeBaikovMatrix(G);
+   
+   token output;
+   output.fieldnames = list("generators", "getBaikovMatrix_gpi");
+   output.data[1] = G1;
+   return(output);
+ }
+ proc getTargetInts_gpi(token Web, int j, int k)
+ {
+   list web = Web.data[1];
+   list v = web[j][k].targetInts;
+ 
+   token output; 
+   output.fieldnames = list("generators", "getTargetInts_gpi");
+   
+   output.data[1] = v[1];
+   return(output);
+ }
+ 
+ proc computeM2_gp(token G0,token targ)
+ {
+ link l= "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/m2.ssi";
+ 
+   def G = G0.data[1];
+   def RB = G.r_baikovmatrix;
+   setring RB;
+ write(l, RB, "RB");
+   def Nu= targ.data[1];
+ write(l, Nu, "targetInts");
+   module m2 = computeM2(G,Nu);
+ write(l, m2, "m2");
+ close(l);
+    token output;
+   output.fieldnames = list("generators", "computeM2_gp");
+ 
+   output.data[1] = m2;
+ 
+   return(output);
+ }
+
+
+/****************************************************************************************************** */
+
+
+
+proc eq_int_list(list a, list b) 
+"USAGE: eq_int_list(a, b); a, b lists of integers
+RETURN: 1 if lists are equal, 0 otherwise"
+{
+  if (typeof(a) != "list" || typeof(b) != "list") {
+     // print("eq_int_list: Error: Inputs must be lists (a: " + typeof(a) + ", b: " + typeof(b) + ")");
+      return(0);
+  }
+  if (size(a) != size(b)) {
+      return(0);
+  }
+  for (int i = 1; i <= size(a); i++) {
+      if (typeof(a[i]) != "int" || typeof(b[i]) != "int") {
+         // print("eq_int_list: Error: Non-integer element at index " + string(i));
+          return(0);
+      }
+      if (a[i] != b[i]) {
+          return(0);
+      }
+  }
+  return(1);
+}
+
+// Helper procedure to merge two lists of integer vectors, removing duplicates
+proc merge_int_vectors(list A, list B) 
+"USAGE: merge_int_vectors(A, B); A, B lists of integer vectors
+RETURN: A new list containing all unique integer vectors from A and B"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      // print("merge_int_vectors: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) == 0 && size(B) == 0) {
+      return(list());
+  }
+  list C = A;
+  for (int i = 1; i <= size(B); i++) {
+      if (typeof(B[i]) != "list") {
+          // print("merge_int_vectors: Warning: Skipping non-list element B[" + string(i) + "]");
+          continue;
+      }
+      int found = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (typeof(A[j]) != "list") {
+              // print("merge_int_vectors: Warning: Skipping non-list element A[" + string(j) + "]");
+              continue;
+          }
+          if (eq_int_list(A[j], B[i])) {
+              found = 1;
+              break;
+          }
+      }
+      if (!found) {
+          C[size(C) + 1] = B[i];
+      }
+  }
+  return(C);
+}
+// Helper procedure to merge two lists of sectors, combining targetInts where labs match
+proc merge_sector_lists(list A, list B) 
+"USAGE: merge_sector_lists(A, B); A, B lists of sector structs with 'lab' and 'targetInts' fields
+RETURN: A merged list of sectors, combining targetInts for matching labs"
+{
+  if (typeof(A) != "list" || typeof(B) != "list") {
+      // print("merge_sector_lists: Error: Inputs must be lists (A: " + typeof(A) + ", B: " + typeof(B) + ")");
+      return(list());
+  }
+  if (size(A) < 0 || size(B) < 0) {
+      // print("merge_sector_lists: Error: Negative size detected (A: " + string(size(A)) + ", B: " + string(size(B)) + ")");
+      return(list());
+  }
+  list C = list();
+  // Copy sectors from A
+  for (int i = 1; i <= size(A); i++) {
+      if (defined(A[i].lab) == 0 || defined(A[i].targetInts) == 0) {
+          // print("merge_sector_lists: Error: A[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      C[i] = A[i]; // Directly copy the oneSector struct
+  }
+  // Merge sectors from B
+  for (int i = 1; i <= size(B); i++) {
+      if (defined(B[i].lab) == 0 || defined(B[i].targetInts) == 0) {
+          // print("merge_sector_lists: Error: B[" + string(i) + "] missing lab or targetInts");
+          return(list());
+      }
+      int found = 0;
+      int idx = 0;
+      for (int j = 1; j <= size(A); j++) {
+          if (eq_int_list(A[j].lab, B[i].lab)) {
+              found = 1;
+              idx = j;
+              break;
+          }
+      }
+      if (found) {
+          C[idx].targetInts = merge_int_vectors(C[idx].targetInts, B[i].targetInts);
+      } else {
+          C[size(C) + 1] = B[i]; // Append the oneSector struct directly
+      }
+  }
+  return(C);
+}
+
+// Procedure to merge two web lists
+proc merge_web(list web1, list web2) 
+"USAGE: merge_web(web1, web2); web1, web2 lists of sector lists
+RETURN: A merged web structure combining all layers from web1 and web2"
+{
+  if (typeof(web1) != "list" || typeof(web2) != "list") {
+      // print("merge_web: Error: Inputs must be lists (web1: " + typeof(web1) + ", web2: " + typeof(web2) + ")");
+      return(list());
+  }
+  if (size(web1) == 0 && size(web2) == 0) {
+      return(list());
+  }
+  if (size(web1) == 0) {
+      return(web2);
+  }
+  if (size(web2) == 0) {
+      return(web1);
+  }
+
+  list merged = list();
+  int max_layers;
+  if (size(web1) > size(web2)) {
+      max_layers = size(web1);
+  } else {
+      max_layers = size(web2);
+  }  
+  for (int i = 1; i <= max_layers; i++) {
+      list layer_sectors = list();
+      if (i <= size(web1) && typeof(web1[i]) == "list") {
+          layer_sectors = web1[i];
+      }
+      if (i <= size(web2) && typeof(web2[i]) == "list") {
+          if (size(layer_sectors) == 0) {
+              layer_sectors = web2[i];
+          } else {
+              layer_sectors = merge_sector_lists(layer_sectors, web2[i]);
+          }
+      }
+      if (size(layer_sectors) == 0) {
+          // print("merge_web: Warning: Layer " + string(i) + " resulted in empty sector list");
+      }
+      merged[i] = layer_sectors;
+  }
+  return(merged);
+}
+
+// Procedure to merge two MI lists
+proc mergeMI(list MI1, list MI2) 
+"USAGE: mergeMI(MI1, MI2); MI1, MI2 lists of integer vectors
+RETURN: A merged MI list with unique integer vectors"
+{
+  if (typeof(MI1) != "list" || typeof(MI2) != "list") {
+      // print("mergeMI: Error: Inputs must be lists (MI1: " + typeof(MI1) + ", MI2: " + typeof(MI2) + ")");
+      return(list());
+  }
+  return(merge_int_vectors(MI1, MI2));
+}
+
+// Procedure to merge two reducedIBPs structures of type setIBP
+proc mergeRedIBPs(setIBP redIBPs1, setIBP redIBPs2) 
+"USAGE: mergeRedIBPs(redIBPs1, redIBPs2); redIBPs1, redIBPs2 setIBP structs with over, seed, and IBP fields
+RETURN: A merged setIBP struct with combined seeds and IBPs"
+{
+  if (typeof(redIBPs1) != "setIBP" || typeof(redIBPs2) != "setIBP") {
+      // print("mergeRedIBPs: Error: Inputs must be setIBP type (redIBPs1: " + typeof(redIBPs1) + ", redIBPs2: " + typeof(redIBPs2) + ")");
+      setIBP empty;
+      return(empty);
+  }
+  if (redIBPs1.over != redIBPs2.over) {
+      // print("mergeRedIBPs: Error: Incompatible rings");
+      setIBP empty;
+      return(empty);
+  }
+
+  setIBP merged;
+  merged.over = redIBPs1.over; // Use the ring from the first input
+  merged.seed = merge_int_vectors(redIBPs1.seed, redIBPs2.seed); // Merge seeds
+  merged.IBP = list(); // Initialize IBP list
+  int idx = 0;
+  
+  // Append all IBPs from redIBPs1
+  for (int i = 1; i <= size(redIBPs1.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs1.IBP[i];
+  }
+  // Append all IBPs from redIBPs2
+  for (int i = 1; i <= size(redIBPs2.IBP); i++) {
+      idx = idx + 1;
+      merged.IBP[idx] = redIBPs2.IBP[i];
+  }
+  return(merged);
+}
+
+proc mergeMI_gpi(token MI_prev, token MI_new)
+{
+  list MI1 = MI_prev.data[1];
+  list MI2 = MI_new.data[1];
+
+  list MI = MI1;
+ 
+  token output;
+  output.fieldnames = list("MI");
+  output.data[1] = MI;
+  return(output);
+}
+proc merge_web_gpi(token web_prev, token web_new)
+{
+  list web1 = web_prev.data[1];
+  list web2 = web_new.data[1];
+  
+  list merged = merge_web(web1, web2);
+  
+  token output;
+  output.fieldnames = list("web");
+  output.data[1] = merged;
+  return(output);
+}
+proc mergeRedIBPs_gpi(token redIBPs_prev, token redIBPs_new)
+{
+  setIBP redIBPs1 = redIBPs_prev.data[1];
+  setIBP redIBPs2 = redIBPs_new.data[1];
+  
+  setIBP merged = mergeRedIBPs(redIBPs1, redIBPs2);
+  
+  token output;
+  output.fieldnames = list("reducedIBPs");
+  output.data[1] = merged;
+  return(output);
+}
+
+
+
+
+
+
+
+
+
+//************************************************************************************************************************** */
+
+
+
+proc web_g(list targetInt)
+{
+
+  list L = pickHighestSector(targetInt);
+
+  list web = generateWebSectors(L[1][1]);
+
+  return(web);
+}
+
+proc subset(list small, list big) {
+  for (int i = 1; i <= size(small); i++) {
+      if (!contains(big, small[i])) {
+          return (0);
+      }
+  }
+  return (1);
+}
+
+/**
+* Checks if list L contains element x
+* @param L: List to search
+* @param x: Element to find
+* @return: 1 if found, 0 otherwise
+*/
+proc contains(list L, int x) {
+  for (int i = 1; i <= size(L); i++) {
+      if (L[i] == x) {
+          return (1);
+      }
+  }
+  return (0);
+}
+
+//************************************************************************************************************************** */
+// Graph Generation Function
+//************************************************************************************************************************** */
+
+/**
+* Generates graph structure from web T, combining vertices and labels
+* @param T: Web structure representing sector hierarchy
+* @return: List containing verticesWithLabels and edges
+*/
+
+proc getGraph(list T) {
+  list verticesWithLabels = list();
+  list edges = list();
+  int v_idx = 1;
+  int e_idx = 1;
+  
+  // Log web size
+  print("Size of web T: " + string(size(T)));
+  
+  // Generate vertices with labels
+  for (int i = 1; i <= size(T); i++) {
+      print("Size of layer " + string(i) + ": " + string(size(T[i])));
+      for (int j = 1; j <= size(T[i]); j++) {
+          // Store vertex coordinates and label together
+          verticesWithLabels[v_idx] = list(list(i, j), T[i][j].lab);
+          v_idx++;
+      }
+  }
+  
+  // Print vertices with labels
+  print("Vertices with Labels:");
+  for (int i = 1; i <= size(verticesWithLabels); i++) {
+      list vertex = verticesWithLabels[i][1];
+      list label = verticesWithLabels[i][2];
+      print("(" + string(vertex[1]) + ", " + string(vertex[2]) + ")" + 
+            "    Label: " + string(label));
+  }
+  
+  // Generate edges based on subset relationships
+  for (int i = 1; i < size(T); i++) {
+      for (int j = 1; j <= size(T[i]); j++) {
+          for (int k = 1; k <= size(T[i+1]); k++) {
+              if (subset(T[i+1][k].lab, T[i][j].lab)) {
+                  edges[e_idx] = list(list(i,j), list(i+1,k));
+                  e_idx++;
+              }
+          }
+      }
+  }
+  
+  // Print edges
+  print("Edges:");
+  for (int i = 1; i <= size(edges); i++) {
+      print("(" + string(edges[i][1][1]) + ", " + string(edges[i][1][2]) + ")" + 
+            " -> (" + string(edges[i][2][1]) + ", " + string(edges[i][2][2]) + ")");
+  }
+  
+  return (list(verticesWithLabels, edges));
+}
+proc getlabels(list web, int i, int j)
+{
+  return(web[i][j].lab);  
+}
+
+
+
+proc OneSectorComputation(labeledgraph G1, list tailInts, list sector_lab)
+"USAGE:  OneSectorComputation(G1, tailInts, sector_lab); G1 labeledgraph, tailInts list of lists, sector_lab list
+ASSUME:  G1 is a labeled graph, tailInts is a list of lists containing integrals, sector_lab is a list of sector labels
+RETURN:  list(reducedIBPs, MIs, OutputtailInts) where reducedIBPs is a setIBP, MIs and OutputtailInts are lists
+KEYWORDS: Feynman graph, IBPs"
+{ 
+  list targetInt;
+  setIBP reducedIBPs;
+  reducedIBPs.over = G1.baikovover;
+  reducedIBPs.seed = sector_lab;
+  reducedIBPs.IBP = list();
+  list MIs;
+  list OutputtailInts;
+  
+  print("Processing sector with label: " + string(sector_lab));
+  print("Number of input integral lists tailInts: " + string(size(tailInts)));
+  
+  // Extract target integrals for current sector
+  for(int i = 1; i <= size(tailInts); i++) {
+    print("Processing input list " + string(i) + " with " + string(size(tailInts[i])) + " integrals");
+    
+    for(int j = 1; j <= size(tailInts[i]); j++) {
+      list current_sector = getSector(tailInts[i][j])[2];
+      print("Integral " + string(j) + " sector: " + string(current_sector));
+      print("Comparing with target sector: " + string(sector_lab));
+      
+      if(string(current_sector) == string(sector_lab)) {
+        targetInt[size(targetInt) + 1] = tailInts[i][j];
+        print("Added integral to target list: " + string(tailInts[i][j]));
+      }
+    }
+  }
+
+  if(size(targetInt) == 0) {
+    print("No input integrals found for sector " + string(sector_lab));
+    return(list(reducedIBPs, MIs, OutputtailInts));
+  }
+  
+//2. Computations related to sector
+  print("Computing IBPs for sector " + string(sector_lab));
+  setIBP totalIBP=computeManyIBP(G1,targetInt);
+  print("Total IBPs: " + string(totalIBP));
+  list L=getRedIBPs(totalIBP,7853);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
+
+  reducedIBPs.seed=sector_lab;
+  reducedIBPs.over=G1.baikovover;
+  reducedIBPs.IBP=L[1];
+  for(int i=1;i<=size(L[2]);i++){
+    if(string(getSector(L[2][i])[2])==string(sector_lab)){
+      MIs[size(MIs)+1]=L[2][i];
+    }
+    else{
+      OutputtailInts[size(OutputtailInts)+1]=L[2][i];
+    }
+  }
+
+  print("Completed sector " + string(sector_lab) + ":");
+  print("- Found " + string(size(reducedIBPs.IBP)) + " reduced IBPs");
+  print("- Found " + string(size(MIs)) + " master integrals");
+  print("- Found " + string(size(OutputtailInts)) + " tail integrals");
+  
+  return(list(reducedIBPs, MIs, OutputtailInts));
+}
+
+
+
+
+//************************************************************************************************************************** */
+
+
+
+proc web_gpi(token ibp)
+{
+  list targetInt = ibp.data[3];
+
+
+
+  list L = pickHighestSector(targetInt);
+
+  list web = generateWebSectors(L[1][1]);
+
+
+  token output;
+  output.fieldnames = list("web_gpi");
+
+  output.data[1] = web;
+
+  return(output);
+}
+
+proc OneSectorComputation_gpi(token G1, token tailInts, token sector_lab)
+{
+  list graph = G1.data[1];
+  list target = tailInts.data[1];
+  int sector_lab = sector_lab.data[1];
+
+  list result = OneSectorComputation(graph, target, sector_lab);
+
+  setIBP reducedIBPs = result[1]; 
+  list MIs = result[2];
+  list OutputtailInts = result[3];
+
+  token output;
+  output.fieldnames = list("reducedIBPs", "MIs", "OutputtailInts");
+  output.data[1] = reducedIBPs;
+  output.data[2] = MIs;
+  output.data[3] = OutputtailInts;
+  return(output);
+}
+proc gettail_gpi(token onesector)
+{
+
+  def tailInts = onesector.data[3];
+  token output;
+  output.fieldnames = list("tailInts");
+  output.data[1] = tailInts;
+  return(output);
+}
+
+
+proc getlabels_gpi(token web, int j, int k)
+{
+  def web1 = web.data[1];
+  list label=getlabels(web1, j, k);
+  token output;
+  output.fieldnames = list("getlabels_gpi");
+  output.data[1] = label;
+  return(output);
+}
+
+example{"EXAMPLE:"; echo=2;
+//Setting the graph details and Baikov computations
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  
+  // Properly structure userInput as a list containing a single list of integrals
+  list userInput = list();
+  userInput[1] = list(
+    list(1,1,1,-1,-3,-1,-1,-1,-1),
+    list(1,-1,1,-1,-3,-1,-1,-4,-1)
+  );
+
+  labeledgraph G1 = computeBaikovMatrix(G);
+  ring RB = G1.baikovover;
+ 
+  //sector at(1,1), label:{1,2,3} computations
+  list web = web_g(userInput[1]); // Pass the list of integrals, not the container
+  list label_11 = getlabels(web,1,1);
+  print("label_11 = " + string(label_11)); // Debug print
+  list SectOutput_11 = OneSectorComputation(G1, userInput, label_11);
+  list tail_11 = SectOutput_11[3];
+
+  //For sector at(2,1), label:{1,2} computations
+  list input12 = list();
+  input12[1] = userInput[1];
+  input12[2] = tail_11;
+  list label_12 = getlabels(web,1,2);
+  list SectOutput_12 = OneSectorComputation(G1, input12, label_12);
+  list tail_12 = SectOutput_12[3];
+// ... rest of example unchanged ...
 }

@@ -43,29 +43,33 @@
                             std::cout << "Starting T_11..." << std::endl;
                             
                             // Create the graph with proper ring initialization
-                             labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_computeBaikovMatrix_gpi)(input, library_name, base_filename);
-                            std::cout << "singular_computeBaikovMatrix_gpi:" << std::endl;
-                          std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name)<<std::endl;
-                            web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)
+                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_computeBaikovMatrix_gpi)(input, library_name, base_filename);
+                        std::cout << "singular_computeBaikovMatrix_gpi:" << std::endl;
+                        std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name)<<std::endl;
+                        web = RESOLVE_INTERFACE_FUNCTION(singular_updateWeb_gpi)
             				( 
 							   input, library_name, base_filename
 							);
-                            std::cout << "computing_M1" << std::endl;
-                            std::string module1 = RESOLVE_INTERFACE_FUNCTION(singular_computeM1_gpi)(labeledgraph, library_name, base_filename);
+                              std::cout << "computing_M1" << std::endl;
+                           std::string m1 = RESOLVE_INTERFACE_FUNCTION(singular_computeM1_gpi)(labeledgraph, library_name, base_filename);
                             std::cout << "printing module1:" << std::endl;
-                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(module1, library_name)<<std::endl;
-                           
-                            std::cout << "computing_target_ints" << std::endl;
+                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(m1, library_name)<<std::endl;
+                            
+                           // std::cout << "computing_target_ints" << std::endl;
                             std::string target_ints = RESOLVE_INTERFACE_FUNCTION(singular_getTargetInts_gpi)(web, 1, 1, library_name, base_filename);
-                            std::cout << "printing target_ints:" << std::endl;
-                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(target_ints, library_name)<<std::endl;
+                           // std::cout << "printing target_ints:" << std::endl;
+                           // std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(target_ints, library_name)<<std::endl;
+                            std::string lg=RESOLVE_INTERFACE_FUNCTION(singular_getBaikovMatrix_gpi)(input, library_name, base_filename);
+                           // std::cout << "computing_M2 in T_11" << std::endl;
+                            std::string m2 = RESOLVE_INTERFACE_FUNCTION(singular_computeM2_gp)(lg, target_ints, library_name, base_filename);
+                         // std::cout << "printing module2 in T_11:" << std::endl;
+                          std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(m2, library_name)<<std::endl;
 
-                            std::cout << "computing_M2 in T_11" << std::endl;
-                            std::string m2 = RESOLVE_INTERFACE_FUNCTION(singular_computeM2)(labeledgraph, target_ints, library_name, base_filename);
-                            std::cout << "printing module2 in T_11:" << std::endl;
-                            std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(m2, library_name)<<std::endl;
-
+//std::string inters=RESOLVE_INTERFACE_FUNCTION(singular_intersection_gpi)(m1, m2, library_name, base_filename);
+// std::cout << "inters:" << std::endl;
+// std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(inters, library_name)<<std::endl;
                         std::cout << "T_11 completed" << std::endl;
+                        output=m2;  
                     ]]></code>
                 </module>
             </defun>

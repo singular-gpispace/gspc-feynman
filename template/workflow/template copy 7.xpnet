@@ -4,9 +4,7 @@
     <in name="base_filename" type="string" place="base_filename"/>
     <in name="library_name" type="string" place="library_name"/>
     <in name="input" type="string" place="input"/>
-    <out name="output_MI" type="string" place="final_MI"/>
-    <out name="output_web" type="string" place="final_web"/>
-    <out name="output_reducedIBPs" type="string" place="final_reducedIBPs"/>
+    <out name="output" type="string" place="output"/>
 
     <net>
         <place name="base_filename" type="string">
@@ -15,629 +13,543 @@
         </place>
         <place name="input" type="string">
         </place>
-        <place name="labeledgraph" type="string">
-        </place>
+        <place name="labeledgraph" type="string"></place>
+        <place name="web" type="string"></place>
+        <place name="tail_00" type="string"></place>
+        <place name="tail_11" type="string"></place>
+        <place name="tail_21" type="string"></place>
+        <place name="tail_22" type="string"></place>
+        <place name="tail_23" type="string"></place>
+        <place name="tail_31" type="string"></place>
+        <place name="tail_32" type="string"></place>
+        <place name="tail_33" type="string"></place>
+
         <place name="control_11" type="control">
             <token><value>[]</value></token>
-        </place>
-        <place name="MI_11" type="string">
-        </place>
-        <place name="web_11" type="string">
-        </place>
-        <place name="reducedIBPs_11" type="string">
         </place>
         <place name="control_21" type="control">
             <token><value>[]</value></token>
         </place>
-        <place name="MI_21" type="string">
-        </place>
-        <place name="web_21" type="string">
-        </place>
-        <place name="reducedIBPs_21" type="string">
-        </place>
         <place name="control_22" type="control">
             <token><value>[]</value></token>
-        </place>
-        <place name="MI_22" type="string">
-        </place>
-        <place name="web_22" type="string">
-        </place>
-        <place name="reducedIBPs_22" type="string">
         </place>
         <place name="control_23" type="control">
             <token><value>[]</value></token>
         </place>
-        <place name="MI_23" type="string">
-        </place>
-        <place name="web_23" type="string">
-        </place>
-        <place name="reducedIBPs_23" type="string">
-        </place>
         <place name="control_31" type="control">
             <token><value>[]</value></token>
-        </place>
-        <place name="MI_31" type="string">
-        </place>
-        <place name="web_31" type="string">
-        </place>
-        <place name="reducedIBPs_31" type="string">
         </place>
         <place name="control_32" type="control">
             <token><value>[]</value></token>
         </place>
-        <place name="MI_32" type="string">
-        </place>
-        <place name="web_32" type="string">
-        </place>
-        <place name="reducedIBPs_32" type="string">
-        </place>
         <place name="control_33" type="control">
             <token><value>[]</value></token>
         </place>
-        <place name="MI_33" type="string">
+        <place name="output" type="string">
         </place>
-        <place name="web_33" type="string">
-        </place>
-        <place name="reducedIBPs_33" type="string">
-        </place>
-        <place name="control_end" type="control">
-            <token><value>[]</value></token>
-        </place>
-        <place name="final_MI" type="string">
-        </place>
-        <place name="final_web" type="string">
-        </place>
-        <place name="final_reducedIBPs" type="string">
-        </place>
+       
+    
+
+        <!-- Graph creation and labeling transition -->
         <transition name="T_11">
             <defun>
-               <require key="worker" mandatory="true"/>
+                <require key="worker" mandatory="true"/>
+
                 <out name="labeledgraph" type="string"/>
-                <out name="MI_11" type="string"/>
-                <out name="web_11" type="string"/>
-                <out name="reducedIBPs_11" type="string"/>
+                <out name="tail_11" type="string"/>
+                <out name="tail_00" type="string"/>
                 <in name="library_name" type="string"/>
                 <in name="base_filename" type="string"/>
                 <in name="input" type="string"/>
                 <in name="control_11" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, library_name, base_filename, input, labeledgraph, MI_11, web_11, reducedIBPs_11)">
+                <out name="web" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, library_name, base_filename, input,tail_00, labeledgraph, tail_11, web    )">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
-                        std::cout<<"Starting T_11..."<<std::endl;
-                        std::string input_gpi = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemInitial_gpi)(input, library_name, base_filename);
-                         labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getLabeledGraph_gpi)(input_gpi, library_name, base_filename);
-                       //std::cout << "labeledgraph: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name) << std::endl;
-                         web_11 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(input_gpi , library_name, base_filename);
-                       //std::cout << "web_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_11, library_name) << std::endl;
-                         reducedIBPs_11 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(input_gpi, library_name, base_filename);
-                         //std::cout << "reducedIBPs_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_11, library_name) << std::endl;
-                         std::string reducedIBPs_11_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs_11, library_name, base_filename);
-                         //std::cout << "reducedIBPs_11_IBP: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_11_IBP, library_name) << std::endl;
+                     
+                            std::cout << "Starting T_11..." << std::endl;
+                            
+                            // Create the graph with proper ring initialization
+                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getBaikovMatrix_gpi)(input, library_name, base_filename);
+                        //std::cout << "singular_computeBaikovMatrix_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name)<<std::endl;
 
-                        MI_11 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(input_gpi, library_name, base_filename);
-                        //std::cout << "MI_11: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_11, library_name) << std::endl;
-                        std::cout<<"size of MI_11 in T_11: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_11, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of web_11 in T_11: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_11, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of reducedIBPs_11 in T_11: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_11_IBP, library_name, base_filename)<<std::endl;
-                         std::cout<<"finished T_11"<<std::endl;
+                       web = RESOLVE_INTERFACE_FUNCTION(singular_web_gpi)( input, library_name, base_filename);
+                        //std::cout << "singular_web_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name)<<std::endl;
+
+
+                        std::string labels_11 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 1, 1, library_name, base_filename);
+                        std::cout << "labels_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_11, library_name)<<std::endl;   
+
+                     tail_00 = RESOLVE_INTERFACE_FUNCTION(singular_targetInt_gpi)(input, library_name, base_filename);
+                        //std::cout << "tail_00:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_00, library_name)<<std::endl;
+
+                       std::string userInput = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        //std::cout << "userInput:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(userInput, library_name)<<std::endl;   
+
+
+                        std::cout<<"starting one sector computation"<<std::endl;
+                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, userInput, labels_11, library_name, base_filename);
+                        //std::cout << "one_sector_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_11, library_name)<<std::endl;  
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
+                        std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+                        
+
+                         tail_11 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_11, library_name, base_filename);
+                        //std::cout << "tail_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_11, library_name)<<std::endl;
+
+                        std::cout<<"size of tail_11: " << RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(tail_11, library_name, base_filename) << std::endl;
+
+                        std::cout << "T_11 completed" << std::endl;
                     ]]></code>
                 </module>
             </defun>
             <connect-in port="control_11" place="control_11"/>
-            <connect-out port="MI_11" place="MI_11"/>
-            <connect-out port="web_11" place="web_11"/>
-            <connect-out port="reducedIBPs_11" place="reducedIBPs_11"/>
-            <connect-read port="base_filename" place="base_filename"/>
             <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
             <connect-read port="input" place="input"/>
             <connect-out port="labeledgraph" place="labeledgraph"/>
+            <connect-out port="tail_11" place="tail_11"/>
+            <connect-out port="tail_00" place="tail_00"/> 
+            <connect-out port="web" place="web"/>
         </transition>
 
         <transition name="T_21">
             <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="MI_11" type="string"/>
-                <in name="web_11" type="string"/>
-                <in name="reducedIBPs_11" type="string"/>
-                <out name="MI_21" type="string"/>
-                <out name="web_21" type="string"/>
-                <out name="reducedIBPs_21" type="string"/>
-                <in name="base_filename" type="string"/>
+                <require key="worker" mandatory="true"/>    
+
+                <out name="tail_21" type="string"/>
+                <in name="tail_00" type="string"/>
                 <in name="library_name" type="string"/>
-                <in name="labeledgraph" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
                 <in name="control_21" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_21(control_21, MI_11, web_11, reducedIBPs_11, base_filename, library_name, labeledgraph, MI_21, web_21, reducedIBPs_21)">
+                <in name="web" type="string"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="tail_11" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_21(control_21, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_21, web    )">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <code><![CDATA[
-                        std::cout<<"Starting T_21..."<<std::endl;
-                        int j = 2;
-                        int k = 1;
-                        std::string data_21 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(labeledgraph, web_11, reducedIBPs_11, MI_11, j, k,library_name, base_filename);
-                        //std::cout << "data_21: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_21, library_name) << std::endl;
-                        web_21 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_21, library_name, base_filename);
-                       //  std::cout << "web_21: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_21, library_name) << std::endl;
-                        reducedIBPs_21 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_21, library_name, base_filename);
-                       // std::cout << "reducedIBPs_21: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_21, library_name) << std::endl; 
-                        MI_21 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_21, library_name, base_filename);
-                        //std::cout << "MI_21: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_21, library_name) << std::endl;
-                       
+                    <code><![CDATA[ 
+                        std::cout << "Starting T_21...\n";
 
-                        std::string reducedIBPs_21_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs_21, library_name, base_filename);
-                        std::cout<<"size of reducedIBPs_21_IBP in T_21: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_21_IBP, library_name, base_filename)<<std::endl;       
-                        std::cout<<"size of MI_21 in T_21 : "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_21, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of web_21 in T_21: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_21, library_name, base_filename)<<std::endl;
-                        std::cout<<"finished T_21"<<std::endl;
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+
+                       std::string input_21 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+
+                      
+                            // Then append remaining elements
+                            for (size_t i = 1; i < jk_pairs.size(); i++) {
+                                auto [j, k] = jk_pairs[i];
+                                std::string tail = tail_jk[{j, k}];
+                                input_21 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_21, tail, library_name, base_filename);
+                            }
+                        
+
+                        std::string labels_21 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 1, library_name, base_filename);
+                        std::cout << "labels_21:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_21, library_name)<<std::endl;      
+ 
+                        std::string one_sector_21 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_21, labels_21, library_name, base_filename);
+                        //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_21, library_name)<<std::endl;      
+
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_21, library_name, base_filename);
+                        std::cout<<"size of one_sector_21: IBP_21, MI_21, Tail_21=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+
+
+
+                         tail_21 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_21, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_21, library_name)<<std::endl;
+
+                        std::cout << "T_21 completed" << std::endl;
+
+                    
+
                     ]]></code>
                 </module>
             </defun>
             <connect-in port="control_21" place="control_21"/>
-            <connect-read port="MI_11" place="MI_11"/>
-            <connect-read port="web_11" place="web_11"/>
-            <connect-read port="reducedIBPs_11" place="reducedIBPs_11"/>
-            <connect-read port="base_filename" place="base_filename"/>
             <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
             <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="MI_21" place="MI_21"/>
-            <connect-out port="web_21" place="web_21"/>
-            <connect-out port="reducedIBPs_21" place="reducedIBPs_21"/>
-        </transition>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_21" place="tail_21"/>
+        </transition>   
 
         <transition name="T_22">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="MI_11" type="string"/>
-                <in name="web_11" type="string"/>
-                <in name="reducedIBPs_11" type="string"/>
-                <out name="MI_22" type="string"/>
-                <out name="web_22" type="string"/>
-                <out name="reducedIBPs_22" type="string"/>
-                <in name="base_filename" type="string"/>
+
+                <out name="tail_22" type="string"/> 
+                <in name="tail_00" type="string"/>
                 <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="control_22" type="control"/>  
+                <in name="web" type="string"/>
                 <in name="labeledgraph" type="string"/>
-                <in name="control_22" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_22(control_22, MI_11, web_11, reducedIBPs_11, base_filename, library_name, labeledgraph, MI_22, web_22, reducedIBPs_22)">
+                <in name="tail_11" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_22(control_22, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_22, web    )">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
-                        std::cout<<"Starting T_22..."<<std::endl;
-                        int j = 2, k = 2;
-                        std::string data_22 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(labeledgraph, web_11, reducedIBPs_11, MI_11, j, k,library_name, base_filename);
-                        //std::cout << "data_22: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_22, library_name) << std::endl;   
-                        web_22 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_22, library_name, base_filename);
-                       //  std::cout << "web_22: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_22, library_name) << std::endl;
-                        reducedIBPs_22 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_22, library_name, base_filename);
-                       // std::cout << "reducedIBPs_22: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_22, library_name) << std::endl; 
-                        MI_22 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_22, library_name, base_filename);
-                        //std::cout << "MI_22: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_22, library_name) << std::endl;       
+                        std::cout << "Starting T_22...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+
+                       
+                         std::string input_22 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+
+                      
+                            // Then append remaining elements
+                            for (size_t i = 1; i < jk_pairs.size(); i++) {
+                                auto [j, k] = jk_pairs[i];
+                                std::string tail = tail_jk[{j, k}];
+                                input_22 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_22, tail, library_name, base_filename);
+                            }
+
+                        //std::cout << "Final input22:" << std::endl;
+                        //std::cout << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(input22, library_name) << std::endl;
+
+
+
+                        std::string labels_22 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 2, library_name, base_filename);
+                        std::cout << "labels_22:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_22, library_name)<<std::endl;      
+ 
+                        std::string one_sector_22 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_22, labels_22, library_name, base_filename);
+                        //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_22, library_name)<<std::endl;     
                         
-                        std::string reducedIBPs_22_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs_22, library_name, base_filename);
-                            std::cout<<"size of reducedIBPs_22_IBP in T_22: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_22_IBP, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of MI_22 in T_22: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_22, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of web_22 in T_22: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_22, library_name, base_filename)<<std::endl;
-                        std::cout<<"finished T_22"<<std::endl;
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_22, library_name, base_filename);
+                        std::cout<<"size of one_sector_22: IBP_22, MI_22, Tail_22=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+                        
+
+
+                         tail_22 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_22, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_22, library_name)<<std::endl;
+
+
+                    
+
+                        std::cout << "T_22 completed" << std::endl;
+
                     ]]></code>
                 </module>
             </defun>
-            <connect-in port="control_22" place="control_22"/>
-            <connect-read port="MI_11" place="MI_11"/>
-            <connect-read port="web_11" place="web_11"/>
-            <connect-read port="reducedIBPs_11" place="reducedIBPs_11"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
             <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="MI_22" place="MI_22"/>
-            <connect-out port="web_22" place="web_22"/>
-            <connect-out port="reducedIBPs_22" place="reducedIBPs_22"/>
-        </transition>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_22" place="tail_22"/>
+            <connect-in port="control_22" place="control_22"/>
+        </transition>   
+
         <transition name="T_23">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="MI_11" type="string"/>
-                <in name="web_11" type="string"/>
-                <in name="reducedIBPs_11" type="string"/>
-                <out name="MI_23" type="string"/>
-                <out name="web_23" type="string"/>
-                <out name="reducedIBPs_23" type="string"/>
-            
+
+                <out name="tail_23" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="library_name" type="string"/> 
                 <in name="base_filename" type="string"/>
-                <in name="library_name" type="string"/>
+                <in name="input" type="string"/>
+                <in name="web" type="string"/>
                 <in name="labeledgraph" type="string"/>
+                <in name="tail_11" type="string"/>  
                 <in name="control_23" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_23(control_23, MI_11, web_11, reducedIBPs_11, base_filename, library_name, labeledgraph, MI_23, web_23, reducedIBPs_23)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_23(control_23, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_23, web )">  
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
-                        std::cout<<"Starting T_23..."<<std::endl;
-                        int j = 2, k = 3;
-                        std::string data_23 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(labeledgraph, web_11, reducedIBPs_11, MI_11, j, k,library_name, base_filename);
-                        //std::cout << "data_23: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_23, library_name) << std::endl;
-                        web_23 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_23, library_name, base_filename);
-                       //  std::cout << "web_23: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_23, library_name) << std::endl;
-                        reducedIBPs_23 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_23, library_name, base_filename);
-                       // std::cout << "reducedIBPs_23: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_23, library_name) << std::endl;
-                        MI_23 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_23, library_name, base_filename);
-                        //std::cout << "MI_23: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_23, library_name) << std::endl;
+                        std::cout << "Starting T_23...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_23 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+
+                        // Then append remaining elements
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_23 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_23, tail, library_name, base_filename);
+                        }   
+
+                        //std::cout << "Final input23:" << std::endl;
+                        //std::cout << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(input23, library_name) << std::endl;      
+
+                        std::string labels_23 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 3, library_name, base_filename);
+                        std::cout << "labels_23:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_23, library_name)<<std::endl;      
+
+
+                        std::string one_sector_23 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_23, labels_23, library_name, base_filename);
+                        //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_23, library_name)<<std::endl;     
                         
-                       
-                        std::string reducedIBPs_23_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs_23, library_name, base_filename);
-                        std::cout<<"size of reducedIBPs_23_IBP in T_23: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_23_IBP, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of MI_23 in T_23: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_23, library_name, base_filename)<<std::endl;
-                        std::cout<<"size of web_23 in T_23: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_23, library_name, base_filename)<<std::endl;
-                        std::cout<<"finished T_23"<<std::endl;
-                    ]]></code>
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_23, library_name, base_filename);
+                        std::cout<<"size of one_sector_23: IBP_23, MI_23, Tail_23=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+                        
+
+
+                        tail_23 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_23, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_23, library_name)<<std::endl; 
+
+                        std::cout << "T_23 completed" << std::endl;     
+
+                    ]]></code>  
                 </module>
             </defun>
-            <connect-in port="control_23" place="control_23"/>
-            <connect-read port="MI_11" place="MI_11"/>
-            <connect-read port="web_11" place="web_11"/>
-            <connect-read port="reducedIBPs_11" place="reducedIBPs_11"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
             <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="MI_23" place="MI_23"/>
-            <connect-out port="web_23" place="web_23"/>
-            <connect-out port="reducedIBPs_23" place="reducedIBPs_23"/>
-        </transition>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_23" place="tail_23"/>
+            <connect-in port="control_23" place="control_23"/>
+        </transition>   
+
         <transition name="T_31">
-        <defun>
-            <require key="worker" mandatory="true"/>
-            <in name="MI_21" type="string"/>
-            <in name="web_21" type="string"/>
-            <in name="reducedIBPs_21" type="string"/>
-            <in name="MI_23" type="string"/>
-            <in name="web_23" type="string"/>
-            <in name="reducedIBPs_23" type="string"/>
-            <out name="MI_31" type="string"/>
-            <out name="web_31" type="string"/>
-            <out name="reducedIBPs_31" type="string"/>
-            <in name="base_filename" type="string"/>
-            <in name="library_name" type="string"/>
-            <in name="labeledgraph" type="string"/>
-            <in name="control_31" type="control"/>
-            <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, base_filename, library_name, labeledgraph, MI_21, web_21, reducedIBPs_21, MI_23, web_23, reducedIBPs_23, MI_31, web_31, reducedIBPs_31)">
-                <cinclude href="interface/template_interface.hpp"/>
-                <cinclude href="util-generic/dynamic_linking.hpp"/>
-                <code><![CDATA[
-                    std::cout << "Starting T_31..." << std::endl;
-    
-                    std::string MI = MI_21;
-                    std::string web = web_21;
-                    std::string reducedIBPs = reducedIBPs_21;
-                    //std::cout << "MI in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
-                    //std::cout << "web in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
-                    //std::cout << "reducedIBPs in T_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
-    
-                    std::vector<std::pair<int, int>> jk_pairs = {{2, 1}, {2, 3}};
-                    std::map<std::pair<int, int>, std::tuple<std::string, std::string, std::string>> jk_inputs;
-                    jk_inputs[{2, 1}] = {MI_21, web_21, reducedIBPs_21};
-                    jk_inputs[{2, 3}] = {MI_23, web_23, reducedIBPs_23};
-    
-                    for (const auto& pair : jk_pairs) {
-                        int j = pair.first;
-                        int k = pair.second;
-    
-                        auto [MI_jk, web_jk, reducedIBPs_jk] = jk_inputs[{j, k}];
-                        std::cout << "Merging for j=" << j << ", k=" << k << std::endl;
-                        //std::cout << "MI_jk: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_jk, library_name) << std::endl;
-    
+            <defun>
+                <require key="worker" mandatory="true"/>
 
-                        std::cout << "Starting mergeRedIBPs_gpi..." << std::endl;
-                        reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(reducedIBPs, reducedIBPs_jk, library_name, base_filename);
-                        //std::cout << "Merged reducedIBPs: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
-              
-                        std::cout << "Starting mergeMI_gpi..." << std::endl;
-                        MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(MI, MI_jk, library_name, base_filename);
-                        //std::cout << "Merged MI: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
-    
-                        std::cout << "Starting merge_web_gpi..." << std::endl;
-                        web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(web, web_jk, library_name, base_filename);
-                        //std::cout << "Merged web: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
+                <out name="tail_31" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="web" type="string"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="tail_11" type="string"/>  
+                <in name="tail_21" type="string"/>
+                <in name="tail_23" type="string"/>      
+                <in name="control_31" type="control"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_21, tail_23, tail_31, web )">  
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_31...\n";
 
-                   
-                             }
-                    std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs, library_name, base_filename);
-                    std::cout<<"size of merged reducedIBPs in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of merged MI in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of merged web in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web, library_name, base_filename)<<std::endl;
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}, {2, 1}, {2, 3}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+                        tail_jk[{2, 1}] = tail_21;
+                        tail_jk[{2, 3}] = tail_23;
+
+                        std::string input_31 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+
+                        // Then append remaining elements
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_31 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_31, tail, library_name, base_filename);
+                        }
 
 
-                    int j = 3, k = 1;
-                    std::cout << "Computing j=3, k=1..." << std::endl;
-                    std::string data_31 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(
-                        labeledgraph, web, reducedIBPs, MI, j, k, library_name, base_filename
-                    );
-                    //std::cout << "data_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_31, library_name) << std::endl;
-    
-                    web_31 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_31, library_name, base_filename);
-                    //std::cout << "web_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_31, library_name) << std::endl;
-                    reducedIBPs_31 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_31, library_name, base_filename);
-                    //std::cout << "reducedIBPs_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_31, library_name) << std::endl;
-                    MI_31 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_31, library_name, base_filename);
-                    //std::cout << "MI_31: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_31, library_name) << std::endl;
-                    
-                   std::string reducedIBPs_31_IBP=RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs_31, library_name, base_filename);
-                    std::cout<<"size of  reducedIBPs in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_31_IBP, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  MI in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_31, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  web in T_31: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_31, library_name, base_filename)<<std::endl;   
-                    
-                    std::cout<<"finished T_31"<<std::endl;
-                ]]></code>
-            </module>
-        </defun>
-        <connect-in port="control_31" place="control_31"/>
-        <connect-read port="MI_21" place="MI_21"/>
-        <connect-read port="web_21" place="web_21"/>
-        <connect-read port="reducedIBPs_21" place="reducedIBPs_21"/>
-        <connect-read port="MI_23" place="MI_23"/>
-        <connect-read port="web_23" place="web_23"/>
-        <connect-read port="reducedIBPs_23" place="reducedIBPs_23"/>
-        <connect-read port="base_filename" place="base_filename"/>
-        <connect-read port="library_name" place="library_name"/>
-        <connect-read port="labeledgraph" place="labeledgraph"/>
-        <connect-out port="MI_31" place="MI_31"/>
-        <connect-out port="web_31" place="web_31"/>
-        <connect-out port="reducedIBPs_31" place="reducedIBPs_31"/>
-    </transition>
+                        //std::cout << "Final input_31:" << std::endl;
+                        //std::cout << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(input_31, library_name) << std::endl;      
+
+                        std::string labels_31 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 1, library_name, base_filename);
+                        std::cout << "labels_31:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_31, library_name)<<std::endl;       
+
+                        std::string one_sector_31 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_31, labels_31, library_name, base_filename);
+                        //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_31, library_name)<<std::endl;      
+
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_31, library_name, base_filename);
+                        std::cout<<"size of one_sector_31: IBP_31, MI_31, Tail_31=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+
+                        tail_31 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_31, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_31, library_name)<<std::endl;  
+
+                        std::cout << "T_31 completed" << std::endl;
+
+                    ]]></code>  
+                </module>
+            </defun>    
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_31" place="tail_31"/>
+            <connect-in port="control_31" place="control_31"/>  
+            <connect-read port="tail_21" place="tail_21"/>
+            <connect-read port="tail_23" place="tail_23"/>      
+
+        </transition>
+
         <transition name="T_32">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="MI_21" type="string"/>
-                <in name="web_21" type="string"/>
-                <in name="reducedIBPs_21" type="string"/>
-                <in name="MI_22" type="string"/>
-                <in name="web_22" type="string"/>
-                <in name="reducedIBPs_22" type="string"/>
-                <out name="MI_32" type="string"/>
-                <out name="web_32" type="string"/>
-                <out name="reducedIBPs_32" type="string"/>
-                <in name="base_filename" type="string"/>
+
+                <out name="tail_32" type="string"/>
+                <in name="tail_00" type="string"/>  
                 <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="web" type="string"/>
                 <in name="labeledgraph" type="string"/>
+                <in name="tail_11" type="string"/>  
+                <in name="tail_21" type="string"/>
+                <in name="tail_22" type="string"/>
                 <in name="control_32" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32(control_32, base_filename, library_name, labeledgraph, MI_21, web_21, reducedIBPs_21, MI_22, web_22, reducedIBPs_22, MI_32, web_32, reducedIBPs_32)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32(control_32, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_21, tail_22, tail_32, web )">  
                     <cinclude href="interface/template_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/> 
                     <code><![CDATA[
-                        std::cout << "Starting T_32..." << std::endl;
-    
-                    std::string MI = MI_21;
-                    std::string web = web_21;
-                    std::string reducedIBPs = reducedIBPs_21;
-                    //std::cout << "MI in T_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
-                    //std::cout << "web in T_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
-                    //std::cout << "reducedIBPs in T_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
-    
+                        std::cout << "Starting T_32...\n";
 
-                    std::vector<std::pair<int, int>> jk_pairs = {{2, 1}, {2, 2}};
-                    std::map<std::pair<int, int>, std::tuple<std::string, std::string, std::string>> jk_inputs;
-                    jk_inputs[{2, 1}] = {MI_21, web_21, reducedIBPs_21};
-                    jk_inputs[{2, 2}] = {MI_22, web_22, reducedIBPs_22};
-    
-                    for (const auto& pair : jk_pairs) {
-                        int j = pair.first;
-                        int k = pair.second;
-    
-                        auto [MI_jk, web_jk, reducedIBPs_jk] = jk_inputs[{j, k}];
-                        std::cout << "Merging for j=" << j << ", k=" << k << std::endl;
-                        //std::cout << "MI_jk: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_jk, library_name) << std::endl;
-    
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}, {2, 1}, {2, 2}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
 
-                        std::cout << "Starting mergeRedIBPs_gpi..." << std::endl;
-                        reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(reducedIBPs, reducedIBPs_jk, library_name, base_filename);
-                        //std::cout << "Merged reducedIBPs: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
-              
-                        std::cout << "Starting mergeMI_gpi..." << std::endl;
-                        MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(MI, MI_jk, library_name, base_filename);
-                        //std::cout << "Merged MI: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
-    
-                        std::cout << "Starting merge_web_gpi..." << std::endl;
-                        web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(web, web_jk, library_name, base_filename);
-                        //std::cout << "Merged web: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
-    
-                             }
-    
-                    std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs, library_name, base_filename);
-                    std::cout<<"size of Merged reducedIBPs in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of Merged MI in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of Merged  web in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web, library_name, base_filename)<<std::endl;
+                        tail_jk[{0, 0}] = tail_00;      
+                        tail_jk[{1, 1}] = tail_11;
+                        tail_jk[{2, 1}] = tail_21;
+                        tail_jk[{2, 2}] = tail_22;
 
-                    int j = 3, k = 2;
-                    std::cout << "Computing j=3, k=2..." << std::endl;
-                    std::string data_32 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(
-                        labeledgraph, web, reducedIBPs, MI, j, k, library_name, base_filename
-                    );
-                    //std::cout << "data_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_32, library_name) << std::endl;
-    
-                    web_32 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_32, library_name, base_filename);
-                    //std::cout << "web_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_32, library_name) << std::endl;
-                    reducedIBPs_32 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_32, library_name, base_filename);
-                    //std::cout << "reducedIBPs_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_32, library_name) << std::endl;
-                    MI_32 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_32, library_name, base_filename);
-                    //std::cout << "MI_32: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_32, library_name) << std::endl;
+                        std::string input_32 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
 
-                    std::cout<<"size of  reducedIBPs in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_32, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  MI in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_32, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  web in T_32: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_32, library_name, base_filename)<<std::endl;
+                      
+                            // Then append remaining elements
+                            for (size_t i = 1; i < jk_pairs.size(); i++) {
+                                auto [j, k] = jk_pairs[i];
+                                std::string tail = tail_jk[{j, k}];
+                                input_32 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_32, tail, library_name, base_filename);
+                            }
 
-                    std::cout<<"finished T_32"<<std::endl;
-                    ]]></code>
+                        //std::cout << "Final input_32:" << std::endl;
+                        //std::cout << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(input_32, library_name) << std::endl;      
+
+                        std::string labels_32 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 2, library_name, base_filename);
+                        std::cout << "labels_32:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_32, library_name)<<std::endl;      
+
+                        std::string one_sector_32 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_32, labels_32, library_name, base_filename);
+                        //std::cout << "one_sector_32:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_32, library_name)<<std::endl;         
+
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_32, library_name, base_filename);
+                        std::cout<<"size of one_sector_32: IBP_32, MI_32, Tail_32=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+                        
+                        tail_32 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_32, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_32, library_name)<<std::endl;  
+
+                        std::cout << "T_32 completed" << std::endl;
+
+                    ]]></code>        
                 </module>
             </defun>
-            <connect-in port="control_32" place="control_32"/>
-            <connect-read port="MI_21" place="MI_21"/>
-            <connect-read port="web_21" place="web_21"/>
-            <connect-read port="reducedIBPs_21" place="reducedIBPs_21"/>
-            <connect-read port="MI_22" place="MI_22"/>
-            <connect-read port="web_22" place="web_22"/>
-            <connect-read port="reducedIBPs_22" place="reducedIBPs_22"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
             <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="MI_32" place="MI_32"/>
-            <connect-out port="web_32" place="web_32"/>
-            <connect-out port="reducedIBPs_32" place="reducedIBPs_32"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_32" place="tail_32"/>
+            <connect-in port="control_32" place="control_32"/>
+            <connect-read port="tail_21" place="tail_21"/>
+            <connect-read port="tail_22" place="tail_22"/>
+
         </transition>
-        
+
         <transition name="T_33">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="MI_22" type="string"/>
-                <in name="web_22" type="string"/>
-                <in name="reducedIBPs_22" type="string"/>
-                <in name="MI_23" type="string"/>
-                <in name="web_23" type="string"/>
-                <in name="reducedIBPs_23" type="string"/>
-                <out name="MI_33" type="string"/>
-                <out name="web_33" type="string"/>
-                <out name="reducedIBPs_33" type="string"/>
-                <in name="base_filename" type="string"/>
+
+                <out name="tail_33" type="string"/>
+                <in name="tail_00" type="string"/>
                 <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="web" type="string"/>  
                 <in name="labeledgraph" type="string"/>
+                <in name="tail_11" type="string"/>
+                <in name="tail_22" type="string"/>
+                <in name="tail_23" type="string"/>
                 <in name="control_33" type="control"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_33(control_33, base_filename, library_name, labeledgraph, MI_22, web_22, reducedIBPs_22, MI_23, web_23, reducedIBPs_23, MI_33, web_33, reducedIBPs_33)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_33(control_33, library_name, base_filename, input,tail_00, labeledgraph, tail_11, tail_22, tail_23, tail_33, web )">  
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
-                    std::cout << "Starting T_33..." << std::endl;
-    
-                    std::string MI = MI_22;
-                    std::string web = web_22;
-                    std::string reducedIBPs = reducedIBPs_22;
-                    //std::cout << "MI in T_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
-                    //std::cout << "web in T_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;
-                    //std::cout << "reducedIBPs in T_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
+                        std::cout << "Starting T_33...\n";
 
-                    std::vector<std::pair<int, int>> jk_pairs = {{2, 2}, {2, 3}};   
-                    std::map<std::pair<int, int>, std::tuple<std::string, std::string, std::string>> jk_inputs;
-                    jk_inputs[{2, 2}] = {MI_22, web_22, reducedIBPs_22};
-                    jk_inputs[{2, 3}] = {MI_23, web_23, reducedIBPs_23};
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}, {2, 2}, {2, 3}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
 
-                    for (const auto& pair : jk_pairs) {
-                        int j = pair.first; 
-                        int k = pair.second;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+                        tail_jk[{2, 2}] = tail_22;
+                        tail_jk[{2, 3}] = tail_23;
 
-                        auto [MI_jk, web_jk, reducedIBPs_jk] = jk_inputs[{j, k}];
-                        std::cout << "Merging for j=" << j << ", k=" << k << std::endl;
-                        //std::cout << "MI_jk: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_jk, library_name) << std::endl;   
+                        std::string input_33 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+
+                        // Then append remaining elements
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_33 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_33, tail, library_name, base_filename);
+                        }   
                         
-                        std::cout << "Starting mergeRedIBPs_gpi..." << std::endl;
-                        reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(reducedIBPs, reducedIBPs_jk, library_name, base_filename);
-                        //std::cout << "Merged reducedIBPs: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs, library_name) << std::endl;
+                        std::string labels_33 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 3, library_name, base_filename);
+                        std::cout << "labels_33:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_33, library_name)<<std::endl;       
 
-                        std::cout << "Starting mergeMI_gpi..." << std::endl;
-                        MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(MI, MI_jk, library_name, base_filename);  
-                        //std::cout << "Merged MI: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI, library_name) << std::endl;
+                        std::string one_sector_33 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_33, labels_33, library_name, base_filename);
+                        //std::cout << "one_sector_33:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_33, library_name)<<std::endl;         
 
-                        std::cout << "Starting merge_web_gpi..." << std::endl;
-                        web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(web, web_jk, library_name, base_filename);
-                        //std::cout << "Merged web: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name) << std::endl;    
-                        
-                    }
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_33, library_name, base_filename);
+                        std::cout<<"size of one_sector_33: IBP_33, MI_33, Tail_33=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
 
-                    std::string reducedIBPs_IBP = RESOLVE_INTERFACE_FUNCTION(singular_IBP_gpi)(reducedIBPs, library_name, base_filename);
-                    std::cout<<"size of  reducedIBPs in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_IBP, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  MI in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  web in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web, library_name, base_filename)<<std::endl; 
+                        tail_33 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_33, library_name, base_filename);
+                        //std::cout << "singular_gettail_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_33, library_name)<<std::endl;  
 
-                    int j = 3, k = 3;
-                    std::cout << "Computing j=3, k=3..." << std::endl;
-                    std::string data_33 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPSystemCompute_gpi)(
-                        labeledgraph, web, reducedIBPs, MI, j, k, library_name, base_filename
-                    );  
-                    //  std::cout << "data_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(data_33, library_name) << std::endl;
+                        std::cout   << "T_33 completed" << std::endl;
 
-                    web_33 = RESOLVE_INTERFACE_FUNCTION(singular_getWeb_gpi)(data_33, library_name, base_filename);
-                    //std::cout << "web_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web_33, library_name) << std::endl;
-                    reducedIBPs_33 = RESOLVE_INTERFACE_FUNCTION(singular_getReducedIBPs_gpi)(data_33, library_name, base_filename); 
-                    //std::cout << "reducedIBPs_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(reducedIBPs_33, library_name) << std::endl;
-                    MI_33 = RESOLVE_INTERFACE_FUNCTION(singular_getMI_gpi)(data_33, library_name, base_filename);
-                    //std::cout << "MI_33: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(MI_33, library_name) << std::endl;
-                    
-
-                    std::cout<<"size of  reducedIBPs in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(reducedIBPs_33, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  MI in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(MI_33, library_name, base_filename)<<std::endl;
-                    std::cout<<"size of  web in T_33: "<<RESOLVE_INTERFACE_FUNCTION(singular_size_gpi)(web_33, library_name, base_filename)<<std::endl;
-
-                    std::cout<<"finished T_33"<<std::endl;
-                    ]]></code>
+                    ]]></code>        
                 </module>
             </defun>
-            <connect-in port="control_33" place="control_33"/>
-            <connect-read port="MI_22" place="MI_22"/>
-            <connect-read port="web_22" place="web_22"/>
-            <connect-read port="reducedIBPs_22" place="reducedIBPs_22"/>
-            <connect-read port="MI_23" place="MI_23"/>
-            <connect-read port="web_23" place="web_23"/>
-            <connect-read port="reducedIBPs_23" place="reducedIBPs_23"/>
-            <connect-read port="base_filename" place="base_filename"/>
-            <connect-read port="library_name" place="library_name"/>
             <connect-read port="labeledgraph" place="labeledgraph"/>
-            <connect-out port="MI_33" place="MI_33"/>
-            <connect-out port="web_33" place="web_33"/>
-            <connect-out port="reducedIBPs_33" place="reducedIBPs_33"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>  
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="web" place="web"/>
+            <connect-out port="tail_33" place="tail_33"/>
+            <connect-in port="control_33" place="control_33"/>
+            <connect-read port="tail_22" place="tail_22"/>
+            <connect-read port="tail_23" place="tail_23"/>
+
         </transition>
-       
-       <transition name="T_end">
-    <defun>
-        <require key="worker" mandatory="true"/>
-        <in name="MI_31" type="string"/>
-        <in name="web_31" type="string"/>
-        <in name="reducedIBPs_31" type="string"/>
-        <in name="MI_32" type="string"/>
-        <in name="web_32" type="string"/>
-        <in name="reducedIBPs_32" type="string"/>
-        <in name="MI_33" type="string"/>
-        <in name="web_33" type="string"/>
-        <in name="reducedIBPs_33" type="string"/>
-        <out name="final_MI" type="string"/>
-        <out name="final_web" type="string"/>
-        <out name="final_reducedIBPs" type="string"/>
-        <in name="base_filename" type="string"/>
-        <in name="library_name" type="string"/>  
-        <in name="control_end" type="control"/>
-        <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_end(control_end, base_filename, library_name, MI_31, web_31, reducedIBPs_31, MI_32, web_32, reducedIBPs_32, MI_33, web_33, reducedIBPs_33, final_MI, final_web, final_reducedIBPs)">
-            <cinclude href="interface/template_interface.hpp"/>
-            <cinclude href="util-generic/dynamic_linking.hpp"/>
-            <code><![CDATA[
-                std::cout << "Starting T_end..." << std::endl;
 
-                // Merge MI tokens
-                std::string temp_MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(MI_31, MI_32, library_name, base_filename);
-              final_MI = RESOLVE_INTERFACE_FUNCTION(singular_mergeMI_gpi)(temp_MI, MI_33, library_name, base_filename);
-
-                // Merge web tokens
-                std::string temp_web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(web_31, web_32, library_name, base_filename);
-            final_web = RESOLVE_INTERFACE_FUNCTION(singular_merge_web_gpi)(temp_web, web_33, library_name, base_filename);
-
-                // Merge reducedIBPs tokens
-                std::string temp_reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(reducedIBPs_31, reducedIBPs_32, library_name, base_filename);
-              final_reducedIBPs = RESOLVE_INTERFACE_FUNCTION(singular_mergeRedIBPs_gpi)(temp_reducedIBPs, reducedIBPs_33, library_name, base_filename);
-
-                // Print final results
-                std::cout << "Final MI: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(final_MI, library_name) << std::endl;
-                std::cout << "Final web: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(final_web, library_name) << std::endl;
-                std::cout << "Final reducedIBPs: " << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(final_reducedIBPs, library_name) << std::endl;
-                std::cout << "Finished T_end" << std::endl;
-            ]]></code>
-        </module>
-    </defun>
-    <connect-in port="control_end" place="control_end"/>
-    <connect-read port="MI_31" place="MI_31"/>
-    <connect-read port="web_31" place="web_31"/>
-    <connect-read port="reducedIBPs_31" place="reducedIBPs_31"/>
-    <connect-read port="MI_32" place="MI_32"/>
-    <connect-read port="web_32" place="web_32"/>
-    <connect-read port="reducedIBPs_32" place="reducedIBPs_32"/>
-    <connect-read port="MI_33" place="MI_33"/>
-    <connect-read port="web_33" place="web_33"/>
-    <connect-read port="reducedIBPs_33" place="reducedIBPs_33"/>
-    <connect-read port="base_filename" place="base_filename"/>
-    <connect-read port="library_name" place="library_name"/>   
-    <connect-out port="final_MI" place="final_MI"/>
-    <connect-out port="final_web" place="final_web"/>
-    <connect-out port="final_reducedIBPs" place="final_reducedIBPs"/>
-</transition>
     </net>
 </defun>

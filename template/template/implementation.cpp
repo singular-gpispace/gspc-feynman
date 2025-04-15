@@ -1935,18 +1935,244 @@ void printGraphStructure(const std::string& graph_str) {
     }
 }
 
-// Define the setIBP structure
-typedef struct {
-    ring over;
-    lists seed;
-    lists IBP;
-} setIBP;
+//****************************************************************************** */ 
 
-// Define the oneIBP structure
-typedef struct {
-    lists c;
-    lists i;
-} oneIBP;
+std::string singular_web_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    
+    std::string function_name = "web_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}               
+
+
+std::string singular_gettail_gpi(std::string const& res 
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker(); 
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "gettail_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);    
+
+    return out_filename;
+}
+
+std::string singular_getlabels_gpi(std::string const& res
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    void* p1 = (char*)(long)(j);
+    void* p2 = (char*)(long)(k);
+
+    Res = deserialize(res, ids);
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv arg1(args, INT_CMD, p1);
+    ScopedLeftv arg2(args, INT_CMD, p2);
+
+    std::string function_name = "getlabels_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+std::string singular_makeUserInput_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    Res = deserialize(res, ids);
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "makeUserInput_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+    return out_filename;
+}           
+
+
+std::string singular_append_list_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{   
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;   
+
+    ids = worker();
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+
+    //std::cout<<"append_list_gpi in implementation.cpp"<<std::endl;
+    std::string function_name = "append_list_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);    
+
+    return out_filename;
+}
+
+/* 
+std::string singular_return_list_gpi(int res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    void* p = (char*)(long)(res);
+
+
+
+    ScopedLeftv arg(INT_CMD, p);
+    std::string function_name = "return_list_gpi";
+    out = call_user_proc(function_name, needed_library, arg);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+ */
+
+std::string singular_OneSectorComputation_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);    
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+
+
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv args2(args1, Res2.first, lCopy(Res2.second));
+
+    std::string function_name = "OneSectorComputation_gpi";
+    out = call_user_proc(function_name, needed_library, args);  
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;    
+}
+std::string singular_size_OneSectorComputation_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    Res = deserialize(res, ids);
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+
+    std::string function_name = "size_OneSectorComputation_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}           
+std::string singular_make_list_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{   
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;   
+
+    ids = worker();
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+
+    std::string function_name = "make_list_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
 /* 
 // Forward declarations for helper functions
 lists getSortedIntegrals(setIBP* S);
@@ -2197,3 +2423,48 @@ matrix setMat(setIBP* S, lists val, lists ind) {
     return X;
 }
  */
+
+
+std::string singular_return_list_gpi(int res,std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+        res=res;
+    // Create token structure
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);  // Initialize with standard token structure size
+
+    // Set up token fields
+    lists fieldnames = (lists)omAlloc0Bin(slists_bin);
+    fieldnames->Init(2);
+    fieldnames->m[0].rtyp = STRING_CMD;
+    fieldnames->m[0].data = omStrDup("generators");
+    fieldnames->m[1].rtyp = STRING_CMD;
+    fieldnames->m[1].data = omStrDup("return_list_gpi");
+
+    // Create empty data list
+    lists data = (lists)omAlloc0Bin(slists_bin);
+    data->Init(1);
+    data->m[0].rtyp = INT_CMD;
+    data->m[0].data = (void*)(long)(res);
+    // Set up token structure
+    output->m[0].rtyp = RING_CMD;output->m[0].data = currRing;
+    output->m[1].rtyp = LIST_CMD;output->m[1].data = fieldnames;
+    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
+    output->m[3].rtyp = LIST_CMD;output->m[3].data = data;
+
+    // Create pair with list result
+    std::pair<int, lists> out;
+    out.first = LIST_CMD;
+    out.second = output;
+
+    out_filename = serialize(out.second, base_filename);
+    std::cout << "out_filename: " << out_filename << std::endl;
+    return out_filename;
+}
+
+

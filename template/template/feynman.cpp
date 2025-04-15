@@ -204,7 +204,7 @@ lists computeM1_gpi(leftv arg1) {
                         //std::cout << "c2=D[" << l << "," << o << "]=" << p_String(c2, RB) << std::endl;
                         
                         poly bjk = MATELEM(B, j, k);
-                        //std::cout << "B[" << j << "," << k << "]=" << p_String(bjk, RB) << std::endl;
+                        //stMd::cout << "B[" << j << "," << k << "]=" << p_String(bjk, RB) << std::endl;
                         
                         // Calculate c1*c2*B[j,k] without generator
                         if (c2 && bjk) {

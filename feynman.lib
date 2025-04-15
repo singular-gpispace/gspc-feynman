@@ -856,26 +856,22 @@ if (typeof(G0) != "labeledgraph"){
   ERROR("expected a graph or labeledgraph");
 }
 labeledgraph G = G0;
-print("G"+string(G));
 def R = G.over;
-print("R=G.over"+string(R));
 int m=npars(R);
-print("m=npars(R)"+string(m));
 ring RB=G.baikovover;
-print("RB=G.baikovover"+string(RB));
 matrix B=G.baikovmatrix;
-print("B=G.baikovmatrix"+string(B));
-setring RB;
-print("setring RB"+string(RB));
+//print("B=G.baikovmatrix"+string(B));
+  setring RB;
+//print("setring RB"+string(RB));
 int n=nvars(RB);
-print("n=nvars(RB)"+string(n));
+//print("n=nvars(RB)"+string(n));
 matrix C[n][n];
 int tem=0;
 int E = m;
 int L = nvars(R);
 list x;
-print("E="+string(E)+" L="+string(L)+" n="+string(n));
-print("starting derivatives");
+//print("E="+string(E)+" L="+string(L)+" n="+string(n));
+//print("starting derivatives");
 
 for(int i=1;i<=E;i++){
   for(int j=E+1;j<=E+L;j++){ 
@@ -896,19 +892,19 @@ for(int i=E+1;i<=E+L;i++){
     }
   }
 }
-print("C2="+string(C));
+//print("C2="+string(C));
 matrix D=inverse(C);
-print("D=inverse(C) "+string(D));
+//print("D=inverse(C) "+string(D));
 
-print("size(x)="+string(size(x)));
-print("x="+string(x));
+//print("size(x)="+string(size(x)));
+//print("x="+string(x));
 module M;
 int tem=1;
 for(int i=E+1;i<=E+L;i++){
   for(int j=1;j<=E+L;j++){
-    print("i="+string(i)+" j="+string(j));
+    //print("i="+string(i)+" j="+string(j));
     vector t=0*gen(n+1);
-    print("t="+string(t));
+    //print("t="+string(t));
     for(int l=1;l<=n;l++){
       poly a=0;
       for(int k=1;k<=E+L;k++){
@@ -930,28 +926,28 @@ for(int i=E+1;i<=E+L;i++){
 
           if(o != 0){
             c2=D[l,o];
-          print("c2=D["+string(l)+","+string(o)+"]="+string(c2));
+          //print("c2=D["+string(l)+","+string(o)+"]="+string(c2));
           }
-          print("B["+string(j)+","+string(k)+"]="+string(B[j,k]));
-          print("c1*c2="+string(c1*c2));
+          //print("B["+string(j)+","+string(k)+"]="+string(B[j,k]));
+          //print("c1*c2="+string(c1*c2));
             a=a+c1*c2*B[j,k];
-          print("a="+string(a));
+          //print("a="+string(a));
       }
     t=t+a*gen(l);
-    print("t after adding a="+string(t));
+    //print("t after adding a="+string(t));
     }
     if(i==j){
       t=t-2*gen(n+1);
     } else {
       t=t+0*gen(n+1);
     }
-    print("vector t="+string(t));
+    //print("vector t="+string(t));
     M[tem]=t;
-    print("M[tem]="+string(M[tem]));
+    //print("M[tem]="+string(M[tem]));
     tem=tem+1;
   }
 }
-print("size M in M1"+string(size(M)));
+//print("size M in M1"+string(size(M)));
 /* //Test the computation
 poly F=det(B);
 print("F=det(B)"+string(F));
@@ -959,7 +955,7 @@ for(int j=1;j<size(M);j++){
   poly testP=0;
   for(int i=1;i<=n;i++){
     testP=testP+M[j][i]*diff(F,z(i));
-    print("testP="+string(testP));
+    //print("testP="+string(testP));
     }
   testP=testP+M[j][n+1]*F;
   if(testP != 0){

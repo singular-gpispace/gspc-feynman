@@ -306,6 +306,43 @@ NO_NAME_MANGLING
 
 // Add our new function declaration
 NO_NAME_MANGLING
-std::string singular_computeFeynmanIntegral_gpi(std::string const& res,
-    std::string const& needed_library,
-    std::string const& base_filename);
+std::string singular_OneSectorComputation_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_getlabels_gpi(std::string const& res
+    , int const& j
+    , int const& k
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_web_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_gettail_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_makeUserInput_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_append_list_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_return_list_gpi(int res, std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_make_list_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_size_OneSectorComputation_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
