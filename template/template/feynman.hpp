@@ -2,14 +2,18 @@
 #ifndef FEYNMAN_HPP
 #define FEYNMAN_HPP
 
+#include <Singular/libsingular.h>
+#include <flint/fmpq_mat.h>
+#include <flint/fmpq.h>
+#include <flint/fmpz.h>
 #include "common_functions.hpp"
 #include <string>
 #include <vector>
 #include <list>
-#include <flint/fmpz_mpoly.h>
 
-// Remove duplicate struct definitions since they're in common_functions.hpp
-// Only keep function declarations specific to feynman.hpp
+// Function declarations for FLINT-based Gaussian reduction
+lists gaussred_pivot_flint(matrix A);
+lists singflintGaussRed(leftv args);
 
 NO_NAME_MANGLING
 #endif // FEYNMAN_HPP

@@ -346,3 +346,35 @@ NO_NAME_MANGLING
 std::string singular_size_OneSectorComputation_gpi(std::string const& res
     , std::string const& needed_library
     , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_prepareRedIBPs_gpi(std::string const& res
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename);    
+NO_NAME_MANGLING
+std::string singular_returnTargetInts_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename);    
+NO_NAME_MANGLING
+std::string singular_performGaussRed_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);    
+NO_NAME_MANGLING
+std::string singular_performGaussRed(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);    
+NO_NAME_MANGLING
+std::string singular_computeGetRedIBPs_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_ComputeOneSector_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename);

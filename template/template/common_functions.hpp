@@ -68,53 +68,11 @@ NO_NAME_MANGLING lists intersection_gpi(leftv arg1);
 // Function for standard basis
 NO_NAME_MANGLING lists std_gpi(leftv arg1);
 
+// Function for Gauss reduction
+NO_NAME_MANGLING lists performGaussRed(leftv args);
+
 #ifdef __cplusplus
 }
 #endif
 
-// Common structures
-struct Graph {
-    lists vertices;
-    lists edges;
-};
-
-struct LabeledGraph {
-    lists vertices;
-    lists edges;
-    ring over;
-    lists labels;
-    ring overpoly;
-    lists elimvars;
-    ring baikovover;
-    matrix baikovmatrix;
-};
-
-struct Net {
-    lists rows;
-};
-
-struct OneIBP {
-    lists c;
-    lists i;
-};
-
-struct SetIBP {
-    ring over;
-    lists seed;
-    lists IBP;
-};
-
-struct OneSector {
-    lists lab;
-    lists sectorMap;
-    lists targetInts;
-};
-
-// Common utility functions
-int size(lists L);
-void printNet(const Net& N);
-void printLabeledGraph(const LabeledGraph& G);
-
-// Matrix operations
-
-#endif // COMMON_FUNCTIONS_HPP 
+#endif // COMMON_FUNCTIONS_HPP

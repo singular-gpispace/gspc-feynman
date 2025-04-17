@@ -39,9 +39,7 @@ def m6=read(l);
 def m7=read(l);
 def m8=read(l);
 
-m;
-m1;
-m2;
+
 
 
 link l="ssi:r bonjour.ssi";
@@ -56,3 +54,4 @@ def m5=read(l);
 def m6=read(l);
 def m7=read(l);
 def m8=read(l);
+

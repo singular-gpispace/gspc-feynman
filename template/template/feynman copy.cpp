@@ -674,12 +674,12 @@ std::string singular_computeM2_gpi(std::string const& res
 
 
 
-// Helper function to print an fq_nmod_mat_t matrix for debugging
-void print_fq_nmod_mat(const char* label, const fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
+// Print an fq_mat_t matrix for debugging
+void print_fq_mat(const char* label, const fq_mat_t mat, const fq_ctx_t ctx) {
     std::cout << label << "\n-------------\n";
-    for (slong i = 0; i < fq_nmod_mat_nrows(mat, ctx); i++) {
-        for (slong j = 0; j < fq_nmod_mat_ncols(mat, ctx); j++) {
-            fq_nmod_print_pretty(fq_nmod_mat_entry(mat, i, j), ctx);
+    for (slong i = 0; i < fq_mat_nrows(mat, ctx); i++) {
+        for (slong j = 0; j < fq_mat_ncols(mat, ctx); j++) {
+            fq_print_pretty(fq_mat_entry(mat, i, j), ctx);
             std::cout << "  ";
         }
         std::cout << "\n";
@@ -687,7 +687,43 @@ void print_fq_nmod_mat(const char* label, const fq_nmod_mat_t mat, const fq_nmod
     std::cout << "-------------\n";
 }
 
-// Helper function to set an fq_nmod_mat_t to the identity matrix
+// Manually set a matrix to the identity matrix
+void fq_mat_set_one(fq_mat_t mat, const fq_ctx_t ctx) {
+    fq_mat_zero(mat, ctx);
+    slong n = fq_mat_nrows(mat, ctx);
+    slong m = fq_mat_ncols(mat, ctx);
+    slong min = (n < m) ? n : m;
+    fq_t one;
+    fq_init(one, ctx);
+    fq_one(one, ctx);
+    for (slong i = 0; i < min; i++) {
+        fq_mat_entry_set(mat, i, i, one, ctx);
+    }
+    fq_clear(one, ctx);
+}
+
+// Structure to hold the result (P, U, S, rank)
+typedef struct {
+    fq_nmod_mat_t P;  // Permutation matrix
+    fq_nmod_mat_t U;  // Upper triangular matrix
+    fq_nmod_mat_t S;  // Row echelon form of A
+    slong rank;  // Rank of the matrix
+} gaussred_result_t;
+
+// Function declarations
+static void cleanupList(lists L);
+static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_ctx_t ctx);
+
+// Function to clear the result structure
+static void gaussred_result_clear(gaussred_result_t* result, const fq_nmod_ctx_t ctx) {
+    if (result) {
+        fq_nmod_mat_clear(result->P, ctx);
+        fq_nmod_mat_clear(result->U, ctx);
+        fq_nmod_mat_clear(result->S, ctx);
+    }
+}
+
+
 
 // Manually set a matrix to the identity matrix
 static void fq_nmod_mat_set_one(fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
@@ -704,152 +740,167 @@ static void fq_nmod_mat_set_one(fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
     fq_nmod_clear(one, ctx);
 }
 
-// Structure to hold Gauss reduction result
-typedef struct {
-    fq_nmod_mat_t P;  // Permutation matrix
-    fq_nmod_mat_t U;  // Upper triangular matrix
-    fq_nmod_mat_t S;  // Row echelon form of A
-    slong rank;       // Rank of the matrix
-} gaussred_result_t;
+// Set a matrix to be a copy of another matrix
+extern void fq_nmod_mat_set(fq_nmod_mat_t dest, const fq_nmod_mat_t src, const fq_nmod_ctx_t ctx);
 
-// Clear the gaussred result structure
-static void gaussred_result_clear(gaussred_result_t* result, const fq_nmod_ctx_t ctx) {
-    if (result) {
-        fq_nmod_mat_clear(result->P, ctx);
-        fq_nmod_mat_clear(result->U, ctx);
-        fq_nmod_mat_clear(result->S, ctx);
-    }
-}
 // Helper function to get unsigned integer value from fq_nmod element
 static mp_limb_t fq_nmod_get_ui(const fq_nmod_t x, const fq_nmod_ctx_t ctx) {
     (void)ctx;  // Mark ctx as used to avoid warning
     return x->coeffs[0];  // For degree 1 fields, the value is in the first coefficient
 }
 
-// Helper function to convert SINGULAR matrix to FLINT fq_nmod_mat_t
-int singular_to_fq_nmod_mat(fq_nmod_mat_t A, matrix m, ring R, const fq_nmod_ctx_t ctx) {
-    slong r = m->rows(), c = m->cols();
-    fq_nmod_mat_init(A, r, c, ctx);
-    for (int i = 1; i <= r; i++) {
-        for (int j = 1; j <= c; j++) {
-            poly h = MATELEM(m, i, j);
-            if (h != NULL) {
-                if (p_Totaldegree(h, R) == 0) {
-                    number coeff = pGetCoeff(h);
-                    mp_limb_t val = n_Int(coeff, R->cf);
-                    fq_nmod_t entry;
-                    fq_nmod_init(entry, ctx);
-                    fq_nmod_set_ui(entry, val, ctx);
-                    fq_nmod_mat_entry_set(A, i-1, j-1, entry, ctx);
-                    fq_nmod_clear(entry, ctx);
-                } else {
-                    WerrorS("Matrix entry is not constant");
-                    fq_nmod_mat_clear(A, ctx);
-                    return 0;
-                }
-            }
-        }
-    }
-    return 1;
-}
-
-// Helper function to convert FLINT fq_nmod_mat_t to SINGULAR matrix
-matrix fq_nmod_mat_to_singular(const fq_nmod_mat_t mat, ring R, const fq_nmod_ctx_t ctx) {
-    slong r = fq_nmod_mat_nrows(mat, ctx), c = fq_nmod_mat_ncols(mat, ctx);
-    matrix M = mpNew(r, c);
-    for (slong i = 0; i < r; i++) {
-        for (slong j = 0; j < c; j++) {
-            fq_nmod_t entry;
-            fq_nmod_init(entry, ctx);
-            fq_nmod_set(entry, fq_nmod_mat_entry(mat, i, j), ctx);
-            if (!fq_nmod_is_zero(entry, ctx)) {
-                mp_limb_t val = fq_nmod_get_ui(entry, ctx);
-                number n = n_Init(val, R->cf);
-                MATELEM(M, i+1, j+1) = p_NSet(n, R);
-            }
-            fq_nmod_clear(entry, ctx);
-        }
-    }
-    return M;
-}
-
-static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_ctx_t ctx);
-
-static void cleanupList(lists L) {
-    if (!L) return;
-    for (int i = 0; i <= L->nr; i++) {
-        if (L->m[i].data) {
-            if (L->m[i].rtyp == MATRIX_CMD) {
-                mp_Delete((matrix*)&L->m[i].data, currRing);
-            }
-        }
-    }
-}
-
-// Main function to compute RREF using FLINT
-lists singflint_rref_full(matrix m, ring R, int p) {
+lists singflint_rref_full(matrix m, const ring R, int p)
+{
     if (!m || !R) {
         WerrorS("NULL matrix or ring");
         return NULL;
     }
 
-    int r = m->rows(), c = m->cols();
-    std::cout << "Rows: " << r << ", Cols: " << c << ", Ring: " << rString(R)
-              << ", Coeff: " << nCoeffString(R->cf) << ", Char: " << rChar(R) << std::endl;
+    int r = m->rows();
+    int c = m->cols();
+    std::cout << "r=" << r << std::endl;
+    std::cout << "c=" << c << std::endl;
+    std::cout << "R=" << rString(R) << std::endl;
+    std::cout << "Coefficient field type: " << nCoeffString(R->cf) << std::endl;
 
+std::cout<<"char(R)="<<rChar(R)<<std::endl;
+    matrix M = NULL;
+    matrix P = NULL;
+    matrix U = NULL;
+    int rank = 0;
+    
     ring savedRing = currRing;
-    if (savedRing != R) rChangeCurrRing(R);
-
-    // Initialize FLINT context
-    fmpz_t pp;
-    fmpz_init_set_ui(pp, p);
-    fq_nmod_ctx_t ctx;
-    fq_nmod_ctx_init(ctx, pp, 1, "x");
-
-    // Convert SINGULAR matrix to FLINT
-    fq_nmod_mat_t A;
-    if (!singular_to_fq_nmod_mat(A, m, R, ctx)) {
-        fq_nmod_ctx_clear(ctx);
-        fmpz_clear(pp);
-        if (savedRing != R) rChangeCurrRing(savedRing);
-        return NULL;
+    if (savedRing != R) {
+        rChangeCurrRing(R);
     }
 
-    // Compute RREF
-    gaussred_result_t result = gaussred_fq_nmod(A, ctx);
-    std::cout << "Rank: " << result.rank << std::endl;
+  
+        std::cout<<"rField_is_Zp(R)"<<std::endl;
+        // Initialize FLINT finite field context for Z/p
+        fmpz_t pp;
+        fmpz_init_set_ui(pp,p);
+        fq_nmod_ctx_t ctx;
+        fq_nmod_ctx_init(ctx, pp, 1, "x"); // Degree 1 for Z/p
 
-    // Convert results back to SINGULAR
-    matrix P = fq_nmod_mat_to_singular(result.P, R, ctx);
-    matrix U = fq_nmod_mat_to_singular(result.U, R, ctx);
-    matrix M = fq_nmod_mat_to_singular(result.S, R, ctx);
+        // Convert SINGULAR matrix to fq_nmod_mat_t
+        fq_nmod_mat_t A;
+        fq_nmod_mat_init(A, r, c, ctx);
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= c; j++) {
+                poly h = MATELEM(m, i, j);
+                if (h != NULL) {
+                    if (p_Totaldegree(h, R) == 0) {
+                        number coeff = pGetCoeff(h);
+                        mp_limb_t val = n_Int(coeff, R->cf);
+                        fq_nmod_t entry;
+                        fq_nmod_init(entry, ctx);
+                        fq_nmod_set_ui(entry, val, ctx);
+                        fq_nmod_mat_entry_set(A, i-1, j-1, entry, ctx);
+                        fq_nmod_clear(entry, ctx);
+                    } else {
+                        WerrorS("matrix entry is not constant");
+                        fq_nmod_mat_clear(A, ctx);
+                        fq_nmod_ctx_clear(ctx);
+                        fmpz_clear(pp);
+                        if (savedRing != R) rChangeCurrRing(savedRing);
+                        return NULL;
+                    }
+                }
+            }
+        }
+
+        // Compute RREF using gaussred_fq_nmod
+        gaussred_result_t result = gaussred_fq_nmod(A, ctx);
+        rank = result.rank;
+        std::cout << "Rank: " << rank << std::endl;
+        
+        // Print the reduced matrix for debugging
+
+        // Convert result.S back to SINGULAR matrix
+        M = mpNew(r, c);
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= c; j++) {
+                fq_nmod_t entry;
+                fq_nmod_init(entry, ctx);
+                fq_nmod_set(entry, fq_nmod_mat_entry(result.S, i-1, j-1), ctx);
+                if (!fq_nmod_is_zero(entry, ctx)) {
+                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
+                    number n = n_Init(val, R->cf);
+                    MATELEM(M, i, j) = p_NSet(n, R);
+                }
+                fq_nmod_clear(entry, ctx);
+            }
+        }
+        
+        // Convert result.P back to SINGULAR matrix
+        P = mpNew(r, r);
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= r; j++) {
+                fq_nmod_t entry;
+                fq_nmod_init(entry, ctx);
+                fq_nmod_set(entry, fq_nmod_mat_entry(result.P, i-1, j-1), ctx);
+                if (!fq_nmod_is_zero(entry, ctx)) {
+                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
+                    number n = n_Init(val, R->cf);
+                    MATELEM(P, i, j) = p_NSet(n, R);
+                }
+                fq_nmod_clear(entry, ctx);
+            }
+        }
+        
+        // Convert result.U back to SINGULAR matrix
+        U = mpNew(r, r);
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= r; j++) {
+                fq_nmod_t entry;
+                fq_nmod_init(entry, ctx);
+                fq_nmod_set(entry, fq_nmod_mat_entry(result.U, i-1, j-1), ctx);
+                if (!fq_nmod_is_zero(entry, ctx)) {
+                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
+                    number n = n_Init(val, R->cf);
+                    MATELEM(U, i, j) = p_NSet(n, R);
+                }
+                fq_nmod_clear(entry, ctx);
+            }
+        }
+        
+        std::cout << "M=" << std::endl;
+        std::cout << "size of M=" << MATROWS(M) << "x" << MATCOLS(M) << std::endl;
+        
+        // Clean up
+        gaussred_result_clear(&result, ctx);
+        fq_nmod_mat_clear(A, ctx);
+        fq_nmod_ctx_clear(ctx);
+        fmpz_clear(pp);
 
 
-    // Clean up FLINT objects
-    gaussred_result_clear(&result, ctx);
-    fq_nmod_mat_clear(A, ctx);
-    fq_nmod_ctx_clear(ctx);
-    fmpz_clear(pp);
-
-    // Create result list
+    // Create a lists structure to hold all results
     lists L = (lists)omAlloc0Bin(slists_bin);
     L->Init(4);
+    
+    // Add matrices and rank to the list
     L->m[0].rtyp = MATRIX_CMD;
-    L->m[0].data = P;
+    L->m[0].data = M;
+    
     L->m[1].rtyp = MATRIX_CMD;
-    L->m[1].data = U;
+    L->m[1].data = P;
+    
     L->m[2].rtyp = MATRIX_CMD;
-    L->m[2].data = M;
+    L->m[2].data = U;
+    
     L->m[3].rtyp = INT_CMD;
-    L->m[3].data = (void*)(long)result.rank;
+    L->m[3].data = (void*)(long)rank;
 
-    if (savedRing != R) rChangeCurrRing(savedRing);
+    if (savedRing != R) {
+        rChangeCurrRing(savedRing);
+    }
     return L;
 }
 
-// Wrapper function for Gauss reduction
 lists singflintGaussRed(leftv args) {
+   
     lists input_result = (lists)args->Data();
+  
     lists result = (lists)input_result->m[3].Data();
     if (!result || result->nr < 2) {
         WerrorS("Invalid result list structure");
@@ -859,40 +910,47 @@ lists singflintGaussRed(leftv args) {
     matrix A = (matrix)result->m[0].Data();
     ring RZ = (ring)result->m[1].Data();
     int p = (int)(long)result->m[2].Data();
+   
 
     ring savedRing = currRing;
     rChangeCurrRing(RZ);
 
     // Compute RREF
-    lists Z = singflint_rref_full(A, RZ, p);
-    if (!Z) {
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
+    lists Z = singflint_rref_full(A, RZ,p);
 
     matrix P = (matrix)Z->m[0].Data();
     matrix U = (matrix)Z->m[1].Data();
     matrix M = (matrix)Z->m[2].Data();
     int rank = (int)(long)Z->m[3].Data();
+   std::cout<<"printing P"<<std::endl;
+   printMat(P);
+   std::cout<<"printing U"<<std::endl;
+   printMat(U);
+   std::cout<<"printing M"<<std::endl;
+   printMat(M);
+   std::cout<<"size of P="<<MATROWS(P)<<"x"<<MATCOLS(P)<<std::endl;
+   std::cout<<"size of U="<<MATROWS(U)<<"x"<<MATCOLS(U)<<std::endl;
+   std::cout<<"size of M="<<MATROWS(M)<<"x"<<MATCOLS(M)<<std::endl;
+   std::cout<<"rank="<<rank<<std::endl;
 
-    // Debug output
-    std::cout << "P size: " << MATROWS(P) << "x" << MATCOLS(P) << std::endl;
-    std::cout << "U size: " << MATROWS(U) << "x" << MATCOLS(U) << std::endl;
-    std::cout << "M size: " << MATROWS(M) << "x" << MATCOLS(M) << std::endl;
-    std::cout << "Rank: " << rank << std::endl;
-    std::cout << "Current ring: " << rString(currRing) << ", RZ: " << rString(RZ) << std::endl;
+    std::cout<<"Current ring="<<rString(currRing)<<std::endl;
+std::cout<<"Ring RZ="<<rString(RZ)<<std::endl;
 
-    // Create output list
+    // Create output list carefully
     lists output = (lists)omAlloc0Bin(slists_bin);
+
     output->Init(4);
 
+    // Create type list carefully
     lists t1 = (lists)omAlloc0Bin(slists_bin);
+  
     t1->Init(2);
     t1->m[0].rtyp = STRING_CMD;
     t1->m[0].data = omStrDup("generators");
     t1->m[1].rtyp = STRING_CMD;
     t1->m[1].data = omStrDup("singflint_rref");
 
+    // Set output fields carefully
     output->m[0].rtyp = RING_CMD;
     output->m[0].data = currRing;
     output->m[1].rtyp = LIST_CMD;
@@ -902,17 +960,30 @@ lists singflintGaussRed(leftv args) {
     output->m[3].rtyp = LIST_CMD;
     output->m[3].data = lCopy(Z);
 
-    // Clean up
+    // Clean up original result and restore ring
     cleanupList(Z);
     omFreeBin(Z, slists_bin);
     rChangeCurrRing(savedRing);
 
     return output;
 }
+
 // Implementation of performGaussRed function
 lists performGaussRed(leftv args) {
     // This function is a wrapper around singflintGaussRed
     return singflintGaussRed(args);
+}
+
+// Helper function to clean up a list and its contents
+static void cleanupList(lists L) {
+    if (!L) return;
+    for (int i = 0; i <= L->nr; i++) {
+        if (L->m[i].data) {
+            if (L->m[i].rtyp == MATRIX_CMD) {
+                mp_Delete((matrix*)&L->m[i].data, currRing);
+            }
+        }
+    }
 }
 
 // Gaussian elimination with partial pivoting over Fq_nmod

@@ -1,6 +1,6 @@
 #include <Singular/libsingular.h>
 #include <interface/template_interface.hpp>  // This defines NO_NAME_MANGLING
-#include "feynman.hpp"
+#include "feynman.hpp"  // Add this include for singflintGaussRed
 #include "singular_functions.hpp"
 #include "common_functions.hpp"
 #include <string>
@@ -896,215 +896,6 @@ int singular_updateWeb_sizejk(std::string const& res
 }
 
 
-// Convert a number to a string for debugging
-std::string numberToString(number c, ring R) {
-    StringSetS("");              // Initialize string buffer
-    n_Write(c, R->cf);           // Write number into buffer
-    char* singularStr = StringEndS(); // Retrieve buffer content
-    std::string result(singularStr);  // Convert to std::string
-    omFree(singularStr);              // Free Singular-allocated memory
-    return result;
-}
-
-// Print a number as a polynomial for debugging
-void printNumber(const number z, ring R) {
-    if (n_IsZero(z, R->cf)) {
-        std::cout << "number = 0\n";
-    } else {
-        poly p = p_One(R);
-        p_SetCoeff(p, n_Copy(z, R->cf), R);
-        p_Setm(p, R);
-        std::cout << "number = " << p_String(p, R) << "\n";
-        p_Delete(&p, R);
-    }
-}
-
-// Print a matrix for debugging
-void printMatrix(const matrix m, ring R) {
-    int rr = MATROWS(m);
-    int cc = MATCOLS(m);
-    std::cout << "\n-------------\n";
-    for (int r = 1; r <= rr; r++) {
-        for (int c = 1; c <= cc; c++) {
-            char* str = p_String(MATELEM(m, r, c), R);
-            std::cout << str << "  ";
-            omFree(str);
-        }
-        std::cout << "\n";
-    }
-    std::cout << "-------------\n";
-}
-
-// Compute the absolute value of a polynomial's coefficient
-number absValue(poly p, ring R) {
-    if (p == NULL) return n_Init(0, R->cf);
-    number result = n_Copy(p_GetCoeff(p, R), R->cf);
-    if (!n_GreaterZero(result, R->cf)) {
-        number neg = n_InpNeg(result, R->cf);
-        n_Delete(&result, R->cf);
-        result = neg;
-    }
-    return result;
-}
-
-
-
-lists gaussred_pivot(matrix A) {
-    ring r = currRing;
-    if (!r) {
-        std::cerr << "[ERROR] No current ring defined.\n";
-        return NULL;
-    }
-
-    int n = MATROWS(A), m = MATCOLS(A);
-    int mr = (n < m) ? n : m;
-    int k = 0, rank = 0;
-
-    matrix P = mpNew(n, n);
-    matrix U = mpNew(n, n);
-    matrix S = mp_Copy(A, r);
-
-    for (int i = 1; i <= n; i++) {
-        MATELEM(P, i, i) = pISet(1);
-        MATELEM(U, i, i) = pISet(1);
-    }
-
-    for (int i = 1; i <= mr; i++) {
-        int col = i + k;
-        if (col > m) break;
-
-        int jp = i;
-        number max_coeff = n_Copy(absValue(MATELEM(S, i, col), r), r->cf);
-
-        for (int j = i + 1; j <= n; j++) {
-            number c = n_Copy(absValue(MATELEM(S, j, col), r), r->cf);
-            if (n_Greater(c, max_coeff, r->cf)) {
-                n_Delete(&max_coeff, r->cf);
-                max_coeff = c;
-                jp = j;
-        } else {
-                n_Delete(&c, r->cf);
-            }
-        }
-        n_Delete(&max_coeff, r->cf);
-
-
-        if (jp != i) {
-            for (int j = 1; j <= m; j++)
-                std::swap(MATELEM(S, i, j), MATELEM(S, jp, j));
-            for (int j = 1; j <= n; j++)
-                std::swap(MATELEM(P, i, j), MATELEM(P, jp, j));
-        }
-
-        poly pivot = MATELEM(S, i, col);
-        if (!pivot) {
-            k++;
-            i--;
-            continue;
-        }
-
-        number pivot_coeff = p_GetCoeff(pivot, r);
-
-        for (int j = i + 1; j <= n; j++) {
-            poly num = MATELEM(S, j, col);
-            if (!num) {
-                continue;
-            }
-
-            number num_coeff = p_GetCoeff(num, r);
-            number c = n_Div(num_coeff, pivot_coeff, r->cf);
-           
-
-            for (int l = col; l <= m; l++) {
-                poly s_il = pCopy(MATELEM(S, i, l));
-                poly s_jl = pCopy(MATELEM(S, j, l));
-             
-
-                poly prod = s_il ? p_Mult_nn(s_il, c, r) : NULL;
-
-
-                poly sub_result = NULL;
-
-                if (s_jl && prod) {
-                    sub_result = p_Sub(p_Copy(s_jl, r), p_Copy(prod, r), r);
-                } else if (s_jl && !prod) {
-                    sub_result = p_Copy(s_jl, r);
-                } else if (!s_jl && prod) {
-                    sub_result = p_Neg(p_Copy(prod, r), r);
-                }
-
-
-                if (MATELEM(S, j, l)) p_Delete(&MATELEM(S, j, l), r);
-                MATELEM(S, j, l) = sub_result;
-
-                if (prod) p_Delete(&prod, r);
-            }
-
-            if (MATELEM(S, j, col)) {
-                p_Delete(&MATELEM(S, j, col), r);
-                MATELEM(S, j, col) = NULL;
-            }
-
-            if (MATELEM(U, j, i)) {
-                p_Delete(&MATELEM(U, j, i), r);
-                MATELEM(U, j, i) = NULL;
-            }
-            MATELEM(U, j, i) = p_NSet(c, r);
-        }
-
-        rank = i;
-    }
-
-    lists Z = (lists)omAlloc0Bin(slists_bin);
-    Z->Init(4);
-    Z->m[0].rtyp = MATRIX_CMD; Z->m[0].data = P;
-    Z->m[1].rtyp = MATRIX_CMD; Z->m[1].data = U;
-    Z->m[2].rtyp = MATRIX_CMD; Z->m[2].data = S;
-    Z->m[3].rtyp = INT_CMD;    Z->m[3].data = (void*)(long)rank;
-
-    return Z;
-}
-
-void printPairInt(lists L) {
-    int size = lSize(L) + 1;
-    for(int i = 0; i < size; i++) {
-        lists pair = (lists)L->m[i].data;
-        if (pair) {
-            int pi = (int)(long)pair->m[0].data;
-            int pj = (int)(long)pair->m[1].data;
-            std::cout << "[" << pi << "," << pj << "]" << std::endl;
-        }
-    }
-}
-void printlists(lists l, ring RB) {
-    for (int i = 0; i < lSize(l)+1; i++) {
-        std::cout << "l[" << i << "]=" << p_String((poly)l->m[i].Data(), RB) << std::endl;
-    }
-}
-
-// Print an ideal for debugging
-void printIdeal(const ideal I,ring R)
-{
-    if (!I) {
-        std::cout << "Ideal is NULL" << std::endl;
-        return;
-    }
-    
-    
-    std::cout << "Ideal with " << IDELEMS(I) << " elements:" << std::endl;
-    for (int i = 0; i < IDELEMS(I); i++) {
-        poly p = I->m[i];
-        if (p) {
-            char* pStr = p_String(p, R);
-            std::cout  << (pStr ? pStr : "null") << ",";
-            if (pStr) omFree(pStr);
-        }
-        else {
-            std::cout << " 0" << ",";
-        }
-    }
-    std::cout<<std::endl;
-}
 #include <Singular/libsingular.h>
 #include <iostream>
 #include <vector>
@@ -2173,298 +1964,157 @@ std::string singular_make_list_gpi(std::string const& res
 
     return out_filename;
 }
-/* 
-// Forward declarations for helper functions
-lists getSortedIntegrals(setIBP* S);
-lists getRandom(int p, int s);
-matrix setMat(setIBP* S, lists val, lists ind);
-lists gaussred_pivot(matrix A);
+std::string singular_prepareRedIBPs_gpi(std::string const& res
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
 
-// Implementation of getRedIBPs_gpi
-lists getRedIBPs_gpi(leftv arg, int p) {
-    std::cout << "DEBUG: Starting getRedIBPs_gpi with p=" << p << std::endl;
-    
-    if (!arg || !arg->Data()) {
-        std::cout << "DEBUG: Error - arg or arg->Data is NULL" << std::endl;
-        return NULL;
-    }
-    
-    // Extract the setIBP from the token
-    lists token = (lists)(arg->Data());
-    if (!token || token->nr < 1 || !token->m[0].Data()) {
-        std::cout << "DEBUG: Error - Invalid token structure" << std::endl;
-        return NULL;
-    }
-    
-    // Extract the setIBP from the token data
-    lists tokenData = (lists)(token->m[0].Data());
-    if (!tokenData || tokenData->nr < 1 || !tokenData->m[0].Data()) {
-        std::cout << "DEBUG: Error - Invalid token data structure" << std::endl;
-        return NULL;
-    }
-    
-    // Get the setIBP
-    setIBP* S = (setIBP*)(tokenData->m[0].Data());
-    if (!S) {
-        std::cout << "DEBUG: Error - setIBP is NULL" << std::endl;
-        return NULL;
-    }
-    
-    // Save current ring and switch to the ring from setIBP
-    ring savedRing = currRing;
-    ring R = S->over;
-    if (!R) {
-        std::cout << "DEBUG: Error - Ring from setIBP is NULL" << std::endl;
-        return NULL;
-    }
-    
-    std::cout << "DEBUG: Switching to ring from setIBP" << std::endl;
-    rChangeCurrRing(R);
-    
-    // Get sorted integrals
-    lists ind = getSortedIntegrals(S);
-    if (!ind) {
-        std::cout << "DEBUG: Error - Failed to get sorted integrals" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
-    // Get random values for parameters
-    lists val = getRandom(p, rPar(R));
-    if (!val) {
-        std::cout << "DEBUG: Error - Failed to get random values" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
-    // Create matrix for row reduction
-    matrix N = setMat(S, val, ind);
-    if (!N) {
-        std::cout << "DEBUG: Error - Failed to create matrix" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
-    // Create a ring for finite field computation
-    ring RZ = rCopy(R);
-    rChangeCurrRing(RZ);
-    
-    // Map the matrix to the new ring
-    matrix NZ = map(R, N);
-    
-    // Perform row reduction
-    lists Z = gaussred_pivot(NZ);
-    if (!Z) {
-        std::cout << "DEBUG: Error - Failed to perform row reduction" << std::endl;
-        rChangeCurrRing(savedRing);
-        return NULL;
-    }
-    
-    // Switch back to original ring
-    rChangeCurrRing(R);
-    
-    // Map the result back
-    lists ZR = imap(RZ, Z);
-    
-    // Extract independent IBPs
-    lists indIBP = (lists)omAlloc0Bin(slists_bin);
-    indIBP->Init(1);
-    int l = 1;
-    
-    for (int j = 1; j <= (int)(long)ZR->m[3].Data(); j++) {
-        for (int k = 1; k <= MATCOLS((matrix)ZR->m[0].Data()); k++) {
-            if (MATELEM((matrix)ZR->m[0].Data(), j, k) != NULL) {
-                indIBP->m[l-1].rtyp = POLY_CMD;
-                indIBP->m[l-1].data = pCopy((poly)S->IBP->m[k-1].Data());
-                l++;
-                indIBP->Init(l);
-            }
-        }
-    }
-    
-    // Extract seed (indices of non-zero columns)
-    lists seed = (lists)omAlloc0Bin(slists_bin);
-    seed->Init(1);
-    l = 1;
-    
-    for (int k = 1; k <= MATCOLS((matrix)ZR->m[2].Data()); k++) {
-        for (int j = 1; j <= MATROWS((matrix)ZR->m[2].Data()); j++) {
-            if (MATELEM((matrix)ZR->m[2].Data(), j, k) != NULL) {
-                lists pair = (lists)ind->m[k-1].Data();
-                seed->m[l-1].rtyp = INT_CMD;
-                seed->m[l-1].data = (void*)(long)((int)(long)pair->m[0].Data());
-                l++;
-                seed->Init(l);
-                break;
-            }
-        }
-    }
-    
-    // Create output token
-    lists output = (lists)omAlloc0Bin(slists_bin);
-    output->Init(4);
-    
-    // Set field names
-    lists fieldnames = (lists)omAlloc0Bin(slists_bin);
-    fieldnames->Init(2);
-    fieldnames->m[0].rtyp = STRING_CMD;
-    fieldnames->m[0].data = strdup("generators");
-    fieldnames->m[1].rtyp = STRING_CMD;
-    fieldnames->m[1].data = strdup("getRedIBPs_gpi");
-    
-    output->m[0].rtyp = RING_CMD;
-    output->m[0].data = currRing;
-    output->m[1].rtyp = LIST_CMD;
-    output->m[1].data = fieldnames;
-    output->m[2].rtyp = RING_CMD;
-    output->m[2].data = currRing;
-    
-    // Set data
-    lists data = (lists)omAlloc0Bin(slists_bin);
-    data->Init(2);
-    data->m[0].rtyp = LIST_CMD;
-    data->m[0].data = indIBP;
-    data->m[1].rtyp = LIST_CMD;
-    data->m[1].data = seed;
-    
-    output->m[3].rtyp = LIST_CMD;
-    output->m[3].data = data;
-    
-    // Restore original ring
-    rChangeCurrRing(savedRing);
-    
-    return output;
-}
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
 
-// Implementation of getSortedIntegrals
-lists getSortedIntegrals(setIBP* S) {
-    lists ind = (lists)omAlloc0Bin(slists_bin);
-    ind->Init(0);
-    
-    lists indS = (lists)omAlloc0Bin(slists_bin);
-    indS->Init(0);
-    
-    for (int j = 1; j <= lSize(S->IBP) + 1; j++) {
-        oneIBP* oneI = (oneIBP*)(S->IBP->m[j-1].Data());
-        for (int k = 1; k <= lSize(oneI->i) + 1; k++) {
-            lists indv = (lists)(oneI->i->m[k-1].Data());
-            
-            if (lSize(ind) == 0) {
-                ind->m[0].rtyp = LIST_CMD;
-                ind->m[0].data = indv;
-                ind->Init(1);
-                
-                indS->m[0].rtyp = INT_CMD;
-                indS->m[0].data = (void*)(long)k;
-                indS->Init(1);
-            } else {
-                // Check if indv is already in indS
-                bool found = false;
-                for (int i = 0; i < lSize(indS) + 1; i++) {
-                    if ((int)(long)indS->m[i].Data() == k) {
-                        found = true;
-                        break;
-                    }
-                }
-                
-                if (!found) {
-                    ind->m[lSize(ind)].rtyp = LIST_CMD;
-                    ind->m[lSize(ind)].data = indv;
-                    ind->Init(lSize(ind) + 1);
-                    
-                    indS->m[lSize(indS)].rtyp = INT_CMD;
-                    indS->m[lSize(indS)].data = (void*)(long)k;
-                    indS->Init(lSize(indS) + 1);
-                }
-            }
-        }
-    }
-    
-    return ind;
-}
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;    
+    ids = worker();
+    Res = deserialize(res, ids);
+    void* p = (char*)(long)(j);
 
-// Implementation of getRandom
-lists getRandom(int p, int s) {
-    lists L = (lists)omAlloc0Bin(slists_bin);
-    L->Init(s);
-    
-    for (int i = 1; i <= s; i++) {
-        L->m[i-1].rtyp = INT_CMD;
-        L->m[i-1].data = (void*)(long)(rand() % p);
-    }
-    
-    return L;
-}
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv arg1(args, INT_CMD, p);
 
-// Implementation of setMat
-matrix setMat(setIBP* S, lists val, lists ind) {
-    ring RZ = S->over;
-    int rows = lSize(S->IBP) + 1;
-    int cols = lSize(ind) + 1;
-    
-    matrix X = mpNew(rows, cols);
-    
-    for (int j = 1; j <= rows; j++) {
-        oneIBP* L = (oneIBP*)(S->IBP->m[j-1].Data());
-        
-        for (int k = 1; k <= cols; k++) {
-            lists indv = (lists)(ind->m[k-1].Data());
-            poly coef = p_One(RZ);
-            
-            // Use val parameter to set coefficient
-            if (val != NULL && k <= lSize(val)) {
-                coef = (poly)val->m[k-1].Data();
-            }
-            
-            MATELEM(X, j, k) = coef;
-        }
-    }
-    
-    return X;
-}
- */
+    std::string function_name = "prepareRedIBPs_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string out_filename = serialize(out.second, base_filename);
 
-
-std::string singular_return_list_gpi(int res,std::string const& needed_library
+    return out_filename;
+}   
+std::string singular_returnTargetInts_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
     , std::string const& base_filename)
 {
     init_singular(config::singularLibrary().string());
     load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+    ids = worker();
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv args2(args1, Res2.first, lCopy(Res2.second));
+
+    std::string function_name = "returnTargetInts_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string  out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+    }
+
+std::string singular_performGaussRed_gpi(std::string const& res,
+    std::string const& needed_library,
+    std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    lists out;  // Change type from std::pair<int, lists> to lists
     std::string ids;
     std::string out_filename;
+    
     ids = worker();
-        res=res;
-    // Create token structure
-    lists output = (lists)omAlloc0Bin(slists_bin);
-    output->Init(4);  // Initialize with standard token structure size
-
-    // Set up token fields
-    lists fieldnames = (lists)omAlloc0Bin(slists_bin);
-    fieldnames->Init(2);
-    fieldnames->m[0].rtyp = STRING_CMD;
-    fieldnames->m[0].data = omStrDup("generators");
-    fieldnames->m[1].rtyp = STRING_CMD;
-    fieldnames->m[1].data = omStrDup("return_list_gpi");
-
-    // Create empty data list
-    lists data = (lists)omAlloc0Bin(slists_bin);
-    data->Init(1);
-    data->m[0].rtyp = INT_CMD;
-    data->m[0].data = (void*)(long)(res);
-    // Set up token structure
-    output->m[0].rtyp = RING_CMD;output->m[0].data = currRing;
-    output->m[1].rtyp = LIST_CMD;output->m[1].data = fieldnames;
-    output->m[2].rtyp = RING_CMD; output->m[2].data = currRing;
-    output->m[3].rtyp = LIST_CMD;output->m[3].data = data;
-
-    // Create pair with list result
-    std::pair<int, lists> out;
-    out.first = LIST_CMD;
-    out.second = output;
-
-    out_filename = serialize(out.second, base_filename);
-    std::cout << "out_filename: " << out_filename << std::endl;
+    Res = deserialize(res, ids);
+    
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    
+    std::cout<<"performing gauss reduction"<<std::endl;
+    out = singflintGaussRed(args.leftV());  
+    
+    // Serialize the output
+    out_filename = serialize(out, base_filename);
+    
     return out_filename;
 }
 
+std::string singular_computeGetRedIBPs_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
 
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+
+    ids = worker();
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+    void* p = (char*)(long)(j);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv arg2(args,Res1.first, lCopy(Res1.second));
+    ScopedLeftv arg3(arg2,Res2.first, lCopy(Res2.second));
+    ScopedLeftv arg4(arg3, INT_CMD, p);
+    std::cout<<"computing get red ibps"<<std::endl;
+
+    std::string function_name = "computeGetRedIBPs_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::string singular_performGaussRed(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    // This function is a wrapper around singular_performGaussRed_gpi
+    return singular_performGaussRed_gpi(res, needed_library, base_filename);
+}
+
+std::string singular_ComputeOneSector_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename) 
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv args2(args1, Res2.first, lCopy(Res2.second));
+
+    std::string function_name = "ComputeOneSector_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}               

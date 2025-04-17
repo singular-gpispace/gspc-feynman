@@ -1927,27 +1927,41 @@ EXAMPLE:  getRedIBPs; shows an example
   list indIBP;
   int l=1;
   matrix N=setMat(S,val,ind);
+  //print("N=setMat(S,val,ind) is the matrix");
+  //print(string(N));
   int elapsed_time=timer;
   print("Elapsed time to set the matrix over Fp in seconds:" + string( elapsed_time));  
   ring RZ=(p,t(1..(npars(R)-1)),D),z(1..nvars(R)),dp;
   matrix N=imap(R,N);
   timer=0;
+  print("current ring: " + string(basering));
+  //print("N is the matrix");
+  //printMat(N);
   list Z=gaussred_pivot(N);
   int elapsed_time = timer;
+  
   print("Elapsed time to compute rref in seconds:" +string( elapsed_time)+ ". size of the matrix:"+string(nrows(N))+" * "+string(ncols(N)));
+  print(" size of Z[1]:"+string(nrows(Z[1]))+" * "+string(ncols(Z[1])));
+  print(" size of Z[2]:"+string(nrows(Z[2]))+" * "+string(ncols(Z[2])));
+  print(" size of Z[3]:"+string(nrows(Z[3]))+" * "+string(ncols(Z[3])));
+  print(" size of Z[4]:"+string(Z[4]));
+
+  print("Z[1] is the matrix");
+  printMat(Z[1]);
    setring R;
   list Z=imap(RZ,Z);
   for(int j=1;j <= Z[4];j++)
   { for(int k=1;k <= ncols(Z[1]);k++)
     {
       if(Z[1][j,k] != 0){
+        print("Z["+string(j)+"]["+string(k)+"]="+string(Z[1][j,k]));
         indIBP[l]=S.IBP[k];
         l++;
       }
     }
 
   }
-
+  print("size of IndIBP"+string(size(indIBP)));
   //identify non-zero columns
   list seed;
   int l=1;
@@ -1961,17 +1975,17 @@ EXAMPLE:  getRedIBPs; shows an example
     }
 
   }
-
+print("size of seed"+string(size(seed)));
   return(list(indIBP,seed));
 }
 example
 { "EXAMPLE:"; echo=2;list s= getSector(l);
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
   labeledgraph G1=computeBaikovMatrix(G);
-  setIBP S=computeIBP(G1,list(1,1,0,1,0,1,0,1,0));
+  setIBP S=computeIBP(G1,list(1, 1, 1, -1, -3, -1, -1, -1, -1));
   ring R=S.over;
   setring R;
-  list L=getRedIBPs(S,101);
+  list L=getRedIBPs(S,7853);
   size(L[1])<size(S.IBP);
 }
 

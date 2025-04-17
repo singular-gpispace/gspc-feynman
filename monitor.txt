@@ -1,73 +1,586 @@
-1096075.1096081@waas 2025-04-14 23:14:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 36289 1096065-0 18 waas.job.1096075.0 8 template 0
-1096083.1096088@waas 2025-04-14 23:14:06 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-1 18 waas.job.1096075.1 4 T_11 0
-1096083.1096088@waas 2025-04-14 23:14:06 legacy-level-info Starting T_11...
-1096083.1096088@waas 2025-04-14 23:14:06 legacy-level-info singular_getlabels_gpi:
-1096083.1096088@waas 2025-04-14 23:14:06 legacy-level-info 1,2,3
-1096083.1096088@waas 2025-04-14 23:14:06 legacy-level-info starting one sector computation
-1096083.1096088@waas 2025-04-14 23:14:08 legacy-level-info T_11 completed
-1096083.1096088@waas 2025-04-14 23:14:08 legacy-level-trace task finished: waas.job.1096075.1
-1096083.1096088@waas 2025-04-14 23:14:08 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-1 18 waas.job.1096075.1 0  1
-1096113.1096118@waas 2025-04-14 23:14:08 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-6 18 waas.job.1096075.2 4 T_23 0
-1096119.1096124@waas 2025-04-14 23:14:08 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-7 18 waas.job.1096075.3 4 T_22 0
-1096095.1096100@waas 2025-04-14 23:14:08 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-3 18 waas.job.1096075.4 4 T_21 0
-1096095.1096100@waas 2025-04-14 23:14:08 legacy-level-info Starting T_21...
-1096113.1096118@waas 2025-04-14 23:14:08 legacy-level-info Starting T_23...
-1096119.1096124@waas 2025-04-14 23:14:08 legacy-level-info Starting T_22...
-1096113.1096118@waas 2025-04-14 23:14:08 legacy-level-info printing tail_jk
-1096119.1096124@waas 2025-04-14 23:14:08 legacy-level-info printing tail_jk
-1096119.1096124@waas 2025-04-14 23:14:08 legacy-level-info 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-1096113.1096118@waas 2025-04-14 23:14:08 legacy-level-info 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-1096095.1096100@waas 2025-04-14 23:14:08 legacy-level-info singular_getlabels_gpi:
-1096095.1096100@waas 2025-04-14 23:14:08 legacy-level-info 1,2
-1096119.1096124@waas 2025-04-14 23:14:08 legacy-level-info singular_getlabels_gpi:
-1096113.1096118@waas 2025-04-14 23:14:08 legacy-level-info singular_getlabels_gpi:
-1096119.1096124@waas 2025-04-14 23:14:08 legacy-level-info 1,3
-1096113.1096118@waas 2025-04-14 23:14:08 legacy-level-info 2,3
-1096113.1096118@waas 2025-04-14 23:14:28 legacy-level-info T_23 completed
-1096113.1096118@waas 2025-04-14 23:14:28 legacy-level-trace task finished: waas.job.1096075.2
-1096113.1096118@waas 2025-04-14 23:14:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-6 18 waas.job.1096075.2 0  1
-1096095.1096100@waas 2025-04-14 23:15:38 legacy-level-info T_21 completed
-1096095.1096100@waas 2025-04-14 23:15:38 legacy-level-trace task finished: waas.job.1096075.4
-1096095.1096100@waas 2025-04-14 23:15:38 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-3 18 waas.job.1096075.4 0  1
-1096083.1096088@waas 2025-04-14 23:15:38 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-1 18 waas.job.1096075.5 4 T_31 0
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info Starting T_31...
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info printing tail_jk
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info append_list_gpi in implementation.cpp
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info append_list_gpi in implementation.cpp
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info singular_getlabels_gpi:
-1096083.1096088@waas 2025-04-14 23:15:38 legacy-level-info 1
-1096119.1096124@waas 2025-04-14 23:16:16 legacy-level-info T_22 completed
-1096119.1096124@waas 2025-04-14 23:16:16 legacy-level-trace task finished: waas.job.1096075.3
-1096119.1096124@waas 2025-04-14 23:16:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-7 18 waas.job.1096075.3 0  1
-1096095.1096100@waas 2025-04-14 23:16:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-3 18 waas.job.1096075.7 4 T_33 0
-1096107.1096112@waas 2025-04-14 23:16:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-5 18 waas.job.1096075.6 4 T_32 0
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-info Starting T_33...
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-info printing tail_jk
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-info 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-info Starting T_32...
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-info printing tail_jk
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-info singular_getlabels_gpi:
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-info 3
-1096095.1096100@waas 2025-04-14 23:16:16 legacy-level-error task failed: waas.job.1096075.7: call to 'singular_template::f_T_33' failed: call to procedure OneSectorComputation_gpi failed
-1096095.1096100@waas 2025-04-14 23:16:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-3 18 waas.job.1096075.7 4 T_33 2
-1096083.1096087@waas 2025-04-14 23:16:16 legacy-level-trace got cancelation request for job: waas.job.1096075.5
-1096107.1096111@waas 2025-04-14 23:16:16 legacy-level-trace got cancelation request for job: waas.job.1096075.6
-1096107.1096111@waas 2025-04-14 23:16:16 legacy-level-trace trying to cancel running job waas.job.1096075.6
-1096083.1096087@waas 2025-04-14 23:16:16 legacy-level-trace trying to cancel running job waas.job.1096075.5
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-info 1,1,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-4,-1
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-info singular_getlabels_gpi:
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-info 2
-1096107.1096112@waas 2025-04-14 23:16:16 legacy-level-error task failed: waas.job.1096075.6: call to 'singular_template::f_T_32' failed: call to procedure OneSectorComputation_gpi failed
-1096107.1096112@waas 2025-04-14 23:16:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-5 18 waas.job.1096075.6 4 T_32 2
-1096083.1096088@waas 2025-04-14 23:49:28 legacy-level-info T_31 completed
-1096083.1096088@waas 2025-04-14 23:49:28 legacy-level-info task canceled: waas.job.1096075.5
-1096083.1096088@waas 2025-04-14 23:49:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 36289 1096065-1 18 waas.job.1096075.5 4 T_31 3
-1096075.1096081@waas 2025-04-14 23:49:28 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 36289 1096065-0 18 waas.job.1096075.0 8 template 2
-1096113.1096116@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-6 is shutting down
-1096107.1096110@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-5 is shutting down
-1096095.1096098@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-3 is shutting down
-1096101.1096104@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-4 is shutting down
-1096089.1096092@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-2 is shutting down
-1096083.1096086@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-1 is shutting down
-1096119.1096122@waas 2025-04-14 23:49:28 legacy-level-trace worker-waas 36289 1096065-7 is shutting down
+1587032.1587038@waas 2025-04-17 16:56:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 33075 1587022-0 18 waas.job.1587032.0 8 template 0
+1587052.1587057@waas 2025-04-17 16:56:44 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 33075 1587022-3 18 waas.job.1587032.1 4 T_11 0
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info Starting T_11...
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info labels_11:1,2,3
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info starting one sector computation
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info one_sector_11:IBP=<list>
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info seed=<list>
+1587052.1587057@waas 2025-04-17 16:56:44 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info performing gauss reduction
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info Rows: 31, Cols: 74, Ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), Coeff: 7853,t(1),t(2),D, Char: 7853
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info Rank: 19
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info P size: 31x74
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info U size: 31x31
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info M size: 31x31
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info Rank: 19
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info Current ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), RZ: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info computing get red ibps
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info ComputeOneSector:IBP=<list>
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info seed=<list>
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,0,0,-1,-3,-1,-1,-1,-1,1,0,0,-2,-3,-1,-1,-1,-1,1,0,0,-1,-4,-1,-1,-1,-1,0,1,0,-1,-3,-1,-1,-1,-1,0,0,1,-1,-3,-1,-1,-1,-1,1,1,0,-1,-3,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-1,-1,1,1,0,-1,-3,-2,-1,-1,-1,1,1,0,-1,-3,-1,-2,-1,-1,1,1,0,-1,-3,-1,-1,-2,-1,1,1,0,-1,-3,-1,-1,-1,-2,1,1,0,-3,-3,-1,-1,-1,-1,1,1,0,-2,-4,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-2,-1,1,1,0,-1,-5,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-1,1,0,1,-1,-3,-2,-1,-1,-1,1,0,1,-1,-3,-1,-2,-1,-1,1,0,1,-1,-3,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-2,1,0,1,-2,-3,-2,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-2,1,0,1,-1,-4,-2,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-2,1,0,1,-1,-3,-1,-1,-2,-2,0,1,1,-1,-3,-1,-1,-1,-1
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-info T_11 completed
+1587052.1587057@waas 2025-04-17 16:56:47 legacy-level-trace task finished: waas.job.1587032.1
+1587052.1587057@waas 2025-04-17 16:56:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 33075 1587022-3 18 waas.job.1587032.1 0  1
+1587032.1587038@waas 2025-04-17 16:56:47 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 33075 1587022-0 18 waas.job.1587032.0 8 template 1
+1587076.1587079@waas 2025-04-17 16:56:47 legacy-level-trace worker-waas 33075 1587022-7 is shutting down
+1587070.1587073@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-6 is shutting down
+1587064.1587067@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-5 is shutting down
+1587058.1587061@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-4 is shutting down
+1587052.1587055@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-3 is shutting down
+1587046.1587049@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-2 is shutting down
+1587040.1587043@waas 2025-04-17 16:56:48 legacy-level-trace worker-waas 33075 1587022-1 is shutting down
+1587359.1587365@waas 2025-04-17 16:56:55 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 42665 1587349-0 18 waas.job.1587359.0 8 template 0
+1587391.1587396@waas 2025-04-17 16:56:55 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 42665 1587349-5 18 waas.job.1587359.1 4 T_11 0
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info Starting T_11...
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info labels_11:1,2,3
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info starting one sector computation
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info one_sector_11:IBP=<list>
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info seed=<list>
+1587391.1587396@waas 2025-04-17 16:56:55 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info performing gauss reduction
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info Rows: 31, Cols: 74, Ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), Coeff: 7853,t(1),t(2),D, Char: 7853
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info Rank: 19
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info P size: 31x74
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info U size: 31x31
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info M size: 31x31
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info Rank: 19
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info Current ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), RZ: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info computing get red ibps
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info ComputeOneSector:IBP=<list>
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info seed=<list>
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,0,0,-1,-3,-1,-1,-1,-1,1,0,0,-2,-3,-1,-1,-1,-1,1,0,0,-1,-4,-1,-1,-1,-1,0,1,0,-1,-3,-1,-1,-1,-1,0,0,1,-1,-3,-1,-1,-1,-1,1,1,0,-1,-3,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-1,-1,1,1,0,-1,-3,-2,-1,-1,-1,1,1,0,-1,-3,-1,-2,-1,-1,1,1,0,-1,-3,-1,-1,-2,-1,1,1,0,-1,-3,-1,-1,-1,-2,1,1,0,-3,-3,-1,-1,-1,-1,1,1,0,-2,-4,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-2,-1,1,1,0,-1,-5,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-1,1,0,1,-1,-3,-2,-1,-1,-1,1,0,1,-1,-3,-1,-2,-1,-1,1,0,1,-1,-3,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-2,1,0,1,-2,-3,-2,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-2,1,0,1,-1,-4,-2,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-2,1,0,1,-1,-3,-1,-1,-2,-2,0,1,1,-1,-3,-1,-1,-1,-1
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-info T_11 completed
+1587391.1587396@waas 2025-04-17 16:56:58 legacy-level-trace task finished: waas.job.1587359.1
+1587391.1587396@waas 2025-04-17 16:56:58 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 42665 1587349-5 18 waas.job.1587359.1 0  1
+1587359.1587365@waas 2025-04-17 16:56:58 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 42665 1587349-0 18 waas.job.1587359.0 8 template 1
+1587397.1587400@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-6 is shutting down
+1587385.1587388@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-4 is shutting down
+1587391.1587394@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-5 is shutting down
+1587373.1587376@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-2 is shutting down
+1587367.1587370@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-1 is shutting down
+1587403.1587406@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-7 is shutting down
+1587379.1587382@waas 2025-04-17 16:56:58 legacy-level-trace worker-waas 42665 1587349-3 is shutting down
+1588014.1588020@waas 2025-04-17 16:58:57 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 35819 1588004-0 18 waas.job.1588014.0 8 template 0
+1588022.1588027@waas 2025-04-17 16:58:57 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-1 18 waas.job.1588014.1 4 T_11 0
+1588022.1588027@waas 2025-04-17 16:58:57 legacy-level-info Starting T_11...
+1588022.1588027@waas 2025-04-17 16:58:57 legacy-level-info labels_11:1,2,3
+1588022.1588027@waas 2025-04-17 16:58:57 legacy-level-info starting one sector computation
+1588022.1588027@waas 2025-04-17 16:58:58 legacy-level-info one_sector_11:IBP=<list>
+1588022.1588027@waas 2025-04-17 16:58:58 legacy-level-info seed=<list>
+1588022.1588027@waas 2025-04-17 16:58:58 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info performing gauss reduction
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info r=31
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info c=74
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-info char(R)=7853
+1588022.1588027@waas 2025-04-17 16:59:01 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7fdfeb0694a0
+
+[0x5b66a561e69e] unknown function + 0x15969e
+[0x5b66a561e25e] unknown function + 0x15925e
+[0x5b66a561d669] unknown function + 0x158669
+[0x5b66a561d703] unknown function + 0x158703
+[0x7fdfeb242520] unknown function + 0x42520
+[0x7fdfeb0694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7fdfeb168172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7fdfeb16840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7fdfeb599acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7fdfeb59aabb] singflintGaussRed(sleftv*) + 0x8b
+[0x7fdfeb58e8e0] singular_performGaussRed_gpi + 0x160
+[0x7fdfeb5ab4e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7fdfeb5b0ccc] unknown function + 0xbccc
+[0x5b66a57ee6ea] unknown function + 0x3296ea
+[0x5b66a5730694] unknown function + 0x26b694
+[0x5b66a57348c5] unknown function + 0x26f8c5
+[0x5b66a5602cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7fdfec609d51] unknown function + 0x15d51
+[0x7fdfeb294ac3] unknown function + 0x94ac3
+[0x7fdfeb326850] unknown function + 0x126850
+
+1588046.1588051@waas 2025-04-17 16:59:01 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-5 18 waas.job.1588014.1 4 T_11 0
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info Starting T_11...
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info labels_11:1,2,3
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info starting one sector computation
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info one_sector_11:IBP=<list>
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info seed=<list>
+1588046.1588051@waas 2025-04-17 16:59:01 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info performing gauss reduction
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info r=31
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info c=74
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-info char(R)=7853
+1588046.1588051@waas 2025-04-17 16:59:05 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7fbd37a694a0
+
+[0x62b0f3ed369e] unknown function + 0x15969e
+[0x62b0f3ed325e] unknown function + 0x15925e
+[0x62b0f3ed2669] unknown function + 0x158669
+[0x62b0f3ed2703] unknown function + 0x158703
+[0x7fbd37c42520] unknown function + 0x42520
+[0x7fbd37a694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7fbd37b68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7fbd37b6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7fbd37e86acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7fbd37e87abb] singflintGaussRed(sleftv*) + 0x8b
+[0x7fbd37e7b8e0] singular_performGaussRed_gpi + 0x160
+[0x7fbd37e984e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7fbd37e9dccc] unknown function + 0xbccc
+[0x62b0f40a36ea] unknown function + 0x3296ea
+[0x62b0f3fe5694] unknown function + 0x26b694
+[0x62b0f3fe98c5] unknown function + 0x26f8c5
+[0x62b0f3eb7cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7fbd38ef4d51] unknown function + 0x15d51
+[0x7fbd37c94ac3] unknown function + 0x94ac3
+[0x7fbd37d26850] unknown function + 0x126850
+
+1588034.1588039@waas 2025-04-17 16:59:05 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-3 18 waas.job.1588014.1 4 T_11 0
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info Starting T_11...
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info labels_11:1,2,3
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info starting one sector computation
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info one_sector_11:IBP=<list>
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info seed=<list>
+1588034.1588039@waas 2025-04-17 16:59:05 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info performing gauss reduction
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info r=31
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info c=74
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-info char(R)=7853
+1588034.1588039@waas 2025-04-17 16:59:09 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 74ec822694a0
+
+[0x574b04d6069e] unknown function + 0x15969e
+[0x574b04d6025e] unknown function + 0x15925e
+[0x574b04d5f669] unknown function + 0x158669
+[0x574b04d5f703] unknown function + 0x158703
+[0x74ec82442520] unknown function + 0x42520
+[0x74ec822694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x74ec82368172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x74ec8236840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x74ec827c0acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x74ec827c1abb] singflintGaussRed(sleftv*) + 0x8b
+[0x74ec827b58e0] singular_performGaussRed_gpi + 0x160
+[0x74ec827d24e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x74ec827d7ccc] unknown function + 0xbccc
+[0x574b04f306ea] unknown function + 0x3296ea
+[0x574b04e72694] unknown function + 0x26b694
+[0x574b04e768c5] unknown function + 0x26f8c5
+[0x574b04d44cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x74ec83838d51] unknown function + 0x15d51
+[0x74ec82494ac3] unknown function + 0x94ac3
+[0x74ec82526850] unknown function + 0x126850
+
+1588040.1588045@waas 2025-04-17 16:59:09 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-4 18 waas.job.1588014.1 4 T_11 0
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info Starting T_11...
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info labels_11:1,2,3
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info starting one sector computation
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info one_sector_11:IBP=<list>
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info seed=<list>
+1588040.1588045@waas 2025-04-17 16:59:09 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info performing gauss reduction
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info r=31
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info c=74
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-info char(R)=7853
+1588040.1588045@waas 2025-04-17 16:59:12 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 70e769c694a0
+
+[0x58ffc6cba69e] unknown function + 0x15969e
+[0x58ffc6cba25e] unknown function + 0x15925e
+[0x58ffc6cb9669] unknown function + 0x158669
+[0x58ffc6cb9703] unknown function + 0x158703
+[0x70e769e42520] unknown function + 0x42520
+[0x70e769c694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x70e769d68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x70e769d6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x70e76a124acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x70e76a125abb] singflintGaussRed(sleftv*) + 0x8b
+[0x70e76a1198e0] singular_performGaussRed_gpi + 0x160
+[0x70e76a1364e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x70e76a13bccc] unknown function + 0xbccc
+[0x58ffc6e8a6ea] unknown function + 0x3296ea
+[0x58ffc6dcc694] unknown function + 0x26b694
+[0x58ffc6dd08c5] unknown function + 0x26f8c5
+[0x58ffc6c9ecef] DRTSImpl::job_execution_thread() + 0x90f
+[0x70e76b192d51] unknown function + 0x15d51
+[0x70e769e94ac3] unknown function + 0x94ac3
+[0x70e769f26850] unknown function + 0x126850
+
+1588028.1588033@waas 2025-04-17 16:59:12 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-2 18 waas.job.1588014.1 4 T_11 0
+1588028.1588033@waas 2025-04-17 16:59:12 legacy-level-info Starting T_11...
+1588028.1588033@waas 2025-04-17 16:59:12 legacy-level-info labels_11:1,2,3
+1588028.1588033@waas 2025-04-17 16:59:12 legacy-level-info starting one sector computation
+1588028.1588033@waas 2025-04-17 16:59:13 legacy-level-info one_sector_11:IBP=<list>
+1588028.1588033@waas 2025-04-17 16:59:13 legacy-level-info seed=<list>
+1588028.1588033@waas 2025-04-17 16:59:13 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info performing gauss reduction
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info r=31
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info c=74
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-info char(R)=7853
+1588028.1588033@waas 2025-04-17 16:59:16 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 74f06d4694a0
+
+[0x563508c4169e] unknown function + 0x15969e
+[0x563508c4125e] unknown function + 0x15925e
+[0x563508c40669] unknown function + 0x158669
+[0x563508c40703] unknown function + 0x158703
+[0x74f06d642520] unknown function + 0x42520
+[0x74f06d4694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x74f06d568172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x74f06d56840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x74f06d9adacf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x74f06d9aeabb] singflintGaussRed(sleftv*) + 0x8b
+[0x74f06d9a28e0] singular_performGaussRed_gpi + 0x160
+[0x74f06d9bf4e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x74f06d9c4ccc] unknown function + 0xbccc
+[0x563508e116ea] unknown function + 0x3296ea
+[0x563508d53694] unknown function + 0x26b694
+[0x563508d578c5] unknown function + 0x26f8c5
+[0x563508c25cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x74f06ea1ad51] unknown function + 0x15d51
+[0x74f06d694ac3] unknown function + 0x94ac3
+[0x74f06d726850] unknown function + 0x126850
+
+1588052.1588057@waas 2025-04-17 16:59:16 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-6 18 waas.job.1588014.1 4 T_11 0
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info Starting T_11...
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info labels_11:1,2,3
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info starting one sector computation
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info one_sector_11:IBP=<list>
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info seed=<list>
+1588052.1588057@waas 2025-04-17 16:59:16 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info performing gauss reduction
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info r=31
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info c=74
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-info char(R)=7853
+1588052.1588057@waas 2025-04-17 16:59:20 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 73ee72a694a0
+
+[0x622cc85f969e] unknown function + 0x15969e
+[0x622cc85f925e] unknown function + 0x15925e
+[0x622cc85f8669] unknown function + 0x158669
+[0x622cc85f8703] unknown function + 0x158703
+[0x73ee72c42520] unknown function + 0x42520
+[0x73ee72a694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x73ee72b68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x73ee72b6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x73ee72f04acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x73ee72f05abb] singflintGaussRed(sleftv*) + 0x8b
+[0x73ee72ef98e0] singular_performGaussRed_gpi + 0x160
+[0x73ee72f164e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x73ee72f1bccc] unknown function + 0xbccc
+[0x622cc87c96ea] unknown function + 0x3296ea
+[0x622cc870b694] unknown function + 0x26b694
+[0x622cc870f8c5] unknown function + 0x26f8c5
+[0x622cc85ddcef] DRTSImpl::job_execution_thread() + 0x90f
+[0x73ee73f72d51] unknown function + 0x15d51
+[0x73ee72c94ac3] unknown function + 0x94ac3
+[0x73ee72d26850] unknown function + 0x126850
+
+1588058.1588063@waas 2025-04-17 16:59:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 35819 1588004-7 18 waas.job.1588014.1 4 T_11 0
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info Starting T_11...
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info labels_11:1,2,3
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info starting one sector computation
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info one_sector_11:IBP=<list>
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info seed=<list>
+1588058.1588063@waas 2025-04-17 16:59:20 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info performing gauss reduction
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info r=31
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info c=74
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-info char(R)=7853
+1588058.1588063@waas 2025-04-17 16:59:24 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7aaa90c694a0
+
+[0x5715d5bdc69e] unknown function + 0x15969e
+[0x5715d5bdc25e] unknown function + 0x15925e
+[0x5715d5bdb669] unknown function + 0x158669
+[0x5715d5bdb703] unknown function + 0x158703
+[0x7aaa90e42520] unknown function + 0x42520
+[0x7aaa90c694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7aaa90d68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7aaa90d6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7aaa9117bacf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7aaa9117cabb] singflintGaussRed(sleftv*) + 0x8b
+[0x7aaa911708e0] singular_performGaussRed_gpi + 0x160
+[0x7aaa9118d4e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7aaa91192ccc] unknown function + 0xbccc
+[0x5715d5dac6ea] unknown function + 0x3296ea
+[0x5715d5cee694] unknown function + 0x26b694
+[0x5715d5cf28c5] unknown function + 0x26f8c5
+[0x5715d5bc0cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7aaa921e8d51] unknown function + 0x15d51
+[0x7aaa90e94ac3] unknown function + 0x94ac3
+[0x7aaa90f26850] unknown function + 0x126850
+
+1588590.1588596@waas 2025-04-17 17:01:13 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 39679 1588580-0 18 waas.job.1588590.0 8 template 0
+1588598.1588603@waas 2025-04-17 17:01:13 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-1 18 waas.job.1588590.1 4 T_11 0
+1588598.1588603@waas 2025-04-17 17:01:13 legacy-level-info Starting T_11...
+1588598.1588603@waas 2025-04-17 17:01:13 legacy-level-info labels_11:1,2,3
+1588598.1588603@waas 2025-04-17 17:01:13 legacy-level-info starting one sector computation
+1588598.1588603@waas 2025-04-17 17:01:14 legacy-level-info one_sector_11:IBP=<list>
+1588598.1588603@waas 2025-04-17 17:01:14 legacy-level-info seed=<list>
+1588598.1588603@waas 2025-04-17 17:01:14 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info performing gauss reduction
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info r=31
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info c=74
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-info char(R)=7853
+1588598.1588603@waas 2025-04-17 17:01:17 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7e647cc694a0
+
+[0x5989dee1569e] unknown function + 0x15969e
+[0x5989dee1525e] unknown function + 0x15925e
+[0x5989dee14669] unknown function + 0x158669
+[0x5989dee14703] unknown function + 0x158703
+[0x7e647ce42520] unknown function + 0x42520
+[0x7e647cc694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7e647cd68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7e647cd6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7e647d091acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7e647d09294b] singflintGaussRed(sleftv*) + 0x8b
+[0x7e647d0868e0] singular_performGaussRed_gpi + 0x160
+[0x7e647d0a34e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7e647d0a8ccc] unknown function + 0xbccc
+[0x5989defe56ea] unknown function + 0x3296ea
+[0x5989def27694] unknown function + 0x26b694
+[0x5989def2b8c5] unknown function + 0x26f8c5
+[0x5989dedf9cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7e647e100d51] unknown function + 0x15d51
+[0x7e647ce94ac3] unknown function + 0x94ac3
+[0x7e647cf26850] unknown function + 0x126850
+
+1588634.1588639@waas 2025-04-17 17:01:17 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-7 18 waas.job.1588590.1 4 T_11 0
+1588634.1588639@waas 2025-04-17 17:01:17 legacy-level-info Starting T_11...
+1588634.1588639@waas 2025-04-17 17:01:17 legacy-level-info labels_11:1,2,3
+1588634.1588639@waas 2025-04-17 17:01:17 legacy-level-info starting one sector computation
+1588634.1588639@waas 2025-04-17 17:01:18 legacy-level-info one_sector_11:IBP=<list>
+1588634.1588639@waas 2025-04-17 17:01:18 legacy-level-info seed=<list>
+1588634.1588639@waas 2025-04-17 17:01:18 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info performing gauss reduction
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info r=31
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info c=74
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-info char(R)=7853
+1588634.1588639@waas 2025-04-17 17:01:21 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7a9f0fc694a0
+
+[0x56370c9ee69e] unknown function + 0x15969e
+[0x56370c9ee25e] unknown function + 0x15925e
+[0x56370c9ed669] unknown function + 0x158669
+[0x56370c9ed703] unknown function + 0x158703
+[0x7a9f0fe42520] unknown function + 0x42520
+[0x7a9f0fc694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7a9f0fd68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7a9f0fd6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7a9f10160acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7a9f1016194b] singflintGaussRed(sleftv*) + 0x8b
+[0x7a9f101558e0] singular_performGaussRed_gpi + 0x160
+[0x7a9f101724e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7a9f10177ccc] unknown function + 0xbccc
+[0x56370cbbe6ea] unknown function + 0x3296ea
+[0x56370cb00694] unknown function + 0x26b694
+[0x56370cb048c5] unknown function + 0x26f8c5
+[0x56370c9d2cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7a9f111ced51] unknown function + 0x15d51
+[0x7a9f0fe94ac3] unknown function + 0x94ac3
+[0x7a9f0ff26850] unknown function + 0x126850
+
+1588628.1588633@waas 2025-04-17 17:01:21 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-6 18 waas.job.1588590.1 4 T_11 0
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info Starting T_11...
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info labels_11:1,2,3
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info starting one sector computation
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info one_sector_11:IBP=<list>
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info seed=<list>
+1588628.1588633@waas 2025-04-17 17:01:21 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info performing gauss reduction
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info r=31
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info c=74
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-info char(R)=7853
+1588628.1588633@waas 2025-04-17 17:01:25 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 78cb27a694a0
+
+[0x5613779df69e] unknown function + 0x15969e
+[0x5613779df25e] unknown function + 0x15925e
+[0x5613779de669] unknown function + 0x158669
+[0x5613779de703] unknown function + 0x158703
+[0x78cb28642520] unknown function + 0x42520
+[0x78cb27a694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x78cb27b68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x78cb27b6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x78cb285f4acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x78cb285f594b] singflintGaussRed(sleftv*) + 0x8b
+[0x78cb285e98e0] singular_performGaussRed_gpi + 0x160
+[0x78cb2883a4e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x78cb2883fccc] unknown function + 0xbccc
+[0x561377baf6ea] unknown function + 0x3296ea
+[0x561377af1694] unknown function + 0x26b694
+[0x561377af58c5] unknown function + 0x26f8c5
+[0x5613779c3cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x78cb29896d51] unknown function + 0x15d51
+[0x78cb28694ac3] unknown function + 0x94ac3
+[0x78cb28726850] unknown function + 0x126850
+
+1588610.1588615@waas 2025-04-17 17:01:25 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-3 18 waas.job.1588590.1 4 T_11 0
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info Starting T_11...
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info labels_11:1,2,3
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info starting one sector computation
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info one_sector_11:IBP=<list>
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info seed=<list>
+1588610.1588615@waas 2025-04-17 17:01:25 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info performing gauss reduction
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info r=31
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info c=74
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-info char(R)=7853
+1588610.1588615@waas 2025-04-17 17:01:29 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 72170ae694a0
+
+[0x5eae2934f69e] unknown function + 0x15969e
+[0x5eae2934f25e] unknown function + 0x15925e
+[0x5eae2934e669] unknown function + 0x158669
+[0x5eae2934e703] unknown function + 0x158703
+[0x72170b042520] unknown function + 0x42520
+[0x72170ae694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x72170af68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x72170af6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x72170b3c0acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x72170b3c194b] singflintGaussRed(sleftv*) + 0x8b
+[0x72170b3b58e0] singular_performGaussRed_gpi + 0x160
+[0x72170b3d24e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x72170b3d7ccc] unknown function + 0xbccc
+[0x5eae2951f6ea] unknown function + 0x3296ea
+[0x5eae29461694] unknown function + 0x26b694
+[0x5eae294658c5] unknown function + 0x26f8c5
+[0x5eae29333cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x72170c43bd51] unknown function + 0x15d51
+[0x72170b094ac3] unknown function + 0x94ac3
+[0x72170b126850] unknown function + 0x126850
+
+1588622.1588627@waas 2025-04-17 17:01:29 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-5 18 waas.job.1588590.1 4 T_11 0
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info Starting T_11...
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info labels_11:1,2,3
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info starting one sector computation
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info one_sector_11:IBP=<list>
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info seed=<list>
+1588622.1588627@waas 2025-04-17 17:01:29 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info performing gauss reduction
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info r=31
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info c=74
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-info char(R)=7853
+1588622.1588627@waas 2025-04-17 17:01:32 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7236e92694a0
+
+[0x5a29bf9ff69e] unknown function + 0x15969e
+[0x5a29bf9ff25e] unknown function + 0x15925e
+[0x5a29bf9fe669] unknown function + 0x158669
+[0x5a29bf9fe703] unknown function + 0x158703
+[0x7236e9442520] unknown function + 0x42520
+[0x7236e92694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7236e9368172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7236e936840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7236e9684acf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7236e968594b] singflintGaussRed(sleftv*) + 0x8b
+[0x7236e96798e0] singular_performGaussRed_gpi + 0x160
+[0x7236e96964e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7236e969bccc] unknown function + 0xbccc
+[0x5a29bfbcf6ea] unknown function + 0x3296ea
+[0x5a29bfb11694] unknown function + 0x26b694
+[0x5a29bfb158c5] unknown function + 0x26f8c5
+[0x5a29bf9e3cef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7236ea6f3d51] unknown function + 0x15d51
+[0x7236e9494ac3] unknown function + 0x94ac3
+[0x7236e9526850] unknown function + 0x126850
+
+1588616.1588621@waas 2025-04-17 17:01:32 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-4 18 waas.job.1588590.1 4 T_11 0
+1588616.1588621@waas 2025-04-17 17:01:32 legacy-level-info Starting T_11...
+1588616.1588621@waas 2025-04-17 17:01:33 legacy-level-info labels_11:1,2,3
+1588616.1588621@waas 2025-04-17 17:01:33 legacy-level-info starting one sector computation
+1588616.1588621@waas 2025-04-17 17:01:33 legacy-level-info one_sector_11:IBP=<list>
+1588616.1588621@waas 2025-04-17 17:01:33 legacy-level-info seed=<list>
+1588616.1588621@waas 2025-04-17 17:01:33 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588909.1588915@waas 2025-04-17 17:01:35 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 34219 1588899-0 18 waas.job.1588909.0 8 template 0
+1588929.1588934@waas 2025-04-17 17:01:35 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 34219 1588899-3 18 waas.job.1588909.1 4 T_11 0
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info Starting T_11...
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info labels_11:1,2,3
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info starting one sector computation
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info one_sector_11:IBP=<list>
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info seed=<list>
+1588929.1588934@waas 2025-04-17 17:01:35 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info performing gauss reduction
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info r=31
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info c=74
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info R=(7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info Coefficient field type: 7853,t(1),t(2),D
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-info char(R)=7853
+1588616.1588621@waas 2025-04-17 17:01:37 legacy-level-error received signal 11 (Segmentation fault), address is 0x10 from 7c5428a694a0
+
+[0x5eb6139c669e] unknown function + 0x15969e
+[0x5eb6139c625e] unknown function + 0x15925e
+[0x5eb6139c5669] unknown function + 0x158669
+[0x5eb6139c5703] unknown function + 0x158703
+[0x7c5428c42520] unknown function + 0x42520
+[0x7c5428a694a0] p_Deg(spolyrec*, ip_sring*) + 0x10
+[0x7c5428b68172] convSingPFlintnmod_poly_t(nmod_poly_struct*, spolyrec*, ip_sring*) + 0x22
+[0x7c5428b6840d] convSingMFlintFq_nmod_mat(ip_smatrix*, fq_nmod_mat_struct*, fq_nmod_ctx_struct const*, ip_sring*) + 0x20d
+[0x7c5428feeacf] singflint_rref_full(ip_smatrix*, ip_sring*, int) + 0x33f
+[0x7c5428fef94b] singflintGaussRed(sleftv*) + 0x8b
+[0x7c5428fe38e0] singular_performGaussRed_gpi + 0x160
+[0x7c54290004e4] pnetc::op::singular_template::f_T_11(we::type::literal::control const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) + 0xbf4
+[0x7c5429005ccc] unknown function + 0xbccc
+[0x5eb613b966ea] unknown function + 0x3296ea
+[0x5eb613ad8694] unknown function + 0x26b694
+[0x5eb613adc8c5] unknown function + 0x26f8c5
+[0x5eb6139aacef] DRTSImpl::job_execution_thread() + 0x90f
+[0x7c542a05cd51] unknown function + 0x15d51
+[0x7c5428c94ac3] unknown function + 0x94ac3
+[0x7c5428d26850] unknown function + 0x126850
+
+1588604.1588609@waas 2025-04-17 17:01:37 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-2 18 waas.job.1588590.1 4 T_11 0
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info Starting T_11...
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info labels_11:1,2,3
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info starting one sector computation
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info one_sector_11:IBP=<list>
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info seed=<list>
+1588604.1588609@waas 2025-04-17 17:01:37 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,1,1,-1,-3,-1,-1,-1,-1,1,2,3
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info performing gauss reduction
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info Rows: 31, Cols: 74, Ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), Coeff: 7853,t(1),t(2),D, Char: 7853
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info Rank: 19
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info P size: 31x74
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info U size: 31x31
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info M size: 31x31
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info Rank: 19
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info Current ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), RZ: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info computing get red ibps
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info ComputeOneSector:IBP=<list>
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info seed=<list>
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,0,0,-1,-3,-1,-1,-1,-1,1,0,0,-2,-3,-1,-1,-1,-1,1,0,0,-1,-4,-1,-1,-1,-1,0,1,0,-1,-3,-1,-1,-1,-1,0,0,1,-1,-3,-1,-1,-1,-1,1,1,0,-1,-3,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-1,-1,1,1,0,-1,-3,-2,-1,-1,-1,1,1,0,-1,-3,-1,-2,-1,-1,1,1,0,-1,-3,-1,-1,-2,-1,1,1,0,-1,-3,-1,-1,-1,-2,1,1,0,-3,-3,-1,-1,-1,-1,1,1,0,-2,-4,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-2,-1,1,1,0,-1,-5,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-1,1,0,1,-1,-3,-2,-1,-1,-1,1,0,1,-1,-3,-1,-2,-1,-1,1,0,1,-1,-3,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-2,1,0,1,-2,-3,-2,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-2,1,0,1,-1,-4,-2,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-2,1,0,1,-1,-3,-1,-1,-2,-2,0,1,1,-1,-3,-1,-1,-1,-1
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-info T_11 completed
+1588929.1588934@waas 2025-04-17 17:01:39 legacy-level-trace task finished: waas.job.1588909.1
+1588929.1588934@waas 2025-04-17 17:01:39 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 34219 1588899-3 18 waas.job.1588909.1 0  1
+1588909.1588915@waas 2025-04-17 17:01:39 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 34219 1588899-0 18 waas.job.1588909.0 8 template 1
+1588953.1588956@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-7 is shutting down
+1588947.1588950@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-6 is shutting down
+1588941.1588944@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-5 is shutting down
+1588935.1588938@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-4 is shutting down
+1588923.1588926@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-2 is shutting down
+1588929.1588932@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-3 is shutting down
+1588917.1588920@waas 2025-04-17 17:01:39 legacy-level-trace worker-waas 34219 1588899-1 is shutting down
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info performing gauss reduction
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info Rows: 31, Cols: 74, Ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), Coeff: 7853,t(1),t(2),D, Char: 7853
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info Rank: 19
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info P size: 31x74
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info U size: 31x31
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info M size: 31x31
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info Rank: 19
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info Current ring: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C), RZ: (7853,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C)
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info computing get red ibps
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info ComputeOneSector:IBP=<list>
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info seed=<list>
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info over=(0,t(1),t(2),D),(z(1),z(2),z(3),z(4),z(5),z(6),z(7),z(8),z(9)),(dp(9),C),1,0,0,-1,-3,-1,-1,-1,-1,1,0,0,-2,-3,-1,-1,-1,-1,1,0,0,-1,-4,-1,-1,-1,-1,0,1,0,-1,-3,-1,-1,-1,-1,0,0,1,-1,-3,-1,-1,-1,-1,1,1,0,-1,-3,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-1,-1,1,1,0,-1,-3,-2,-1,-1,-1,1,1,0,-1,-3,-1,-2,-1,-1,1,1,0,-1,-3,-1,-1,-2,-1,1,1,0,-1,-3,-1,-1,-1,-2,1,1,0,-3,-3,-1,-1,-1,-1,1,1,0,-2,-4,-1,-1,-1,-1,1,1,0,-2,-3,-1,-1,-2,-1,1,1,0,-1,-5,-1,-1,-1,-1,1,1,0,-1,-4,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-1,1,-1,1,-1,-3,-1,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-1,1,0,1,-1,-3,-2,-1,-1,-1,1,0,1,-1,-3,-1,-2,-1,-1,1,0,1,-1,-3,-1,-1,-2,-1,1,0,1,-1,-3,-1,-1,-1,-2,1,0,1,-2,-3,-2,-1,-1,-1,1,0,1,-2,-3,-1,-1,-1,-2,1,0,1,-1,-4,-2,-1,-1,-1,1,0,1,-1,-4,-1,-1,-1,-2,1,0,1,-1,-3,-1,-1,-2,-2,0,1,1,-1,-3,-1,-1,-1,-1
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-info T_11 completed
+1588604.1588609@waas 2025-04-17 17:01:40 legacy-level-trace task finished: waas.job.1588590.1
+1588604.1588609@waas 2025-04-17 17:01:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 39679 1588580-2 18 waas.job.1588590.1 0  1
+1588590.1588596@waas 2025-04-17 17:01:40 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 39679 1588580-0 18 waas.job.1588590.0 8 template 1

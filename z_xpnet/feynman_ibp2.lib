@@ -352,8 +352,8 @@ EXAMPLE:  example labelGraph; shows an example
   int ct;
   for (int i = 1 ; i<=size(G.edges); i++){if (size((G.edges)[i])==1){ct=ct+1;}}
   int anzq = size(G.edges)-ct;
-  ring P = (ch),(p(1..ct),q(1..anzq)),ip;   
-  ring R = (ch,p(1..ct)),(q(1..anzq)),ip;   
+  ring P = (ch),(p(1..ct),q(1..anzq)),rp;   
+  ring R = (ch,p(1..ct)),(q(1..anzq)),rp;   
   list lab;
   int pidx = 1;
   int qidx = 1;
@@ -820,7 +820,7 @@ mt=m2-1;
 //int mt= m2-1;
 
 int n = ncols(PI)-m2;
-ring Z = (0,(t(1..mt),D)),(z(1..n)),dp; //change this
+ring Z = (0,(t(1..mt),D)),(z(1..n)),rp; //change this
 //ring Z = (0,t(1..mt)),(z(1..n)),dp;
 matrix B[nvars(RP)][nvars(RP)];
 int idx=1;
@@ -1982,6 +1982,92 @@ example
   size(L[1])<size(S.IBP);
 }
 
+///////////////////////Implement Masking process/////////////////////////////////////
+proc getRedIBPs1(setIBP S,int p,list sector_lab)
+"USAGE:   getRedIBPs(S,p); 
+ASSUME:   S is setIBP, and p is a prime number. 
+RETURN:   list L, L[1]=indIBP, L[2]=seed where,
+          indIBP contain the linearly independent IBP relations of setIBP which are obtained by finite field row reduction over the field Fp. 
+          seed contain the indeces correspond to the non-free columns in rref.
+KEYWORDS: feynman graph,IBPs
+EXAMPLE:  getRedIBPs; shows an example
+"
+
+{
+  ring R=S.over;
+  timer=0;
+  
+
+  //Compute reducedIBPs
+  //We can add more IBPs via steps
+  //user-defined target integrals required to generate all the IBPs
+  //Add mask to IBPs
+  
+  list ind = getSortedIntegrals(S);
+  list seed;                            //changed
+  //Add mask to IBPs and store the integrals that do not belong to the current sector
+  for(int i=1;i<=size(ind);i++){
+    if(string(getSector(ind[i][1])[2])!=string(sector_lab)){
+      seed[size(seed)+1]=ind[i][1];
+      ind=delete(ind,i);
+    }
+  }
+
+  list val=getRandom(p,npars(R));
+  list indIBP;
+  int l=1;
+  matrix N=setMat(S,val,ind);
+  int elapsed_time=timer;
+  print("Elapsed time to set the matrix over Fp in seconds:" + string( elapsed_time));  
+  ring RZ=(p,t(1..(npars(R)-1)),D),z(1..nvars(R)),dp;
+  matrix N=imap(R,N);
+  timer=0;
+  list Z=gaussred_pivot(N);
+  int elapsed_time = timer;
+  print("Elapsed time to compute rref in seconds:" +string( elapsed_time)+ ". size of the matrix:"+string(nrows(N))+" * "+string(ncols(N)));
+   setring R;
+  list Z=imap(RZ,Z);
+  for(int j=1;j <= Z[4];j++)
+  { for(int k=1;k <= ncols(Z[1]);k++)
+    {
+      if(Z[1][j,k] != 0){
+        indIBP[l]=S.IBP[k];
+        l++;
+      }
+    }
+
+  }
+
+  //identify non-zero columns
+ 
+  int l=size(seed)+1;                 //changed
+  for(int k=1;k <= ncols(Z[3]);k++){
+    for(int j=1;j <= nrows(Z[3]);j++){
+      if(Z[3][j,k] != 0){
+        seed[l]=ind[k][1];
+        l++;
+        break;
+      }
+    }
+
+  }
+
+  return(list(indIBP,seed));
+}
+example
+{ "EXAMPLE:"; echo=2;
+  graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
+  labeledgraph G1=computeBaikovMatrix(G);
+  setIBP S=computeIBP(G1,list(1,1,0,1,0,1,0,1,0));
+  ring R=S.over;
+  setring R;
+  list L=getRedIBPs(S,101);
+  size(L[1])<size(S.IBP);
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 
 proc getSortedIntegrals(setIBP I)
@@ -2312,6 +2398,7 @@ example{"EXAMPLE:"; echo=2;
 
 }
 
+
 proc OneSectorComputation(labeledgraph G1,list tailInts,list sector_lab )
 "USAGE:  
 ASSUME:  
@@ -2337,9 +2424,9 @@ KEYWORDS: Feynman graph,IBPs
     }
 
   }
-  print("size of targetInt: "+string(size(targetInt)));
+
   if(size(targetInt)==0){
-    print("No input integrals came from the parents");
+    print("No input integrals came from the parents")
     return(reducedIBPs,MIs,OutputtailInts);
   }
   
@@ -2347,9 +2434,10 @@ KEYWORDS: Feynman graph,IBPs
 //2. Computations related to sector
 
   setIBP totalIBP=computeManyIBP(G1,targetInt);
-  list L=getRedIBPs(totalIBP,7853);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
-  print("size(L[1]): "+string(size(L[1])));
-  print("size(L[2]): "+string(size(L[2])));
+  list L=getRedIBPs1(totalIBP,7853,sector_lab);   //Computations using Masking 
+  //computation without using masking
+  list L=getRedIBPs(totalIBP,7853); //L[1]=,set of independent IBPs, L[2]=master and tail integrals
+
   reducedIBPs.seed=sector_lab;
   reducedIBPs.over=G1.baikovover;
   reducedIBPs.IBP=L[1];
@@ -2361,26 +2449,29 @@ KEYWORDS: Feynman graph,IBPs
       OutputtailInts[size(OutputtailInts)+1]=L[2][i];
     }
   }
-  print("size of reducedIBPs.IBP: "+string(size(reducedIBPs.IBP)));
-  print("size of MIs: "+string(size(MIs)));
-  print("size of OutputtailInts: "+string(size(OutputtailInts)));
+
+  
   return(list(reducedIBPs,MIs,OutputtailInts));
+
 }
 example{"EXAMPLE:"; echo=2;
 //Setting the graph details and Baikov computations
 
   graph  G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
   list userInput;
-   //userInput[1]=list(list(1,1,1,-1,-1,-1,-1,0,0),list(1,-1,1,-1,-1,-1,-1,0,0));
-   list targetInt = list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
-   userInput[1]=targetInt;
+   userInput[1]=list(list(1,1,1,-1,-1,-1,-1,0,0),list(1,-1,1,-1,-1,-1,-1,0,0));
+   userInput[1]=list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+   
+   userInput[1]=list(list(1,1,1,1,1,1,1,-5,0),list(1,1,1,1,1,1,1,0,-5));
   labeledgraph G1=computeBaikovMatrix(G);
   ring RB=G1.baikovover;
+
   
 
  
 //sector at(1,1), label:{1,2,3} computations
   list SectOutput123=OneSectorComputation(G1,userInput,list(1,2,3));
+  list SectOutput123=OneSectorComputation(G1,userInput,list(1,2,3,4,5,6,7));
   list tail123=SectOutput123[3];
 
 //For sector at(2,1), label:{1,2} computations
@@ -4938,5 +5029,4 @@ EXAMPLE:  getReducedIBPwithMask; shows an example
    } 
   
 }
-
 
