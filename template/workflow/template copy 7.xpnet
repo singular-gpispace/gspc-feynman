@@ -91,9 +91,9 @@
 
 
                         std::cout<<"starting one sector computation"<<std::endl;
-                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, userInput, labels_11, library_name, base_filename);
+                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, userInput, labels_11,7853, library_name, base_filename);
                         //std::cout << "one_sector_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_11, library_name)<<std::endl;  
-                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_computeSector_gpi)(one_sector_11, library_name, base_filename);
                         std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
                         
 
@@ -155,7 +155,7 @@
                         std::string labels_21 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 1, library_name, base_filename);
                         std::cout << "labels_21:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_21, library_name)<<std::endl;      
  
-                        std::string one_sector_21 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_21, labels_21, library_name, base_filename);
+                        std::string one_sector_21 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_21, labels_21,7853, library_name, base_filename);
                         //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
                         //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_21, library_name)<<std::endl;      
 
@@ -230,7 +230,7 @@
                         std::string labels_22 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 2, library_name, base_filename);
                         std::cout << "labels_22:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_22, library_name)<<std::endl;      
  
-                        std::string one_sector_22 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_22, labels_22, library_name, base_filename);
+                        std::string one_sector_22 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_22, labels_22,7853, library_name, base_filename);
                         //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
                         //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_22, library_name)<<std::endl;     
                         
@@ -303,7 +303,7 @@
                         std::cout << "labels_23:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_23, library_name)<<std::endl;      
 
 
-                        std::string one_sector_23 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_23, labels_23, library_name, base_filename);
+                        std::string one_sector_23 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_23, labels_23,7853, library_name, base_filename);
                         //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
                         //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_23, library_name)<<std::endl;     
                         
@@ -377,7 +377,7 @@
                         std::string labels_31 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 1, library_name, base_filename);
                         std::cout << "labels_31:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_31, library_name)<<std::endl;       
 
-                        std::string one_sector_31 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_31, labels_31, library_name, base_filename);
+                        std::string one_sector_31 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_31, labels_31,7853, library_name, base_filename);
                         //std::cout << "singular_OneSectorComputation_gpi:" << std::endl;
                         //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_31, library_name)<<std::endl;      
 
@@ -452,7 +452,7 @@
                         std::string labels_32 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 2, library_name, base_filename);
                         std::cout << "labels_32:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_32, library_name)<<std::endl;      
 
-                        std::string one_sector_32 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_32, labels_32, library_name, base_filename);
+                        std::string one_sector_32 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_32, labels_32,7853, library_name, base_filename);
                         //std::cout << "one_sector_32:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_32, library_name)<<std::endl;         
 
                         std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_32, library_name, base_filename);
@@ -522,7 +522,7 @@
                         std::string labels_33 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 3, library_name, base_filename);
                         std::cout << "labels_33:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_33, library_name)<<std::endl;       
 
-                        std::string one_sector_33 = RESOLVE_INTERFACE_FUNCTION(singular_OneSectorComputation_gpi)(labeledgraph, input_33, labels_33, library_name, base_filename);
+                        std::string one_sector_33 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_33, labels_33,7853, library_name, base_filename);
                         //std::cout << "one_sector_33:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_33, library_name)<<std::endl;         
 
                         std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_33, library_name, base_filename);

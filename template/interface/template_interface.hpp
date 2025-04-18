@@ -378,3 +378,28 @@ std::string singular_ComputeOneSector_gpi(std::string const& res
     , std::string const& res2
     , std::string const& needed_library
     , std::string const& base_filename);
+NO_NAME_MANGLING
+
+std::string singular_computeSector_flint(
+    std::string const& labeledgraph_str,
+    std::string const& userInput_str,
+    std::string const& labels_11_str,
+    int const& seed,
+    std::string const& needed_library,
+    std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_size_computeSector_gpi(std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_getSortedIntegrals(std::string const& res,
+    std::string const& needed_library,
+    std::string const& base_filename);
+
+NO_NAME_MANGLING
+std::string singular_ComputeManyIBP_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename);

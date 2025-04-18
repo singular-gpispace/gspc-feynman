@@ -1,6 +1,6 @@
 #include <Singular/libsingular.h>
 #include <interface/template_interface.hpp>  // This defines NO_NAME_MANGLING
-#include "feynman.hpp"  // Add this include for singflintGaussRed
+#include "feynman.hpp"  // Add this include for 
 #include "singular_functions.hpp"
 #include "common_functions.hpp"
 #include <string>
@@ -264,6 +264,36 @@ int singular_size_gpi(std::string const& res
 
     return ss;
 }
+std::string singular_ComputeManyIBP_gpi(std::string const& res
+    , std::string const& res1
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));    
+    std::cout << "args1: in compute many ibp "  << std::endl;
+    std::string function_name = "ComputeManyIBP_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}   
+
+
+
 
 std::string singular_computeManyIBP_gpi(std::string const& res
     , std::string const& res1
@@ -2080,6 +2110,8 @@ std::string singular_computeGetRedIBPs_gpi(std::string const& res
     return out_filename;
 }
 
+
+
 std::string singular_performGaussRed(std::string const& res
     , std::string const& needed_library
     , std::string const& base_filename)
@@ -2118,3 +2150,94 @@ std::string singular_ComputeOneSector_gpi(std::string const& res
 
     return out_filename;
 }               
+
+
+std::string singular_computeSector_flint(
+    std::string const& labeledgraph_str,
+    std::string const& userInput_str,
+    std::string const& labels_11_str,
+    int const& seed,
+    std::string const& needed_library,
+    std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> labeledgraph;
+    std::pair<int, lists> userInput;
+    std::pair<int, lists> labels_11;
+    std::pair<int, lists> out;
+    std::string ids;
+
+    ids = worker();
+    labeledgraph = deserialize(labeledgraph_str, ids); // labeledgraph
+    userInput = deserialize(userInput_str, ids);       // userInput
+    labels_11 = deserialize(labels_11_str, ids);      // labels_11
+    void* p = (char*)(long)(seed);                    // 7853
+
+    ScopedLeftv labeledgraph_args(labeledgraph.first, lCopy(labeledgraph.second)); // labeledgraph
+    ScopedLeftv userInput_args(labeledgraph_args, userInput.first, lCopy(userInput.second)); // userInput
+    ScopedLeftv labels_11_args(userInput_args, labels_11.first, lCopy(labels_11.second)); // labels_11
+
+    std::string function_name = "returnTargetInts_gpi";
+    out = call_user_proc(function_name, needed_library, labeledgraph_args);
+    std::string one_sector_11_filename = serialize(out.second, base_filename); // one_sector_11
+
+    std::pair<int, lists> one_sector_11 = deserialize(one_sector_11_filename, ids); // one_sector_11
+    ScopedLeftv one_sector_11_args(one_sector_11.first, lCopy(one_sector_11.second)); // one_sector_11
+    ScopedLeftv seed_args(one_sector_11_args, INT_CMD, p); // seed (7853)
+    std::string function_name1 = "prepareRedIBPs_gpi";
+    out = call_user_proc(function_name1, needed_library, one_sector_11_args);
+    std::string prep_filename = serialize(out.second, base_filename); // prep
+
+    std::pair<int, lists> prep = deserialize(prep_filename, ids); // prep
+    ScopedLeftv prep_args(prep.first, lCopy(prep.second)); // prep
+    // Call singflintGaussRed and handle the return value properly
+    lists result = singflintGaussRed(prep_args.leftV());
+  
+    std::string gaussred_filename = serialize(result, base_filename); // gaussred
+
+    std::pair<int, lists> gaussred = deserialize(gaussred_filename, ids); // gaussred
+
+    ScopedLeftv one_sector_11_args2(one_sector_11.first, lCopy(one_sector_11.second)); // one_sector_11
+    ScopedLeftv gaussred_args(one_sector_11_args2, gaussred.first, lCopy(gaussred.second)); // gaussred
+    ScopedLeftv prep_args2(gaussred_args, prep.first, lCopy(prep.second)); // prep
+    ScopedLeftv seed_args2(prep_args2, INT_CMD, p); // seed (7853)
+    std::string function_name3 = "computeGetRedIBPs_gpi";
+    out = call_user_proc(function_name3, needed_library, one_sector_11_args2);
+    std::string getredibps_filename = serialize(out.second, base_filename); // getredibps
+
+    std::pair<int, lists> getredibps = deserialize(getredibps_filename, ids); // getredibps
+
+    ScopedLeftv labeledgraph_args2(labeledgraph.first, lCopy(labeledgraph.second)); // labeledgraph
+    ScopedLeftv getredibps_args(labeledgraph_args2, getredibps.first, lCopy(getredibps.second)); // getredibps
+    ScopedLeftv labels_11_args2(getredibps_args, labels_11.first, lCopy(labels_11.second)); // labels_11
+    std::string function_name4 = "ComputeOneSector_gpi";
+    out = call_user_proc(function_name4, needed_library, labeledgraph_args2);
+    std::string ComputeOneSector_filename = serialize(out.second, base_filename); // ComputeOneSector
+
+    return ComputeOneSector_filename;
+}
+std::string singular_size_computeSector_gpi(
+    std::string const& res
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+
+    ids = worker();
+    Res = deserialize(res, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second)); // labeledgraph     
+    std::string function_name = "size_computeSector_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}   

@@ -2400,7 +2400,9 @@ proc ComputeOneSector_gpi(token G1, token getRedIbp, token sector_lab)
   list out=list(reducedIBPs,MIs,OutputtailInts);
   token output;
   output.fieldnames = list("reducedIBPs","MIs","OutputtailInts");
-  output.data[1]=out;
+  output.data[1]=reducedIBPs;
+  output.data[2]=MIs;
+  output.data[3]=OutputtailInts;
   return(output);
 }
 
@@ -2857,6 +2859,38 @@ proc MI_gpi(token ibp)
   return(output);
 }
 
+proc ComputeManyIBP_gpi(token g, token targetInts)
+{
+  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeManyIBP.ssi";
+  labeledgraph G = g.data[1];
+  list v = targetInts.data[1];
+  write(l, "v", string(v));
+  setIBP S = computeManyIBP(G, v);
+  write(l, "S.IBP[1]", string(S.IBP[1]));
+  list D;
+  def R=S.over;
+  setring R;
+  write(l, "R", string(R));
+  list LL;
+  write(l,"size of S.IBP", string(size(S.IBP)));
+for (int i = 1; i <= size(S.IBP); i++)
+{
+    LL[i] = list(); // Initialize LL[i] as a list
+    LL[i][1] = S.IBP[i].c; // Assign the 'c' field (list)
+    LL[i][2] = S.IBP[i].i; // Assign the 'i' field (list)
+}
+  write(l, "LL[1][1]", string(LL[1][1]));
+  close(l);
+  token output;
+  output.fieldnames = list("generators", "ComputeManyIBP_gpi");
+
+  output.data[1] = S.over;
+  output.data[2] = S.seed;
+  output.data[3] = S.IBP;
+  output.data[4] = LL;
+
+  return(output);
+}
 
 proc computeManyIBP_gpi(token g, token Web, int j, int k)
 {
@@ -3634,11 +3668,29 @@ proc make_list_gpi(token input1, token input2)
   return(output);
 }
 
+
 proc size_OneSectorComputation_gpi(token SectOutput)
 {
  
   list Sect_IBP = SectOutput.data[1];
     list Sect_MIs = SectOutput.data[2];
+  list Sect_OutputtailInts = SectOutput.data[3];
+  
+  int size_Sect_IBP = size(Sect_IBP[1].IBP);
+  int size_Sect_MIs = size(Sect_MIs);
+  int size_Sect_OutputtailInts = size(Sect_OutputtailInts);
+  token output;
+  output.fieldnames = list("size_OneSectorComputation_gpi");
+  output.data[1] = list(size_Sect_IBP, size_Sect_MIs, size_Sect_OutputtailInts); 
+  return(output);
+} 
+proc size_computeSector_gpi(token SectOutput)
+{
+ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/size_computeSector.ssi";
+  write(l, SectOutput, "size_computeSector_gpi");
+  close(l);
+  list Sect_IBP = SectOutput.data[1];
+  list Sect_MIs = SectOutput.data[2];
   list Sect_OutputtailInts = SectOutput.data[3];
   
   int size_Sect_IBP = size(Sect_IBP[1].IBP);
@@ -3705,20 +3757,13 @@ proc web_gpi(token ibp)
 
 proc OneSectorComputation_gpi(token G1, token tail, token sector_lab)
 {
-link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/OneSectorComputation_gpi.ssi";
-write(l,"starting OneSectorComputation_gpi");
   labeledgraph g = G1.data[1];
-  write(l,g,"g");
   list target = tail.data[1];
-  write(l,target,"target");
   list sectorlab = sector_lab.data[1];
-  write(l,sectorlab,"sectorlab");
 
 
   list result = OneSectorComputation(g, target, sectorlab);
  
-  write(l,result,"result");
-  close(l);
   setIBP reducedIBPs = result[1]; 
   list MIs = result[2];
   list OutputtailInts = result[3];
@@ -3859,17 +3904,13 @@ example
 }
 
 proc computeGetRedIBPs(setIBP S, int p,list Z, list ind, list val){
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeGetRedIBPs.ssi";
 
   def R = S.over;
   setring R;
   list Z = imap(RZ,Z);
   // Process results
   list indIBP;
-print("Z[4]: " + string(Z[4]));
-print("ncols(Z[1]): " + string(ncols(Z[1])));
-write(l,Z[4],"Z[4]");
-write(l,ncols(Z[1]),"ncols(Z[1])");
+
   int l = 1;
   for(int j = 1; j <= Z[4]; j++) {
     for(int k = 1; k <= ncols(Z[1]); k++) {
@@ -3879,7 +3920,6 @@ write(l,ncols(Z[1]),"ncols(Z[1])");
       }
     }
   }
-close(l);
   // Identify non-zero columns
   list seed;
   l = 1;
@@ -3911,9 +3951,9 @@ example
 
 //************************************************************************************************************************** */
 
+
 proc computeGetRedIBPs_gpi(token SS,token ZZ, token prep, int p){
 
-link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeGetRedIBPs_gpi.ssi";
   setIBP S = SS.data[1][1];
 
   list Z = ZZ.data;
@@ -3924,24 +3964,18 @@ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeGetRedI
   def R = S.over;
   setring R;
   list Z = imap(RZ,Z);
-  write(l,"size(Z): "+string(size(Z))); 
-  write(l,"Z[4]: "+string(Z[4]));
-  write(l,"dimension of Z[1]: "+string(ncols(Z[1]),"x",nrows(Z[1])));
-  write(l,"dimension of Z[2]: "+string(ncols(Z[2]),"x",nrows(Z[2])));
-  write(l,"dimension of Z[3]: "+string(ncols(Z[3]),"x",nrows(Z[3])));
+ 
   // Process results
   list indIBP;
   int ll = 1;
   for(int j = 1; j <= Z[4]; j++) {
     for(int k = 1; k <= ncols(Z[1]); k++) {
       if(Z[1][j,k] != 0) {
-        write(l,"Z[1]["+string(j)+","+string(k)+"] = "+string(Z[1][j,k]));
         indIBP[ll] = S.IBP[k];
         ll++;
       }
     }
   }
-  write(l,"size of indIBP: "+string(size(indIBP)));
   // Identify non-zero columns
   list seed;
   ll = 1;
@@ -3955,7 +3989,6 @@ link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeGetRedI
       }
     }
   }
-  write(l,"size of seed: "+string(size(seed)));
 list L=list(indIBP,seed);
 
   token output;
@@ -3965,7 +3998,6 @@ list L=list(indIBP,seed);
 }
 proc prepareRedIBPs_gpi(token Set, int p)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/prepareRedIBPs_gpi.ssi";
   setIBP S = Set.data[1][1];
  
 
@@ -3975,12 +4007,9 @@ proc prepareRedIBPs_gpi(token Set, int p)
   list ind = getSortedIntegrals(S);
   list val = getRandom(p, npars(R));
   matrix N = setMat(S, val, ind);
-  write(l,setMat(S, val, ind),"setMat");
   ring RZ = (p,t(1..(npars(R)-1)),D),z(1..nvars(R)),dp;
-  write(l,RZ,"RZ");
   setring RZ;
   matrix N = imap(R,N);
-  close(l);
   token output;
   output.fieldnames = list("prepareRedIBPs_gpi");
 

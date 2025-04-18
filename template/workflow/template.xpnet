@@ -88,13 +88,17 @@
 
                        std::string userInput = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
                         //std::cout << "userInput:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(userInput, library_name)<<std::endl;   
-
-
+                        std::string many_ibp = RESOLVE_INTERFACE_FUNCTION(singular_ComputeManyIBP_gpi)(labeledgraph, tail_00, library_name, base_filename);
+                        //std::cout << "many_ibp:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(many_ibp, library_name)<<std::endl;
+         
                         std::cout<<"starting one sector computation"<<std::endl;
-                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_returnTargetInts_gpi)(labeledgraph, userInput, labels_11, library_name, base_filename);
-                        std::cout << "one_sector_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_11, library_name)<<std::endl;  
-                       
-                        std::string prep=RESOLVE_INTERFACE_FUNCTION(singular_prepareRedIBPs_gpi)(one_sector_11,7853, library_name, base_filename);
+                      std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_returnTargetInts_gpi)(labeledgraph, userInput, labels_11, library_name, base_filename);
+                        //std::cout << "one_sector_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_11, library_name)<<std::endl;  
+                               
+                        std::string sorted_integrals=RESOLVE_INTERFACE_FUNCTION(singular_getSortedIntegrals)(many_ibp, library_name, base_filename);
+                        std::cout << "sorted_integrals:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(sorted_integrals, library_name)<<std::endl;
+
+                       /*    std::string prep=RESOLVE_INTERFACE_FUNCTION(singular_prepareRedIBPs_gpi)(one_sector_11,7853, library_name, base_filename);
                         //std::cout << "prep:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(prep, library_name)<<std::endl;
 
                         std::string gaussred=RESOLVE_INTERFACE_FUNCTION(singular_performGaussRed_gpi)(prep, library_name, base_filename);
@@ -108,7 +112,11 @@
 
                         //std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(ComputeOneSector, library_name, base_filename);
                         //std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
-                        
+                         */
+
+                        //std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, userInput, labels_11,7853, library_name, base_filename);
+                       // std::string size_sector_11=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
+                        //std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_sector_11,library_name)  << std::endl;
                         std::cout << "T_11 completed" << std::endl;
                     ]]></code>
                 </module>

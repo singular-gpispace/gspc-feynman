@@ -4974,3 +4974,57 @@ $
 $
 $
 $
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r size_computeSector.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+string(m.data);
+string(m.data[1]);
+string(m.data[1][1]);
+string(m.data[1]);$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
