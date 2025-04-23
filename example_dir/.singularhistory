@@ -5028,3 +5028,104 @@ $
 $
 $
 $
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+:!$
+$
+$
+$
+$
+$
+$
+tmux d
+tmux d;
+tmux detach;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+link l="ssi:r returnTargetInts.ssi";
+def m=read(l);
+def m1=read(l);
+def m2=read(l);
+def m3=read(l);
+def m4=read(l);
+def m5=read(l);
+def m6=read(l);
+def m7=read(l);
+def m8=read(l);
+m;
+m1;
+m2;
+m2.vertices;
+m2[1];
+m2[2];
+m2;
+m2.over;
+m2.data;
+string(m2);
+string(m2.edges);
+m2.edges;
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$
+$

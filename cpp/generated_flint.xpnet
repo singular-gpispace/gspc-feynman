@@ -141,8 +141,7 @@
                         auto computation_duration_11 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_11 - computation_time_11);
                         std::cout << "One sector computation completed in T_11 in " << computation_duration_11.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
-                        std::cout << "size of one_sector_11: IBP_11, MI_11, Tail_11=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_11, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
 
                         tail_11 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_11, library_name, base_filename);
                         std::cout << "T_11 completed\n";
@@ -200,8 +199,8 @@
                         auto computation_duration_21 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_21 - computation_time_21);
                         std::cout << "One sector computation completed in T_21 in " << computation_duration_21.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_21 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_21, library_name, base_filename);
-                        std::cout << "size of one_sector_21: IBP_21, MI_21, Tail_21=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_21, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_21, library_name, base_filename);
+
                         tail_21 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_21, library_name, base_filename);
                         std::cout << "T_21 completed\n";
                     ]]></code>
@@ -259,8 +258,7 @@
                         auto computation_duration_22 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_22 - computation_time_22);
                         std::cout << "One sector computation completed in T_22 in " << computation_duration_22.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_22 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_22, library_name, base_filename);
-                        std::cout << "size of one_sector_22: IBP_22, MI_22, Tail_22=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_22, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_22, library_name, base_filename);
 
                         tail_22 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_22, library_name, base_filename);
                         std::cout << "T_22 completed\n";
@@ -319,8 +317,7 @@
                         auto computation_duration_23 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_23 - computation_time_23);
                         std::cout << "One sector computation completed in T_23 in " << computation_duration_23.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_23 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_23, library_name, base_filename);
-                        std::cout << "size of one_sector_23: IBP_23, MI_23, Tail_23=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_23, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_23, library_name, base_filename);
 
                         tail_23 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_23, library_name, base_filename);
                         std::cout << "T_23 completed\n";
@@ -379,8 +376,7 @@
                         auto computation_duration_24 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_24 - computation_time_24);
                         std::cout << "One sector computation completed in T_24 in " << computation_duration_24.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_24 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_24, library_name, base_filename);
-                        std::cout << "size of one_sector_24: IBP_24, MI_24, Tail_24=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_24, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_24, library_name, base_filename);
 
                         tail_24 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_24, library_name, base_filename);
                         std::cout << "T_24 completed\n";
@@ -441,8 +437,7 @@
                         auto computation_duration_31 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_31 - computation_time_31);
                         std::cout << "One sector computation completed in T_31 in " << computation_duration_31.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_31 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_31, library_name, base_filename);
-                        std::cout << "size of one_sector_31: IBP_31, MI_31, Tail_31=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_31, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_31, library_name, base_filename);
 
                         tail_31 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_31, library_name, base_filename);
                         std::cout << "T_31 completed\n";
@@ -504,8 +499,7 @@
                         auto computation_duration_32 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_32 - computation_time_32);
                         std::cout << "One sector computation completed in T_32 in " << computation_duration_32.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_32 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_32, library_name, base_filename);
-                        std::cout << "size of one_sector_32: IBP_32, MI_32, Tail_32=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_32, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_32, library_name, base_filename);
 
                         tail_32 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_32, library_name, base_filename);
                         std::cout << "T_32 completed\n";
@@ -567,8 +561,7 @@
                         auto computation_duration_33 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_33 - computation_time_33);
                         std::cout << "One sector computation completed in T_33 in " << computation_duration_33.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_33 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_33, library_name, base_filename);
-                        std::cout << "size of one_sector_33: IBP_33, MI_33, Tail_33=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_33, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_33, library_name, base_filename);
 
                         tail_33 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_33, library_name, base_filename);
                         std::cout << "T_33 completed\n";
@@ -630,8 +623,7 @@
                         auto computation_duration_34 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_34 - computation_time_34);
                         std::cout << "One sector computation completed in T_34 in " << computation_duration_34.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_34 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_34, library_name, base_filename);
-                        std::cout << "size of one_sector_34: IBP_34, MI_34, Tail_34=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_34, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_34, library_name, base_filename);
 
                         tail_34 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_34, library_name, base_filename);
                         std::cout << "T_34 completed\n";
@@ -693,8 +685,7 @@
                         auto computation_duration_35 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_35 - computation_time_35);
                         std::cout << "One sector computation completed in T_35 in " << computation_duration_35.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_35 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_35, library_name, base_filename);
-                        std::cout << "size of one_sector_35: IBP_35, MI_35, Tail_35=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_35, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_35, library_name, base_filename);
 
                         tail_35 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_35, library_name, base_filename);
                         std::cout << "T_35 completed\n";
@@ -756,8 +747,7 @@
                         auto computation_duration_36 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_36 - computation_time_36);
                         std::cout << "One sector computation completed in T_36 in " << computation_duration_36.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_36 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_36, library_name, base_filename);
-                        std::cout << "size of one_sector_36: IBP_36, MI_36, Tail_36=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_36, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_36, library_name, base_filename);
 
                         tail_36 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_36, library_name, base_filename);
                         std::cout << "T_36 completed\n";
@@ -821,8 +811,7 @@
                         auto computation_duration_41 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_41 - computation_time_41);
                         std::cout << "One sector computation completed in T_41 in " << computation_duration_41.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_41 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_41, library_name, base_filename);
-                        std::cout << "size of one_sector_41: IBP_41, MI_41, Tail_41=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_41, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_41, library_name, base_filename);
 
                         tail_41 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_41, library_name, base_filename);
                         std::cout << "T_41 completed\n";
@@ -887,8 +876,7 @@
                         auto computation_duration_42 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_42 - computation_time_42);
                         std::cout << "One sector computation completed in T_42 in " << computation_duration_42.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_42 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_42, library_name, base_filename);
-                        std::cout << "size of one_sector_42: IBP_42, MI_42, Tail_42=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_42, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_42, library_name, base_filename);
 
                         tail_42 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_42, library_name, base_filename);
                         std::cout << "T_42 completed\n";
@@ -953,8 +941,7 @@
                         auto computation_duration_43 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_43 - computation_time_43);
                         std::cout << "One sector computation completed in T_43 in " << computation_duration_43.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_43 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_43, library_name, base_filename);
-                        std::cout << "size of one_sector_43: IBP_43, MI_43, Tail_43=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_43, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_43, library_name, base_filename);
 
                         tail_43 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_43, library_name, base_filename);
                         std::cout << "T_43 completed\n";
@@ -1019,8 +1006,7 @@
                         auto computation_duration_44 = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_44 - computation_time_44);
                         std::cout << "One sector computation completed in T_44 in " << computation_duration_44.count() << " seconds\n";
 /******************************************************************************************************************************************* */
-                        std::string size_of_one_sector_44 = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_44, library_name, base_filename);
-                        std::cout << "size of one_sector_44: IBP_44, MI_44, Tail_44=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector_44, library_name) << std::endl;
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_44, library_name, base_filename);
 
                         tail_44 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_44, library_name, base_filename);
                         std::cout << "T_44 completed\n";

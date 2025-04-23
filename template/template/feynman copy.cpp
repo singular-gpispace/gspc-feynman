@@ -19,6 +19,22 @@
 #include <flint/fq_mat.h>
 #include <flint/fq_nmod.h>
 
+// Add type definitions at the top of the file, after the includes
+typedef struct {
+    lists i;  // indices
+    lists c;  // coefficients
+} *oneIBP;
+
+typedef struct {
+    oneIBP* IBP;  // array of IBPs
+    ring over;    // ring over which the IBPs are defined
+} *setIBP;
+
+// Define SETIBP_CMD if not already defined
+#ifndef SETIBP_CMD
+#define SETIBP_CMD 12345  // Use a unique number that doesn't conflict with existing commands
+#endif
+
 // Implementation of parseNuValues function with NO_NAME_MANGLING
 #ifdef __cplusplus
 extern "C" {
@@ -43,6 +59,43 @@ NO_NAME_MANGLING std::vector<int> parseNuValues(const std::string& str) {
 }
 #endif
 
+
+
+
+void printlist(const std::string & tokenString, const std::string & needed_library)
+{
+    // Initialize and load the Singular library.
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    // Deserialize the token. Here 'worker()' returns an ID string.
+    std::pair<int, lists> inputPair = deserialize(tokenString, worker());
+
+    // Create a scoped left-value from the deserialized token.
+    ScopedLeftv args(inputPair.first, lCopy(inputPair.second));
+    lists Token = (lists)(args.leftV()->data);
+
+    // Determine the number of elements in the token list.
+    int L_size = lSize(Token) + 1;
+    std::string outputContent;
+
+    // Iterate over the list elements. 
+    // In your system, element at index 3 holds the full content you wish to print.
+    for (int i = 0; i < L_size; i++) {
+        sleftv & listElement = Token->m[i];  // Access each element
+
+        if (listElement.data != NULL) {
+            // When i==3, print and store the element's string representation.
+            if (i == 3) {
+                outputContent = listElement.String();
+                
+            }
+        }
+        else {
+            std::cout << "Token element at index " << i << " is NULL." << std::endl;
+        }
+    }
+}
 // Implementation of printListElements function
 void printListElements(lists output) {
     if (!output) {
@@ -674,12 +727,12 @@ std::string singular_computeM2_gpi(std::string const& res
 
 
 
-// Print an fq_mat_t matrix for debugging
-void print_fq_mat(const char* label, const fq_mat_t mat, const fq_ctx_t ctx) {
+// Helper function to print an fq_nmod_mat_t matrix for debugging
+void print_fq_nmod_mat(const char* label, const fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
     std::cout << label << "\n-------------\n";
-    for (slong i = 0; i < fq_mat_nrows(mat, ctx); i++) {
-        for (slong j = 0; j < fq_mat_ncols(mat, ctx); j++) {
-            fq_print_pretty(fq_mat_entry(mat, i, j), ctx);
+    for (slong i = 0; i < fq_nmod_mat_nrows(mat, ctx); i++) {
+        for (slong j = 0; j < fq_nmod_mat_ncols(mat, ctx); j++) {
+            fq_nmod_print_pretty(fq_nmod_mat_entry(mat, i, j), ctx);
             std::cout << "  ";
         }
         std::cout << "\n";
@@ -687,43 +740,7 @@ void print_fq_mat(const char* label, const fq_mat_t mat, const fq_ctx_t ctx) {
     std::cout << "-------------\n";
 }
 
-// Manually set a matrix to the identity matrix
-void fq_mat_set_one(fq_mat_t mat, const fq_ctx_t ctx) {
-    fq_mat_zero(mat, ctx);
-    slong n = fq_mat_nrows(mat, ctx);
-    slong m = fq_mat_ncols(mat, ctx);
-    slong min = (n < m) ? n : m;
-    fq_t one;
-    fq_init(one, ctx);
-    fq_one(one, ctx);
-    for (slong i = 0; i < min; i++) {
-        fq_mat_entry_set(mat, i, i, one, ctx);
-    }
-    fq_clear(one, ctx);
-}
-
-// Structure to hold the result (P, U, S, rank)
-typedef struct {
-    fq_nmod_mat_t P;  // Permutation matrix
-    fq_nmod_mat_t U;  // Upper triangular matrix
-    fq_nmod_mat_t S;  // Row echelon form of A
-    slong rank;  // Rank of the matrix
-} gaussred_result_t;
-
-// Function declarations
-static void cleanupList(lists L);
-static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_ctx_t ctx);
-
-// Function to clear the result structure
-static void gaussred_result_clear(gaussred_result_t* result, const fq_nmod_ctx_t ctx) {
-    if (result) {
-        fq_nmod_mat_clear(result->P, ctx);
-        fq_nmod_mat_clear(result->U, ctx);
-        fq_nmod_mat_clear(result->S, ctx);
-    }
-}
-
-
+// Helper function to set an fq_nmod_mat_t to the identity matrix
 
 // Manually set a matrix to the identity matrix
 static void fq_nmod_mat_set_one(fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
@@ -740,241 +757,77 @@ static void fq_nmod_mat_set_one(fq_nmod_mat_t mat, const fq_nmod_ctx_t ctx) {
     fq_nmod_clear(one, ctx);
 }
 
-// Set a matrix to be a copy of another matrix
-extern void fq_nmod_mat_set(fq_nmod_mat_t dest, const fq_nmod_mat_t src, const fq_nmod_ctx_t ctx);
+// Structure to hold Gauss reduction result
+typedef struct {
+    fq_nmod_mat_t P;  // Permutation matrix
+    fq_nmod_mat_t U;  // Upper triangular matrix
+    fq_nmod_mat_t S;  // Row echelon form of A
+    slong rank;       // Rank of the matrix
+} gaussred_result_t;
 
+// Clear the gaussred result structure
+static void gaussred_result_clear(gaussred_result_t* result, const fq_nmod_ctx_t ctx) {
+    if (result) {
+        fq_nmod_mat_clear(result->P, ctx);
+        fq_nmod_mat_clear(result->U, ctx);
+        fq_nmod_mat_clear(result->S, ctx);
+    }
+}
 // Helper function to get unsigned integer value from fq_nmod element
 static mp_limb_t fq_nmod_get_ui(const fq_nmod_t x, const fq_nmod_ctx_t ctx) {
     (void)ctx;  // Mark ctx as used to avoid warning
     return x->coeffs[0];  // For degree 1 fields, the value is in the first coefficient
 }
 
-lists singflint_rref_full(matrix m, const ring R, int p)
-{
-    if (!m || !R) {
-        WerrorS("NULL matrix or ring");
-        return NULL;
+// Helper function to convert SINGULAR matrix to FLINT fq_nmod_mat_t
+int singular_to_fq_nmod_mat(fq_nmod_mat_t A, matrix m, ring R, const fq_nmod_ctx_t ctx) {
+    slong r = m->rows(), c = m->cols();
+    fq_nmod_mat_init(A, r, c, ctx);
+    for (int i = 1; i <= r; i++) {
+        for (int j = 1; j <= c; j++) {
+            poly h = MATELEM(m, i, j);
+            if (h != NULL) {
+                if (p_Totaldegree(h, R) == 0) {
+                    number coeff = pGetCoeff(h);
+                    mp_limb_t val = n_Int(coeff, R->cf);
+                    fq_nmod_t entry;
+                    fq_nmod_init(entry, ctx);
+                    fq_nmod_set_ui(entry, val, ctx);
+                    fq_nmod_mat_entry_set(A, i-1, j-1, entry, ctx);
+                    fq_nmod_clear(entry, ctx);
+                } else {
+                    WerrorS("Matrix entry is not constant");
+                    fq_nmod_mat_clear(A, ctx);
+                    return 0;
+                }
+            }
+        }
     }
-
-    int r = m->rows();
-    int c = m->cols();
-    std::cout << "r=" << r << std::endl;
-    std::cout << "c=" << c << std::endl;
-    std::cout << "R=" << rString(R) << std::endl;
-    std::cout << "Coefficient field type: " << nCoeffString(R->cf) << std::endl;
-
-std::cout<<"char(R)="<<rChar(R)<<std::endl;
-    matrix M = NULL;
-    matrix P = NULL;
-    matrix U = NULL;
-    int rank = 0;
-    
-    ring savedRing = currRing;
-    if (savedRing != R) {
-        rChangeCurrRing(R);
-    }
-
-  
-        std::cout<<"rField_is_Zp(R)"<<std::endl;
-        // Initialize FLINT finite field context for Z/p
-        fmpz_t pp;
-        fmpz_init_set_ui(pp,p);
-        fq_nmod_ctx_t ctx;
-        fq_nmod_ctx_init(ctx, pp, 1, "x"); // Degree 1 for Z/p
-
-        // Convert SINGULAR matrix to fq_nmod_mat_t
-        fq_nmod_mat_t A;
-        fq_nmod_mat_init(A, r, c, ctx);
-        for (int i = 1; i <= r; i++) {
-            for (int j = 1; j <= c; j++) {
-                poly h = MATELEM(m, i, j);
-                if (h != NULL) {
-                    if (p_Totaldegree(h, R) == 0) {
-                        number coeff = pGetCoeff(h);
-                        mp_limb_t val = n_Int(coeff, R->cf);
-                        fq_nmod_t entry;
-                        fq_nmod_init(entry, ctx);
-                        fq_nmod_set_ui(entry, val, ctx);
-                        fq_nmod_mat_entry_set(A, i-1, j-1, entry, ctx);
-                        fq_nmod_clear(entry, ctx);
-                    } else {
-                        WerrorS("matrix entry is not constant");
-                        fq_nmod_mat_clear(A, ctx);
-                        fq_nmod_ctx_clear(ctx);
-                        fmpz_clear(pp);
-                        if (savedRing != R) rChangeCurrRing(savedRing);
-                        return NULL;
-                    }
-                }
-            }
-        }
-
-        // Compute RREF using gaussred_fq_nmod
-        gaussred_result_t result = gaussred_fq_nmod(A, ctx);
-        rank = result.rank;
-        std::cout << "Rank: " << rank << std::endl;
-        
-        // Print the reduced matrix for debugging
-
-        // Convert result.S back to SINGULAR matrix
-        M = mpNew(r, c);
-        for (int i = 1; i <= r; i++) {
-            for (int j = 1; j <= c; j++) {
-                fq_nmod_t entry;
-                fq_nmod_init(entry, ctx);
-                fq_nmod_set(entry, fq_nmod_mat_entry(result.S, i-1, j-1), ctx);
-                if (!fq_nmod_is_zero(entry, ctx)) {
-                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
-                    number n = n_Init(val, R->cf);
-                    MATELEM(M, i, j) = p_NSet(n, R);
-                }
-                fq_nmod_clear(entry, ctx);
-            }
-        }
-        
-        // Convert result.P back to SINGULAR matrix
-        P = mpNew(r, r);
-        for (int i = 1; i <= r; i++) {
-            for (int j = 1; j <= r; j++) {
-                fq_nmod_t entry;
-                fq_nmod_init(entry, ctx);
-                fq_nmod_set(entry, fq_nmod_mat_entry(result.P, i-1, j-1), ctx);
-                if (!fq_nmod_is_zero(entry, ctx)) {
-                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
-                    number n = n_Init(val, R->cf);
-                    MATELEM(P, i, j) = p_NSet(n, R);
-                }
-                fq_nmod_clear(entry, ctx);
-            }
-        }
-        
-        // Convert result.U back to SINGULAR matrix
-        U = mpNew(r, r);
-        for (int i = 1; i <= r; i++) {
-            for (int j = 1; j <= r; j++) {
-                fq_nmod_t entry;
-                fq_nmod_init(entry, ctx);
-                fq_nmod_set(entry, fq_nmod_mat_entry(result.U, i-1, j-1), ctx);
-                if (!fq_nmod_is_zero(entry, ctx)) {
-                    mp_limb_t val = fq_nmod_get_ui(entry, ctx);
-                    number n = n_Init(val, R->cf);
-                    MATELEM(U, i, j) = p_NSet(n, R);
-                }
-                fq_nmod_clear(entry, ctx);
-            }
-        }
-        
-        std::cout << "M=" << std::endl;
-        std::cout << "size of M=" << MATROWS(M) << "x" << MATCOLS(M) << std::endl;
-        
-        // Clean up
-        gaussred_result_clear(&result, ctx);
-        fq_nmod_mat_clear(A, ctx);
-        fq_nmod_ctx_clear(ctx);
-        fmpz_clear(pp);
-
-
-    // Create a lists structure to hold all results
-    lists L = (lists)omAlloc0Bin(slists_bin);
-    L->Init(4);
-    
-    // Add matrices and rank to the list
-    L->m[0].rtyp = MATRIX_CMD;
-    L->m[0].data = M;
-    
-    L->m[1].rtyp = MATRIX_CMD;
-    L->m[1].data = P;
-    
-    L->m[2].rtyp = MATRIX_CMD;
-    L->m[2].data = U;
-    
-    L->m[3].rtyp = INT_CMD;
-    L->m[3].data = (void*)(long)rank;
-
-    if (savedRing != R) {
-        rChangeCurrRing(savedRing);
-    }
-    return L;
+    return 1;
 }
 
-lists singflintGaussRed(leftv args) {
-   
-    lists input_result = (lists)args->Data();
-  
-    lists result = (lists)input_result->m[3].Data();
-    if (!result || result->nr < 2) {
-        WerrorS("Invalid result list structure");
-        return NULL;
+// Helper function to convert FLINT fq_nmod_mat_t to SINGULAR matrix
+matrix fq_nmod_mat_to_singular(const fq_nmod_mat_t mat, ring R, const fq_nmod_ctx_t ctx) {
+    slong r = fq_nmod_mat_nrows(mat, ctx), c = fq_nmod_mat_ncols(mat, ctx);
+    matrix M = mpNew(r, c);
+    for (slong i = 0; i < r; i++) {
+        for (slong j = 0; j < c; j++) {
+            fq_nmod_t entry;
+            fq_nmod_init(entry, ctx);
+            fq_nmod_set(entry, fq_nmod_mat_entry(mat, i, j), ctx);
+            if (!fq_nmod_is_zero(entry, ctx)) {
+                mp_limb_t val = fq_nmod_get_ui(entry, ctx);
+                number n = n_Init(val, R->cf);
+                MATELEM(M, i+1, j+1) = p_NSet(n, R);
+            }
+            fq_nmod_clear(entry, ctx);
+        }
     }
-
-    matrix A = (matrix)result->m[0].Data();
-    ring RZ = (ring)result->m[1].Data();
-    int p = (int)(long)result->m[2].Data();
-   
-
-    ring savedRing = currRing;
-    rChangeCurrRing(RZ);
-
-    // Compute RREF
-    lists Z = singflint_rref_full(A, RZ,p);
-
-    matrix P = (matrix)Z->m[0].Data();
-    matrix U = (matrix)Z->m[1].Data();
-    matrix M = (matrix)Z->m[2].Data();
-    int rank = (int)(long)Z->m[3].Data();
-   std::cout<<"printing P"<<std::endl;
-   printMat(P);
-   std::cout<<"printing U"<<std::endl;
-   printMat(U);
-   std::cout<<"printing M"<<std::endl;
-   printMat(M);
-   std::cout<<"size of P="<<MATROWS(P)<<"x"<<MATCOLS(P)<<std::endl;
-   std::cout<<"size of U="<<MATROWS(U)<<"x"<<MATCOLS(U)<<std::endl;
-   std::cout<<"size of M="<<MATROWS(M)<<"x"<<MATCOLS(M)<<std::endl;
-   std::cout<<"rank="<<rank<<std::endl;
-
-    std::cout<<"Current ring="<<rString(currRing)<<std::endl;
-std::cout<<"Ring RZ="<<rString(RZ)<<std::endl;
-
-    // Create output list carefully
-    lists output = (lists)omAlloc0Bin(slists_bin);
-
-    output->Init(4);
-
-    // Create type list carefully
-    lists t1 = (lists)omAlloc0Bin(slists_bin);
-  
-    t1->Init(2);
-    t1->m[0].rtyp = STRING_CMD;
-    t1->m[0].data = omStrDup("generators");
-    t1->m[1].rtyp = STRING_CMD;
-    t1->m[1].data = omStrDup("singflint_rref");
-
-    // Set output fields carefully
-    output->m[0].rtyp = RING_CMD;
-    output->m[0].data = currRing;
-    output->m[1].rtyp = LIST_CMD;
-    output->m[1].data = t1;
-    output->m[2].rtyp = RING_CMD;
-    output->m[2].data = currRing;
-    output->m[3].rtyp = LIST_CMD;
-    output->m[3].data = lCopy(Z);
-
-    // Clean up original result and restore ring
-    cleanupList(Z);
-    omFreeBin(Z, slists_bin);
-    rChangeCurrRing(savedRing);
-
-    return output;
+    return M;
 }
 
-// Implementation of performGaussRed function
-lists performGaussRed(leftv args) {
-    // This function is a wrapper around singflintGaussRed
-    return singflintGaussRed(args);
-}
+static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_ctx_t ctx);
 
-// Helper function to clean up a list and its contents
 static void cleanupList(lists L) {
     if (!L) return;
     for (int i = 0; i <= L->nr; i++) {
@@ -984,6 +837,134 @@ static void cleanupList(lists L) {
             }
         }
     }
+}
+
+// Main function to compute RREF using FLINT
+lists singflint_rref_full(matrix m, ring R, int p) {
+    if (!m || !R) {
+        WerrorS("NULL matrix or ring");
+        return NULL;
+    }
+
+    //int r = m->rows(), c = m->cols();
+    //std::cout << "Rows: " << r << ", Cols: " << c << ", Ring: " << rString(R) << ", Coeff: " << nCoeffString(R->cf) << ", Char: " << rChar(R) << std::endl;
+
+    ring savedRing = currRing;
+    if (savedRing != R) rChangeCurrRing(R);
+
+    // Initialize FLINT context
+    fmpz_t pp;
+    fmpz_init_set_ui(pp, p);
+    fq_nmod_ctx_t ctx;
+    fq_nmod_ctx_init(ctx, pp, 1, "x");
+
+    // Convert SINGULAR matrix to FLINT
+    fq_nmod_mat_t A;
+    if (!singular_to_fq_nmod_mat(A, m, R, ctx)) {
+        fq_nmod_ctx_clear(ctx);
+        fmpz_clear(pp);
+        if (savedRing != R) rChangeCurrRing(savedRing);
+        return NULL;
+    }
+
+    // Compute RREF
+    gaussred_result_t result = gaussred_fq_nmod(A, ctx);
+   // std::cout << "Rank: " << result.rank << std::endl;
+
+    // Convert results back to SINGULAR
+    matrix P = fq_nmod_mat_to_singular(result.P, R, ctx);
+    matrix U = fq_nmod_mat_to_singular(result.U, R, ctx);
+    matrix M = fq_nmod_mat_to_singular(result.S, R, ctx);
+
+
+    // Clean up FLINT objects
+    gaussred_result_clear(&result, ctx);
+    fq_nmod_mat_clear(A, ctx);
+    fq_nmod_ctx_clear(ctx);
+    fmpz_clear(pp);
+
+    // Create result list
+    lists L = (lists)omAlloc0Bin(slists_bin);
+    L->Init(4);
+    L->m[0].rtyp = MATRIX_CMD;
+    L->m[0].data = P;
+    L->m[1].rtyp = MATRIX_CMD;
+    L->m[1].data = U;
+    L->m[2].rtyp = MATRIX_CMD;
+    L->m[2].data = M;
+    L->m[3].rtyp = INT_CMD;
+    L->m[3].data = (void*)(long)result.rank;
+
+    if (savedRing != R) rChangeCurrRing(savedRing);
+    return L;
+}
+
+// Wrapper function for Gauss reduction
+lists singflintGaussRed(leftv args) {
+    lists input_result = (lists)args->Data();
+    lists result = (lists)input_result->m[3].Data();
+    if (!result || result->nr < 2) {
+        WerrorS("Invalid result list structure");
+        return NULL;
+    }
+
+    matrix A = (matrix)result->m[0].Data();
+    ring RZ = (ring)result->m[1].Data();
+    int p = (int)(long)result->m[2].Data();
+
+    ring savedRing = currRing;
+    rChangeCurrRing(RZ);
+
+    // Compute RREF
+    lists Z = singflint_rref_full(A, RZ, p);
+    if (!Z) {
+        rChangeCurrRing(savedRing);
+        return NULL;
+    }
+
+/*     matrix P = (matrix)Z->m[0].Data();
+    matrix U = (matrix)Z->m[1].Data();
+    matrix M = (matrix)Z->m[2].Data();
+    int rank = (int)(long)Z->m[3].Data(); */
+
+    // Debug output
+   /*  std::cout << "P size: " << MATROWS(P) << "x" << MATCOLS(P) << std::endl;
+    std::cout << "U size: " << MATROWS(U) << "x" << MATCOLS(U) << std::endl;
+    std::cout << "M size: " << MATROWS(M) << "x" << MATCOLS(M) << std::endl;
+    std::cout << "Rank: " << rank << std::endl;
+    std::cout << "Current ring: " << rString(currRing) << ", RZ: " << rString(RZ) << std::endl;
+ */
+    // Create output list
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);
+
+    lists t1 = (lists)omAlloc0Bin(slists_bin);
+    t1->Init(2);
+    t1->m[0].rtyp = STRING_CMD;
+    t1->m[0].data = omStrDup("generators");
+    t1->m[1].rtyp = STRING_CMD;
+    t1->m[1].data = omStrDup("singflint_rref");
+
+    output->m[0].rtyp = RING_CMD;
+    output->m[0].data = currRing;
+    output->m[1].rtyp = LIST_CMD;
+    output->m[1].data = t1;
+    output->m[2].rtyp = RING_CMD;
+    output->m[2].data = currRing;
+    output->m[3].rtyp = LIST_CMD;
+    output->m[3].data = lCopy(Z);
+
+    // Clean up
+    cleanupList(Z);
+    omFreeBin(Z, slists_bin);
+    rChangeCurrRing(savedRing);
+
+    return output;
+}
+// Implementation of performGaussRed function
+lists performGaussRed(leftv args) {
+    // This function is a wrapper around singflintGaussRed
+    return singflintGaussRed(args);
 }
 
 // Gaussian elimination with partial pivoting over Fq_nmod
@@ -1089,4 +1070,408 @@ static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_c
     fq_nmod_clear(one, ctx);
 
     return result;
+}
+// Add type defin
+// Forward declarations
+lists flint_getSortedIntegrals_wrapper(leftv args);
+
+// Helper function to serialize a list to a string for hashing
+static std::string serializeList(lists L) {
+    if (!L) return "";
+    std::string s;
+    for (int i = 0; i <= L->nr; i++) {
+        if (L->m[i].rtyp == INT_CMD) {
+            s += std::to_string((int)(long)L->m[i].data) + ",";
+        }
+    }
+    return s;
+}
+
+// Helper function to convert a list to a Singular-style string
+static std::string listToString(lists L) {
+    if (!L) return "NULL";
+    std::string s;
+    for (int i = 0; i <= L->nr; i++) {
+        if (L->m[i].rtyp == INT_CMD) {
+            s += std::to_string((int)(long)L->m[i].data);
+        } else if (L->m[i].rtyp == LIST_CMD) {
+            s += listToString((lists)L->m[i].data);
+        } else {
+            s += "?";
+        }
+        if (i < L->nr) s += ",";
+    }
+    return s;
+}
+
+// Helper function to compute sort measures (equivalent to Singular's getSortMeasures)
+static lists getSortMeasures(lists ind) {
+    if (!ind) return NULL;
+
+    // Initialize variables
+    int Nprop = 0;  // Number of positive indices
+    int Nid = 0;    // Binary encoding of positive indices
+    int r = 0;      // Sum of positive indices
+    int s = 0;      // Sum of absolute values of non-positive indices
+    std::vector<int> rv;  // Positive indices
+    std::vector<int> sv;  // Non-positive indices
+
+    // Process each index
+    for (int j = 0; j <= ind->nr; j++) {
+        if (ind->m[j].rtyp != INT_CMD) continue;
+        int val = (int)(long)ind->m[j].data;
+
+        if (val > 0) {
+            Nprop++;
+            Nid += (1 << j);  // 2^j
+            r += val;
+            rv.push_back(val);
+        } else {
+            s += abs(val);
+            sv.push_back(val);
+        }
+    }
+
+    // Create result list: [Nprop, Nid, r, s] + original indices
+    lists result = (lists)omAlloc0Bin(slists_bin);
+    if (!result) return NULL;
+
+    int total_size = 4 + ind->nr + 1;
+    result->Init(total_size);
+    result->nr = total_size - 1;
+
+    // Populate [Nprop, Nid, r, s]
+    result->m[0].rtyp = INT_CMD;
+    result->m[0].data = (void*)(long)Nprop;
+    result->m[1].rtyp = INT_CMD;
+    result->m[1].data = (void*)(long)Nid;
+    result->m[2].rtyp = INT_CMD;
+    result->m[2].data = (void*)(long)r;
+    result->m[3].rtyp = INT_CMD;
+    result->m[3].data = (void*)(long)s;
+
+    // Add original indices in order
+    for (int i = 0; i <= ind->nr; i++) {
+        if (ind->m[i].rtyp == INT_CMD) {
+            result->m[i + 4].rtyp = INT_CMD;
+            result->m[i + 4].data = (void*)(long)((int)(long)ind->m[i].data);
+        }
+    }
+
+    return result;
+}
+
+// Helper function to compare lists lexicographically
+static int compareListsLex(lists L1, lists L2) {
+    if (!L1 || !L2) return L1 == L2 ? 0 : (L1 ? 1 : -1);
+    int min_size = std::min(L1->nr, L2->nr);
+    for (int i = 0; i <= min_size; i++) {
+        if (L1->m[i].rtyp != L2->m[i].rtyp) return L1->m[i].rtyp < L2->m[i].rtyp ? -1 : 1;
+        if (L1->m[i].rtyp == INT_CMD) {
+            int v1 = (int)(long)L1->m[i].data;
+            int v2 = (int)(long)L2->m[i].data;
+            if (v1 != v2) return v1 < v2 ? -1 : 1;
+        }
+    }
+    return L1->nr < L2->nr ? -1 : (L1->nr > L2->nr ? 1 : 0);
+}
+
+lists flint_getSortedIntegrals(setIBP S) {
+    std::cout << "DEBUG: Entering flint_getSortedIntegrals" << std::endl;
+    
+    if (!S) {
+        WerrorS("NULL S in flint_getSortedIntegrals");
+        return NULL;
+    }
+    if (!S->IBP) {
+        WerrorS("NULL S->IBP in flint_getSortedIntegrals");
+        return NULL;
+    }
+    std::cout << "DEBUG: Input validation passed" << std::endl;
+
+    // Count total number of indices and debug IBP structure
+    int total_indices = 0;
+    int ibp_count = 0;
+    while (S->IBP[ibp_count] != NULL) {
+        if (S->IBP[ibp_count]->i) {
+            total_indices += S->IBP[ibp_count]->i->nr + 1;
+            std::cout << "DEBUG: IBP[" << (ibp_count + 1) << "] has " << (S->IBP[ibp_count]->i->nr + 1) << " seeds: " << listToString(S->IBP[ibp_count]->i) << std::endl;
+        }
+        ibp_count++;
+    }
+    std::cout << "DEBUG: Found " << ibp_count << " IBP relations with " << total_indices << " total indices" << std::endl;
+
+    // Initialize pairs list
+    int capacity = std::max(16, total_indices / 4);
+    lists pairs = (lists)omAlloc0Bin(slists_bin);
+    if (!pairs) {
+        WerrorS("Memory allocation failed for pairs");
+        return NULL;
+    }
+    pairs->Init(capacity);
+    pairs->nr = -1;
+    std::cout << "DEBUG: pairs initialized with capacity " << capacity << std::endl;
+
+    // Use hash set for duplicate checking
+    std::unordered_set<std::string> seen_indices;
+    seen_indices.reserve(capacity);
+
+    // Process each IBP relation
+    for (int j = 0; j < ibp_count; j++) {
+        oneIBP I = S->IBP[j];
+        if (!I || !I->i) continue;
+
+        for (int k = 0; k <= I->i->nr; k++) {
+            if (!I->i->m[k].data || I->i->m[k].rtyp != LIST_CMD) continue;
+
+            lists ind = (lists)I->i->m[k].data;
+            std::string serial = serializeList(ind);
+
+            // Debug print for indv
+            std::cout << "indv=oneI.i[" << (k + 1) << "]: " << listToString(ind) << std::endl;
+
+            // Check for duplicates
+            if (seen_indices.find(serial) == seen_indices.end()) {
+                seen_indices.insert(serial);
+
+                // Compute sort measures
+                lists measures = getSortMeasures(ind);
+                if (!measures) {
+                    omFreeBin(pairs, slists_bin);
+                    WerrorS("Failed to compute sort measures");
+                    return NULL;
+                }
+
+                // Debug print for getSortMeasures
+                std::cout << "getSortMeasures(indv): " << listToString(measures) << std::endl;
+
+                // Resize pairs if necessary
+                if (pairs->nr + 1 >= capacity) {
+                    int new_capacity = capacity * 2;
+                    lists new_pairs = (lists)omAlloc0Bin(slists_bin);
+                    if (!new_pairs) {
+                        omFreeBin(pairs, slists_bin);
+                        WerrorS("Memory allocation failed when expanding pairs");
+                        return NULL;
+                    }
+                    new_pairs->Init(new_capacity);
+                    for (int i = 0; i <= pairs->nr; i++) {
+                        new_pairs->m[i].rtyp = pairs->m[i].rtyp;
+                        new_pairs->m[i].data = pairs->m[i].data;
+                    }
+                    new_pairs->nr = pairs->nr;
+                    omFreeBin(pairs, slists_bin);
+                    pairs = new_pairs;
+                    capacity = new_capacity;
+                    std::cout << "DEBUG: Resized pairs to capacity " << capacity << std::endl;
+                }
+
+                // Add pair (ind, measures)
+                pairs->nr++;
+                lists pair = (lists)omAlloc0Bin(slists_bin);
+                if (!pair) {
+                    omFreeBin(pairs, slists_bin);
+                    WerrorS("Memory allocation failed for pair");
+                    return NULL;
+                }
+                pair->Init(2);
+                pair->nr = 1;
+                pair->m[0].rtyp = LIST_CMD;
+                pair->m[0].data = lCopy(ind);
+                pair->m[1].rtyp = LIST_CMD;
+                pair->m[1].data = measures;
+                pairs->m[pairs->nr].rtyp = LIST_CMD;
+                pairs->m[pairs->nr].data = pair;
+            }
+        }
+    }
+
+    // Create final result list
+    lists result = (lists)omAlloc0Bin(slists_bin);
+    if (!result) {
+        omFreeBin(pairs, slists_bin);
+        WerrorS("Memory allocation failed for result list");
+        return NULL;
+    }
+    result->Init(pairs->nr + 1);
+    result->nr = -1;
+
+    // Sort pairs by sort measures
+    if (pairs->nr > 0) {
+        try {
+            std::vector<lists> sorted_pairs(pairs->nr + 1);
+            for (int i = 0; i <= pairs->nr; i++) {
+                sorted_pairs[i] = (lists)pairs->m[i].data;
+            }
+
+            std::sort(sorted_pairs.begin(), sorted_pairs.end(), [](lists a, lists b) {
+                if (!a || !b || !a->m[1].data || !b->m[1].data) return false;
+                return compareListsLex((lists)a->m[1].data, (lists)b->m[1].data) < 0;
+            });
+
+            // Add sorted pairs to result
+            for (int i = 0; i <= pairs->nr; i++) {
+                if (!sorted_pairs[i]) continue;
+                lists pair = sorted_pairs[i];
+                result->nr++;
+                result->m[result->nr].rtyp = LIST_CMD;
+                result->m[result->nr].data = lCopy(pair);
+            }
+
+            // Clean up pairs
+            for (int i = 0; i <= pairs->nr; i++) {
+                lists pair = (lists)pairs->m[i].data;
+                if (pair) {
+                    if (pair->m[0].data) {
+                        lists L = (lists)pair->m[0].data;
+                        for (int j = 0; j <= L->nr; j++) {
+                            L->m[j].CleanUp();
+                        }
+                        omFreeBin(L, slists_bin);
+                        pair->m[0].data = NULL;
+                    }
+                    if (pair->m[1].data) {
+                        lists L = (lists)pair->m[1].data;
+                        for (int j = 0; j <= L->nr; j++) {
+                            L->m[j].CleanUp();
+                        }
+                        omFreeBin(L, slists_bin);
+                        pair->m[1].data = NULL;
+                    }
+                    omFreeBin(pair, slists_bin);
+                }
+            }
+        } catch (const std::exception& e) {
+            std::cout << "DEBUG: Exception during sorting: " << e.what() << std::endl;
+            omFreeBin(result, slists_bin);
+            result = (lists)omAlloc0Bin(slists_bin);
+            result->Init(0);
+        }
+    }
+
+    omFreeBin(pairs, slists_bin);
+    std::cout << "DEBUG: Returning result with " << (result->nr + 1) << " elements" << std::endl;
+    // Print result in Singular-compatible flat format
+    std::string result_str;
+    for (int i = 0; i <= result->nr; i++) {
+        if (result->m[i].rtyp == LIST_CMD && result->m[i].data) {
+            lists pair = (lists)result->m[i].data;
+            result_str += listToString((lists)pair->m[0].data) + "," + listToString((lists)pair->m[1].data);
+            if (i < result->nr) result_str += ",";
+        }
+    }
+    std::cout << "DEBUG: Result: " << result_str << std::endl;
+    return result;
+}
+
+lists flint_getSortedIntegrals_wrapper(leftv args) {
+    lists input = (lists)args->Data();
+    if (!input || input->m[3].rtyp != LIST_CMD || !input->m[3].data) {
+        WerrorS("Invalid input in flint_getSortedIntegrals_wrapper");
+        return NULL;
+    }
+
+    lists SS = (lists)input->m[3].data;
+    ring R = (ring)SS->m[0].data;
+    lists ibp = (lists)SS->m[3].data;
+    if (!ibp) {
+        WerrorS("Invalid IBP data");
+        return NULL;
+    }
+
+    // Debug input structure
+    std::cout << "DEBUG: Input IBP list size: " << (ibp->nr + 1) << std::endl;
+    for (int i = 0; i <= ibp->nr; i++) {
+        if (ibp->m[i].rtyp == LIST_CMD && ibp->m[i].data) {
+            lists ibp_item = (lists)ibp->m[i].data;
+            if (ibp_item->nr >= 1 && ibp_item->m[1].rtyp == LIST_CMD) {
+                std::cout << "DEBUG: IBP[" << (i + 1) << "] seeds: " << listToString((lists)ibp_item->m[1].data) << std::endl;
+            }
+        }
+    }
+
+    // Create setIBP structure
+    setIBP S = (setIBP)omAlloc0(sizeof(*S));
+    if (!S) {
+        WerrorS("Memory allocation failed for setIBP");
+        return NULL;
+    }
+    
+    S->IBP = (oneIBP*)omAlloc0(sizeof(oneIBP) * (ibp->nr + 2));
+    if (!S->IBP) {
+        WerrorS("Memory allocation failed for IBP array");
+        omFreeSize(S, sizeof(*S));
+        return NULL;
+    }
+    
+    // Copy IBP data
+    for (int i = 0; i <= ibp->nr; i++) {
+        if (ibp->m[i].rtyp == LIST_CMD && ibp->m[i].data) {
+            lists ibp_item = (lists)ibp->m[i].data;
+            S->IBP[i] = (oneIBP)omAlloc0(sizeof(*S->IBP[i]));
+            if (!S->IBP[i]) {
+                WerrorS("Memory allocation failed for IBP item");
+                for (int j = 0; j < i; j++) {
+                    if (S->IBP[j]) omFreeSize(S->IBP[j], sizeof(*S->IBP[j]));
+                }
+                omFreeSize(S->IBP, sizeof(oneIBP) * (ibp->nr + 2));
+                omFreeSize(S, sizeof(*S));
+        return NULL;
+    }
+            if (ibp_item->nr >= 1) {
+                S->IBP[i]->i = (lists)ibp_item->m[1].data;
+                S->IBP[i]->c = (lists)ibp_item->m[0].data;
+            }
+        }
+    }
+    S->IBP[ibp->nr + 1] = NULL; // Ensure NULL terminator
+    S->over = R;
+std::cout<<"first element of S.IBP: "<<listToString((lists)S->IBP[0]->i)<<std::endl;
+
+std::cout<<"size of S.IBP: "<<ibp->nr+1<<std::endl;
+    // Call main function
+    lists result = flint_getSortedIntegrals(S);
+    std::cout << "DEBUG: flint_getSortedIntegrals completed" << std::endl;
+
+    // Clean up
+    for (int i = 0; i <= ibp->nr; i++) {
+        if (S->IBP[i]) {
+            omFreeSize(S->IBP[i], sizeof(*S->IBP[i]));
+        }
+    }
+    omFreeSize(S->IBP, sizeof(oneIBP) * (ibp->nr + 2));
+    omFreeSize(S, sizeof(*S));
+
+    if (!result) {
+        result = (lists)omAlloc0Bin(slists_bin);
+        result->Init(0);
+    }
+
+    return result;
+}
+std::string singular_getSortedIntegrals(std::string const& res,
+    std::string const& needed_library,
+    std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::string ids;
+    std::string out_filename;
+    
+    ids = worker();
+    Res = deserialize(res, ids);
+    
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    
+    lists result = flint_getSortedIntegrals_wrapper(args.leftV());
+    
+    if (!result) {
+        result = (lists)omAlloc0Bin(slists_bin);
+        result->Init(0);
+    }
+    
+    out_filename = serialize(result, base_filename);
+    
+    return out_filename;
 }

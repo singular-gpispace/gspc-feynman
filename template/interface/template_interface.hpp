@@ -403,3 +403,14 @@ std::string singular_ComputeManyIBP_gpi(std::string const& res
     , std::string const& res1
     , std::string const& needed_library
     , std::string const& base_filename);
+NO_NAME_MANGLING
+
+std::string singular_setMat(std::string const& res,
+    std::string const& res1,
+    int const& j,
+    std::string const& needed_library,
+    std::string const& base_filename);
+    
+NO_NAME_MANGLING
+std::string singular_getRandom(int p, int s, std::string const& needed_library, std::string const& base_filename);
+    

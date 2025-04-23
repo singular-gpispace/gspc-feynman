@@ -1,0 +1,12 @@
+# Fdb version 3
+["pdflatex"] 1745408299 "/home/atraore/gpi/try_gpi/feynman_ibp/cpp/code.tex" "code.pdf" "code" 1745408299
+  "/etc/texmf/web2c/texmf.cnf" 1660551883 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/home/atraore/gpi/try_gpi/feynman_ibp/cpp/code.tex" 1745408299 1251 fbd971a4fbfb2515743d9e4a2febba26 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1720105185 2798063 c113fd31c5acb896c3b2f99dc2931730 ""
+  "code.aux" 1745408299 32 3985256e7290058c681f74d7a3565a19 ""
+  "code.tex" 1745408299 1251 fbd971a4fbfb2515743d9e4a2febba26 ""
+  (generated)
+  "code.log"
+  "code.pdf"

@@ -1,14 +1,61 @@
-[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: Starting T_11...
-[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: graph is: 1,2,3,4,5,6,6,1,4,6,1,2,3,5,4,3,2,5,5,6,1,2,3,4
-[2025-04-09 18:18:44] waas: pid 257386 tid257391: I: Finished T_11
-[2025-04-09 18:18:44] waas: pid 257386 tid257391: T: task finished: waas.job.257354.1
-[2025-04-09 18:18:44] waas: pid 257386 tid257391: T: task finished: waas.job.257354.4
-[2025-04-09 18:18:44] waas: pid 257374 tid257379: T: task finished: waas.job.257354.3
-[2025-04-09 18:18:44] waas: pid 257362 tid257367: T: task finished: waas.job.257354.2
-[2025-04-09 18:18:44] waas: pid 257392 tid257395: T: worker-waas 41315 257344-6 is shutting down
-[2025-04-09 18:18:44] waas: pid 257386 tid257389: T: worker-waas 41315 257344-5 is shutting down
-[2025-04-09 18:18:44] waas: pid 257380 tid257383: T: worker-waas 41315 257344-4 is shutting down
-[2025-04-09 18:18:44] waas: pid 257374 tid257377: T: worker-waas 41315 257344-3 is shutting down
-[2025-04-09 18:18:44] waas: pid 257368 tid257371: T: worker-waas 41315 257344-2 is shutting down
-[2025-04-09 18:18:44] waas: pid 257362 tid257365: T: worker-waas 41315 257344-1 is shutting down
-[2025-04-09 18:18:44] waas: pid 257398 tid257401: T: worker-waas 41315 257344-7 is shutting down
+[2025-04-22 12:59:07] waas: pid 2224921 tid2224926: I: Starting T_0...
+[2025-04-22 12:59:07] waas: pid 2224921 tid2224926: I: T_0 completed
+[2025-04-22 12:59:07] waas: pid 2224921 tid2224926: T: task finished: waas.job.2224889.1
+[2025-04-22 12:59:07] waas: pid 2224921 tid2224926: I: Starting T_11...
+[2025-04-22 12:59:07] waas: pid 2224921 tid2224926: I: Starting one sector computation in T_11 
+[2025-04-22 12:59:09] waas: pid 2224921 tid2224926: I: One sector computation completed in T_11 in 2139 milliseconds
+[2025-04-22 12:59:09] waas: pid 2224921 tid2224926: I: size of one_sector_11: IBP_11, MI_11, Tail_11=19,36,38
+[2025-04-22 12:59:09] waas: pid 2224921 tid2224926: I: T_11 completed
+[2025-04-22 12:59:09] waas: pid 2224921 tid2224926: T: task finished: waas.job.2224889.2
+[2025-04-22 12:59:09] waas: pid 2224915 tid2224920: I: Starting T_22...
+[2025-04-22 12:59:09] waas: pid 2224909 tid2224914: I: Starting T_21...
+[2025-04-22 12:59:09] waas: pid 2224897 tid2224902: I: Starting T_23...
+[2025-04-22 12:59:09] waas: pid 2224897 tid2224902: I: labels_23:2,3
+[2025-04-22 12:59:09] waas: pid 2224915 tid2224920: I: labels_22:1,3
+[2025-04-22 12:59:09] waas: pid 2224909 tid2224914: I: labels_21:1,2
+[2025-04-22 12:59:09] waas: pid 2224909 tid2224914: I: Starting one sector computation in T_21
+[2025-04-22 12:59:09] waas: pid 2224897 tid2224902: I: Starting one sector computation in T_23
+[2025-04-22 12:59:09] waas: pid 2224915 tid2224920: I: Starting one sector computation in T_22
+[2025-04-22 12:59:23] waas: pid 2224897 tid2224902: I: One sector computation completed in T_23 in 14044 milliseconds
+[2025-04-22 12:59:23] waas: pid 2224897 tid2224902: I: size of one_sector_23: IBP_23, MI_23, Tail_23=83,112,82
+[2025-04-22 12:59:23] waas: pid 2224897 tid2224902: I: T_23 completed
+[2025-04-22 12:59:23] waas: pid 2224897 tid2224902: T: task finished: waas.job.2224889.5
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: One sector computation completed in T_21 in 59219 milliseconds
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: size of one_sector_21: IBP_21, MI_21, Tail_21=154,200,164
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: T_21 completed
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: T: task finished: waas.job.2224889.4
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: Starting T_31...
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: labels_31:1
+[2025-04-22 13:00:09] waas: pid 2224909 tid2224914: I: Starting one sector computation in T_31
+[2025-04-22 13:00:45] waas: pid 2224915 tid2224920: I: One sector computation completed in T_22 in 95490 milliseconds
+[2025-04-22 13:00:45] waas: pid 2224915 tid2224920: I: size of one_sector_22: IBP_22, MI_22, Tail_22=153,308,161
+[2025-04-22 13:00:45] waas: pid 2224915 tid2224920: I: T_22 completed
+[2025-04-22 13:00:45] waas: pid 2224915 tid2224920: T: task finished: waas.job.2224889.3
+[2025-04-22 13:00:45] waas: pid 2224897 tid2224902: I: Starting T_33...
+[2025-04-22 13:00:45] waas: pid 2224921 tid2224926: I: Starting T_32...
+[2025-04-22 13:00:45] waas: pid 2224897 tid2224902: I: labels_33:3
+[2025-04-22 13:00:45] waas: pid 2224921 tid2224926: I: labels_32:2
+[2025-04-22 13:00:45] waas: pid 2224897 tid2224902: I: Starting one sector computation in T_33
+[2025-04-22 13:00:45] waas: pid 2224921 tid2224926: I: Starting one sector computation in T_32
+[2025-04-22 13:01:29] waas: pid 2224897 tid2224902: I: One sector computation completed in T_33 in 44155 milliseconds
+[2025-04-22 13:01:29] waas: pid 2224897 tid2224902: I: size of one_sector_33: IBP_33, MI_33, Tail_33=218,210,80
+[2025-04-22 13:01:29] waas: pid 2224897 tid2224902: I: T_33 completed
+[2025-04-22 13:01:29] waas: pid 2224897 tid2224902: T: task finished: waas.job.2224889.7
+[2025-04-22 13:09:36] waas: pid 2224909 tid2224914: I: One sector computation completed in T_31 in 567213 milliseconds
+[2025-04-22 13:09:36] waas: pid 2224909 tid2224914: I: size of one_sector_31: IBP_31, MI_31, Tail_31=536,878,76
+[2025-04-22 13:09:36] waas: pid 2224909 tid2224914: I: T_31 completed
+[2025-04-22 13:09:36] waas: pid 2224909 tid2224914: T: task finished: waas.job.2224889.6
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: I: One sector computation completed in T_32 in 552560 milliseconds
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: I: size of one_sector_32: IBP_32, MI_32, Tail_32=497,882,138
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: I: T_32 completed
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: T: task finished: waas.job.2224889.8
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: I: Starting T_end...
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: I: T_end completed
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224926: T: task finished: waas.job.2224889.9
+[2025-04-22 13:09:57] waas: pid 2224927 tid2224930: T: worker-waas 41147 2224879-6 is shutting down
+[2025-04-22 13:09:57] waas: pid 2224921 tid2224924: T: worker-waas 41147 2224879-5 is shutting down
+[2025-04-22 13:09:57] waas: pid 2224915 tid2224918: T: worker-waas 41147 2224879-4 is shutting down
+[2025-04-22 13:09:57] waas: pid 2224909 tid2224912: T: worker-waas 41147 2224879-3 is shutting down
+[2025-04-22 13:09:58] waas: pid 2224933 tid2224936: T: worker-waas 41147 2224879-7 is shutting down
+[2025-04-22 13:09:58] waas: pid 2224903 tid2224906: T: worker-waas 41147 2224879-2 is shutting down
+[2025-04-22 13:09:58] waas: pid 2224897 tid2224900: T: worker-waas 41147 2224879-1 is shutting down

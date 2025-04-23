@@ -24,12 +24,36 @@ ring R = 0, x, dp;
 list v = list(1, 2, 3, 4, 5, 6); // vertices
 list e = list(list(6, 1), list(4, 6), list(1, 2), list(3, 5), list(4, 3), list(2, 5), list(5, 6), list(1), list(2), list(3), list(4)); // edges 
 
-list targetInt = list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+list targetInt = list(list(1, 1, 1, 1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
 
 list L = v, e, targetInt;
+ 
 
 
+/* 
+list v=list(1,2,3,4,5,6,7);
+list e=list(list(6,1),list(1,2),list(2,3),list(3,7),list(7,4),list(4,5),list(5,6),list(7,6),list(1),list(2),list(3),list(4),list(5));
+list targetInt= list(
+list(1,1,1,1,1,1,1,-5,0),
+list(1,1,1,1,1,1,1,0,-5),
+list(0,1,1,1,1,1,1,-5,0),
+list(1,0,1,1,1,1,1,0,-5),
+list(1,1,0,1,1,1,1,-5,0),
+list(1,1,1,0,1,1,1,0,-5),
+list(1,1,1,1,0,1,1,-5,0),
+list(1,1,1,1,1,0,1,0,-5),
+list(1,1,1,1,1,1,0,-5,0),
+list(0,1,1,1,1,1,1,0,-5),
+list(1,0,1,1,1,1,1,-5,0),
+list(1,1,0,1,1,1,1,0,-5),
+list(1,1,1,0,1,1,1,-5,0),
+list(1,1,1,1,0,1,1,0,-5),
+list(1,1,1,1,1,0,1,-5,0),
+list(1,1,1,1,1,1,0,0,-5)
+);
 
+list L = v, e, targetInt;
+ */
 // Call gspc_template_mod with proper arguments
 int nb_prime; // Specify the number of primes
 rtimer = 0;

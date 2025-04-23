@@ -1754,6 +1754,9 @@ return(list(Nprop,Nid,r,s));
 
 proc comp_lex(list l1,list l2)
 {
+  print("comp_lex:  size(l1)= " + string(size(l1)) + " and size(l2) " + string(size(l2)));
+  print("l1: " + string(l1));
+  print("l2: " + string(l2));
   for(int i=1;i <= size(l1);i++){
     if(l1[i]<l2[i]) {return(-1);} //l1<l2
     if(l1[i]>l2[i]) {return(1);} //l1>l2 
@@ -1804,15 +1807,23 @@ KEYWORDS: feynman graph,IBPs
 EXAMPLE:  extractCoef; shows an example
 "
 { list v;
-
+  print("size(ind)="+string(size(ind)));
+  print("l is "+string(l));
   for(int j=1;j <= size(ind);j++){
     int tem=0;
     for(int k=1;k <= size(I.c);k++){
+      print("ind["+string(j)+"][1]="+string(ind[j][1]));
+      print("I.i["+string(k)+"]="+string(I.i[k]));
+      print("comp_lex(ind["+string(j)+"][1],I.i["+string(k)+"])="+string(comp_lex(ind[j][1],I.i[k])));
       if(comp_lex(ind[j][1],I.i[k])==0){
+        print("I.c["+string(k)+"]="+string(I.c[k]));
+        print("substituteList(I.c["+string(k)+"],l)="+string(substituteList(I.c[k],l)));
         v[j]=substituteList(I.c[k],l);
+        print("v[j]="+string(v[j]));
         tem++;
       }
       if(tem==0){
+        print("tem is 0");
         v[j]=0;
       }
     }
@@ -1823,13 +1834,16 @@ example
 { "EXAMPLE:"; echo=2;list s= getSector(l);
   graph G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
   labeledgraph G1=computeBaikovMatrix(G);
-  setIBP S=computeIBP(G1,list(1,1,0,1,0,1,0,1,0));
+   list targetInt = list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+  setIBP S=computeManyIBP(G1,targetInt);
   ring R=S.over;
   setring R;
   list ind = getSortedIntegrals(S);
   oneIBP I=S.IBP[1];
   I;
-  list rowCorrespondToI=extractCoef(I,ind,list(1,2,9)); 
+  string(I.i);
+  string(I.c);
+  list rowCorrespondToI=extractCoef(I,ind,list(1,2,3)); 
   
   // the nonzero coefficient of the IBP relation correspond to integral I(1,1,0,1,0,0,0,1,0).
   // when we use lex ordering to order the used integrals in set of IBPs, this integral correspond to the 90th place.

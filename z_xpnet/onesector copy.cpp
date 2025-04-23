@@ -1,10 +1,11 @@
-
-
 proc web_g(list targetInt)
 {
 
-
+  print("targetInt: " + string(targetInt[1]));
   list L = pickHighestSector(targetInt[1]);
+  // print L
+  print("L=pickHighestSector(targetInt[1]): " + string(L));
+  print("L[1][1]: " + string(L[1][1]));
 
   list web = generateWebSectors(L[1][1]);
 
@@ -48,7 +49,11 @@ KEYWORDS: Feynman graph, IBPs"
 
   if(size(targetInt) == 0) {
     print("No input integrals found for sector " + string(sector_lab));
-    return(list(reducedIBPs, MIs, OutputtailInts));
+    list result;
+    result[1] = reducedIBPs;
+    result[2] = MIs;
+    result[3] = OutputtailInts;
+    return(result);
   }
   
 //2. Computations related to sector
@@ -67,84 +72,132 @@ KEYWORDS: Feynman graph, IBPs"
     }
   }
   
-  return(list(reducedIBPs, MIs, OutputtailInts));
+  list result;
+  result[1] = reducedIBPs;
+  result[2] = MIs;
+  result[3] = OutputtailInts;
+  return(result);
 }
 
-
-example{"EXAMPLE:"; echo=2;
-//Setting the graph details and Baikov computations
-
- graph  G = makeGraph(list(1,2,3,4,5,6),list(list(6,1),list(4,6),list(1,2),list(3,5),list(4,3),list(2,5),list(5,6),list(1),list(2),list(3),list(4)));
-  list userInput;
-   //userInput[1]=list(list(1,1,1,-1,-1,-1,-1,0,0),list(1,-1,1,-1,-1,-1,-1,0,0));
-   list tail_00 = list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
-   userInput[1]=tail_00;
-  labeledgraph G1=computeBaikovMatrix(G);
-  ring RB=G1.baikovover;
+/****************************************************************************************************** */
 
 
-//sector at(1,1), label:{1,2,3} computations
-  list web=web_g(userInput);
-  list label_11=getlabels(web,1,1);
-  list SectOutput_11=OneSectorComputation(G1,userInput,label_11);
-  list tail_11=SectOutput_11[3];
 
-//For sector at(2,1), label:{1,2} computations
-  list input_21;
-  input_21[1]=tail_00;
-  input_21[2]=tail_11;
-  list label_21=getlabels(web,2,1);
-  list SectOutput_21=OneSectorComputation(G1,input_21,label_21);
-  list tail_21=SectOutput_21[3];
 
-//For sector at(2,2), label:{2,3} computations
-  list input_22;
-  input_22[1]=tail_00;
-  input_22[2]=tail_11;
-  list label_22=getlabels(web,2,2);
-  list SectOutput_22=OneSectorComputation(G1,input_22,label_22);
-  list tail_22=SectOutput_22[3];
+// Create graph
+graph G = makeGraph(
+  list(1,2,3,4,5,6),
+  list(
+    list(6,1), list(4,6), list(1,2), list(3,5),
+    list(4,3), list(2,5), list(5,6), list(1),
+    list(2), list(3), list(4)
+  )
+);
+
+// Initial input
+list tail_00 = list(
+  list(1, 1, 1, -1, -3, -1, -1, -1, -1),
+  list(1, -1, 1, -1, -3, -1, -1, -4, -1)
+);
+list userInput; userInput[1] = tail_00;
+
+labeledgraph G1 = computeBaikovMatrix(G);
+ring RB = G1.baikovover;
+
+print("starting sector at(1,1)");
+list web = web_g(userInput);
+list label_11 = getlabels(web, 1, 1);
+rtimer = 0;
+system("--ticks-per-sec", 1000); // ms timer
+int t = rtimer;
+list SectOutput_11 = OneSectorComputation(G1, userInput, label_11);
+
+rtimer - t;
+print("timer for sector computations in (1,1) ms: " + string(rtimer));
+
+list tail_11 = SectOutput_11[3];
+
+// === Dependency map (tailMap as pseudo-map) ===
+list tailMap;
+tailMap[1] = list("00", tail_00);
+tailMap[2] = list("11", tail_11);
+
+// === Define computation graph ===
+// To skip a sector, just comment it out here
+list sectorGraph;
+sectorGraph[1] = list("21", list("00", "11"));
+sectorGraph[2] = list("22", list("00", "11"));
+sectorGraph[3] = list("23", list("00", "11"));
+sectorGraph[4] = list("31", list("00", "21", "23", "11"));
+sectorGraph[5] = list("32", list("00", "21", "22", "11"));
+sectorGraph[6] = list("33", list("00", "22", "23", "11"));
+
+// === Coordinates for sectors ===
+list coords;
+coords[1] = list("21", list(2, 1));
+coords[2] = list("22", list(2, 2));
+coords[3] = list("23", list(2, 3));
+coords[4] = list("31", list(3, 1));
+coords[5] = list("32", list(3, 2));
+coords[6] = list("33", list(3, 3));
+
+// === Filter valid sectors ===
+list validSectors;
+int idx = 1;
+for (int i = 1; i <= size(sectorGraph); i++) {
+  if (typeof(sectorGraph[i]) != "none") {
+    validSectors[idx] = sectorGraph[i];
+    idx++;
+  }
+}
+
+// === Main computation loop ===
+for (int i = 1; i <= size(validSectors); i++) {
+  list sectorInfo = validSectors[i];
+  string name = sectorInfo[1];
+  list deps = sectorInfo[2];
   
-//For sector at(2,3), label:{1,3} computations
-  list input_23;
-  input_23[1]=tail_00;
-  input_23[2]=tail_11;
-  list label_23=getlabels(web,2,3);
-  list SectOutput_23=OneSectorComputation(G1,input_23,label_23);
-  list tail_23=SectOutput_23[3];
+  // Find sector coordinates
+  int coord_i = -1;
+  int coord_j = -1;
+  for (int j = 1; j <= size(coords); j++) {
+    if (coords[j][1] == name) {
+      coord_i = coords[j][2][1];
+      coord_j = coords[j][2][2];
+      break;
+    }
+  }
 
-//For sector at(3,1) , label :{1} computations
-  list input_31; //Note that sector at (3,1) has two parents ({1,2} and {1,3}) and one grandparent ({1,2,3})
-  input_31[1]=tail_00;
-  input_31[2]=tail_21;
-  input_31[3]=tail_23;
-  input_31[4]=tail_11;
-  list label_31=getlabels(web,3,1);
-  list SectOutput_31=OneSectorComputation(G1,input_31,label_31);
-  list tail_31=SectOutput_31[3];
+  if (coord_i == -1) {
+    print("Skipping sector " + name + " (missing coords)");
+    continue;
+  }
 
-//For sector at(3,2), label:{2} computations
-  list input_32;
-  input_32[1]=tail_00;
-  input_32[2]=tail_21;
-  input_32[3]=tail_22;
-  input_32[4]=tail_11;
-  list label_32=getlabels(web,3,2);
-  list SectOutput_32=OneSectorComputation(G1,input_32,label_32);
-  list tail_32=SectOutput_32[3];
+  print("starting sector at(" + string(coord_i) + "," + string(coord_j) + ")");
 
-//For sector at(3,3), label:{3} computations
-  list input_33;
-  input_33[1]=tail_00;
-  input_33[2]=tail_22;
-  input_33[3]=tail_23;
-  input_33[4]=tail_11;
-  list label_33=getlabels(web,3,3);
-  list SectOutput_33=OneSectorComputation(G1,input_33,label_33);
-  list tail_33=SectOutput_33[3];
+  // Collect dependency tails
+  list input;
+  for (int j = 1; j <= size(deps); j++) {
+    string depName = deps[j];
+    for (int k = 1; k <= size(tailMap); k++) {
+      if (tailMap[k][1] == depName) {
+        input[j] = tailMap[k][2];
+        break;
+      }
+    }
+  }
+
+  list lbl = getlabels(web, coord_i, coord_j);
+  rtimer = 0;
+system("--ticks-per-sec", 1000); // ms timer
+int t = rtimer;
+  list result = OneSectorComputation(G1, input, lbl);
+rtimer - t;
+print("timer for sector computations in (" + string(coord_i) + "," + string(coord_j) + ") ms: " + string(rtimer));
+
+
+  // Save tail for reuse
+  int new_idx = size(tailMap) + 1;
+  tailMap[new_idx] = list(name, result[3]);
 }
- std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "33"};
-    std::vector<std::pair<std::string, std::string>> edges = {
-        {"11", "21"}, {"11", "22"}, {"11", "23"},
-        {"21", "31"}, {"21", "32"}, {"22", "32"}, {"22", "33"}, {"23", "31"}, {"23", "33"} 
-    };
+

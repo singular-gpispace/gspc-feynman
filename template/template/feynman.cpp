@@ -35,6 +35,7 @@ typedef struct {
 #define SETIBP_CMD 12345  // Use a unique number that doesn't conflict with existing commands
 #endif
 
+
 // Implementation of parseNuValues function with NO_NAME_MANGLING
 #ifdef __cplusplus
 extern "C" {
@@ -59,8 +60,7 @@ NO_NAME_MANGLING std::vector<int> parseNuValues(const std::string& str) {
 }
 #endif
 
-
-
+#include <cstring>
 
 void printlist(const std::string & tokenString, const std::string & needed_library)
 {
@@ -1071,6 +1071,8 @@ static gaussred_result_t gaussred_fq_nmod(const fq_nmod_mat_t A, const fq_nmod_c
 
     return result;
 }
+
+
 // Add type defin
 // Forward declarations
 lists flint_getSortedIntegrals_wrapper(leftv args);
@@ -1096,6 +1098,26 @@ static std::string listToString(lists L) {
             s += std::to_string((int)(long)L->m[i].data);
         } else if (L->m[i].rtyp == LIST_CMD) {
             s += listToString((lists)L->m[i].data);
+        } else if (L->m[i].rtyp == POLY_CMD) {
+            poly p = (poly)L->m[i].data;
+            if (p) {
+                char* str = p_String(p, currRing);
+                s += str;
+                omFree(str);
+            } else {
+                s += "0";
+            }
+        } else if (L->m[i].rtyp == NUMBER_CMD) {
+            number n = (number)L->m[i].data;
+            if (n) {
+                StringSetS("");
+                n_Write(n, currRing->cf);
+                char* str = StringEndS();
+                s += str;
+                omFree(str);
+            } else {
+                s += "0";
+            }
         } else {
             s += "?";
         }
@@ -1379,30 +1401,23 @@ lists flint_getSortedIntegrals_wrapper(leftv args) {
         return NULL;
     }
 
-    // Debug input structure
-    std::cout << "DEBUG: Input IBP list size: " << (ibp->nr + 1) << std::endl;
+  /*  // Debug input structure
+   // std::cout << "DEBUG: Input IBP list size: " << (ibp->nr + 1) << std::endl;
     for (int i = 0; i <= ibp->nr; i++) {
         if (ibp->m[i].rtyp == LIST_CMD && ibp->m[i].data) {
             lists ibp_item = (lists)ibp->m[i].data;
             if (ibp_item->nr >= 1 && ibp_item->m[1].rtyp == LIST_CMD) {
-                std::cout << "DEBUG: IBP[" << (i + 1) << "] seeds: " << listToString((lists)ibp_item->m[1].data) << std::endl;
+               // std::cout << "DEBUG: IBP[" << (i + 1) << "] seeds: " << listToString((lists)ibp_item->m[1].data) << std::endl;
             }
         }
-    }
+    } */
 
     // Create setIBP structure
     setIBP S = (setIBP)omAlloc0(sizeof(*S));
-    if (!S) {
-        WerrorS("Memory allocation failed for setIBP");
-        return NULL;
-    }
+   
     
     S->IBP = (oneIBP*)omAlloc0(sizeof(oneIBP) * (ibp->nr + 2));
-    if (!S->IBP) {
-        WerrorS("Memory allocation failed for IBP array");
-        omFreeSize(S, sizeof(*S));
-        return NULL;
-    }
+   
     
     // Copy IBP data
     for (int i = 0; i <= ibp->nr; i++) {
@@ -1426,12 +1441,48 @@ lists flint_getSortedIntegrals_wrapper(leftv args) {
     }
     S->IBP[ibp->nr + 1] = NULL; // Ensure NULL terminator
     S->over = R;
-std::cout<<"first element of S.IBP: "<<listToString((lists)S->IBP[0]->i)<<std::endl;
+//std::cout<<"first element of S.IBP: "<<listToString((lists)S->IBP[0]->i)<<std::endl;
 
-std::cout<<"size of S.IBP: "<<ibp->nr+1<<std::endl;
+//std::cout<<"size of S.IBP: "<<ibp->nr+1<<std::endl;
     // Call main function
     lists result = flint_getSortedIntegrals(S);
-    std::cout << "DEBUG: flint_getSortedIntegrals completed" << std::endl;
+    lists result1=(lists)result->m[0].data;
+    std::cout<<"result1 of size="<<result1->nr+1<<std::endl;
+    std::cout<<"result1="<<listToString(result1)<<std::endl;
+    lists result1_0=(lists)result1->m[0].data;
+    lists result1_1=(lists)result1->m[1].data;
+    std::cout<<"result1_0 of size="<<result1_0->nr+1<<std::endl;
+    std::cout<<"result1_0="<<listToString(result1_0)<<std::endl;
+    std::cout<<"result1_1 of size="<<result1_1->nr+1<<std::endl;
+    std::cout<<"result1_1="<<listToString(result1_1)<<std::endl;
+
+    lists result2=(lists)result->m[1].data;
+    std::cout<<"result2 of size="<<result2->nr+1<<std::endl;
+    std::cout<<"result2="<<listToString(result2)<<std::endl;
+    lists result3=(lists)result->m[2].data;
+    std::cout<<"result3 of size="<<result3->nr+1<<std::endl;
+    std::cout<<"result3="<<listToString(result3)<<std::endl;
+    //std::cout << "DEBUG: flint_getSortedIntegrals completed" << std::endl;
+
+// Create output list
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(4);
+
+    lists t1 = (lists)omAlloc0Bin(slists_bin);
+    t1->Init(2);
+    t1->m[0].rtyp = STRING_CMD;
+    t1->m[0].data = omStrDup("generators");
+    t1->m[1].rtyp = STRING_CMD;
+    t1->m[1].data = omStrDup("getSortedIntegrals");
+
+    output->m[0].rtyp = RING_CMD;
+    output->m[0].data = currRing;
+    output->m[1].rtyp = LIST_CMD;
+    output->m[1].data = t1;
+    output->m[2].rtyp = RING_CMD;
+    output->m[2].data = currRing;
+    output->m[3].rtyp = LIST_CMD;
+    output->m[3].data = lCopy(result);
 
     // Clean up
     for (int i = 0; i <= ibp->nr; i++) {
@@ -1447,7 +1498,7 @@ std::cout<<"size of S.IBP: "<<ibp->nr+1<<std::endl;
         result->Init(0);
     }
 
-    return result;
+    return output;
 }
 std::string singular_getSortedIntegrals(std::string const& res,
     std::string const& needed_library,
@@ -1466,12 +1517,502 @@ std::string singular_getSortedIntegrals(std::string const& res,
     
     lists result = flint_getSortedIntegrals_wrapper(args.leftV());
     
-    if (!result) {
-        result = (lists)omAlloc0Bin(slists_bin);
-        result->Init(0);
-    }
-    
+   
     out_filename = serialize(result, base_filename);
     
     return out_filename;
+}
+
+
+// Helper function to compare two lists lexicographically (comp_lex)
+static int comp_lex(lists l1, lists l2) {
+    if (!l1 || !l2) return 0;
+    
+    // Get the actual size of the lists
+    int size1 = l1->nr + 1;
+    int size2 = l2->nr + 1;
+    int n = (size1 < size2) ? size1 : size2;
+    
+    std::cout<<"l1="<<listToString(l1)<<std::endl;
+    std::cout<<"l2="<<listToString(l2)<<std::endl;
+    std::cout << "comp_lex: comparing lists of size " << size1 << " and " << size2 << std::endl;
+    
+    // Compare each element
+    for (int i = 0; i < n; i++) {
+        // Skip if either element is not an integer
+        if (l1->m[i].rtyp != INT_CMD || l2->m[i].rtyp != INT_CMD) {
+            std::cout << "Type mismatch at index " << i << ": l1=" << l1->m[i].rtyp << ", l2=" << l2->m[i].rtyp << std::endl;
+            continue;
+        }
+        
+        int v1 = (int)(long)l1->m[i].data;
+        int v2 = (int)(long)l2->m[i].data;
+        
+        std::cout << "Comparing at index " << i << ": " << v1 << " vs " << v2 << std::endl;
+        
+        if (v1 < v2) return -1;
+        if (v1 > v2) return 1;
+    }
+    
+    // If we get here, all compared elements were equal
+    // Return -1 if l1 is shorter, 1 if l2 is shorter, 0 if equal length
+    if (size1 < size2) return -1;
+    if (size1 > size2) return 1;
+    return 0;
+}
+
+// Lexicographic sort (lexSort)
+lists lexSort(lists L) {
+    if (!L) return NULL;
+    int n = L->nr + 1;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (L->m[j].rtyp != LIST_CMD || L->m[j+1].rtyp != LIST_CMD) continue;
+            lists Lj = (lists)L->m[j].data;
+            lists Lj1 = (lists)L->m[j+1].data;
+            if (!Lj || !Lj1 || Lj->nr < 1 || Lj1->nr < 1) continue;
+            
+            lists Lj_2 = (lists)Lj->m[1].data;  // Second element of Lj
+            lists Lj1_2 = (lists)Lj1->m[1].data; // Second element of Lj1
+            
+            if (comp_lex(Lj_2, Lj1_2) == 1) {
+                // Swap L[j] and L[j+1]
+                void* temp = L->m[j].data;
+                L->m[j].data = L->m[j+1].data;
+                L->m[j+1].data = temp;
+            }
+        }
+    }
+    return L;
+}
+
+// Substitute parameters in a polynomial (substituteList)
+poly substituteList(poly f, lists l, ring R) {
+    if (!f || !l || !R) return NULL;
+    poly result = p_Copy(f, R);
+    
+    // For each parameter in the list
+    for (int i = 0; i <= l->nr; i++) {
+        if (l->m[i].rtyp != NUMBER_CMD) continue;
+        number val = (number)l->m[i].data;
+        
+        // Create a polynomial from the number
+        poly val_poly = p_NSet(n_Copy(val, R->cf), R);
+        
+        // Substitute the value for parameter i+1 (Singular uses 1-based indexing)
+        result = p_Subst(result, i + 1, val_poly, R);
+        
+        // Clean up
+        p_Delete(&val_poly, R);
+    }
+    
+    return result;
+}
+lists getRandom(int p, int s) {
+    if (p <= 0 || s <= 0) {
+        WerrorS("p and s must be positive integers");
+        return NULL;
+    }
+
+    // Initialize output list
+    lists L = (lists)omAlloc0Bin(slists_bin);
+    if (!L) {
+        WerrorS("Memory allocation failed for output list");
+        return NULL;
+    }
+    L->Init(s);
+
+    // Initialize FLINT random state and modulus
+    flint_rand_t state;
+    fmpz_t m;
+    flint_randinit(state);
+    fmpz_init_set_ui(m, p);
+
+    // Generate random integers between 0 and p-1
+    for (int i = 0; i < s; i++) {
+        // Generate a random number between 0 and p-1 using FLINT
+        fmpz_t val;
+        fmpz_init(val);
+        fmpz_randm(val, state, m);
+    
+        
+        L->m[i].rtyp = INT_CMD  ;
+        L->m[i].data = (void*)(long)fmpz_get_si(val);
+        
+        // Clean up FLINT integer
+        fmpz_clear(val);
+    }
+    std::cout << "L: " << listToString(L) << std::endl;
+
+    // Clean up
+    fmpz_clear(m);
+    flint_randclear(state);
+
+    return L;
+}
+// Extract coefficients (extractCoef)
+
+
+// Structure to hold FLINT polynomial coefficients
+struct FLINTPolyCoeff {
+    fmpq_poly_t poly;
+    int var_index;  // Variable index this coefficient belongs to
+};
+
+// Structure for IBP relation using FLINT
+struct FLINT_IBP {
+    std::vector<std::vector<int>> indices;  // List of indices
+    std::vector<FLINTPolyCoeff> coefficients;  // Polynomial coefficients
+};
+
+// Helper function to convert Singular number to FLINT rational
+void convertSingularToFLINT(fmpq_t result, number n, ring R) {
+    if (n_IsZero(n, R->cf)) {
+        fmpq_zero(result);
+    } else {
+        // For rational numbers, get numerator and denominator
+        number num = n_GetNumerator(n, R->cf);
+        number den = n_GetDenom(n, R->cf);
+        
+        // Convert to FLINT format
+        fmpz_set_si(fmpq_numref(result), n_Int(num, R->cf));
+        fmpz_set_si(fmpq_denref(result), n_Int(den, R->cf));
+        
+        // Clean up
+        n_Delete(&num, R->cf);
+        n_Delete(&den, R->cf);
+    }
+}
+
+// Helper function to convert FLINT rational to Singular number
+number convertFLINTToSingular(const fmpq_t q, ring R) {
+    if (fmpq_is_zero(q)) {
+        return n_Init(0, R->cf);
+    } else {
+        // Get numerator and denominator as integers
+        long num = fmpz_get_si(fmpq_numref(q));
+        long den = fmpz_get_si(fmpq_denref(q));
+        
+        // Create Singular number
+        number n = n_Init(num, R->cf);
+        if (den != 1) {
+            number d = n_Init(den, R->cf);
+            number result = n_Div(n, d, R->cf);
+            n_Delete(&n, R->cf);
+            n_Delete(&d, R->cf);
+            return result;
+        }
+        return n;
+    }
+}
+
+// Implementation of extractCoef
+// USAGE:   extractCoef(I,ind,l); I oneIBP,ind list,l list,
+// ASSUME:   ind is the output of getSortedIntegrals, and l is the list of values over the base field I.baikovover. 
+//          size(l)=npars(I.baikovover)
+// RETURN:   list of values where, the i-th element is the evaluation of coefficient function at values in the list l 
+//          of the IBP relation oneIBP, whose index is i=ind[i][1].
+lists extractCoef(oneIBP I, lists ind, lists l, ring R) {
+    std::cout << "starting extractCoef" << std::endl;
+    if (!I || !ind || !l || !R) return NULL;
+    
+    lists v = (lists)omAlloc0Bin(slists_bin);
+    v->Init(ind->nr + 1);
+    
+    for (int j = 0; j <= ind->nr; j++) {
+        int tem = 0;
+        lists ind_list = (lists)ind->m[j].data;
+        if (!ind_list) continue;
+        
+        for (int k = 0; k <= I->i->nr; k++) {
+            lists ibp_indices = (lists)I->i->m[k].data;
+            if (!ibp_indices) continue;
+            std::cout<<"comp_lex(ind_list,ibp_indices): "<<comp_lex(ind_list,ibp_indices)<<std::endl;
+            if (comp_lex(ind_list,ibp_indices) == 0) {
+                // The coefficient is a number in ring R
+                if (I->c->m[k].rtyp == NUMBER_CMD) {
+                    number n = (number)I->c->m[k].data;
+                    // Create a polynomial from the number
+                    poly p = p_NSet(n_Copy(n, R->cf), R);
+                    if (p) {
+                        // Substitute values from l into the polynomial
+                        poly result = substituteList(p, l, R);
+                        v->m[j].rtyp = POLY_CMD;
+                        v->m[j].data = result;
+                        tem = 1;
+                        p_Delete(&p, R);
+                    }
+                }
+                break;
+            }
+        }
+        
+        if (tem == 0) {
+            v->m[j].rtyp = NUMBER_CMD;
+            v->m[j].data = n_Init(0, R->cf);
+        }
+    }
+    
+    return v;
+}
+
+// Helper function to convert Singular poly to FLINT poly
+void convertSingularPolyToFLINT(fmpq_poly_t flint_poly, poly p, ring R) {
+    fmpq_poly_init(flint_poly);
+    
+    while (p != NULL) {
+        // Get exponent vector
+        int exp = p_GetExp(p, 1, R); // Assuming univariate for simplicity
+        
+        // Get coefficient
+        number n = p_GetCoeff(p, R);
+        fmpq_t coeff;
+        fmpq_init(coeff);
+        
+        // Convert Singular number to FLINT rational
+        convertSingularToFLINT(coeff, n, R);
+        
+        // Set coefficient in polynomial
+        fmpq_poly_set_coeff_fmpq(flint_poly, exp, coeff);
+        
+        fmpq_clear(coeff);
+        p = pNext(p);
+    }
+}
+
+
+// Set matrix using FLINT (setMat)
+matrix setMat(setIBP S, lists val, lists ind, ring R) {
+    std::cout << "starting setMat" << std::endl;
+    
+    // Check if we're working with a field of characteristic 0 (Q)
+    int charac = n_GetChar(R->cf);
+    std::cout << "charac: " << charac << std::endl;
+    
+    // Count the number of IBP relations
+    int count = 0;
+    while (S->IBP[count] != NULL) {
+        count++;
+    }
+    
+    // Count the number of indices
+    int ind_count = 0;
+    while (ind->m[ind_count].rtyp == LIST_CMD && ind->m[ind_count].data) {
+        ind_count++;
+    }
+    
+    std::cout << "count: " << count << ", ind_count: " << ind_count << std::endl;
+    
+    // Create a matrix to store the result
+    matrix result = mpNew(count, ind_count);
+    
+    std::cout<<"debugging S"<<std::endl;
+    std::cout<<"S->IBP[0]->i: "<<listToString((lists)S->IBP[0]->i)<<std::endl;
+    std::cout<<"S->IBP[0]->i->m[0].data: "<<listToString((lists)S->IBP[0]->i->m[0].data)<<std::endl;
+    std::cout<<"S->IBP[0]->c: "<<listToString((lists)S->IBP[0]->c)<<std::endl;
+    std::cout<<" type of S->IBP[0]->c->m[0].data: "<<S->IBP[0]->c->m[0].Typ()<<std::endl;
+    std::cout<<"S->IBP[0]->c->m[0].data: "<<numberToString((number)(S->IBP[0]->c->m[0].data),R)<<std::endl;
+    // For each IBP relation
+    for (int i = 0; i < count; i++) {
+        // Extract coefficients for this IBP
+        lists coef = extractCoef(S->IBP[i], ind, val, R);
+        std::cout << "coef: " << listToString(coef) << std::endl;
+        if (!coef) {
+            // Handle error
+            mp_Delete(&result, R);
+        return NULL;
+    }
+
+        std::cout << "coef: " << listToString(coef) << std::endl;
+        
+        // Fill the matrix row
+        for (int j = 0; j < ind_count; j++) {
+            if (coef->m[j].rtyp == NUMBER_CMD) {
+                number n = (number)coef->m[j].data;
+                MATELEM(result, i+1, j+1) = p_NSet(n_Copy(n, R->cf), R);
+            } else if (coef->m[j].rtyp == INT_CMD) {
+                // Convert integer to number
+                number n = n_Init((int)(long)coef->m[j].data, R->cf);
+                MATELEM(result, i+1, j+1) = p_NSet(n, R);
+            } else {
+                MATELEM(result, i+1, j+1) = p_NSet(n_Init(0, R->cf), R);
+            }
+        }
+        
+        // Clean up the coefficient list
+        for (int j = 0; j <= coef->nr; j++) {
+            if (coef->m[j].rtyp == NUMBER_CMD) {
+                n_Delete((number*)&coef->m[j].data, R->cf);
+            }
+        }
+        omFreeBin(coef, slists_bin);
+    }
+    
+    return result;
+}
+
+lists setMat(leftv args) {
+    std::cout << "setMat" << std::endl;
+   
+    
+    lists input_S = (lists)args->Data();
+  
+    lists Set = (lists)input_S->m[3].data;
+    
+    ring R = (ring)Set->m[0].data;
+    
+    std::cout << "R: " << rString(R) << std::endl;
+    
+    if (!args->next) {
+        WerrorS("Second argument (input_ind) is NULL");
+        return NULL;
+    }
+    lists input_ind = (lists)(args->next->Data());
+  
+    
+
+    int p = (int)(long)(args->next->next->Data());
+    
+    std::cout << "p: " << p << std::endl;
+    
+    lists ibp = (lists)Set->m[3].data;
+    if (!ibp) {
+        WerrorS("Invalid ibp list");
+        return NULL;
+    }
+
+    lists ind = (lists)input_ind->m[3].data;
+    if (!ind) {
+        WerrorS("Invalid ind list");
+        return NULL;
+    }
+    
+    std::cout << "ibp->nr: " << ibp->nr << std::endl;
+    
+    // Create setIBP structure
+    setIBP S = (setIBP)omAlloc0(sizeof(*S));
+    if (!S) {
+        WerrorS("Memory allocation failed for setIBP");
+        return NULL;
+    }
+    
+    // Allocate IBP array
+    S->IBP = (oneIBP*)omAlloc0(sizeof(oneIBP) * (ibp->nr + 2));
+    if (!S->IBP) {
+        omFreeSize(S, sizeof(*S));
+        WerrorS("Memory allocation failed for IBP array");
+            return NULL;
+        }
+
+    // Copy IBP data
+    for (int i = 0; i <= ibp->nr; i++) {
+        //std::cout << "Processing IBP item " << i << std::endl;
+        if (ibp->m[i].rtyp == LIST_CMD && ibp->m[i].data) {
+            lists ibp_item = (lists)ibp->m[i].data;
+            //std::cout << "IBP item " << i << " has " << ibp_item->nr + 1 << " elements" << std::endl;
+            
+            S->IBP[i] = (oneIBP)omAlloc0(sizeof(*S->IBP[i]));
+          
+
+            if (ibp_item->nr >= 1) {
+                // Check coefficient list
+                if (ibp_item->m[0].rtyp == LIST_CMD && ibp_item->m[0].data) {
+                    S->IBP[i]->c = (lists)ibp_item->m[0].data;
+                    //std::cout << "Coefficient list for IBP " << i << " has " << S->IBP[i]->c->nr + 1 << " elements" << std::endl;
+                }
+                // Check index list
+                if (ibp_item->m[1].rtyp == LIST_CMD && ibp_item->m[1].data) {
+                    S->IBP[i]->i = (lists)ibp_item->m[1].data;
+                    //std::cout << "Index list for IBP " << i << " has " << S->IBP[i]->i->nr + 1 << " elements" << std::endl;
+                }
+            }
+        }
+    }
+    S->IBP[ibp->nr + 1] = NULL; // Ensure NULL terminator
+    S->over = R;
+    
+    std::cout << "R: " << rString(R) << std::endl;
+    int n = rVar(R);
+    std::cout << "n: " << n << std::endl;
+    
+    // Make sure we're in the correct ring
+    ring savedRing = currRing;
+    rChangeCurrRing(R);
+    
+    lists input_val = getRandom(p, n);
+    std::cout << "input_val: " << listToString(input_val) << std::endl;
+    
+    if (!input_val) {
+        // Clean up
+        for (int i = 0; i <= ibp->nr; i++) {
+            if (S->IBP[i]) omFreeSize(S->IBP[i], sizeof(*S->IBP[i]));
+        }
+        omFreeSize(S->IBP, sizeof(oneIBP) * (ibp->nr + 2));
+        omFreeSize(S, sizeof(*S));
+        rChangeCurrRing(savedRing);
+        WerrorS("Failed to generate random values");
+        return NULL;
+    }
+    std::cout<<"starting setMat"<<std::endl;
+    matrix result = setMat(S, input_val, ind, R);
+    
+    // Clean up
+    for (int i = 0; i <= ibp->nr; i++) {
+        if (S->IBP[i]) omFreeSize(S->IBP[i], sizeof(*S->IBP[i]));
+    }
+    omFreeSize(S->IBP, sizeof(oneIBP) * (ibp->nr + 2));
+    omFreeSize(S, sizeof(*S));
+    
+    // Clean up input_val
+    for (int i = 0; i <= input_val->nr; i++) {
+        if (input_val->m[i].rtyp == NUMBER_CMD) {
+            n_Delete((number*)&input_val->m[i].data, R->cf);
+        }
+    }
+    omFreeBin(input_val, slists_bin);
+    
+    // Restore the original ring
+    rChangeCurrRing(savedRing);
+    
+    lists output = (lists)omAlloc0Bin(slists_bin);
+    output->Init(1);
+    output->m[0].rtyp = MATRIX_CMD;
+    output->m[0].data = result;
+    
+    return output;
+}
+
+std::string singular_setMat(std::string const& res,
+    std::string const& res1,
+    int const& j,
+    std::string const& needed_library,
+    std::string const& base_filename)
+{
+   
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+
+    std::pair<int, lists> out;
+    std::string ids;
+    std::string out_filename;
+    ids = worker();
+    //std::cout << ids << " in singular_..._compute" << std::endl;
+    void* p = (char*)(long)(j);
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv arg(args1, INT_CMD, p);
+    // Call the setMat function
+    lists result = setMat(args.leftV());
+    
+    // Serialize the result
+    std::string output_filename = serialize(result, base_filename);
+    
+    
+    return output_filename;
 }

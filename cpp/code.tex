@@ -1,0 +1,36 @@
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+		node distance=3cm, 
+		scale=0.7,
+		item/.style={circle, draw=black, thick, minimum size=2cm, align=center},
+		arrow/.style={thick} % Modified: removed -> 
+		]
+		
+		% Define nodes (sectors inside circles)
+		\node (11) [item] {Sector $\left(1,2,3\right)$};
+		\node (21) [item, below of=11, xshift=-3.5cm] {Sector $\left\{1,2\right\}$};
+		\node (22) [item, below of=11, xshift=0cm] {Sector $\left\{2,3\right\}$};
+		\node (23) [item, below of=11, xshift=3.5cm] {Sector $\left\{1,3\right\}$};
+	
+		\node (31) [item, below of=22, xshift=-3cm] {Sector $\left\{1\right\}$};
+		\node (32) [item, below of=22, xshift=0cm] {Sector $\left\{2\right\}$};
+		\node (33) [item, below of=22, xshift=3cm] {Sector $\left\{3\right\}$};
+		
+		% Define arrows (edges) - now just lines without arrowheads
+		\draw [-{Latex}] (11) -- (21);
+		\draw [-{Latex}] (11) -- (22);
+		\draw [-{Latex}] (11) -- (23);
+	
+		\draw [-{Latex}] (21) -- (31);
+		\draw [-{Latex}] (21) -- (32);
+	
+		\draw [-{Latex}] (22) -- (32);
+		\draw [-{Latex}] (22) -- (33);
+	
+		\draw [-{Latex}] (23) -- (31);
+		\draw [-{Latex}] (23) -- (33);
+	\end{tikzpicture}
+	\caption{An example of a web structure of the sectors}
+	\label{fig:sector-diagram}
+	\end{figure}
