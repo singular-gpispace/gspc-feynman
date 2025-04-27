@@ -2616,3 +2616,228 @@ ideal  idSubstPoly(ideal id, int n, poly e)
 #endif
   return id_SubstPoly(id,n,e,currRing,currRing,ndCopyMap);
 }
+
+
+* maps the expression w to res,
+* switch what: MAP_CMD: use theMap for mapping, N for preimage ring
+*              //FETCH_CMD: use pOrdPoly for mapping
+*              IMAP_CMD: use perm for mapping, N for preimage ring
+*              default: map only poly-structures,
+*                       use perm and par_perm, N and P,
+*/
+BOOLEAN maApplyFetch(int what,map theMap,leftv res, leftv w, ring preimage_r,
+                     int *perm, int *par_perm, int P, nMapFunc nMap)
+{
+  BOOLEAN use_mult=FALSE;
+#ifdef HAVE_PLURAL
+  if ((what==IMAP_CMD)
+  && rIsPluralRing(currRing)
+  && rIsPluralRing(preimage_r))
+  {
+    assume(perm!=NULL);
+    int i=1;
+    while((i<preimage_r->N)&&(perm[i]==0)) i++;
+    if (i<preimage_r->N)
+    {
+      int prev_nonnull=i;
+      i++;
+      for(;i<=preimage_r->N;i++)
+      {
+        if (perm[prev_nonnull] > perm[i])
+        {
+          if (TEST_V_ALLWARN)
+          {
+            Warn("imap not usable for permuting variables, use map (%s <-> %s)",                 preimage_r->names[prev_nonnull-1],preimage_r->names[i-1]);
+          }
+          use_mult=TRUE;
+          break;
+        }
+        else
+          prev_nonnull=i;
+      }
+    }
+  }
+#endif
+  int i;
+  int N = preimage_r->N;
+#if 0
+  Print("N=%d what=%s ",N,Tok2Cmdname(what));
+  if (perm!=NULL) for(i=1;i<=N;i++) Print("%d -> %d ",i,perm[i]);
+  PrintS("\n");
+  Print("P=%d ",P);
+  if (par_perm!=NULL) for(i=0;i<P;i++) Print("%d -> %d ",i,par_perm[i]);
+  PrintS("\n");
+#endif
+
+  void *data=w->Data();
+  res->rtyp = w->rtyp;
+  switch (w->rtyp)
+  {
+    case NUMBER_CMD:
+      if (P!=0)
+      {
+// poly n_PermNumber(const number z, const int *par_perm, const int OldPar, const ring src, const ring dst);
+        res->data= (void *) n_PermNumber((number)data, par_perm, P, preimage_r, currRing);
+        res->rtyp=POLY_CMD;
+        if (nCoeff_is_algExt(currRing->cf))
+          res->data=(void *)p_MinPolyNormalize((poly)res->data, currRing);
+        pTest((poly) res->data);
+      }
+      else
+      {
+        assume( nMap != NULL );
+        number a = nMap((number)data, preimage_r->cf, currRing->cf);
+        if (nCoeff_is_Extension(currRing->cf))
+        {
+          n_Normalize(a, currRing->cf);
+/*
+          number a = (number)res->data;
+          number one = nInit(1);
+          number product = nMult(a, one );
+          nDelete(&one);
+          nDelete(&a);
+          res->data=(void *)product;
+ */
+        }
+        #ifdef LDEBUG
+        n_Test(a, currRing->cf);
+        #endif
+        res->data=(void *)a;
+
+      }
+      break;
+    case BUCKET_CMD:
+      if (
+          (what==FETCH_CMD) && (preimage_r->cf==currRing->cf)
+#ifdef HAVE_SHIFTBBA
+          && !rIsLPRing(currRing)
+#endif
+          )
+        res->data=(void *)prCopyR(sBucketPeek((sBucket_pt)data), preimage_r, currRing);
+      else
+        if ( (what==IMAP_CMD) || /*(*/ (what==FETCH_CMD) /*)*/) /* && (nMap!=nCopy)*/
+        res->data=(void *)p_PermPoly(sBucketPeek((sBucket_pt)data),perm,preimage_r,currRing, nMap,par_perm,P,use_mult);
+      else /*if (what==MAP_CMD)*/
+      {
+        res->data=(void*)maMapPoly(sBucketPeek((sBucket_pt)data),preimage_r,(ideal)theMap,currRing,nMap);
+      }
+      if (nCoeff_is_Extension(currRing->cf))
+        res->data=(void *)p_MinPolyNormalize(sBucketPeek((sBucket_pt)data), currRing);
+      break;
+    case POLY_CMD:
+    case VECTOR_CMD:
+      if (
+          (what==FETCH_CMD) && (preimage_r->cf==currRing->cf)
+#ifdef HAVE_SHIFTBBA
+          && !rIsLPRing(currRing)
+#endif
+          )
+        res->data=(void *)prCopyR( (poly)data, preimage_r, currRing);
+      else
+        if ( (what==IMAP_CMD) || /*(*/ (what==FETCH_CMD) /*)*/) /* && (nMap!=nCopy)*/
+        res->data=(void *)p_PermPoly((poly)data,perm,preimage_r,currRing, nMap,par_perm,P,use_mult);
+      else /*if (what==MAP_CMD)*/
+      {
+        p_Test((poly)data,preimage_r);
+        res->data=(void*)maMapPoly((poly)data,preimage_r,(ideal)theMap,currRing,nMap);
+      }
+      if (nCoeff_is_Extension(currRing->cf))
+        res->data=(void *)p_MinPolyNormalize((poly)res->data, currRing);
+      pTest((poly)res->data);
+      break;
+    case MODUL_CMD:
+    case MATRIX_CMD:
+    case IDEAL_CMD:
+    case MAP_CMD:
+    case SMATRIX_CMD:
+    {
+      int C=((matrix)data)->cols();
+      int R;
+      matrix m=NULL;
+      if (w->rtyp==MAP_CMD) R=1;
+      else R=((matrix)data)->rows();
+      char *tmpR=NULL;
+      if(w->rtyp==MAP_CMD)
+      {
+        tmpR=((map)data)->preimage;
+        ((matrix)data)->rank=((matrix)data)->rows();
+      }
+      if (
+          (what==FETCH_CMD) && (preimage_r->cf == currRing->cf)
+#ifdef HAVE_SHIFTBBA
+          && !rIsLPRing(currRing)
+#endif
+         )
+      {
+        m=mpNew(R,C);
+        for (i=R*C-1;i>=0;i--)
+        {
+          m->m[i]=prCopyR(((ideal)data)->m[i], preimage_r, currRing);
+          pTest(m->m[i]);
+        }
+      }
+      else if ((what==IMAP_CMD) || (what==FETCH_CMD))
+      {
+        m=(matrix)id_PermIdeal((ideal)data,R,C,perm,preimage_r,currRing,
+                                    nMap,par_perm,P,use_mult);
+      }
+      else /* (what==MAP_CMD) */
+      {
+        assume(what==MAP_CMD);
+        m=mpNew(R,C);
+        matrix s=mpNew(N,maMaxDeg_Ma((ideal)data,preimage_r));
+        for (i=R*C-1;i>=0;i--)
+        {
+          m->m[i]=maEval(theMap, ((ideal)data)->m[i], preimage_r, nMap, (ideal)s, currRing);
+          pTest(m->m[i]);
+        }
+        idDelete((ideal *)&s);
+      }
+      if(w->rtyp==MAP_CMD)
+      {
+        ((map)data)->preimage=tmpR;
+        ((map)m)->preimage=omStrDup(tmpR);
+      }
+      else
+      {
+        m->rank=((matrix)data)->rank;
+      }
+      res->data=(char *)m;
+      idTest((ideal) m);
+      break;
+    }
+
+    case LIST_CMD:
+    {
+      lists l=(lists)data;
+      lists ml=(lists)omAllocBin(slists_bin);
+      ml->Init(l->nr+1);
+      for(i=0;i<=l->nr;i++)
+      {
+        if (((l->m[i].rtyp>BEGIN_RING)&&(l->m[i].rtyp<END_RING))
+        ||(l->m[i].rtyp==LIST_CMD))
+        {
+          if (maApplyFetch(what,theMap,&ml->m[i],&l->m[i],
+                           preimage_r,perm,par_perm,P,nMap))
+          {
+            ml->Clean();
+            omFreeBin((ADDRESS)ml, slists_bin);
+            res->rtyp=0;
+            return TRUE;
+          }
+        }
+        else
+        {
+          ml->m[i].Copy(&l->m[i]);
+        }
+      }
+      res->data=(char *)ml;
+      break;
+    }
+    default:
+    {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}

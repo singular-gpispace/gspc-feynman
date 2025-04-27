@@ -413,4 +413,36 @@ std::string singular_setMat(std::string const& res,
     
 NO_NAME_MANGLING
 std::string singular_getRandom(int p, int s, std::string const& needed_library, std::string const& base_filename);
-    
+NO_NAME_MANGLING
+std::string singular_remove_file(std::string const& filename);
+NO_NAME_MANGLING
+std::string singular_getRedIBPs_wrapper(std::string const& res
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_prepareRedIBPs_gpi_cpp(std::string const& res
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename);    
+NO_NAME_MANGLING
+std::string singular_returnTargetInts_gpi_cpp(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename);        
+NO_NAME_MANGLING
+std::string singular_computeGetRedIBPs_gpi_cpp(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename);
+NO_NAME_MANGLING
+std::string singular_computeSector_flint_cpp(
+    std::string const& labeledgraph_str,
+    std::string const& userInput_str,
+    std::string const& labels_11_str,
+    int const& seed,
+    std::string const& needed_library,
+    std::string const& base_filename);

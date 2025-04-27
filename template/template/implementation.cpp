@@ -9,6 +9,7 @@
 #include <sstream>
 #include <regex>
 #include "template/config.hpp"
+#include <filesystem>
 
 #include <interface/WorkflowResult.hpp>
 #include <interface/ValuesOnPorts.hpp>
@@ -295,7 +296,7 @@ std::string singular_ComputeManyIBP_gpi(std::string const& res
 
 
 
-std::string singular_computeManyIBP_gpi(std::string const& res
+std::string singular_computeManyIBP_gpis(std::string const& res
     , std::string const& res1
     , int const& j
     , int const& k
@@ -328,7 +329,7 @@ std::string singular_computeManyIBP_gpi(std::string const& res
     ScopedLeftv arg(args1, INT_CMD, p);
     ScopedLeftv argss(args1, INT_CMD, M);
 
-    std::string function_name = "computeManyIBP_gpi";
+    std::string function_name = "computeManyIBP_gpis";
     out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
 
@@ -401,6 +402,7 @@ std::string singular_IBP_gpi(std::string const& res
     
     return out_filename;
 }
+
 std::string singular_getRedIBPs_gpi(std::string const& res
     , int const& j
     , std::string const& needed_library
@@ -1460,7 +1462,7 @@ std::string singular_merge_web_gpi(std::string const& res
     std::string function_name = "merge_web_gpi";
     out = call_user_proc(function_name, needed_library, args);
     out_filename = serialize(out.second, base_filename);
-
+    
     return out_filename;
 }
 
@@ -2019,6 +2021,7 @@ std::string singular_prepareRedIBPs_gpi(std::string const& res
 
     return out_filename;
 }   
+
 std::string singular_returnTargetInts_gpi(std::string const& res
     , std::string const& res1
     , std::string const& res2
@@ -2049,6 +2052,35 @@ std::string singular_returnTargetInts_gpi(std::string const& res
     return out_filename;
     }
 
+std::string singular_returnTargetInts_gpi_cpp(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+    ids = worker();
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv args1(args, Res1.first, lCopy(Res1.second));
+    ScopedLeftv args2(args1, Res2.first, lCopy(Res2.second));
+
+    std::string function_name = "returnTargetInts_gpi_cpp";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string  out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+    }
 std::string singular_performGaussRed_gpi(std::string const& res,
     std::string const& needed_library,
     std::string const& base_filename)
@@ -2056,7 +2088,7 @@ std::string singular_performGaussRed_gpi(std::string const& res,
     init_singular(config::singularLibrary().string());
     load_singular_library(needed_library);
     std::pair<int, lists> Res;
-    lists out;  // Change type from std::pair<int, lists> to lists
+    std::pair<int, lists> out;
     std::string ids;
     std::string out_filename;
     
@@ -2066,10 +2098,12 @@ std::string singular_performGaussRed_gpi(std::string const& res,
     ScopedLeftv args(Res.first, lCopy(Res.second));
     
     std::cout<<"performing gauss reduction"<<std::endl;
-    out = singflintGaussRed(args.leftV());  
+    lists gauss_result = singflintGaussRed(args.leftV());
+    out.first = 0;  // Set type to 0 for lists
+    out.second = gauss_result;
     
     // Serialize the output
-    out_filename = serialize(out, base_filename);
+    out_filename = serialize(out.second, base_filename);
     
     return out_filename;
 }
@@ -2104,6 +2138,42 @@ std::string singular_computeGetRedIBPs_gpi(std::string const& res
     std::cout<<"computing get red ibps"<<std::endl;
 
     std::string function_name = "computeGetRedIBPs_gpi";
+    out = call_user_proc(function_name, needed_library, args);
+    std::string out_filename = serialize(out.second, base_filename);
+
+    return out_filename;
+}
+
+std::string singular_computeGetRedIBPs_gpi_cpp(std::string const& res
+    , std::string const& res1
+    , std::string const& res2
+    , int const& j
+    , std::string const& needed_library
+    , std::string const& base_filename)
+{
+    init_singular(config::singularLibrary().string());
+    load_singular_library(needed_library);
+
+    std::pair<int, lists> Res;
+    std::pair<int, lists> Res1;
+    std::pair<int, lists> Res2;
+    std::pair<int, lists> out;
+    std::string ids;
+
+    ids = worker();
+
+    Res = deserialize(res, ids);
+    Res1 = deserialize(res1, ids);
+    Res2 = deserialize(res2, ids);
+    void* p = (char*)(long)(j);
+
+    ScopedLeftv args(Res.first, lCopy(Res.second));
+    ScopedLeftv arg2(args,Res1.first, lCopy(Res1.second));
+    ScopedLeftv arg3(arg2,Res2.first, lCopy(Res2.second));
+    ScopedLeftv arg4(arg3, INT_CMD, p);
+    std::cout<<"computing get red ibps"<<std::endl;
+
+    std::string function_name = "computeGetRedIBPs_gpi_cpp";
     out = call_user_proc(function_name, needed_library, args);
     std::string out_filename = serialize(out.second, base_filename);
 
@@ -2179,42 +2249,97 @@ std::string singular_computeSector_flint(
     ScopedLeftv userInput_args(labeledgraph_args, userInput.first, lCopy(userInput.second)); // userInput
     ScopedLeftv labels_11_args(userInput_args, labels_11.first, lCopy(labels_11.second)); // labels_11
 
+    // Timing for target ints computation
+    auto target_start_time = std::chrono::high_resolution_clock::now(); 
     std::string function_name = "returnTargetInts_gpi";
+    std::cout<<"*********computing target ints**********"<<std::endl;
     out = call_user_proc(function_name, needed_library, labeledgraph_args);
     std::string one_sector_11_filename = serialize(out.second, base_filename); // one_sector_11
+    auto target_end_time = std::chrono::high_resolution_clock::now();
+    auto target_duration = std::chrono::duration_cast<std::chrono::seconds>(target_end_time - target_start_time);
+    std::cout << "Computing target ints completed  in " << target_duration.count() << " seconds\n";
 
     std::pair<int, lists> one_sector_11 = deserialize(one_sector_11_filename, ids); // one_sector_11
+
+    // First get reduced IBP system
     ScopedLeftv one_sector_11_args(one_sector_11.first, lCopy(one_sector_11.second)); // one_sector_11
     ScopedLeftv seed_args(one_sector_11_args, INT_CMD, p); // seed (7853)
-    std::string function_name1 = "prepareRedIBPs_gpi";
+    std::string function_name1 = "getRedIBPs_wrapper";
+    std::cout<<"*********getting red ibps**********"<<std::endl;
+    
+    // Timing for getting red IBPs
+    auto getredibps_start_time = std::chrono::high_resolution_clock::now();    
     out = call_user_proc(function_name1, needed_library, one_sector_11_args);
+    std::string getredibps_filename = serialize(out.second, base_filename); // getredibps
+    auto getredibps_end_time = std::chrono::high_resolution_clock::now();
+    auto getredibps_duration = std::chrono::duration_cast<std::chrono::seconds>(getredibps_end_time - getredibps_start_time);
+    std::cout << "Getting red ibps completed in " << getredibps_duration.count() << " seconds\n";
+    std::filesystem::remove(one_sector_11_filename); // Clean up one_sector_11_filename
+
+    std::pair<int, lists> getredibps = deserialize(getredibps_filename, ids); // getredibps
+    ScopedLeftv getredibps_args(getredibps.first, lCopy(getredibps.second)); // getredibps
+    ScopedLeftv seed_args2(getredibps_args, INT_CMD, p); // seed (7853)
+    
+    // Now prepare reduced IBP system
+    std::string function_name2 = "prepareRedIBPs_gpi_cpp";
+    std::cout<<"*********preparing red ibps**********"<<std::endl;
+    
+    // Timing for preparing red IBPs
+    auto prep_start_time = std::chrono::high_resolution_clock::now();    
+    out = call_user_proc(function_name2, needed_library, getredibps_args);
     std::string prep_filename = serialize(out.second, base_filename); // prep
+    auto prep_end_time = std::chrono::high_resolution_clock::now();
+    auto prep_duration = std::chrono::duration_cast<std::chrono::seconds>(prep_end_time - prep_start_time);
+    std::cout << "Preparing red ibps completed in " << prep_duration.count() << " seconds\n";
+    std::filesystem::remove(getredibps_filename); // Clean up getredibps_filename
 
     std::pair<int, lists> prep = deserialize(prep_filename, ids); // prep
     ScopedLeftv prep_args(prep.first, lCopy(prep.second)); // prep
-    // Call singflintGaussRed and handle the return value properly
+    
+    // Timing for Gauss reduction
+    std::cout<<"********performing gauss reduction*********"<<std::endl;    
+    auto gauss_start_time = std::chrono::high_resolution_clock::now();
     lists result = singflintGaussRed(prep_args.leftV());
+    auto gauss_end_time = std::chrono::high_resolution_clock::now();
+    auto gauss_duration = std::chrono::duration_cast<std::chrono::seconds>(gauss_end_time - gauss_start_time);
+    std::cout << "Gauss reduction completed in " << gauss_duration.count() << " seconds\n";
   
     std::string gaussred_filename = serialize(result, base_filename); // gaussred
+    std::filesystem::remove(prep_filename); // Clean up prep_filename
 
     std::pair<int, lists> gaussred = deserialize(gaussred_filename, ids); // gaussred
 
     ScopedLeftv one_sector_11_args2(one_sector_11.first, lCopy(one_sector_11.second)); // one_sector_11
     ScopedLeftv gaussred_args(one_sector_11_args2, gaussred.first, lCopy(gaussred.second)); // gaussred
     ScopedLeftv prep_args2(gaussred_args, prep.first, lCopy(prep.second)); // prep
-    ScopedLeftv seed_args2(prep_args2, INT_CMD, p); // seed (7853)
-    std::string function_name3 = "computeGetRedIBPs_gpi";
+    ScopedLeftv seed_args3(prep_args2, INT_CMD, p); // seed (7853)
+    
+    // Timing for computing red IBPs
+    std::cout<<"computing get red ibps*******"<<std::endl;
+    auto redibps_start_time = std::chrono::high_resolution_clock::now();
+    std::string function_name3 = "computeGetRedIBPs_gpi_cpp";
     out = call_user_proc(function_name3, needed_library, one_sector_11_args2);
-    std::string getredibps_filename = serialize(out.second, base_filename); // getredibps
+    std::string getredibps_final_filename = serialize(out.second, base_filename); // getredibps
+    auto redibps_end_time = std::chrono::high_resolution_clock::now();
+    auto redibps_duration = std::chrono::duration_cast<std::chrono::seconds>(redibps_end_time - redibps_start_time);
+    std::cout << "Computing get red ibps completed in " << redibps_duration.count() << " seconds\n";
+    std::filesystem::remove(gaussred_filename); // Clean up gaussred_filename
 
-    std::pair<int, lists> getredibps = deserialize(getredibps_filename, ids); // getredibps
+    std::pair<int, lists> getredibps_final = deserialize(getredibps_final_filename, ids); // getredibps
 
     ScopedLeftv labeledgraph_args2(labeledgraph.first, lCopy(labeledgraph.second)); // labeledgraph
-    ScopedLeftv getredibps_args(labeledgraph_args2, getredibps.first, lCopy(getredibps.second)); // getredibps
-    ScopedLeftv labels_11_args2(getredibps_args, labels_11.first, lCopy(labels_11.second)); // labels_11
+    ScopedLeftv getredibps_final_args(labeledgraph_args2, getredibps_final.first, lCopy(getredibps_final.second)); // getredibps
+    ScopedLeftv labels_11_args2(getredibps_final_args, labels_11.first, lCopy(labels_11.second)); // labels_11
+    
+    // Timing for final computation
+    auto final_start_time = std::chrono::high_resolution_clock::now();
     std::string function_name4 = "ComputeOneSector_gpi";
     out = call_user_proc(function_name4, needed_library, labeledgraph_args2);
     std::string ComputeOneSector_filename = serialize(out.second, base_filename); // ComputeOneSector
+    auto final_end_time = std::chrono::high_resolution_clock::now();
+    auto final_duration = std::chrono::duration_cast<std::chrono::seconds>(final_end_time - final_start_time);
+    std::cout << "Computing one sector completed in " << final_duration.count() << " seconds\n";
+    std::filesystem::remove(getredibps_final_filename); // Clean up getredibps_final_filename
 
     return ComputeOneSector_filename;
 }
@@ -2241,3 +2366,10 @@ std::string singular_size_computeSector_gpi(
 
     return out_filename;
 }   
+
+std::string singular_remove_file(std::string const& filename) {
+    std::filesystem::remove(filename);
+    return "File removed successfully";
+}   
+
+

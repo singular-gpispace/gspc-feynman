@@ -6778,3 +6778,12 @@ list web = web_g(userInput);
 list label_11 = getlabels(web, 1, 1);
 $
 $
+ link l="ssi:r temp/waas_71327_1745427457742431296";
+ def m=read(l);
+ m.r_data;
+ def nr=m.r_data;
+ setring nr;
+ m.data[1];
+ def m=read(l);
+$
+$

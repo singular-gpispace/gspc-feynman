@@ -100,14 +100,33 @@ PetriNet generate_petri_net(const DAG& dag) {
         net.transition_inputs[transition].push_back("labeledgraph");
         net.transition_inputs[transition].push_back("library_name");
         net.transition_inputs[transition].push_back("base_filename");
-        net.transition_inputs[transition].push_back("input");
         net.transition_inputs[transition].push_back("web");
         net.transition_inputs[transition].push_back("tail_00");
+
+        // Add input only for T_0
+        if (transition == "T_0") {
+            net.transition_inputs[transition].push_back("input");
+        }
 
         // Add parent tails as inputs
         if (dag.parents.find(transition) != dag.parents.end()) {
             for (const auto& parent : dag.parents.at(transition)) {
                 net.transition_inputs[transition].push_back("tail_" + parent.substr(2));
+            }
+        }
+
+        // Add tail_11 as input to all transitions except T_0, T_11, and T_end
+        // Only add if it's not already in the inputs (to prevent duplicates)
+        if (transition != "T_0" && transition != "T_11" && transition != "T_end") {
+            bool has_tail_11 = false;
+            for (const auto& input : net.transition_inputs[transition]) {
+                if (input == "tail_11") {
+                    has_tail_11 = true;
+                    break;
+                }
+            }
+            if (!has_tail_11) {
+                net.transition_inputs[transition].push_back("tail_11");
             }
         }
 
@@ -261,7 +280,7 @@ std::string generateT11Code() {
     code << "                        std::cout << \"Starting T_11...\\n\";\n";
     code << "                        std::string input_11 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);\n";
     code << "                        std::string labels_11 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 1, 1, library_name, base_filename);\n";
-    code << "                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_11, labels_11, 7853, library_name, base_filename);\n";
+    code << "                        std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_11, labels_11, 7853, library_name, base_filename);\n";
     code << "                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_computeSector_gpi)(one_sector_11, library_name, base_filename);\n";
     code << "                        std::cout << \"size of one_sector_11: IBP_11, MI_11, Tail_11=\" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;\n";
     code << "                        tail_11 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_11, library_name, base_filename);\n";
@@ -350,15 +369,18 @@ std::string generateRegularTransitionCode(const std::string& transition, const P
     code << "/******************************************************************************************************************************************* */\n";
     code << "                        std::cout << \"Starting one sector computation in " << transition << "\\n\";\n";
     code << "                        auto computation_time_" << jk << " = std::chrono::high_resolution_clock::now();\n";
-    code << "                        std::string one_sector_" << jk << " = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, input_" << jk << ", labels_" << jk << ", 7853, library_name, base_filename);\n";
+    code << "                        std::string one_sector_" << jk << " = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_" << jk << ", labels_" << jk << ", 7853, library_name, base_filename);\n";
+    code << "                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_" << jk << ");\n";
     code << "                        auto computation_end_time_" << jk << " = std::chrono::high_resolution_clock::now();\n";
-    code << "                        auto computation_duration_" << jk << " = std::chrono::duration_cast<std::chrono::seconds>(computation_end_time_" << jk << " - computation_time_" << jk << ");\n";
-    code << "                        std::cout << \"One sector computation completed in " << transition << " in \" << computation_duration_" << jk << ".count() << \" seconds\\n\";\n";
+    code << "                        auto computation_duration_" << jk << " = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_" << jk << " - computation_time_" << jk << ");\n";
+    code << "                        std::cout << \"One sector computation completed in " << transition << " in \" << computation_duration_" << jk << ".count() << \" milliseconds\\n\";\n";
     code << "/******************************************************************************************************************************************* */\n";
     code << "                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_" << jk << ", library_name, base_filename);\n";
+    code << "                        std::cout << \"size of one_sector_" << jk << ": IBP_" << jk << ", MI_" << jk << ", Tail_" << jk << "=\" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;\n\n";
 
     // Generate output tail
     code << "\n                        tail_" << jk << " = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_" << jk << ", library_name, base_filename);\n";
+    code << "                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_" << jk << ");\n";
     code << "                        std::cout << \"" << transition << " completed\\n\";\n";
 
     return code.str();
@@ -390,16 +412,16 @@ void print_petri_net(const PetriNet& net) {
 
 // Main function
 int main() {
-/*     std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "33"};
+    std::vector<std::string> vertices = {"11", "21", "22", "23", "31", "32", "33"};
     std::vector<std::pair<std::string, std::string>> edges = {
         {"11", "21"}, {"11", "22"}, {"11", "23"},
         {"21", "31"}, {"21", "32"}, {"22", "32"}, {"22", "33"}, {"23", "31"}, {"23", "33"}
-    };
- */
- std::vector<std::string> vertices = {"11", "21", "22", "23", "24", "31", "32", "33", "34", "35", "36", "41", "42", "43", "44"};
+    }; 
+/* 
+  std::vector<std::string> vertices = {"11", "21", "22", "23", "24", "31", "32", "33", "34", "35", "36", "41", "42", "43", "44"};
  std::vector<std::pair<std::string, std::string>> edges =
 {{"11", "21"}, {"11", "22"}, {"11", "23"}, {"11", "24"}, {"21", "31"}, {"21", "32"}, {"21", "34"}, {"22", "31"}, {"22", "33"}, {"22", "35"}, {"23", "32"}, {"23", "33"}, {"23", "36"}, {"24", "34"}, {"24", "35"}, {"24", "36"}, {"31", "41"}, {"31", "42"}, {"32", "41"}, {"32", "43"}, {"33", "41"}, {"33", "44"}, {"34", "42"}, {"34", "43"}, {"35", "42"}, {"35", "44"}, {"36", "43"}, {"36", "44"}};
-
+  */
    DAG myDAG = generate_dag(vertices, edges);
     std::string root_node = find_root_node(myDAG);
     std::cout << "Root Node: " << root_node << "\n";
@@ -408,7 +430,7 @@ int main() {
     print_petri_net(myPetriNet);
 
     std::string xml = generateXPNetXMLWithT0Tend(myPetriNet, myDAG);
-    std::ofstream file("generated_flint.xpnet");
+    std::ofstream file("generated_flint_cpp.xpnet");
     file << xml;
     file.close();
 

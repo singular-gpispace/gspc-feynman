@@ -1,0 +1,111 @@
+[2025-04-27 15:46:05] waas: pid 18904 tid18909: I: Starting T_0...
+[2025-04-27 15:46:05] waas: pid 18904 tid18909: I: T_0 completed
+[2025-04-27 15:46:05] waas: pid 18904 tid18909: T: task finished: waas.job.18866.1
+[2025-04-27 15:46:05] waas: pid 18892 tid18897: I: Starting T_11...
+[2025-04-27 15:46:05] waas: pid 18892 tid18897: I: labels_11:1,2,3
+[2025-04-27 15:46:05] waas: pid 18892 tid18897: I: Starting one sector computation in T_11
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Computing target ints completed  in 193 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Getting red ibps completed in 3 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: *********preparing red ibps**********
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Preparing red ibps completed in 1 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Gauss reduction completed in 0 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Computing get red ibps completed in 7 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: Computing one sector completed in 7 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: One sector computation completed in T_11 in 221 milliseconds
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: size of one_sector_11: IBP_11, MI_11, Tail_11=19,36,38
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: I: T_11 completed
+[2025-04-27 15:46:06] waas: pid 18892 tid18897: T: task finished: waas.job.18866.2
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Starting T_23...
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Starting T_22...
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Starting T_21...
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: labels_21:1,2
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: labels_23:2,3
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: labels_22:1,3
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Starting one sector computation in T_23
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Starting one sector computation in T_21
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Starting one sector computation in T_22
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Computing target ints completed  in 221 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Getting red ibps completed in 12 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: *********preparing red ibps**********
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Preparing red ibps completed in 7 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Gauss reduction completed in 15 milliseconds
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Computing target ints completed  in 339 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Computing get red ibps completed in 73 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: Computing one sector completed in 19 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: One sector computation completed in T_23 in 376 milliseconds
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: size of one_sector_23: IBP_23, MI_23, Tail_23=83,112,82
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: I: T_23 completed
+[2025-04-27 15:46:06] waas: pid 18910 tid18915: T: task finished: waas.job.18866.4
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Getting red ibps completed in 39 milliseconds
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Computing target ints completed  in 395 milliseconds
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: *********preparing red ibps**********
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Preparing red ibps completed in 19 milliseconds
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Getting red ibps completed in 53 milliseconds
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: *********preparing red ibps**********
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Gauss reduction completed in 52 milliseconds
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Preparing red ibps completed in 23 milliseconds
+[2025-04-27 15:46:06] waas: pid 18898 tid18903: I: Gauss reduction completed in 63 milliseconds
+[2025-04-27 15:46:06] waas: pid 18880 tid18885: I: Computing get red ibps completed in 232 milliseconds
+[2025-04-27 15:46:07] waas: pid 18880 tid18885: I: Computing one sector completed in 37 milliseconds
+[2025-04-27 15:46:07] waas: pid 18880 tid18885: I: One sector computation completed in T_21 in 786 milliseconds
+[2025-04-27 15:46:07] waas: pid 18880 tid18885: I: size of one_sector_21: IBP_21, MI_21, Tail_21=154,200,164
+[2025-04-27 15:46:07] waas: pid 18880 tid18885: I: T_21 completed
+[2025-04-27 15:46:07] waas: pid 18880 tid18885: T: task finished: waas.job.18866.3
+[2025-04-27 15:46:07] waas: pid 18886 tid18891: I: Starting T_31...
+[2025-04-27 15:46:07] waas: pid 18886 tid18891: I: labels_31:1
+[2025-04-27 15:46:07] waas: pid 18886 tid18891: I: Starting one sector computation in T_31
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: I: Computing get red ibps completed in 254 milliseconds
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: I: Computing one sector completed in 51 milliseconds
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: I: One sector computation completed in T_22 in 917 milliseconds
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: I: size of one_sector_22: IBP_22, MI_22, Tail_22=153,308,161
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: I: T_22 completed
+[2025-04-27 15:46:07] waas: pid 18898 tid18903: T: task finished: waas.job.18866.5
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Starting T_33...
+[2025-04-27 15:46:07] waas: pid 18874 tid18879: I: Starting T_32...
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: labels_33:3
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Starting one sector computation in T_33
+[2025-04-27 15:46:07] waas: pid 18874 tid18879: I: labels_32:2
+[2025-04-27 15:46:07] waas: pid 18874 tid18879: I: Starting one sector computation in T_32
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Computing target ints completed  in 452 milliseconds
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Getting red ibps completed in 39 milliseconds
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: *********preparing red ibps**********
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Preparing red ibps completed in 33 milliseconds
+[2025-04-27 15:46:07] waas: pid 18910 tid18915: I: Gauss reduction completed in 201 milliseconds
+[2025-04-27 15:46:08] waas: pid 18886 tid18891: I: Computing target ints completed  in 1205 milliseconds
+[2025-04-27 15:46:08] waas: pid 18874 tid18879: I: Computing target ints completed  in 1156 milliseconds
+[2025-04-27 15:46:08] waas: pid 18886 tid18891: I: Getting red ibps completed in 263 milliseconds
+[2025-04-27 15:46:08] waas: pid 18886 tid18891: I: *********preparing red ibps**********
+[2025-04-27 15:46:08] waas: pid 18874 tid18879: I: Getting red ibps completed in 244 milliseconds
+[2025-04-27 15:46:08] waas: pid 18874 tid18879: I: *********preparing red ibps**********
+[2025-04-27 15:46:08] waas: pid 18886 tid18891: I: Preparing red ibps completed in 192 milliseconds
+[2025-04-27 15:46:08] waas: pid 18874 tid18879: I: Preparing red ibps completed in 186 milliseconds
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: I: Computing get red ibps completed in 835 milliseconds
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: I: Computing one sector completed in 26 milliseconds
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: I: One sector computation completed in T_33 in 1756 milliseconds
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: I: size of one_sector_33: IBP_33, MI_33, Tail_33=218,210,80
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: I: T_33 completed
+[2025-04-27 15:46:08] waas: pid 18910 tid18915: T: task finished: waas.job.18866.8
+[2025-04-27 15:46:09] waas: pid 18874 tid18879: I: Gauss reduction completed in 989 milliseconds
+[2025-04-27 15:46:10] waas: pid 18886 tid18891: I: Gauss reduction completed in 1249 milliseconds
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: I: Computing get red ibps completed in 3143 milliseconds
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: I: Computing one sector completed in 106 milliseconds
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: I: One sector computation completed in T_32 in 6416 milliseconds
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: I: size of one_sector_32: IBP_32, MI_32, Tail_32=497,882,138
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: I: T_32 completed
+[2025-04-27 15:46:13] waas: pid 18874 tid18879: T: task finished: waas.job.18866.7
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: I: Computing get red ibps completed in 3924 milliseconds
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: I: Computing one sector completed in 107 milliseconds
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: I: One sector computation completed in T_31 in 7656 milliseconds
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: I: size of one_sector_31: IBP_31, MI_31, Tail_31=536,878,76
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: I: T_31 completed
+[2025-04-27 15:46:14] waas: pid 18886 tid18891: T: task finished: waas.job.18866.6
+[2025-04-27 15:46:14] waas: pid 18910 tid18915: I: Starting T_end...
+[2025-04-27 15:46:14] waas: pid 18910 tid18915: I: T_end completed
+[2025-04-27 15:46:14] waas: pid 18910 tid18915: T: task finished: waas.job.18866.9
+[2025-04-27 15:46:14] waas: pid 18904 tid18907: T: worker-waas 37035 18856-6 is shutting down
+[2025-04-27 15:46:14] waas: pid 18910 tid18913: T: worker-waas 37035 18856-7 is shutting down
+[2025-04-27 15:46:14] waas: pid 18892 tid18895: T: worker-waas 37035 18856-4 is shutting down
+[2025-04-27 15:46:14] waas: pid 18886 tid18889: T: worker-waas 37035 18856-3 is shutting down
+[2025-04-27 15:46:14] waas: pid 18880 tid18883: T: worker-waas 37035 18856-2 is shutting down
+[2025-04-27 15:46:14] waas: pid 18874 tid18877: T: worker-waas 37035 18856-1 is shutting down
+[2025-04-27 15:46:14] waas: pid 18898 tid18901: T: worker-waas 37035 18856-5 is shutting down

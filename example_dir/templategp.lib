@@ -880,8 +880,8 @@ KEYWORDS: Feynman graph
 "
 
 {
-  link lin = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM1.ssi";
-write(lin,"staring computeM1");
+  //link lin = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeM1.ssi";
+  //write(lin,"staring computeM1");
 if (typeof(G0)=="graph"){
   labeledgraph G1 =computeBaikovMatrix(G0);
  // return(computeM1(G1));
@@ -914,7 +914,7 @@ for(int i=1;i<=E;i++){
     }
   }
 }
-write(lin,"C");
+//write(lin,"C");
 for(int i=E+1;i<=E+L;i++){
   for(int j=i;j<=E+L;j++){ 
     tem=tem+1;   
@@ -980,8 +980,8 @@ for(int j=1;j<size(M);j++){
   }
 
 } */
-write(lin,"M");
-close(lin);
+//write(lin,"M");
+//close(lin);
 
 return(M);
 }
@@ -2065,7 +2065,7 @@ if (typeof(G0)=="graph"){
 if (typeof(G0) != "labeledgraph"){
   ERROR("expected a graph or labeledgraph");
 }
-link lin = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeManyIBP.ssi";
+//link lin = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeManyIBP.ssi";
 list Nu=setNu[1];
 labeledgraph G = G0;
 def R = G.over;
@@ -2073,12 +2073,12 @@ int m=npars(R);
 ring RB=G.baikovover;
 matrix B=G.baikovmatrix;
 setring RB;
-write(lin,"RB",string(RB));
+//write(lin,"RB",string(RB));
 int n=nvars(RB);
 int E = m;
 int L = nvars(R);
-write(lin,"size of Nu",string(size(Nu)));
-write(lin,"size of n",string(n));
+//write(lin,"size of Nu",string(size(Nu)));
+//write(lin,"size of n",string(n));
 if(size(Nu) != n){
   ERROR("The length of the vector nu must equal to number of Baikov variables");
 }
@@ -2087,7 +2087,7 @@ module M2=computeM2(G,Nu);
 timer=0;
 option(redSB);
 module M=std(intersect(M1,M2));
-write(lin,"M");
+//write(lin,"M");
 //module M=intersect(M1,M2);
 int elapsed_time=timer;
 print("time elapsed for the computation of  module intersection: " + string(elapsed_time));
@@ -2158,8 +2158,8 @@ for(int b=1;b<=size(setNu);b++)
 
   }
 }
-write(lin,"S");
-close(lin);
+//write(lin,"S");
+//close(lin);
 
 //ring Z= 0,(t(1..(m-1)),D),dp;
 //S.over=Z;
@@ -2336,7 +2336,7 @@ RETURN:
 KEYWORDS: Feynman graph,IBPs
 "
 { 
-
+  
   list targetInt;
   setIBP reducedIBPs; //a place to store the independent IBPs coming out from current sector
   list MIs;  //a place to store the Master integrals coming out from current sector
@@ -2362,6 +2362,7 @@ KEYWORDS: Feynman graph,IBPs
   setIBP totalIBP=computeManyIBP(G1,targetInt);
   return(list(totalIBP,targetInt,sector_lab));
 }
+
 proc returnTargetInts_gpi(token G,token tailInts,token sector_lab ){
   labeledgraph G1=G.data[1];
   list tailInt=tailInts.data[1];
@@ -2372,6 +2373,36 @@ proc returnTargetInts_gpi(token G,token tailInts,token sector_lab ){
   output.data[1]=returned;
   return(output);
 }
+
+proc returnTargetInts_gpi_cpp(token G,token tailInts,token sector_lab ){
+  labeledgraph G1=G.data[1];
+  list tailInt=tailInts.data[1];
+  list sector_labs=sector_lab.data[1];
+  list returned=returnTargetInts(G1,tailInt,sector_labs);
+  setIBP totalIBP=returned[1];
+  list targetInt=returned[2];
+  list sectorlab=returned[3];
+  list LL;
+    def R=totalIBP.over;
+  setring R;
+  list LL;
+for (int i = 1; i <= size(totalIBP.IBP); i++)
+{
+    LL[i] = list(); // Initialize LL[i] as a list
+    LL[i][1] = totalIBP.IBP[i].c; // Assign the 'c' field (list)
+    LL[i][2] = totalIBP.IBP[i].i; // Assign the 'i' field (list)
+}
+  token output;
+  output.fieldnames = list("generators", "returnTargetInts_gpi_cpp");
+
+  output.data[1] = totalIBP.over;
+  output.data[2] = totalIBP;
+  output.data[3] = totalIBP.IBP;
+  output.data[4] = LL;
+  output.data[5] = targetInt;
+  output.data[6] = sectorlab;
+  return(output);
+}
 proc ReturngetRedIBPs(setIBP totalIBP,int p){
   list L=getRedIBPs(totalIBP,p);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
 return(L);
@@ -2379,15 +2410,12 @@ return(L);
 
 proc ComputeOneSector_gpi(token G1, token getRedIbp, token sector_lab)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/ComputeOneSector.ssi";
-
   labeledgraph G = G1.data[1];
   list L1 = getRedIbp.data[1][1];
-  write(l,L1,"L1");
-  list L2 = getRedIbp.data[1][2];
-  write(l,L2,"L2");
+
+    list L2 = getRedIbp.data[1][2];
+ 
   list sector_labs = sector_lab.data[1];
-  write(l,sector_labs,"sector_labs");
 
   setIBP reducedIBPs; //a place to store the independent IBPs coming out from current sector
   list MIs;  //a place to store the Master integrals coming out from current sector
@@ -2404,11 +2432,9 @@ proc ComputeOneSector_gpi(token G1, token getRedIbp, token sector_lab)
       OutputtailInts[size(OutputtailInts)+1]=L2[i];
     }
   }
-  write(l,size(reducedIBPs.IBP),"size of reducedIBPs.IBP");
-  write(l,size(MIs),"size of MIs");
-  write(l,size(OutputtailInts),"size of OutputtailInts");
-  close(l);
+
   list out=list(reducedIBPs,MIs,OutputtailInts);
+  
   token output;
   output.fieldnames = list("reducedIBPs","MIs","OutputtailInts");
   output.data[1]=reducedIBPs;
@@ -2719,12 +2745,8 @@ proc getWeb_gpi(token input)
 }
 proc getReducedIBPs_gpi(token input)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/getreducedibps.ssi";
-  write(l, input, "getReducedIBPs_gpi");
 
   def reducedIBPs = input.data[3];
-  write(l, reducedIBPs, "getReducedIBPs_gpi");  
-  close(l);
   token output;
   output.fieldnames = list("generators", "getReducedIBPs_gpi");
   output.data[1] = reducedIBPs;
@@ -2742,7 +2764,7 @@ proc getMI_gpi(token input)
 
 proc computeBaikovMatrix_gpi(token input)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computebaikovmatrix.ssi";
+  //link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computebaikovmatrix.ssi";
   list v = input.data[1];
   list e = input.data[2];
   graph G;
@@ -2756,15 +2778,15 @@ proc computeBaikovMatrix_gpi(token input)
   ring overpoly = G1.overpoly;
   list elimvars = G1.elimvars;
   ring baikovover = G1.baikovover;
-  matrix baikovmatrix = G1.baikovmatrix;
-  write(l, G1, "G1");
-  write(l, over, "over");
-  write(l, labels, "labels");
-  write(l, overpoly, "overpoly");
-  write(l, elimvars, "elimvars");
-  write(l, baikovover, "baikovover");
-  write(l, baikovmatrix, "baikovmatrix");
-  close(l);
+    matrix baikovmatrix = G1.baikovmatrix;
+    //write(l, G1, "G1");
+    //write(l, over, "over");
+    //write(l, labels, "labels");
+    //write(l, overpoly, "overpoly");
+    //write(l, elimvars, "elimvars");
+    //write(l, baikovover, "baikovover");
+    //write(l, baikovmatrix, "baikovmatrix");
+  //close(l);
 
   token output;
   output.fieldnames = list("generators", "computeBaikovMatrix_gpi");
@@ -2872,26 +2894,19 @@ proc MI_gpi(token ibp)
 
 proc ComputeManyIBP_gpi(token g, token targetInts)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/computeManyIBP.ssi";
   labeledgraph G = g.data[1];
   list v = targetInts.data[1];
-  write(l, "v", string(v));
   setIBP S = computeManyIBP(G, v);
-  write(l, "S.IBP[1]", string(S.IBP[1]));
   list D;
   def R=S.over;
   setring R;
-  write(l, "R", string(R));
   list LL;
-  write(l,"size of S.IBP", string(size(S.IBP)));
 for (int i = 1; i <= size(S.IBP); i++)
 {
     LL[i] = list(); // Initialize LL[i] as a list
     LL[i][1] = S.IBP[i].c; // Assign the 'c' field (list)
     LL[i][2] = S.IBP[i].i; // Assign the 'i' field (list)
 }
-  write(l, "LL[1][1]", string(LL[1][1]));
-  close(l);
   token output;
   output.fieldnames = list("generators", "ComputeManyIBP_gpi");
 
@@ -2903,7 +2918,7 @@ for (int i = 1; i <= size(S.IBP); i++)
   return(output);
 }
 
-proc computeManyIBP_gpi(token g, token Web, int j, int k)
+proc computeManyIBP_gpis(token g, token Web, int j, int k)
 {
   labeledgraph G = g.data[1];
   list web = Web.data[1];
@@ -3684,9 +3699,7 @@ proc size_OneSectorComputation_gpi(token SectOutput)
 } 
 proc size_computeSector_gpi(token SectOutput)
 {
- link l = "ssi:w /home/atraore/gpi/try_gpi/feynman_ibp/example_dir/size_computeSector.ssi";
-  write(l, SectOutput, "size_computeSector_gpi");
-  close(l);
+ 
   list Sect_IBP = SectOutput.data[1];
   list Sect_MIs = SectOutput.data[2];
   list Sect_OutputtailInts = SectOutput.data[3];
@@ -3902,6 +3915,7 @@ example
 }
 
 proc computeGetRedIBPs(setIBP S, int p,list Z, list ind, list val){
+ 
   def R = S.over;
   setring R;
   list Z = imap(RZ,Z);
@@ -3929,7 +3943,6 @@ proc computeGetRedIBPs(setIBP S, int p,list Z, list ind, list val){
       }
     }
   }
-
   return(list(indIBP,seed));
 
 }
@@ -3947,11 +3960,62 @@ example
 
 //************************************************************************************************************************** */
 
+proc computeGetRedIBPs_gpi_cpp(token SS,token ZZ, token prep, int p){
+
+
+ def m=SS;
+ m.r_data;
+ def R=m.r_data;
+ setring R;
+  def S = m.data[2];
+  
+  def m1=ZZ;
+ m1.r_data;
+ def RZ=m1.r_data;
+ setring RZ;
+  list Z = m1.data;
+  def RZ  = prep.data[2];
+  list ind = prep.data[4];
+  list val = prep.data[5];
+ 
+ 
+  def R = S.over;
+  setring R;
+  list Z = imap(RZ,Z);
+ 
+  // Process results
+  list indIBP;
+  int ll = 1;
+  for(int j = 1; j <= Z[4]; j++) {
+    for(int k = 1; k <= ncols(Z[1]); k++) {
+      if(Z[1][j,k] != 0) {
+        indIBP[ll] = S.IBP[k];
+        ll++;
+      }
+    }
+  }
+  // Identify non-zero columns
+  list seed;
+  ll = 1;
+  //print("ncols(Z[3])*nrows(Z[3]): " + string(ncols(Z[3])*nrows(Z[3])));
+  for(int k = 1; k <= ncols(Z[3]); k++) {
+    for(int j = 1; j <= nrows(Z[3]); j++) {
+      if(Z[3][j,k] != 0) {
+        seed[ll] = ind[k][1];
+        ll++;
+        break;
+      }
+    }
+  }
+  list L=list(indIBP,seed);
+  token output;
+  output.fieldnames = list("computeGetRedIBPs_gpi_cpp");
+  output.data[1] = L;
+  return(output);
+}
 
 proc computeGetRedIBPs_gpi(token SS,token ZZ, token prep, int p){
-
   setIBP S = SS.data[1][1];
-
   list Z = ZZ.data;
   def RZ  = prep.data[2];
   list ind = prep.data[4];
@@ -3985,8 +4049,7 @@ proc computeGetRedIBPs_gpi(token SS,token ZZ, token prep, int p){
       }
     }
   }
-list L=list(indIBP,seed);
-
+  list L=list(indIBP,seed);
   token output;
   output.fieldnames = list("computeGetRedIBPs_gpi");
   output.data[1] = L;
@@ -4017,3 +4080,25 @@ proc prepareRedIBPs_gpi(token Set, int p)
 
   return(output);
 }
+
+proc prepareRedIBPs_gpi_cpp(token Set, int p){
+  list ind = Set.data[1];
+  list val = Set.data[2];
+  matrix N = Set.data[3];
+  ring R = basering;
+  
+  ring RZ = (p,t(1..(npars(R)-1)),D),z(1..nvars(R)),dp;
+  setring RZ; 
+  matrix N = imap(R,N);
+
+  token output;
+  output.fieldnames = list("prepareRedIBPs_gpi_cpp");
+  output.data[1] = N;
+  output.data[2] = RZ;
+  output.data[3] = p; 
+  output.data[4] = ind;
+  output.data[5] = val;
+  return(output);
+}
+
+

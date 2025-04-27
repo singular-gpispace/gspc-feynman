@@ -5,7 +5,15 @@
  def nr=m.r_data;
  setring nr;
  m.data[1];
+string(m.data[1]);
 
+
+ def m1=read(l);
+ m1.r_data;
+ def nr1=m1.r_data;
+ setring nr1;
+ m1.data[1];
+string(m1.data[1]);
 
 
 cd ~/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-23.06-gxye6b7ngsnbxnzjkfsfqtvanynyghdk/bin && ./gspc-logging-to-stdout.exe --port 9876  ~/gpi/try_gpi/feynman_ibp/monitor.txt 2&1
@@ -28,7 +36,8 @@ def m6=read(l);
 def m7=read(l);
 def m8=read(l);
 
-link l="ssi:r hello.ssi";
+
+
 def m=read(l);
 def m1=read(l);
 def m2=read(l);

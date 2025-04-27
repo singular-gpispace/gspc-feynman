@@ -71,6 +71,15 @@ NO_NAME_MANGLING lists std_gpi(leftv arg1);
 // Function for Gauss reduction
 NO_NAME_MANGLING lists performGaussRed(leftv args);
 
+// Function for lexicographic sorting
+NO_NAME_MANGLING lists lexSort(lists L);
+
+// Function to create a finite field ring
+NO_NAME_MANGLING ring createFiniteFieldRing(ring R, int p);
+
+// Function to remove a file
+NO_NAME_MANGLING std::string singular_remove_file(std::string const& filename);
+
 #ifdef __cplusplus
 }
 #endif
