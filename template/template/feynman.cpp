@@ -2891,4 +2891,3 @@ std::string singular_computeSector_flint_cpp(
 
     return ComputeOneSector_filename;
 }
-

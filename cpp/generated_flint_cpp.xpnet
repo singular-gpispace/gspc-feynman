@@ -41,6 +41,11 @@
         </place>
         <place name="tail_23" type="string">
         </place>
+        <place name="control_24" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_24" type="string">
+        </place>
         <place name="control_31" type="control">
             <token><value>[]</value></token>
         </place>
@@ -55,6 +60,41 @@
             <token><value>[]</value></token>
         </place>
         <place name="tail_33" type="string">
+        </place>
+        <place name="control_34" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_34" type="string">
+        </place>
+        <place name="control_35" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_35" type="string">
+        </place>
+        <place name="control_36" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_36" type="string">
+        </place>
+        <place name="control_41" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_41" type="string">
+        </place>
+        <place name="control_42" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_42" type="string">
+        </place>
+        <place name="control_43" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_43" type="string">
+        </place>
+        <place name="control_44" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="tail_44" type="string">
         </place>
         <place name="control_T_0" type="control">
             <token><value>[]</value></token>
@@ -303,6 +343,67 @@
             <connect-out port="tail_23" place="tail_23"/>
         </transition>
 
+        <transition name="T_24">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_24" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_24" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_24(control_24, labeledgraph, library_name, base_filename, web, tail_00, tail_11, tail_24)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_24...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_24 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_24 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_24, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_24 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 2, 4, library_name, base_filename);
+                        std::cout << "labels_24:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_24, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_24\n";
+                        auto computation_time_24 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_24 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_24, labels_24, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_24);
+                        auto computation_end_time_24 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_24 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_24 - computation_time_24);
+                        std::cout << "One sector computation completed in T_24 in " << computation_duration_24.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_24, library_name, base_filename);
+                        std::cout << "size of one_sector_24: IBP_24, MI_24, Tail_24=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_24 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_24, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_24);
+                        std::cout << "T_24 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_24" place="control_24"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_24" place="tail_24"/>
+        </transition>
+
         <transition name="T_31">
             <defun>
                 <require key="worker" mandatory="true"/>
@@ -314,20 +415,20 @@
                 <in name="web" type="string"/>
                 <in name="tail_00" type="string"/>
                 <in name="tail_21" type="string"/>
-                <in name="tail_23" type="string"/>
+                <in name="tail_22" type="string"/>
                 <in name="tail_11" type="string"/>
                 <out name="tail_31" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, labeledgraph, library_name, base_filename, web, tail_00, tail_21, tail_23, tail_11, tail_31)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_31(control_31, labeledgraph, library_name, base_filename, web, tail_00, tail_21, tail_22, tail_11, tail_31)">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
                         std::cout << "Starting T_31...\n";
 
-                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 1}, {2, 3}, {1, 1}};
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 1}, {2, 2}, {1, 1}};
                         std::map<std::pair<int, int>, std::string> tail_jk;
                         tail_jk[{0, 0}] = tail_00;
                         tail_jk[{2, 1}] = tail_21;
-                        tail_jk[{2, 3}] = tail_23;
+                        tail_jk[{2, 2}] = tail_22;
                         tail_jk[{1, 1}] = tail_11;
 
                         std::string input_31 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
@@ -365,7 +466,7 @@
             <connect-read port="web" place="web"/>
             <connect-read port="tail_00" place="tail_00"/>
             <connect-read port="tail_21" place="tail_21"/>
-            <connect-read port="tail_23" place="tail_23"/>
+            <connect-read port="tail_22" place="tail_22"/>
             <connect-read port="tail_11" place="tail_11"/>
             <connect-out port="tail_31" place="tail_31"/>
         </transition>
@@ -381,20 +482,20 @@
                 <in name="web" type="string"/>
                 <in name="tail_00" type="string"/>
                 <in name="tail_21" type="string"/>
-                <in name="tail_22" type="string"/>
+                <in name="tail_23" type="string"/>
                 <in name="tail_11" type="string"/>
                 <out name="tail_32" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32(control_32, labeledgraph, library_name, base_filename, web, tail_00, tail_21, tail_22, tail_11, tail_32)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_32(control_32, labeledgraph, library_name, base_filename, web, tail_00, tail_21, tail_23, tail_11, tail_32)">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
                         std::cout << "Starting T_32...\n";
 
-                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 1}, {2, 2}, {1, 1}};
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 1}, {2, 3}, {1, 1}};
                         std::map<std::pair<int, int>, std::string> tail_jk;
                         tail_jk[{0, 0}] = tail_00;
                         tail_jk[{2, 1}] = tail_21;
-                        tail_jk[{2, 2}] = tail_22;
+                        tail_jk[{2, 3}] = tail_23;
                         tail_jk[{1, 1}] = tail_11;
 
                         std::string input_32 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
@@ -432,7 +533,7 @@
             <connect-read port="web" place="web"/>
             <connect-read port="tail_00" place="tail_00"/>
             <connect-read port="tail_21" place="tail_21"/>
-            <connect-read port="tail_22" place="tail_22"/>
+            <connect-read port="tail_23" place="tail_23"/>
             <connect-read port="tail_11" place="tail_11"/>
             <connect-out port="tail_32" place="tail_32"/>
         </transition>
@@ -504,6 +605,487 @@
             <connect-out port="tail_33" place="tail_33"/>
         </transition>
 
+        <transition name="T_34">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_34" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_21" type="string"/>
+                <in name="tail_24" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_34" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_34(control_34, labeledgraph, library_name, base_filename, web, tail_00, tail_21, tail_24, tail_11, tail_34)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_34...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 1}, {2, 4}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{2, 1}] = tail_21;
+                        tail_jk[{2, 4}] = tail_24;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_34 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_34 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_34, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_34 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 4, library_name, base_filename);
+                        std::cout << "labels_34:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_34, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_34\n";
+                        auto computation_time_34 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_34 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_34, labels_34, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_34);
+                        auto computation_end_time_34 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_34 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_34 - computation_time_34);
+                        std::cout << "One sector computation completed in T_34 in " << computation_duration_34.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_34, library_name, base_filename);
+                        std::cout << "size of one_sector_34: IBP_34, MI_34, Tail_34=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_34 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_34, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_34);
+                        std::cout << "T_34 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_34" place="control_34"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_21" place="tail_21"/>
+            <connect-read port="tail_24" place="tail_24"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_34" place="tail_34"/>
+        </transition>
+
+        <transition name="T_35">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_35" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_22" type="string"/>
+                <in name="tail_24" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_35" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_35(control_35, labeledgraph, library_name, base_filename, web, tail_00, tail_22, tail_24, tail_11, tail_35)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_35...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 2}, {2, 4}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{2, 2}] = tail_22;
+                        tail_jk[{2, 4}] = tail_24;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_35 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_35 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_35, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_35 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 5, library_name, base_filename);
+                        std::cout << "labels_35:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_35, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_35\n";
+                        auto computation_time_35 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_35 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_35, labels_35, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_35);
+                        auto computation_end_time_35 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_35 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_35 - computation_time_35);
+                        std::cout << "One sector computation completed in T_35 in " << computation_duration_35.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_35, library_name, base_filename);
+                        std::cout << "size of one_sector_35: IBP_35, MI_35, Tail_35=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_35 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_35, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_35);
+                        std::cout << "T_35 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_35" place="control_35"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_22" place="tail_22"/>
+            <connect-read port="tail_24" place="tail_24"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_35" place="tail_35"/>
+        </transition>
+
+        <transition name="T_36">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_36" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_23" type="string"/>
+                <in name="tail_24" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_36" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_36(control_36, labeledgraph, library_name, base_filename, web, tail_00, tail_23, tail_24, tail_11, tail_36)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_36...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {2, 3}, {2, 4}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{2, 3}] = tail_23;
+                        tail_jk[{2, 4}] = tail_24;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_36 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_36 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_36, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_36 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 3, 6, library_name, base_filename);
+                        std::cout << "labels_36:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_36, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_36\n";
+                        auto computation_time_36 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_36 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_36, labels_36, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_36);
+                        auto computation_end_time_36 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_36 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_36 - computation_time_36);
+                        std::cout << "One sector computation completed in T_36 in " << computation_duration_36.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_36, library_name, base_filename);
+                        std::cout << "size of one_sector_36: IBP_36, MI_36, Tail_36=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_36 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_36, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_36);
+                        std::cout << "T_36 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_36" place="control_36"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_23" place="tail_23"/>
+            <connect-read port="tail_24" place="tail_24"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_36" place="tail_36"/>
+        </transition>
+
+        <transition name="T_41">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_41" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_31" type="string"/>
+                <in name="tail_32" type="string"/>
+                <in name="tail_33" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_41" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_41(control_41, labeledgraph, library_name, base_filename, web, tail_00, tail_31, tail_32, tail_33, tail_11, tail_41)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_41...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {3, 1}, {3, 2}, {3, 3}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{3, 1}] = tail_31;
+                        tail_jk[{3, 2}] = tail_32;
+                        tail_jk[{3, 3}] = tail_33;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_41 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_41 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_41, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_41 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 4, 1, library_name, base_filename);
+                        std::cout << "labels_41:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_41, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_41\n";
+                        auto computation_time_41 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_41 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_41, labels_41, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_41);
+                        auto computation_end_time_41 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_41 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_41 - computation_time_41);
+                        std::cout << "One sector computation completed in T_41 in " << computation_duration_41.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_41, library_name, base_filename);
+                        std::cout << "size of one_sector_41: IBP_41, MI_41, Tail_41=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_41 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_41, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_41);
+                        std::cout << "T_41 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_41" place="control_41"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_31" place="tail_31"/>
+            <connect-read port="tail_32" place="tail_32"/>
+            <connect-read port="tail_33" place="tail_33"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_41" place="tail_41"/>
+        </transition>
+
+        <transition name="T_42">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_42" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_31" type="string"/>
+                <in name="tail_34" type="string"/>
+                <in name="tail_35" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_42" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_42(control_42, labeledgraph, library_name, base_filename, web, tail_00, tail_31, tail_34, tail_35, tail_11, tail_42)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_42...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {3, 1}, {3, 4}, {3, 5}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{3, 1}] = tail_31;
+                        tail_jk[{3, 4}] = tail_34;
+                        tail_jk[{3, 5}] = tail_35;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_42 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_42 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_42, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_42 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 4, 2, library_name, base_filename);
+                        std::cout << "labels_42:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_42, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_42\n";
+                        auto computation_time_42 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_42 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_42, labels_42, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_42);
+                        auto computation_end_time_42 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_42 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_42 - computation_time_42);
+                        std::cout << "One sector computation completed in T_42 in " << computation_duration_42.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_42, library_name, base_filename);
+                        std::cout << "size of one_sector_42: IBP_42, MI_42, Tail_42=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_42 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_42, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_42);
+                        std::cout << "T_42 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_42" place="control_42"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_31" place="tail_31"/>
+            <connect-read port="tail_34" place="tail_34"/>
+            <connect-read port="tail_35" place="tail_35"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_42" place="tail_42"/>
+        </transition>
+
+        <transition name="T_43">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_43" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_32" type="string"/>
+                <in name="tail_34" type="string"/>
+                <in name="tail_36" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_43" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_43(control_43, labeledgraph, library_name, base_filename, web, tail_00, tail_32, tail_34, tail_36, tail_11, tail_43)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_43...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {3, 2}, {3, 4}, {3, 6}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{3, 2}] = tail_32;
+                        tail_jk[{3, 4}] = tail_34;
+                        tail_jk[{3, 6}] = tail_36;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_43 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_43 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_43, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_43 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 4, 3, library_name, base_filename);
+                        std::cout << "labels_43:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_43, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_43\n";
+                        auto computation_time_43 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_43 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_43, labels_43, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_43);
+                        auto computation_end_time_43 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_43 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_43 - computation_time_43);
+                        std::cout << "One sector computation completed in T_43 in " << computation_duration_43.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_43, library_name, base_filename);
+                        std::cout << "size of one_sector_43: IBP_43, MI_43, Tail_43=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_43 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_43, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_43);
+                        std::cout << "T_43 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_43" place="control_43"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_32" place="tail_32"/>
+            <connect-read port="tail_34" place="tail_34"/>
+            <connect-read port="tail_36" place="tail_36"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_43" place="tail_43"/>
+        </transition>
+
+        <transition name="T_44">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <in name="control_44" type="control"/>
+                <in name="labeledgraph" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="web" type="string"/>
+                <in name="tail_00" type="string"/>
+                <in name="tail_33" type="string"/>
+                <in name="tail_35" type="string"/>
+                <in name="tail_36" type="string"/>
+                <in name="tail_11" type="string"/>
+                <out name="tail_44" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_44(control_44, labeledgraph, library_name, base_filename, web, tail_00, tail_33, tail_35, tail_36, tail_11, tail_44)">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                        std::cout << "Starting T_44...\n";
+
+                        std::vector<std::pair<int, int>> jk_pairs = {{0, 0}, {3, 3}, {3, 5}, {3, 6}, {1, 1}};
+                        std::map<std::pair<int, int>, std::string> tail_jk;
+                        tail_jk[{0, 0}] = tail_00;
+                        tail_jk[{3, 3}] = tail_33;
+                        tail_jk[{3, 5}] = tail_35;
+                        tail_jk[{3, 6}] = tail_36;
+                        tail_jk[{1, 1}] = tail_11;
+
+                        std::string input_44 = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        for (size_t i = 1; i < jk_pairs.size(); i++) {
+                            auto [j, k] = jk_pairs[i];
+                            std::string tail = tail_jk[{j, k}];
+                            input_44 = RESOLVE_INTERFACE_FUNCTION(singular_append_list_gpi)(input_44, tail, library_name, base_filename);
+                        }
+
+                        std::string labels_44 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 4, 4, library_name, base_filename);
+                        std::cout << "labels_44:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_44, library_name) << std::endl;
+/******************************************************************************************************************************************* */
+                        std::cout << "Starting one sector computation in T_44\n";
+                        auto computation_time_44 = std::chrono::high_resolution_clock::now();
+                        std::string one_sector_44 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint_cpp)(labeledgraph, input_44, labels_44, 7853, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(input_44);
+                        auto computation_end_time_44 = std::chrono::high_resolution_clock::now();
+                        auto computation_duration_44 = std::chrono::duration_cast<std::chrono::milliseconds>(computation_end_time_44 - computation_time_44);
+                        std::cout << "One sector computation completed in T_44 in " << computation_duration_44.count() << " milliseconds\n";
+/******************************************************************************************************************************************* */
+                        std::string size_of_one_sector = RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_44, library_name, base_filename);
+                        std::cout << "size of one_sector_44: IBP_44, MI_44, Tail_44=" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector, library_name) << std::endl;
+
+
+                        tail_44 = RESOLVE_INTERFACE_FUNCTION(singular_gettail_gpi)(one_sector_44, library_name, base_filename);
+                        RESOLVE_INTERFACE_FUNCTION(singular_remove_file)(one_sector_44);
+                        std::cout << "T_44 completed\n";
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_44" place="control_44"/>
+            <connect-read port="labeledgraph" place="labeledgraph"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="web" place="web"/>
+            <connect-read port="tail_00" place="tail_00"/>
+            <connect-read port="tail_33" place="tail_33"/>
+            <connect-read port="tail_35" place="tail_35"/>
+            <connect-read port="tail_36" place="tail_36"/>
+            <connect-read port="tail_11" place="tail_11"/>
+            <connect-out port="tail_44" place="tail_44"/>
+        </transition>
+
         <transition name="T_0">
             <defun>
                 <require key="worker" mandatory="true"/>
@@ -541,29 +1123,33 @@
                 <require key="worker" mandatory="true"/>
 
                 <in name="control_T_end" type="control"/>
-                <in name="tail_31" type="string"/>
-                <in name="tail_32" type="string"/>
-                <in name="tail_33" type="string"/>
+                <in name="tail_41" type="string"/>
+                <in name="tail_42" type="string"/>
+                <in name="tail_43" type="string"/>
+                <in name="tail_44" type="string"/>
                 <out name="output" type="string"/>
-                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_end(control_T_end, tail_31, tail_32, tail_33, output)">
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_end(control_T_end, tail_41, tail_42, tail_43, tail_44, output)">
                     <cinclude href="interface/template_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <code><![CDATA[
                         std::cout << "Starting T_end...\n";
                         output = "";
-                        output += tail_31;
+                        output += tail_41;
                         output += ";";
-                        output += tail_32;
+                        output += tail_42;
                         output += ";";
-                        output += tail_33;
+                        output += tail_43;
+                        output += ";";
+                        output += tail_44;
                         std::cout << "T_end completed\n";
                     ]]></code>
                 </module>
             </defun>
             <connect-in port="control_T_end" place="control_T_end"/>
-            <connect-read port="tail_31" place="tail_31"/>
-            <connect-read port="tail_32" place="tail_32"/>
-            <connect-read port="tail_33" place="tail_33"/>
+            <connect-read port="tail_41" place="tail_41"/>
+            <connect-read port="tail_42" place="tail_42"/>
+            <connect-read port="tail_43" place="tail_43"/>
+            <connect-read port="tail_44" place="tail_44"/>
             <connect-out port="output" place="output"/>
         </transition>
 
