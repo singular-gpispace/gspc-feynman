@@ -1,0 +1,55 @@
+
+proc OneSectorComputation(labeledgraph G1,list tailInts,list sector_lab )
+"USAGE:  
+ASSUME:  
+RETURN:  
+KEYWORDS: Feynman graph,IBPs
+"
+{ 
+  list targetInt;
+  setIBP reducedIBPs; //a place to store the independent IBPs coming out from current sector
+  list MIs;  //a place to store the Master integrals coming out from current sector
+  list OutputtailInts;  //a place to store the tail integrals coming out from current sector
+  
+//1.Extract target integrals for current sector (which are tail integrals coming from parent 
+//sectors)
+
+  for(int i=1;i<=size(tailInts);i++)
+  {
+    for(int j=1;j<=size(tailInts[i]);j++)
+    {
+            if(string(getSector(tailInts[i][j])[2])==string(sector_lab)){
+        targetInt[size(targetInt)+1]=tailInts[i][j];
+      }
+    }
+
+  }
+
+  if(size(targetInt)==0){
+    print("No input integrals came from the parents")
+    return(reducedIBPs,MIs,OutputtailInts);
+  }
+  
+
+//2. Computations related to sector
+
+  setIBP totalIBP=computeManyIBP(G1,targetInt);
+  list L=getRedIBPs(totalIBP,7853);    //L[1]=,set of independent IBPs, L[2]=master and tail integrals
+  reducedIBPs.seed=sector_lab;
+  reducedIBPs.over=G1.baikovover;
+  reducedIBPs.IBP=L[1];
+  for(int i=1;i<=size(L[2]);i++){
+    if(string(getSector(L[2][i])[2])==string(sector_lab)){
+      MIs[size(MIs)+1]=L[2][i];
+    }
+    else{
+      OutputtailInts[size(OutputtailInts)+1]=L[2][i];
+    }
+  }
+
+  print("size of reducedIBPs: "+string(size_ibps));
+  print("size of MIs: "+string(size_MIs));
+  print("size of OutputtailInts: "+string(size_OutputtailInts));
+  return(list(reducedIBPs,MIs,OutputtailInts));
+
+}

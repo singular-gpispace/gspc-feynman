@@ -15,14 +15,14 @@ namespace template_module
   public:
     static ParametersDescription options();
 
-    Workflow (Parameters const& parameters);
+    Workflow(Parameters const& parameters);
 
     ValuesOnPorts inputs() const;
 
-    void  process (WorkflowResult const& result, Parameters const& parameters, leftv res) const;
+    void  process(WorkflowResult const& result, Parameters const& parameters, leftv res) const;
 
   private:
-     //int _N;
+    //int _N;
     std::string _input;
     std::string _basefilename;
     std::string _libraryname;

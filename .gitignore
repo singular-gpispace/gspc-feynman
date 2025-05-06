@@ -1,3 +1,5 @@
 build_dir/
 install_dir/
+example_dir/.singularhistory
 example_dir/temp/
+*.ssi

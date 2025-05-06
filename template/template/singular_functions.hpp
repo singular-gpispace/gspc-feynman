@@ -1,17 +1,22 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <Singular/libsingular.h>
 #include <Singular/links/ssiLink.h> // for ssiInfo etc.
 #include <Singular/newstruct.h>
 //#include <list>
 
-// Singular defines this in ssiLink.cc
-#define SSI_VERSION 13
+// Singular defines this in ssiLink.cc 
+//I gave manually to it
+#define SSI_VERSION 15
 
 // these are from ssiLink.cc
-char* ssiReadString(const ssiInfo *d);
+// char* ssiReadString(const ssiInfo *d);
+
+// Declaration in the header file 
+std::string ssiReadString(const ssiInfo* d);
 
 // these are from newstruct.cc
 BOOLEAN newstruct_deserialize(blackbox **, void **d, si_link f);
@@ -67,4 +72,3 @@ std::pair<int, lists> call_user_proc (std::string const&,
 std::string worker();
 
 // std::list<std::string> wrap(std::list<std::string>const&);
-

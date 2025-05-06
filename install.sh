@@ -1,32 +1,50 @@
 #!/bin/bash
-mkdir -p  ~/gpi/try_gpi/Reduce/build_dir  ~/gpi/try_gpi/Reduce/install_dir
-# Activate the Spack environm
-spack load gpi-space@23.06
-pnetc ~/gpi/try_gpi/Reduce/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/Reduce/template/workflow/fey.svg
+
+# Clean previous build and install directories
+#rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
+
+# Create necessary directories
+#mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
+
+# Activate the Spack environment
+spack load gpi-space@24.12 
+# Generate SVG workflow diagram
+pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg
+
 # Define variables
-INSTALL_PREFIX="/home/atraore/gpi/try_gpi/Reduce/install_dir/"
+INSTALL_PREFIX="/home/atraore/gpi/try_gpi/feynman_ibp/install_dir/"
 BUILD_TYPE="Release"
-SINGULAR_HOME="/home/atraore/Singular/Singular/"
 BOOST_NO_CMAKE="on"
-GPISPACE_ROOT="$HOME/spack/"
-GPISPACE_ROOT="$HOME/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-23.06-gxye6b7ngsnbxnzjkfsfqtvanynyghdk/"
-BUILD_DIR="/home/atraore/gpi/try_gpi/Reduce/build_dir/"
-SOURCE_DIR="/home/atraore/gpi/try_gpi/Reduce/template"
 
- SINGULAR_INSTALL_DIR=/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-snapshot_22_03-5jvwtprazqirywu2triw6rprjazzi3so
- FLINT_HOME=$SINGULAR_INSTALL_DIR/lib
- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SINGULAR_INSTALL_DIR/lib
- DEP_LIBS=$SINGULAR_INSTALL_DIR/lib
+# Set GPI-Space root
+GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jz6b4m6ql54fmhkpq6gbico2neic3kd5"
+export GSPC_HOME=$GPISPACE_ROOT
 
- cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
+# Set FLINT home directory
+FLINT_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/flint-2.6.3-pb3i4qjyjz7pqkpf6cs7wk6ro5pl564i"
+
+# Set GMP home directory
+GMP_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gmp-6.2.1-gjqp7e3m3fik4wsuqqcxv2brlj2wkyza"
+
+# Set Singular install
+SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-4.4.0p2-k7rgdkzo5prqsvxjckejvcdvxgjr64bk"
+
+# Set the library path correctly
+export LD_LIBRARY_PATH=$GPISPACE_ROOT/lib:$FLINT_HOME/lib:$GMP_HOME/lib:$SINGULAR_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+
+# Verify paths before building
+ls $GPISPACE_ROOT/gspc_version && echo "GPI-Space version is here!" || { echo "GPI-Space version file missing!"; exit 1; }
+
+# Run CMake
+cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
       -D CMAKE_BUILD_TYPE=$BUILD_TYPE \
       -D SINGULAR_HOME=$SINGULAR_INSTALL_DIR \
       -D Boost_NO_BOOST_CMAKE=$BOOST_NO_CMAKE \
       -D GPISpace_ROOT=$GPISPACE_ROOT \
       -D GMP_HOME=$GMP_HOME \
-      -B $BUILD_DIR \
-      -S $SOURCE_DIR
+      -D FLINT_HOME=$FLINT_HOME \
+      -B ~/gpi/try_gpi/feynman_ibp/build_dir \
+      -S ~/gpi/try_gpi/feynman_ibp/template
 
-cmake --build $BUILD_DIR --target install -j $(nproc)
-
-
+# Build and install
+cmake --build ~/gpi/try_gpi/feynman_ibp/build_dir --target install -- -j $(nproc)

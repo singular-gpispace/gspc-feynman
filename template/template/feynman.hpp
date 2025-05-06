@@ -1,10 +1,19 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cctype>
-#include <sstream>
+// feynman.h
+#ifndef FEYNMAN_HPP
+#define FEYNMAN_HPP
 
-// Function to extract integer pairs from a string
-std::vector<std::pair<int, int>> extractIntegerPairs(const std::string& graph);
-std::vector<std::string> parseInput(const std::string& input);
-std::vector<int> parsevector(const std::string& input);
+#include <Singular/libsingular.h>
+#include <flint/fmpq_mat.h>
+#include <flint/fmpq.h>
+#include <flint/fmpz.h>
+#include "common_functions.hpp"
+#include <string>
+#include <vector>
+#include <list>
+
+// Function declarations for FLINT-based Gaussian reduction
+lists gaussred_pivot_flint(matrix A);
+lists singflintGaussRed(leftv args);
+
+NO_NAME_MANGLING
+#endif // FEYNMAN_HPP

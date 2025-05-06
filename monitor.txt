@@ -1,34 +1,78 @@
-230286.230292@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 42231 230265-0 17 waas.job.230286.0 8 template 0
-230300.230305@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 42231 230265-2 17 waas.job.230286.1 7 compute 0
-230300.230305@waas 2024-11-13 22:42:20 legacy-level-trace task finished: waas.job.230286.1
-230300.230305@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 42231 230265-2 17 waas.job.230286.1 0  1
-230286.230292@waas 2024-11-13 22:42:20 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 42231 230265-0 17 waas.job.230286.0 8 template 1
-230324.230327@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-6 is shutting down
-230318.230321@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-5 is shutting down
-230312.230315@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-4 is shutting down
-230306.230309@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-3 is shutting down
-230300.230303@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-2 is shutting down
-230294.230297@waas 2024-11-13 22:42:20 legacy-level-trace worker-waas 42231 230265-1 is shutting down
-230663.230671@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38937 230650-0 17 waas.job.230663.0 8 template 0
-230697.230702@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38937 230650-4 17 waas.job.230663.1 7 compute 0
-230697.230702@waas 2024-11-13 22:44:14 legacy-level-trace task finished: waas.job.230663.1
-230697.230702@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 38937 230650-4 17 waas.job.230663.1 0  1
-230663.230671@waas 2024-11-13 22:44:14 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 38937 230650-0 17 waas.job.230663.0 8 template 1
-230709.230712@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-6 is shutting down
-230703.230706@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-5 is shutting down
-230691.230694@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-3 is shutting down
-230697.230700@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-4 is shutting down
-230685.230688@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-2 is shutting down
-230677.230682@waas 2024-11-13 22:44:14 legacy-level-trace worker-waas 38937 230650-1 is shutting down
-231074.231083@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 46527 231060-0 17 waas.job.231074.0 8 template 0
-231089.231094@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 46527 231060-1 17 waas.job.231074.1 7 compute 0
-231089.231094@waas 2024-11-13 22:46:03 legacy-level-info ****output****123
-231089.231094@waas 2024-11-13 22:46:03 legacy-level-trace task finished: waas.job.231074.1
-231089.231094@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 worker-waas 46527 231060-1 17 waas.job.231074.1 0  1
-231074.231083@waas 2024-11-13 22:46:03 gantt-job-events 22 serialization::archive 14 0 0 1 0 25 agent-waas 46527 231060-0 17 waas.job.231074.0 8 template 1
-231119.231122@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-6 is shutting down
-231113.231116@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-5 is shutting down
-231107.231110@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-4 is shutting down
-231101.231104@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-3 is shutting down
-231095.231098@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-2 is shutting down
-231089.231092@waas 2024-11-13 22:46:03 legacy-level-trace worker-waas 46527 231060-1 is shutting down
+1465640.1465646@waas 2025-05-05 16:32:51 gantt-job-events 22 serialization::archive 14 0 0 1 0 26 agent-waas 32963 1465630-0 18 waas.job.1465640.0 8 template 0
+1465660.1465665@waas 2025-05-05 16:32:51 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-3 18 waas.job.1465640.1 3 T_0 0
+1465660.1465665@waas 2025-05-05 16:32:51 legacy-level-info Starting T_0...
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info labels_11:1,2,3
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Starting one sector computation
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Computing target ints completed  in 202 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Getting red ibps completed in 3 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info *********preparing red ibps**********
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Preparing red ibps completed in 1 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Gauss reduction completed in 10 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Computing get red ibps completed in 6 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info Computing one sector completed in 7 milliseconds
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info size of one_sector_11: IBP_11, MI_11, Tail_11=19,36,38
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info size of tail_11: 38
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-info T_0 completed
+1465660.1465665@waas 2025-05-05 16:32:52 legacy-level-trace task finished: waas.job.1465640.1
+1465660.1465665@waas 2025-05-05 16:32:52 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-3 18 waas.job.1465640.1 0  1
+1465666.1465671@waas 2025-05-05 16:32:52 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-4 18 waas.job.1465640.2 4 T_22 0
+1465678.1465683@waas 2025-05-05 16:32:52 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-6 18 waas.job.1465640.4 4 T_21 0
+1465684.1465689@waas 2025-05-05 16:32:52 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-7 18 waas.job.1465640.3 4 T_23 0
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info Starting T_22...
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info Starting T_21...
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Starting T_23...
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info labels_22:1,3
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info labels_21:1,2
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info labels_23:2,3
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Computing target ints completed  in 224 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Getting red ibps completed in 12 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info *********preparing red ibps**********
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Preparing red ibps completed in 6 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Gauss reduction completed in 15 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info Computing target ints completed  in 340 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Computing get red ibps completed in 74 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info Computing one sector completed in 18 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info size of one_sector_23: IBP_23, MI_23, Tail_23=83,112,82
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-info T_23 completed
+1465684.1465689@waas 2025-05-05 16:32:52 legacy-level-trace task finished: waas.job.1465640.3
+1465684.1465689@waas 2025-05-05 16:32:52 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-7 18 waas.job.1465640.3 0  1
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info Getting red ibps completed in 38 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info *********preparing red ibps**********
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info Computing target ints completed  in 400 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info Preparing red ibps completed in 19 milliseconds
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info Getting red ibps completed in 51 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:52 legacy-level-info Gauss reduction completed in 52 milliseconds
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info *********preparing red ibps**********
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info Preparing red ibps completed in 22 milliseconds
+1465666.1465671@waas 2025-05-05 16:32:52 legacy-level-info Gauss reduction completed in 64 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:53 legacy-level-info Computing get red ibps completed in 232 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:53 legacy-level-info Computing one sector completed in 38 milliseconds
+1465678.1465683@waas 2025-05-05 16:32:53 legacy-level-info size of one_sector_21: IBP_21, MI_21, Tail_21=154,200,164
+1465678.1465683@waas 2025-05-05 16:32:53 legacy-level-info T_21 completed
+1465678.1465683@waas 2025-05-05 16:32:53 legacy-level-trace task finished: waas.job.1465640.4
+1465678.1465683@waas 2025-05-05 16:32:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-6 18 waas.job.1465640.4 0  1
+1465684.1465689@waas 2025-05-05 16:32:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-7 18 waas.job.1465640.5 4 T_31 0
+1465684.1465689@waas 2025-05-05 16:32:53 legacy-level-info Starting T_31...
+1465684.1465689@waas 2025-05-05 16:32:53 legacy-level-info labels_31:1
+1465666.1465671@waas 2025-05-05 16:32:53 legacy-level-info Computing get red ibps completed in 250 milliseconds
+1465666.1465671@waas 2025-05-05 16:32:53 legacy-level-info Computing one sector completed in 52 milliseconds
+1465666.1465671@waas 2025-05-05 16:32:53 legacy-level-info size of one_sector_22: IBP_22, MI_22, Tail_22=153,308,161
+1465666.1465671@waas 2025-05-05 16:32:53 legacy-level-info T_22 completed
+1465666.1465671@waas 2025-05-05 16:32:53 legacy-level-trace task finished: waas.job.1465640.2
+1465666.1465671@waas 2025-05-05 16:32:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-4 18 waas.job.1465640.2 0  1
+1465648.1465653@waas 2025-05-05 16:32:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-1 18 waas.job.1465640.6 4 T_33 0
+1465654.1465659@waas 2025-05-05 16:32:53 gantt-job-events 22 serialization::archive 14 0 0 1 0 27 worker-waas 32963 1465630-2 18 waas.job.1465640.7 4 T_32 0
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info Starting T_33...
+1465654.1465659@waas 2025-05-05 16:32:53 legacy-level-info Starting T_32...
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info labels_33:3
+1465654.1465659@waas 2025-05-05 16:32:53 legacy-level-info labels_32:2
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info Computing target ints completed  in 474 milliseconds
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info Getting red ibps completed in 42 milliseconds
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info *********preparing red ibps**********
+1465648.1465653@waas 2025-05-05 16:32:53 legacy-level-info Preparing red ibps completed in 33 milliseconds
+1465648.1465653@waas 2025-05-05 16:32:54 legacy-level-info Gauss reduction completed in 206 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:54 legacy-level-info Computing target ints completed  in 1218 milliseconds
+1465654.1465659@waas 2025-05-05 16:32:54 legacy-level-info Computing target ints completed  in 1171 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:54 legacy-level-info Getting red ibps completed in 266 milliseconds
+1465684.1465689@waas 2025-05-05 16:32:54 legacy-level-info *********preparing red ibps**********
+1465654.1465659@waas 2025-05-05 16:32:54 legacy-

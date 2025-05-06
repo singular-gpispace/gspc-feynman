@@ -1,0 +1,21 @@
+// Define token type
+newstruct("token", "list fieldnames, list data");
+
+// Create a simple test token
+proc createTestToken()
+{
+  list v = list(1, 2);
+  list e = list(list(1, 2));
+  list targetInt = list(list(1, -1));
+
+  token t;
+  t.fieldnames = list("vertices", "edges", "targetInt");
+  t.data = list(v, e, targetInt);
+  return(t);
+}
+
+// Create and save the test token
+token input = createTestToken();
+link l = "ssi:w test_input.ssi";
+write(l, input);
+close(l); 

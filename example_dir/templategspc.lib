@@ -19,16 +19,26 @@ generateIOTokenTypes(configToken)              register the user - defined types
 gspc_template(list, configToken, configToken)    interface of the template framework in Singular
 ";
 
+
+
 proc mod_init()
 {
-    //Singular does not support fieldname containing underscore
-    LIB "/home/atraore/gpi/try_gpi/Reduce/build_dir/src/libSINGULAR-template-module.so";
+    
+
+    LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");
     newstruct("templateConfigToken", " string neededLibrary, string functionName");
     newstruct("token", "list fieldnames, list data");
     //newstruct("Toknlift", "vector a, vector b"); 
+
+    newstruct("graph", "list vertices, list edges");
+    newstruct("labeledgraph", "list vertices, list edges, ring over, list labels, ring overpoly, list elimvars, ring baikovover, matrix baikovmatrix");
+    newstruct("Net", "list rows");
+    newstruct("oneIBP", "list c, list i");
+    newstruct("setIBP", "ring over,list seed,list IBP");
+    newstruct("oneSector", "list lab, list sectorMap ,list targetInts ");
 
 }
 
@@ -44,17 +54,16 @@ RETURN: a configToken containing a gspcConfigToken with the standard configurati
     ct.options = gc;
     return(ct);
 }
-
 proc configure_template()
-"USAGE: configure_template()
-RETURN: a configToken containing a templateConfigToken with the standard
-configuration for the template pattern.
-"
 {
     templateConfigToken tc;
     configToken ct;
     ct.tokentype = "templateConfigToken";
     ct.options = tc;
+
+    // Set redSB option to true
+    option(redSB);
+
     return(ct);
 }
 
@@ -160,62 +169,63 @@ static proc gspc_template(list l, configToken gc, configToken pc)
     return(sm_result);
 }
 
-proc gspc_template_SchRes(ideal I, configToken gc)
+proc gspc_template_SchRes(list L, configToken gc)
 {
+    
     configToken ct = configure_template();
     ct.options.neededLibrary = "templategp.lib";
     ct.options.functionName = "stdBasis";
 
-
-    int r = size(I);
-    //intvec primeiv = primeList(I, nb_prime);
-    string s = "{{1, 3}, {1, 2}, {1, 2}, {2, 4}, {3, 4}, {3, 4}}";
-    // string s = l[2];
-    print(s);
-    string ss = "{1,2,3,4}";
-
-    //intvec primeiv = primeList(I, nb_prime);
-    list L = s;
+    /*  int r = size(I);
+     //intvec primeiv = primeList(I, nb_prime);
+     string s = "{{1, 3}, {1, 2}, {1, 2}, {2, 4}, {3, 4}, {3, 4}}";
+     // string s = l[2];
+     print(s);
+     string ss = "{1,2,3,4}";
+  */
+  //intvec primeiv = primeList(I, nb_prime);
+    //list L = s;
     list inputlists;
     token t;
-    for (int i = 1; i <= 1; i++)
-    {
-        t.fieldnames = list("generators", "Input101");
-        t.data[1] = 1000;
-        t.data[2] = 1234;
-        t.data[3] = L;
-        t.data[4] = ss;
 
-        inputlists[i] = t;
+    t.fieldnames = list("generators", "Input101");
+    //  L is a list containing the input data
+    for (int i = 1; i <= size(L); i++) {
+
+        t.data[i] = L[i];
+
     }
+    inputlists[1] = t;
+
     def re = gspc_template(inputlists, gc, ct);
     def inputRing = basering;
     // Access the first element in the list
     def resultToken = re[1];
 
     // Print the structure and type of `resultToken`
-    //print("Structure of resultToken: "); print(resultToken);
-    //print("Type of resultToken: "); print(typeof(resultToken));
+   /*  print("Structure of resultToken: "); print(resultToken);
+    print("Type of resultToken: "); print(typeof(resultToken)); */
+    // print(re);
 
 
-
-    // Print current ring context
-    //print("Current ring context before accessing data: "); print(basering);
-    def resultRing = resultToken.r_data;
-    setring resultRing;
-    // Extract the data from resultToken
-    list Result = resultToken.data;
-    // print("beforeReturn");
-   //print(Result);
+     // Print current ring context
+     //print("Current ring context before accessing data: "); print(basering);
+   /*   def resultRing = resultToken.r_data;
+     setring resultRing;
+     // Extract the data from resultToken
+     list Result = resultToken.data;
+     print("beforeReturn");
+     print(Result);
      // Print the extracted data for verification
 
      // Restore the original ring context
-    setring inputRing;
+     setring inputRing;
 
-    // Print restored ring context
-    //print("Ring context restored to: "); print(basering);
-
+     // Print restored ring context
+     print("Ring context restored to: "); print(basering);
+     list output = imap(resultRing, output); */
+    return(re[1]);
     // Return the result
-    return(fetch(resultRing, Result));
+    //return(resultRing);
     //return(0);
 }

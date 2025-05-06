@@ -19,15 +19,26 @@ generateIOTokenTypes(configToken)              register the user - defined types
 gspc_template(list, configToken, configToken)    interface of the template framework in Singular
 ";
 
+
+
 proc mod_init()
 {
-    //Singular does not support fieldname containing underscore
-    LIB "libSINGULAR-template-module.so";
+    
+
+    LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
+
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");
     newstruct("templateConfigToken", " string neededLibrary, string functionName");
     newstruct("token", "list fieldnames, list data");
     //newstruct("Toknlift", "vector a, vector b"); 
+
+    newstruct("graph", "list vertices, list edges");
+    newstruct("labeledgraph", "list vertices, list edges, ring over, list labels, ring overpoly, list elimvars, ring baikovover, matrix baikovmatrix");
+    newstruct("Net", "list rows");
+    newstruct("oneIBP", "list c, list i");
+    newstruct("setIBP", "ring over,list seed,list IBP");
+    newstruct("oneSector", "list lab, list sectorMap ,list targetInts ");
 
 }
 
@@ -43,44 +54,42 @@ RETURN: a configToken containing a gspcConfigToken with the standard configurati
     ct.options = gc;
     return(ct);
 }
-
 proc configure_template()
-"USAGE: configure_template()
-RETURN: a configToken containing a templateConfigToken with the standard
-configuration for the template pattern.
-"
 {
     templateConfigToken tc;
     configToken ct;
     ct.tokentype = "templateConfigToken";
     ct.options = tc;
+
+    // Set redSB option to true
+    option(redSB);
+
     return(ct);
 }
 
-
 static proc gspc_template(list l, configToken gc, configToken pc)
 {
-    // Parse driver options
+    //Parse driver options
     string driver_opts;
     if ((typeof(gc.options) != "gspcConfigToken") || (typeof(pc.options) != "templateConfigToken"))
     {
         ERROR("wrong config token types");
     }
 
-    // Parse rifstrategy and rifstrategy-parameters
+    //Parse rifstrategy and rifstrategy-parameters
     driver_opts = driver_opts + "--rif-strategy " + gc.options.rifstrategy;
     if (gc.options.rifstrategyparameters != "")
     {
         driver_opts = driver_opts + " --rif-strategy-parameters " + gc.options.rifstrategyparameters;
     }
 
-    // Parse worker topology
+    //Parse worker topology
     driver_opts = driver_opts + " --topology " + "worker:" + string(gc.options.procspernode);
 
-    // Parse nodefile
+    //Parse nodefile
     driver_opts = driver_opts + " --nodefile " + gc.options.nodefile;
 
-    // Parse loghost and logport
+    //Parser loghost and logport
     if (gc.options.logport != 0) // logging requested
     {
         if (gc.options.loghost == "") // no hostname given, so read from file
@@ -100,7 +109,7 @@ static proc gspc_template(list l, configToken gc, configToken pc)
             }
             gc.options.loghost = loghost;
         }
-        driver_opts = driver_opts + " --log-host " + gc.options.loghost + " --log-port " + string(gc.options.logport);
+        driver_opts = driver_opts + " --log-host " + gc.options.loghost, " --log-port ", string(gc.options.logport);
     }
 
     if (system("getenv", "LD_LIBRARY_PATH") != "")
@@ -108,13 +117,13 @@ static proc gspc_template(list l, configToken gc, configToken pc)
         driver_opts = driver_opts + " --worker-env-copy-variable " + "LD_LIBRARY_PATH";
     }
 
-    // Starting to parse workflow options
+    //Starting to parse workflow options
     string workflow_opts;
 
-    // Parse N
-    // workflow_opts = "--N " + string(N);
+    //Parse N
+    //workflow_opts = "--N " + string(N);
 
-    // Parse basefilename
+    //Parse basefilename
     string tmpdir;
     if (gc.options.tmpdir[1] == "/")
     {
@@ -127,19 +136,18 @@ static proc gspc_template(list l, configToken gc, configToken pc)
     string basefilename = tmpdir + "/";
     workflow_opts = workflow_opts + " --basefilename " + basefilename;
 
-    // Parse input and write to a standard text file instead of ssi:w
+    //Parse input
     link lin;
     int N = 1;
     for (int i = 1; i <= N; i++)
     {
-        string filepath = basefilename + "input.txt"; // Define the text file path
-        lin = filepath; // Use the file path instead of "ssi:w"
-        write(lin, l[i]); // Write list element to the text file
+        lin = "ssi:w " + basefilename + "input";
+        write(lin, l[i]);
         close(lin);
     }
-    workflow_opts = workflow_opts + " --input " + "input.txt"; // Update to reflect the file name
+    workflow_opts = workflow_opts + " --input " + "input";
 
-    // Parse libraryname
+    //Parse libraryname
     string loadlib;
     if (pc.options.neededLibrary[1] == "/")
     {
@@ -151,69 +159,73 @@ static proc gspc_template(list l, configToken gc, configToken pc)
     }
     workflow_opts = workflow_opts + " --libraryname " + loadlib;
 
+
+
     string all_opts = driver_opts + " " + workflow_opts;
 
     def sm_result = sggspc_template(all_opts);
 
-    print("Ali in Singular");
+
     return(sm_result);
 }
 
-
-proc gspc_template_SchRes(ideal J, configToken gc)
+proc gspc_template_SchRes(list L, configToken gc)
 {
+    
     configToken ct = configure_template();
     ct.options.neededLibrary = "templategp.lib";
     ct.options.functionName = "stdBasis";
-    //ideal I = 0;
-    int r = size(J);
-    print("Ali in Sres");
-    string s = "{{1, 3}, {1, 2}, {1, 2}, {2, 4}, {3, 4}, {3, 4}}";
-    // string s = l[2];
-    print(s);
 
-    //intvec primeiv = primeList(I, nb_prime);
-    list L = s;
+    /*  int r = size(I);
+     //intvec primeiv = primeList(I, nb_prime);
+     string s = "{{1, 3}, {1, 2}, {1, 2}, {2, 4}, {3, 4}, {3, 4}}";
+     // string s = l[2];
+     print(s);
+     string ss = "{1,2,3,4}";
+  */
+  //intvec primeiv = primeList(I, nb_prime);
+    //list L = s;
     list inputlists;
     token t;
-    for (int i = 1; i <= 1; i++)
-    {
-        t.fieldnames = list("generators", "Ali");
-        t.data[1] = J;
-        t.data[2] = list(" Ali");
-        t.data[3] = 100;
-        inputlists[i] = t;
+
+    t.fieldnames = list("generators", "Input101");
+    //  L is a list containing the input data
+    for (int i = 1; i <= size(L); i++) {
+
+        t.data[i] = L[i];
+
     }
+    inputlists[1] = t;
+
     def re = gspc_template(inputlists, gc, ct);
     def inputRing = basering;
     // Access the first element in the list
     def resultToken = re[1];
 
     // Print the structure and type of `resultToken`
-    //print("Structure of resultToken: "); print(resultToken);
-    //print("Type of resultToken: "); print(typeof(resultToken));
+   /*  print("Structure of resultToken: "); print(resultToken);
+    print("Type of resultToken: "); print(typeof(resultToken)); */
+    // print(re);
 
 
-
-    // Print current ring context
-    //print("Current ring context before accessing data: "); print(basering);
-
-    def resultRing = resultToken.r_data;
-    setring resultRing;
-    // Extract the data from resultToken
-    list Result = resultToken.data;
-
-    // print("beforeReturn");
-   //print(Result);
+     // Print current ring context
+     //print("Current ring context before accessing data: "); print(basering);
+   /*   def resultRing = resultToken.r_data;
+     setring resultRing;
+     // Extract the data from resultToken
+     list Result = resultToken.data;
+     print("beforeReturn");
+     print(Result);
      // Print the extracted data for verification
 
      // Restore the original ring context
-    setring inputRing;
+     setring inputRing;
 
-    // Print restored ring context
-    //print("Ring context restored to: "); print(basering);
-
+     // Print restored ring context
+     print("Ring context restored to: "); print(basering);
+     list output = imap(resultRing, output); */
+    return(re[1]);
     // Return the result
-    return(fetch(resultRing, Result));
+    //return(resultRing);
     //return(0);
 }

@@ -72,6 +72,11 @@
         "cinttypes": "cpp",
         "typeindex": "cpp",
         "variant": "cpp",
-        "regex": "cpp"
-    }
+        "regex": "cpp",
+        "unordered_set": "cpp",
+        "valarray": "cpp",
+        "*.in": "cpp"
+    },
+    "cmake.sourceDirectory": "/home/atraore/gpi/try_gpi/feynman_ibp/template",
+    "r.lsp.promptToInstall": false
 }

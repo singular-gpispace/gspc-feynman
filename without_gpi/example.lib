@@ -1,0 +1,226 @@
+// example.lib - Example library for Singular
+LIB "general.lib";
+
+version="version example.lib 1.3.0";
+category="General";
+info="
+LIBRARY:  example.lib      Example procedures for testing
+AUTHOR:   Generated for testing
+OVERVIEW: Contains basic test procedures for token manipulation
+
+PROCEDURES:
+doubleToken(token)          doubles the values in a token structure
+processToken(token)         processes values in a token
+merge_unique_lists(list,list) merges two lists removing duplicates
+mergeMI(token, token)       merges two master integral tokens
+";
+
+proc mod_init()
+{
+    LIB "general.lib";
+    
+    // Basic token structure
+    newstruct("token", "list fieldnames, list data");
+}
+
+proc doubleToken(def t)
+"USAGE:   doubleToken(t); t token
+RETURN:  token with doubled values
+PURPOSE: doubles all numeric values in the input token
+EXAMPLE: example doubleToken; shows an example"
+{
+    // Verify input type
+    if (typeof(t) != "token")
+    {
+        ERROR("Input must be a token type, got " + typeof(t));
+    }
+
+    // Verify token structure
+    if (size(t.fieldnames) == 0 || size(t.data) == 0)
+    {
+        ERROR("Token must have non-empty fieldnames and data lists");
+    }
+
+    // Create result token
+    token result;
+    result.fieldnames = t.fieldnames;
+    result.data = list();
+
+    // Process data
+    for (int i = 1; i <= size(t.data); i++)
+    {
+        if (typeof(t.data[i]) == "list")
+        {
+            list temp;
+            for (int j = 1; j <= size(t.data[i]); j++)
+            {
+                if (typeof(t.data[i][j]) == "int" || typeof(t.data[i][j]) == "number")
+                {
+                    temp[j] = 2 * number(t.data[i][j]);
+                }
+                else
+                {
+                    temp[j] = t.data[i][j];
+                }
+            }
+            result.data[i] = temp;
+        }
+        else if (typeof(t.data[i]) == "int" || typeof(t.data[i]) == "number")
+        {
+            result.data[i] = 2 * number(t.data[i]);
+        }
+        else
+        {
+            result.data[i] = t.data[i];
+        }
+    }
+
+    return(result);
+}
+
+proc processToken(def t)
+"USAGE:   processToken(t); t token
+RETURN:  token with processed values
+PURPOSE: processes values in the input token
+EXAMPLE: example processToken; shows an example"
+{
+    // Verify input type
+    if (typeof(t) != "token")
+    {
+        ERROR("Input must be a token type, got " + typeof(t));
+    }
+
+    // Process the token using doubleToken
+    def result = doubleToken(t);
+    return(result);
+}
+
+proc merge_unique_lists(list MI1, list MI2)
+"USAGE:   merge_unique_lists(MI1,MI2); MI1 list, MI2 list
+RETURN:   merged list containing unique elements from both input lists
+PURPOSE:  merge two lists of master integrals, removing duplicates
+EXAMPLE:  example merge_unique_lists; shows an example"
+{
+    // Input validation
+    if (typeof(MI1) != "list" || typeof(MI2) != "list")
+    {
+        ERROR("Both inputs must be lists");
+    }
+
+    list MI = MI1;
+
+    for (int i = 1; i <= size(MI2); i++) {
+        int found = 0;
+
+        for (int j = 1; j <= size(MI); j++) {
+            int match = 1;
+
+            if (size(MI[j]) == size(MI2[i])) {
+                for (int k = 1; k <= size(MI2[i]); k++) {
+                    if (MI[j][k] != MI2[i][k]) {
+                        match = 0;
+                        break;
+                    }
+                }
+                if (match == 1) {
+                    found = 1;
+                    break;
+                }
+            }
+        }
+
+        if (found == 0) {
+            MI[size(MI) + 1] = MI2[i];
+        }
+    }
+
+    return(MI);
+}
+
+proc mergeMI(token MI_prev, token MI_new)
+"USAGE:   mergeMI(MI_prev, MI_new); MI_prev token, MI_new token
+RETURN:  token containing merged master integrals
+PURPOSE: merges two master integral tokens
+EXAMPLE: example mergeMI; shows an example"
+{
+    // Verify input types
+    if (typeof(MI_prev) != "token" || typeof(MI_new) != "token")
+    {
+        ERROR("Inputs must be token types, got " + typeof(MI_prev) + " and " + typeof(MI_new));
+    }
+
+    // Verify token structure
+    if (size(MI_prev.fieldnames) == 0 || size(MI_new.fieldnames) == 0)
+    {
+        ERROR("Tokens must have non-empty fieldnames");
+    }
+
+    // Get the data lists with additional safety checks
+    list MI1, MI2;
+    
+    // Safety check for MI_prev
+    if (typeof(MI_prev.data) == "list" && size(MI_prev.data) > 0)
+    {
+        if (typeof(MI_prev.data[1]) == "list" && size(MI_prev.data[1]) > 0)
+        {
+            if (typeof(MI_prev.data[1][1]) == "list")
+            {
+                MI1 = MI_prev.data[1][1];
+            }
+        }
+    }
+
+    // Safety check for MI_new
+    if (typeof(MI_new.data) == "list" && size(MI_new.data) > 0)
+    {
+        if (typeof(MI_new.data[1]) == "list" && size(MI_new.data[1]) > 0)
+        {
+            if (typeof(MI_new.data[1][1]) == "list")
+            {
+                MI2 = MI_new.data[1][1];
+            }
+        }
+    }
+
+    // Merge the lists
+    list MI = merge_unique_lists(MI1, MI2);
+    
+    // Create output token with safety checks
+    token output;
+    output.fieldnames = list("MI");
+    output.data = list(list(MI));
+
+    return(output);
+}
+
+example
+{
+    "EXAMPLE:"; echo = 2;
+    // Create test tokens with proper initialization
+    token t1;
+    t1.fieldnames = list("MI");
+    t1.data = list(list(list(1,2), list(3,4)));
+
+    token t2;
+    t2.fieldnames = list("MI");
+    t2.data = list(list(list(3,4), list(5,6)));
+
+    // Merge tokens with error handling
+    def result;
+    try
+    {
+        result = mergeMI(t1, t2);
+    }
+    catch
+    {
+        ERROR("Failed to merge tokens: " + string(result));
+    }
+    
+    // Print results
+    print("First token:");
+    print(t1);
+    print("Second token:");
+    print(t2);
+    print("Merged result:");
+    print(result);
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defun name="template">
+
+    <in name="base_filename" type="string" place="base_filename"/>
+    <in name="library_name" type="string" place="library_name"/>
+    <in name="input" type="string" place="input"/>
+    <out name="output" type="string" place="output"/>
+
+    <net>
+        <place name="base_filename" type="string">
+        </place>
+        <place name="library_name" type="string">
+        </place>
+        <place name="input" type="string">
+        </place>
+        <place name="labeledgraph" type="string"></place>
+        <place name="web" type="string"></place>
+        <place name="tail_00" type="string"></place>
+        <place name="tail_11" type="string"></place>
+        <place name="tail_21" type="string"></place>
+        <place name="tail_22" type="string"></place>
+        <place name="tail_23" type="string"></place>
+        <place name="tail_31" type="string"></place>
+        <place name="tail_32" type="string"></place>
+        <place name="tail_33" type="string"></place>
+
+        <place name="control_11" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_21" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_22" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_23" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_31" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_32" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="control_33" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="output" type="string">
+        </place>
+       
+    
+
+        <!-- Graph creation and labeling transition -->
+        <transition name="T_11">
+            <defun>
+                <require key="worker" mandatory="true"/>
+
+                <out name="labeledgraph" type="string"/>
+                <out name="tail_11" type="string"/>
+                <out name="tail_00" type="string"/>
+                <in name="library_name" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="input" type="string"/>
+                <in name="control_11" type="control"/>
+                <out name="web" type="string"/>
+                <module name="singular_template" require_function_unloads_without_rest="false" function="f_T_11(control_11, library_name, base_filename, input,tail_00, labeledgraph, tail_11, web    )">
+                    <cinclude href="interface/template_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <code><![CDATA[
+                     
+                            std::cout << "Starting T_11..." << std::endl;
+                            
+                            // Create the graph with proper ring initialization
+                        labeledgraph = RESOLVE_INTERFACE_FUNCTION(singular_getBaikovMatrix_gpi)(input, library_name, base_filename);
+                        //std::cout << "singular_computeBaikovMatrix_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labeledgraph, library_name)<<std::endl;
+
+                       web = RESOLVE_INTERFACE_FUNCTION(singular_web_gpi)( input, library_name, base_filename);
+                        //std::cout << "singular_web_gpi:" << std::endl;
+                        //std::cout<< RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(web, library_name)<<std::endl;
+
+
+                        std::string labels_11 = RESOLVE_INTERFACE_FUNCTION(singular_getlabels_gpi)(web, 1, 1, library_name, base_filename);
+                        std::cout << "labels_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(labels_11, library_name)<<std::endl;   
+
+                     tail_00 = RESOLVE_INTERFACE_FUNCTION(singular_targetInt_gpi)(input, library_name, base_filename);
+                        //std::cout << "tail_00:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(tail_00, library_name)<<std::endl;
+
+                       std::string userInput = RESOLVE_INTERFACE_FUNCTION(singular_makeUserInput_gpi)(tail_00, library_name, base_filename);
+                        //std::cout << "userInput:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(userInput, library_name)<<std::endl;   
+                        std::string many_ibp = RESOLVE_INTERFACE_FUNCTION(singular_ComputeManyIBP_gpi)(labeledgraph, tail_00, library_name, base_filename);
+                        //std::cout << "many_ibp:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(many_ibp, library_name)<<std::endl;
+         
+                        std::cout<<"starting one sector computation"<<std::endl;
+                      std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_returnTargetInts_gpi)(labeledgraph, userInput, labels_11, library_name, base_filename);
+                        //std::cout << "one_sector_11:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(one_sector_11, library_name)<<std::endl;  
+                               
+                        std::string sorted_integrals=RESOLVE_INTERFACE_FUNCTION(singular_getSortedIntegrals)(many_ibp, library_name, base_filename);
+                        std::cout << "sorted_integrals:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(sorted_integrals, library_name)<<std::endl;
+
+
+                         std::string prep=RESOLVE_INTERFACE_FUNCTION(singular_prepareRedIBPs_gpi)(one_sector_11,7853, library_name, base_filename);
+                        //std::cout << "prep:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(prep, library_name)<<std::endl;
+
+                        std::string gaussred=RESOLVE_INTERFACE_FUNCTION(singular_performGaussRed_gpi)(prep, library_name, base_filename);
+                        //std::cout << "gaussred:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(gaussred, library_name)<<std::endl;
+                        
+                        std::string getredibps=RESOLVE_INTERFACE_FUNCTION(singular_computeGetRedIBPs_gpi)(one_sector_11,gaussred, prep,7853, library_name, base_filename);
+                        //std::cout << "getredibps:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(getredibps, library_name)<<std::endl;
+
+                        std::string ComputeOneSector=RESOLVE_INTERFACE_FUNCTION(singular_ComputeOneSector_gpi)(labeledgraph,getredibps, labels_11, library_name, base_filename);
+                        std::cout << "ComputeOneSector:" << RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(ComputeOneSector, library_name)<<std::endl;
+
+                        std::string size_of_one_sector=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(ComputeOneSector, library_name, base_filename);
+                        std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_of_one_sector,library_name)  << std::endl;
+                        
+
+                        //std::string one_sector_11 = RESOLVE_INTERFACE_FUNCTION(singular_computeSector_flint)(labeledgraph, userInput, labels_11,7853, library_name, base_filename);
+                       // std::string size_sector_11=RESOLVE_INTERFACE_FUNCTION(singular_size_OneSectorComputation_gpi)(one_sector_11, library_name, base_filename);
+                        //std::cout<<"size of one_sector_11: IBP_11, MI_11, Tail_11=" <<RESOLVE_INTERFACE_FUNCTION(printGpiTokenContent)(size_sector_11,library_name)  << std::endl;
+                        std::cout << "T_11 completed" << std::endl;
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-in port="control_11" place="control_11"/>
+            <connect-read port="library_name" place="library_name"/>
+            <connect-read port="base_filename" place="base_filename"/>
+            <connect-read port="input" place="input"/>
+            <connect-out port="labeledgraph" place="labeledgraph"/>
+            <connect-out port="tail_11" place="tail_11"/>
+            <connect-out port="tail_00" place="tail_00"/> 
+            <connect-out port="web" place="web"/>
+        </transition>
+
+        
+
+    </net>
+</defun>

@@ -1,7 +1,7 @@
 
 
 LIB "templategspc.lib";
-//LIB "/home//atraore/gpi/try_gpi/Reduce/template/template/LIB/templategspc.lib";
+//LIB "/home//atraore/gpi/try_gpi/feynman_ibp/template/template/LIB/templategspc.lib";
 
 //LIB "random.lib";
 LIB "modstd.lib";
@@ -10,163 +10,58 @@ LIB "modstd.lib";
 
 // Configure GPI-Space	
 configToken gc = configure_gspc();
-gc.options.tmpdir = "/home//atraore/gpi/try_gpi/Reduce/example_dir/temp";
+gc.options.tmpdir = "/home//atraore/gpi/try_gpi/feynman_ibp/example_dir/temp";
 gc.options.nodefile = "nodefile";
-gc.options.procspernode = 6;
+gc.options.procspernode = 7;
 gc.options.loghost = "waas";
 gc.options.logport = 9876;
 
 
-//Example from Singular book
-//  ring S=0, (x,y,z), (c,dp);
-//  ideal J1=y*z+z^2,y^2 + x*z,x*y+z^2,z^3,x*z^2,x^2*z;
-//  ideal J=std(J1);
-
-// //Example 0
-// ring S= 0, (w,x,y,z), (lp,c);
-// poly f1 = wx + wz + x2 + 2xz - z2;
-// poly f2 = wy - wz - xz - yz - 2z2;
-// poly f3= xy + z2; 
-// ideal J=f1,f2,f3;
-
-// //Koszul Case
-// ring R=0,(w,x,y,z),lp;
-// ideal J=w,x,y,z;
-
- //Example 1:
 
 ring R = 0, x, dp;
-ideal J = 1;
+//ideal J = 1;  
+
+list v = list(1, 2, 3, 4, 5, 6); // vertices
+list e = list(list(6, 1), list(4, 6), list(1, 2), list(3, 5), list(4, 3), list(2, 5), list(5, 6), list(1), list(2), list(3), list(4)); // edges 
+list targetInt = list(list(1, 1, 1, -1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+
+//list targetInt = list(list(1, 1, 1, 1, -3, -1, -1, -1, -1), list(1, -1, 1, -1, -3, -1, -1, -4, -1));
+
+list L = v, e, targetInt;
+ 
 
 
-//module m;
-// vector s1=[-x,w,-z,0,0];
-// vector s2=[y,-x,w,0,0];
-// vector s3=[0,-y,0,w,-z];
-// vector s4=[-z,0,-y,x,-w];
-// vector s5=[-y^2+w*z, z^2,0,-yz,w^2];
-// vector s6=[0,z,0,-y,x];
-// module m=s1,s2,s3,s4,s5,s6;
+/* 
+list v=list(1,2,3,4,5,6,7);
+list e=list(list(6,1),list(1,2),list(2,3),list(3,7),list(7,4),list(4,5),list(5,6),list(7,6),list(1),list(2),list(3),list(4),list(5));
+list targetInt= list(
+list(1,1,1,1,1,1,1,-5,0),
+list(1,1,1,1,1,1,1,0,-5),
+list(0,1,1,1,1,1,1,-5,0),
+list(1,0,1,1,1,1,1,0,-5),
+list(1,1,0,1,1,1,1,-5,0),
+list(1,1,1,0,1,1,1,0,-5),
+list(1,1,1,1,0,1,1,-5,0),
+list(1,1,1,1,1,0,1,0,-5),
+list(1,1,1,1,1,1,0,-5,0),
+list(0,1,1,1,1,1,1,0,-5),
+list(1,0,1,1,1,1,1,-5,0),
+list(1,1,0,1,1,1,1,0,-5),
+list(1,1,1,0,1,1,1,-5,0),
+list(1,1,1,1,0,1,1,0,-5),
+list(1,1,1,1,1,0,1,-5,0),
+list(1,1,1,1,1,1,0,0,-5)
+);
 
-// //  //Example2:
-// ring R= 0, (x(1..10)), (lp,c);
-
-// matrix mS[2][4]= x(4)+ x(6), x(6)+ x(3), x(8)+ x(3), x(1)-x(3), x(2)-x(4), x(5)-x(7), x(8)-x(7), 
-// x(2)+ x(3), x(5)- x(7), x(10)+ x(8), x(1) -x(2);
-// ideal I_minor= minor(mS,2);
-// I_minor;
-// ideal J = std(I_minor);
-
-
-
-
-
-
-// Example3:
-
-//Define the ring with five variables over the rational numbers
-
-// ring R = 0, (x0, x1, x2, x3, x4), (dp,c);
-
-// // Define the generators of the ideal for the canonical genus 5 curve
-// poly Q1 = x0*x1 - x2^2;
-// poly Q2 = x0*x2 - x1*x3;
-// poly Q3 = x0*x3 - x1*x4;
-// poly Q4 = x0*x4 - x2*x3;
-// poly Q5 = x1*x2 - x3^2;
-// poly Q6 = x1*x3 - x2*x4;
-// poly Q7 = x1*x4 - x3*x4;
-// poly Q8 = x2*x3 - x4^2;
-// poly Q9 = x2*x4 - x3*x0;
-// poly Q10 = x3*x4 - x0*x1;
-
-// // Define the ideal
-// ideal J1= Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10;
-// J1;
-// print("GB");
-// ideal J=std(J1);
-
- //Example4
-//  ring R = 0, (x0, x1, x2, x3, x4), (dp,c); // Example for n+1 = 5 variables
-// // Step 2: Generate a regular sequence
-// poly f1 = x0^2 + x1^2 + x2^2 + x3^2 + x4^2;
-// poly f2 = x0*x1 + x2*x3 + x4^2;
-// poly f3 = x0*x2 + x1*x3 + x4*x0;
-// poly f4 = x0*x3 + x1*x4 + x2*x0;
-// poly f5 = x0*x4 + x1*x2 + x3*x1;
-// ideal J1= f1,f2,f3,f4,f5;
-// J1;
-// print("GB");
-// ideal J= std(J1);
-
-
-
-//Example 5
-
-/* ring R = 0, (x0, x1, x2, x3, x4, x5), (dp,c);
-
-// Step 2: Generate a regular sequence with 5 polynomials
-poly f1 = x0 + x1 + x2 + x3;
-poly f2 = x0*x1 + x2*x3 + x4*x5;
-poly f3 = x0*x2 + x1*x3;
-poly f4 = x0*x3 + x1*x4 + x2*x5;
-poly f5 = x0*x4 + x1*x5;
-
-
-ideal J1 = f1, f2, f3, f4, f5;
-ideal J=std(J1);
-
+list L = v, e, targetInt;
  */
-
- //Example 6:
-
-
- // ring R = 0, (x0, x1, x2, x3, x4, x5, x6), (dp,c);
- // poly f1 = x0^2 + x1^2 + x2^2 + x3^2;
- // poly f2 = x0*x1 + x2*x3 + x4*x5;
- // poly f3 = x0*x2 + x1*x3 + x4*x6;
- // poly f4 = x0*x3 + x1*x4 + x2*x5;
- // poly f5 = x0*x4 + x1*x5;
-
-
-
- // ideal J1 = f1, f2, f3, f4, f5;
- // J1;
- // print("GB");
- // ideal J=std(J1);
-
-
-
- // Call gspc_template_mod with proper arguments
+// Call gspc_template_mod with proper arguments
 int nb_prime; // Specify the number of primes
 rtimer = 0;
 system("--ticks-per-sec", 1000); // set timer resolution to ms
 int t = rtimer;
-def re = gspc_template_SchRes(J, gc);
+def re = gspc_template_SchRes(L, gc);
 re;
 
 rtimer - t;
 print("timer");
-
-
-// Should Try
-// Define the polynomial ring
-// ring R = 0,(x0,x1,x2,x3,x4),dp;
-
-// // Define the ideal
-// ideal I = x0*x1 - x2*x3, x0*x4 - x1*x3, x1*x4 - x2*x3, x0^2 - x2*x4;
-
-// // Compute the codimension of the ideal
-// dim(R/I);
-
-
-
-//pnet: cat template.xpnet | pnetc  | pnet2dot | dot -Tsvg > First_LIFT_LEAD_GPI.svg
-
-//Starting monitor:gspc-monitor --port 9876 &
-
-//cd /home/gnawali/singular-gpispace/spack/var/spack/repos/builtin/packages/gpi-space
-//./gspc-logging-to-stdout.exe --help
-//./gspc-logging-to-stdout.exe --port 9876
-//: /home/gnawali/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.4.0/gpi-space-23.06-b5pl6a6kj26mfyhsrvxse2gnk4riv5os/bin/gspc-logging-to-stdout.exe --port=9876
-//:~/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.4.0/gpi-space-23.06-b5pl6a6kj26mfyhsrvxse2gnk4riv5os/bin$ ./gspc-logging-to-stdout.exe --port 9876
