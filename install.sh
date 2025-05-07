@@ -6,6 +6,7 @@
 # Create necessary directories
 #mkdir -p ~/gpi/try_gpi/gspc-feynman/build_dir ~/gpi/try_gpi/gspc-feynman/install_dir
 
+# copy example files from example_dir to the  
 # Activate the Spack environment
 spack load gpi-space@24.12 
 # Generate SVG workflow diagram
@@ -64,4 +65,4 @@ export PATH=$SINGULAR_INSTALL_DIR/bin:$PATH
 
 export LD_LIBRARY_PATH=$GSPC_HOME/lib:$FLINT_HOME/lib:$LD_LIBRARY_PATH
 
- Singular example.sing
+ Singular example.lib
