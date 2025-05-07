@@ -6,12 +6,12 @@ rm -rf ~/gpi/try_gpi/gspc-feynman/build_dir/* ~/gpi/try_gpi/gspc-feynman/install
 # Create necessary directories
 #mkdir -p ~/gpi/try_gpi/gspc-feynman/build_dir ~/gpi/try_gpi/gspc-feynman/install_dir
 
-# copy example files from example_dir to the  install_dir
-mkdir -p ~/gpi/try_gpi/gspc-feynman/install_dir/shared/examples/
+# copy example files from examples to the  install_dir
+mkdir -p ~/gpi/try_gpi/gspc-feynman/install_dir/share/examples/
 
-cp -r ~/gpi/try_gpi/gspc-feynman/example_dir/templategp.lib \
-      ~/gpi/try_gpi/gspc-feynman/example_dir/templategspc.lib \
-      ~/gpi/try_gpi/gspc-feynman/install_dir/shared/examples/
+cp -r ~/gpi/try_gpi/gspc-feynman/examples/templategp.lib \
+      ~/gpi/try_gpi/gspc-feynman/examples/templategspc.lib \
+      ~/gpi/try_gpi/gspc-feynman/install_dir/share/examples/
 
 # Activate the Spack environment
 spack load gpi-space@24.12 
@@ -24,7 +24,7 @@ BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 
 # Set GPI-Space root
-GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jtn2w7ywht2fqwusnopfiqok6inyyokw"
+GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jyime7tbwhdfot7bji3vqhdtaxt26qwl"
 export GSPC_HOME=$GPISPACE_ROOT
 
 # Set FLINT home directory
@@ -60,7 +60,7 @@ cmake --build ~/gpi/try_gpi/gspc-feynman/build_dir --target install -- -j $(npro
 #!/bin/bash
 
 # Navigate to example directory
-cd /home/atraore/gpi/try_gpi/gspc-feynman/example_dir || exit 1
+cd /home/atraore/gpi/try_gpi/gspc-feynman/examples || exit 1
 rm -rf temp/*
 
 

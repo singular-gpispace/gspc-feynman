@@ -880,7 +880,7 @@ KEYWORDS: Feynman graph
 "
 
 {
-  //link lin = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/computeM1.ssi";
+  //link lin = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/computeM1.ssi";
   //write(lin,"staring computeM1");
 if (typeof(G0)=="graph"){
   labeledgraph G1 =computeBaikovMatrix(G0);
@@ -2065,7 +2065,7 @@ if (typeof(G0)=="graph"){
 if (typeof(G0) != "labeledgraph"){
   ERROR("expected a graph or labeledgraph");
 }
-//link lin = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/computeManyIBP.ssi";
+//link lin = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/computeManyIBP.ssi";
 list Nu=setNu[1];
 labeledgraph G = G0;
 def R = G.over;
@@ -2764,7 +2764,7 @@ proc getMI_gpi(token input)
 
 proc computeBaikovMatrix_gpi(token input)
 {
-  //link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/computebaikovmatrix.ssi";
+  //link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/computebaikovmatrix.ssi";
   list v = input.data[1];
   list e = input.data[2];
   graph G;

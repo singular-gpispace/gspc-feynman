@@ -1,5 +1,5 @@
 build_dir/
-example_dir/.singularhistory
-example_dir/temp/*
+examples/.singularhistory
+examples/temp/*
 *.ssi
 monitor.txt

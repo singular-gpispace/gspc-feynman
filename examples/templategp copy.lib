@@ -1005,7 +1005,7 @@ RETURN:  The module M2 over G1.baikovover that requires to compute IBP identitie
 KEYWORDS : Feynman graph
 "
 {
-   string path = "/home/atraore/gpi/try_gpi/gspc-feynman/example_dir/hi.ssi";  
+   string path = "/home/atraore/gpi/try_gpi/gspc-feynman/examples/hi.ssi";  
   link l = "ssi:w " + path;
 write(l,"G0",-11);
 
@@ -2048,7 +2048,7 @@ KEYWORDS : Feynman graph, IBPs
 
 {
 
-  string path = "/home/atraore/gpi/try_gpi/gspc-feynman/example_dir/bonjour.ssi";  // Ensure the path ends with a "/"
+  string path = "/home/atraore/gpi/try_gpi/gspc-feynman/examples/bonjour.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
   
   if (typeof(G0) == "graph") {
@@ -2486,7 +2486,7 @@ proc getWeb_gpi(token input)
 }
 proc getReducedIBPs_gpi(token input)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/getreducedibps.ssi";
+  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/getreducedibps.ssi";
   write(l, input, "getReducedIBPs_gpi");
 
   def reducedIBPs = input.data[3];
@@ -2509,7 +2509,7 @@ proc getMI_gpi(token input)
 
 proc computeBaikovMatrix_gpi(token input)
 {
-  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/computebaikovmatrix.ssi";
+  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/computebaikovmatrix.ssi";
   list v = input.data[1];
   list e = input.data[2];
   graph G;
@@ -2802,7 +2802,7 @@ proc indpndIBP_gpi(token s)
 }
 proc masterAndTailIntgrals_gpi(token s)
 {
-  string path = "/home/atraore/gpi/try_gpi/gspc-feynman/example_dir/hello.ssi";  // Ensure the path ends with a "/"
+  string path = "/home/atraore/gpi/try_gpi/gspc-feynman/examples/hello.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
 
   list masterAndTailIntgrals = s.data[2];
@@ -2932,7 +2932,7 @@ proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 
 proc computeM1_gpi(token G0)
 {
- link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/computeM1.ssi";
+ link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/computeM1.ssi";
   write(l, G0, "computeM1_gpi");
   def G = G0.data[1];
   module ML = computeM1(G);
@@ -3042,7 +3042,7 @@ def MM=std(M);
  
  proc computeM2_gp(token G0,token targ)
  {
- link l= "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/m2.ssi";
+ link l= "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/m2.ssi";
  
    def G = G0.data[1];
    def RB = G.r_baikovmatrix;
@@ -3408,7 +3408,7 @@ RETURN:
 KEYWORDS: Feynman graph,IBPs
 "
 { 
-  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/OneSectorComputation.ssi";
+  link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/OneSectorComputation.ssi";
   list targetInt;
   setIBP reducedIBPs; //a place to store the independent IBPs coming out from current sector
   list MIs;  //a place to store the Master integrals coming out from current sector
@@ -3544,7 +3544,7 @@ proc web_gpi(token ibp)
 
 proc OneSectorComputation_gpi(token G1, token tail, token sector_lab)
 {
-link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/example_dir/OneSectorComputation_gpi.ssi";
+link l = "ssi:w /home/atraore/gpi/try_gpi/gspc-feynman/examples/OneSectorComputation_gpi.ssi";
 write(l,"starting OneSectorComputation_gpi");
   labeledgraph g = G1.data[1];
   write(l,g,"g");

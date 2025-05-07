@@ -1,0 +1,1 @@
+[ -f /home/atraore/gpi/try_gpi/gspc-feynman/monitor.txt ] && rm /home/atraore/gpi/try_gpi/gspc-feynman/monitor.txt; cd ~/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jyime7tbwhdfot7bji3vqhdtaxt26qwl/bin && ./gspc-logging-to-stdout.exe --port 9876 >> /home/atraore/gpi/try_gpi/gspc-feynman/monitor.txt 2>&1

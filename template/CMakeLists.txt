@@ -79,10 +79,17 @@ add_custom_target(Config
   DEPENDS "${CMAKE_BINARY_DIR}/template/config.hpp"
 )
 
-# Install the examples directory
-# install(DIRECTORY examples
-# DESTINATION "${CMAKE_INSTALL_PREFIX}/share"
-# )
+# Install the examples directory from the root project directory
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/../examples
+  DESTINATION "${CMAKE_INSTALL_PREFIX}/share"
+  PATTERN ".*" EXCLUDE
+  PATTERN "temp" EXCLUDE
+  PATTERN "typescript" EXCLUDE
+  PATTERN "timer" EXCLUDE
+  PATTERN "*.sing" EXCLUDE
+  PATTERN "*copy*" EXCLUDE
+  PATTERN "nodefile" EXCLUDE
+)
 
 # Link the FLINT library to the  target  template_implementation
 # target_link_libraries(template_implementation PRIVATE ${FLINT_LIB})
