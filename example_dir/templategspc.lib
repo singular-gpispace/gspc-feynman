@@ -169,7 +169,7 @@ static proc gspc_template(list l, configToken gc, configToken pc)
     return(sm_result);
 }
 
-proc gspc_template_SchRes(list L, configToken gc)
+proc gspc_feynman(list L, configToken gc)
 {
     
     configToken ct = configure_template();

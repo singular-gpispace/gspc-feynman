@@ -1,8 +1,10 @@
 # **Parallel Computation of Short IPB Systems: Automated Translation of the Web of Sectors into a Petri Net**
 
-<div align="center">
-  <img src="template/cmame/modules/web.png" alt="Petri Net" width="300"/>
-</div>
+![Petri Net](template/cmake/modules/web.png)
+
+## **Introduction**
+
+// ... existing code ...
 
 ## **Introduction**
 
@@ -19,47 +21,47 @@ Spack is a package manager specifically designed for handling software installat
 ### **Environment Setup**
 
 1. Set up environment variables:
-   
+
    ```bash
    export software_ROOT=~/singular-gpispace
    export install_ROOT=~/singular-gpispace
    ```
-   
+
    Note: These variables need to be set again if you open a new terminal session. It's recommended to add these lines to your `.profile` file.
 
 ### **Installing Spack**
 
 1. Clone Spack from Github:
-   
+
    ```bash
    git clone https://github.com/spack/spack.git $software_ROOT/spack
    ```
 2. Check out version v0.21:
-   
+
    ```bash
    cd $software_ROOT/spack
    git checkout releases/v0.21
    cd $software_ROOT
    ```
 3. Install required system packages (Ubuntu):
-   
+
    ```bash
    sudo apt update
    sudo apt install build-essential ca-certificates coreutils curl environment-modules gfortran git gpg lsb-release python3 python3-distutils python3-venv unzip zip
    ```
 4. Set up Spack environment:
-   
+
    ```bash
    . $software_ROOT/spack/share/spack/setup-env.sh
    ```
 5. Bootstrap clingo:
-   
+
    ```bash
    spack spec zlib
    ```
-   
+
    Note: If experiencing connection timeouts, adjust the `connect_timeout` value in:
-   
+
    ```bash
    vim $software_ROOT/spack/etc/spack/defaults/config.yaml
    ```
@@ -67,17 +69,17 @@ Spack is a package manager specifically designed for handling software installat
 ### **Installing gspc-feynman**
 
 1. Clone the Singular/GPI-Space package repository:
-   
+
    ```bash
    git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
    ```
 2. Add the repository to Spack:
-   
+
    ```bash
    spack repo add $software_ROOT/spack-packages
    ```
 3. Install gspc-feynman:
-   
+
    ```bash
    spack install gspc-feynman
    ```
@@ -115,17 +117,17 @@ spack env deactivate
 ### **SSH Configuration**
 
 1. Generate SSH key:
-   
+
    ```bash
    ssh-keygen -t rsa -b 4096 -N '' -f "${HOME}/.ssh/id_rsa"
    ```
 2. Install SSH server (Ubuntu):
-   
+
    ```bash
    sudo apt install openssh-server
    ```
 3. Register your key:
-   
+
    ```bash
    ssh-copy-id -f -i "${HOME}/.ssh/id_rsa" "${HOSTNAME}"
    ```
@@ -133,23 +135,23 @@ spack env deactivate
 ### **Running Computations**
 
 1. Set up required directories:
-   
+
    ```bash
-   cp $MODULAR_INSTALL_DIR/share/examples/modulargp.lib $software_ROOT
+   cp $GSPC_FEYNMAN_INSTALL_DIR/share/examples/templategp.lib $software_ROOT
    hostname > $software_ROOT/nodefile
    mkdir -p $software_ROOT/tempdir
    ```
 2. Start GPI-Space Monitor (optional):
-   
+
    ```bash
    hostname > $software_ROOT/loghostfile
    gspc-monitor --port 9876 &
    ```
 3. Start Singular:
-   
+
    ```bash
    cd $software_ROOT
-   SINGULARPATH="$MODULAR_INSTALL_DIR" Singular
+   SINGULARPATH="$GSPC_FEYNMAN_INSTALL_DIR" Singular
    ```
 
 ## **Example: Computing Feynman Integrals**
@@ -194,6 +196,6 @@ list targetInt = list(
 list L = v, e, targetInt;
 
 // Compute the sector decomposition
-def re = gspc_template_SchRes(L, gc);
+def re = gspc_feynman(L, gc);
 re;
 ```
