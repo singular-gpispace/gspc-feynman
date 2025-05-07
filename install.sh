@@ -17,7 +17,7 @@ BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 
 # Set GPI-Space root
-GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jz6b4m6ql54fmhkpq6gbico2neic3kd5"
+GPISPACE_ROOT="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gpi-space-24.12-jtn2w7ywht2fqwusnopfiqok6inyyokw"
 export GSPC_HOME=$GPISPACE_ROOT
 
 # Set FLINT home directory
