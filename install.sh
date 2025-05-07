@@ -1,12 +1,14 @@
 #!/bin/bash
 
 # Clean previous build and install directories
-#rm -rf ~/gpi/try_gpi/gspc-feynman/build_dir/* ~/gpi/try_gpi/gspc-feynman/install_dir/*
+rm -rf ~/gpi/try_gpi/gspc-feynman/build_dir/* ~/gpi/try_gpi/gspc-feynman/install_dir/*
 
 # Create necessary directories
 #mkdir -p ~/gpi/try_gpi/gspc-feynman/build_dir ~/gpi/try_gpi/gspc-feynman/install_dir
 
-# copy example files from example_dir to the  
+# copy example files from example_dir to the  install_dir
+cp -r ~/gpi/try_gpi/gspc-feynman/example_dir/templategp.lib ~/gpi/try_gpi/gspc-feynman/install_dir/
+cp -r ~/gpi/try_gpi/gspc-feynman/example_dir/templategspc.lib ~/gpi/try_gpi/gspc-feynman/install_dir/
 # Activate the Spack environment
 spack load gpi-space@24.12 
 # Generate SVG workflow diagram
