@@ -77,6 +77,6 @@
         "valarray": "cpp",
         "*.in": "cpp"
     },
-    "cmake.sourceDirectory": "/home/atraore/gpi/try_gpi/feynman_ibp/template",
+    "cmake.sourceDirectory": "/home/atraore/gpi/try_gpi/gspc-feynman/template",
     "r.lsp.promptToInstall": false
 }

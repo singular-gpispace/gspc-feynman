@@ -2542,7 +2542,7 @@ proc indpndIBP_gpi(token s)
 }
 proc masterAndTailIntgrals_gpi(token s)
 {
-  string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hello.ssi";  // Ensure the path ends with a "/"
+  string path = "/home/atraore/gpi/try_gpi/gspc-feynman/example_dir/hello.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
 
   list masterAndTailIntgrals = s.data[2];
@@ -2644,7 +2644,7 @@ int ss= size(w4[1][2][1].targetInts);
 }
 proc updateWeb_later(token Web, token MasterAndTailIntgrals, int j, int k)
 {
- string path = "/home/atraore/gpi/try_gpi/feynman_ibp/example_dir/hi.ssi";  // Ensure the path ends with a "/"
+ string path = "/home/atraore/gpi/try_gpi/gspc-feynman/example_dir/hi.ssi";  // Ensure the path ends with a "/"
   link l = "ssi:w " + path;
 
   list web = Web.data[1];

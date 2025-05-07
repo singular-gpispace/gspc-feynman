@@ -25,7 +25,7 @@ proc mod_init()
 {
     
 
-    LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
+    LIB "/home/atraore/gpi/try_gpi/gspc-feynman/build_dir/src/libSINGULAR-template-module.so";
 
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");

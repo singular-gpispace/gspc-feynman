@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Clean previous build and install directories
-#rm -rf ~/gpi/try_gpi/feynman_ibp/build_dir/* ~/gpi/try_gpi/feynman_ibp/install_dir/*
+#rm -rf ~/gpi/try_gpi/gspc-feynman/build_dir/* ~/gpi/try_gpi/gspc-feynman/install_dir/*
 
 # Create necessary directories
-#mkdir -p ~/gpi/try_gpi/feynman_ibp/build_dir ~/gpi/try_gpi/feynman_ibp/install_dir
+#mkdir -p ~/gpi/try_gpi/gspc-feynman/build_dir ~/gpi/try_gpi/gspc-feynman/install_dir
 
 # Activate the Spack environment
 spack load gpi-space@24.12 
 # Generate SVG workflow diagram
-pnetc ~/gpi/try_gpi/feynman_ibp/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/feynman_ibp/template/workflow/fey.svg
+pnetc ~/gpi/try_gpi/gspc-feynman/template/workflow/template.xpnet | pnet2dot | dot -T svg > ~/gpi/try_gpi/gspc-feynman/template/workflow/fey.svg
 
 # Define variables
-INSTALL_PREFIX="/home/atraore/gpi/try_gpi/feynman_ibp/install_dir/"
+INSTALL_PREFIX="/home/atraore/gpi/try_gpi/gspc-feynman/install_dir/"
 BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 
@@ -43,8 +43,25 @@ cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
       -D GPISpace_ROOT=$GPISPACE_ROOT \
       -D GMP_HOME=$GMP_HOME \
       -D FLINT_HOME=$FLINT_HOME \
-      -B ~/gpi/try_gpi/feynman_ibp/build_dir \
-      -S ~/gpi/try_gpi/feynman_ibp/template
+      -B ~/gpi/try_gpi/gspc-feynman/build_dir \
+      -S ~/gpi/try_gpi/gspc-feynman/template
 
 # Build and install
-cmake --build ~/gpi/try_gpi/feynman_ibp/build_dir --target install -- -j $(nproc)
+cmake --build ~/gpi/try_gpi/gspc-feynman/build_dir --target install -- -j $(nproc)
+
+
+#!/bin/bash
+
+# Navigate to example directory
+cd /home/atraore/gpi/try_gpi/gspc-feynman/example_dir || exit 1
+rm -rf temp/*
+
+
+
+
+# Set Singular installation path
+export PATH=$SINGULAR_INSTALL_DIR/bin:$PATH
+
+export LD_LIBRARY_PATH=$GSPC_HOME/lib:$FLINT_HOME/lib:$LD_LIBRARY_PATH
+
+ Singular example.sing

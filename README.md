@@ -8,7 +8,7 @@
 
 This package follows the structure of the modular package available at https://github.com/singular-gpispace/modular_res.
 
-This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. We implement a novel approach that transforms the sector structure of a given Feynman integral into a directed acyclic graph (DAG) and subsequently generates a Petri net representation. The Petri net is then encoded in XPNet format, allowing its execution within the \textsc{GPI-Space} parallel workflow system. This enables efficient large-scale IBP reduction computations by distributing tasks across multiple computing nodes. Our implementation is built upon the \texttt{feynman.lib} \cite{feynman_ibp} library in Singular and provides a scalable solution to IBP reductions in multi-loop Feynman integrals.
+This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. We implement a novel approach that transforms the sector structure of a given Feynman integral into a directed acyclic graph (DAG) and subsequently generates a Petri net representation. The Petri net is then encoded in XPNet format, allowing its execution within the \textsc{GPI-Space} parallel workflow system. This enables efficient large-scale IBP reduction computations by distributing tasks across multiple computing nodes. Our implementation is built upon the \texttt{feynman.lib} \cite{gspc-feynman} library in Singular and provides a scalable solution to IBP reductions in multi-loop Feynman integrals.
 
 # **Installation Guide**
 

@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1745669985 "/home/atraore/gpi/try_gpi/feynman_ibp/cpp/code.tex" "code.pdf" "code" 1745669985
+["pdflatex"] 1745669985 "/home/atraore/gpi/try_gpi/gspc-feynman/cpp/code.tex" "code.pdf" "code" 1745669985
   "/etc/texmf/web2c/texmf.cnf" 1660551883 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/atraore/gpi/try_gpi/feynman_ibp/cpp/code.tex" 1745669985 1858 9a1df85adeae11ff6d38b5f7565d651e ""
+  "/home/atraore/gpi/try_gpi/gspc-feynman/cpp/code.tex" 1745669985 1858 9a1df85adeae11ff6d38b5f7565d651e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
