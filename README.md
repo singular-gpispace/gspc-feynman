@@ -2,9 +2,6 @@
 
 ![Petri Net](template/cmake/modules/web.png)
 
-## **Introduction**
-
-// ... existing code ...
 
 ## **Introduction**
 
