@@ -1,178 +1,122 @@
-# **Parallel Computation of Short IPB Systems: Automated Translation of the Web of Sectors into a Petri Net**
+# 🚀 Parallel Computation of Short IPB Systems
 
 ![Petri Net](template/cmake/modules/web.png)
 
-## **Introduction**
+## 📋 Overview
 
-This package follows the structure of the modular package available at https://github.com/singular-gpispace/modular_res.
+This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. It transforms sector structures into directed acyclic graphs (DAGs) and generates Petri net representations for parallel computation using GPI-Space.
 
-This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. We implement a novel approach that transforms the sector structure of a given Feynman integral into a directed acyclic graph (DAG) and subsequently generates a Petri net representation. The Petri net is then encoded in XPNet format, allowing its execution within the \textsc{GPI-Space} parallel workflow system. This enables efficient large-scale IBP reduction computations by distributing tasks across multiple computing nodes. Our implementation is built upon the \texttt{feynman.lib} \cite{gspc-feynman} library in Singular and provides a scalable solution to IBP reductions in multi-loop Feynman integrals.
+## 🛠️ Installation Guide
 
-# **Installation Guide**
+### Prerequisites
 
 ## **Using Spack Package Manager**
 
-Spack is a package manager specifically designed for handling software installations in supercomputing environments, but usable on anything from a personal computer to an HPC cluster. It supports Linux and macOS (note that the Singular/GPI-Space framework and hence our package requires Linux).
-
-### **Environment Setup**
-
-1. Set up environment variables:
-
-   ```bash
-   export software_ROOT=~/singular-gpispace
-   export install_ROOT=~/singular-gpispace
-   mkdir -p $software_ROOT
-   ```
-
-   Note: These variables need to be set again if you open a new terminal session. It's recommended to add these lines to your `.profile` file.
-
-### **Installing Spack**
-
-1. Clone Spack from Github:
-
-   ```bash
-   git clone https://github.com/spack/spack.git $software_ROOT/spack
-   ```
-2. Check out version v0.21:
-
-   ```bash
-   cd $software_ROOT/spack
-   git checkout releases/v0.21
-   cd $software_ROOT
-   ```
-3. Install required system packages (Ubuntu):
-
-   ```bash
-   sudo apt update
-   sudo apt install build-essential ca-certificates coreutils curl environment-modules gfortran git gpg lsb-release python3 python3-distutils python3-venv unzip zip
-   ```
-4. Set up Spack environment:
-
-   ```bash
-   . $software_ROOT/spack/share/spack/setup-env.sh
-   ```
-5. Bootstrap clingo:
-
-   ```bash
-   spack spec zlib
-   ```
-
-   Note: If experiencing connection timeouts, adjust the `connect_timeout` value in:
-
-   ```bash
-   vim $software_ROOT/spack/etc/spack/defaults/config.yaml
-   ```
-
-### **Installing gspc-feynman**
-
-1. Clone the Singular/GPI-Space package repository:
-
-   ```bash
-   git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
-   ```
-2. Add the repository to Spack:
-
-   ```bash
-   spack repo add $software_ROOT/spack-packages
-   ```
-3. Install gspc-feynman:
-
-   ```bash
-   spack install gspc-feynman
-   ```
-
-### **Optional: Environment-based Installation**
-
+#### Required System Packages
 ```bash
-spack env create myenv
-spack env activate -p myenv
-spack add gspc-feynman
-spack concretize
-spack install
+sudo apt update
+sudo apt install -y build-essential ca-certificates coreutils curl \
+    environment-modules gfortran git gpg lsb-release python3 \
+    python3-distutils python3-venv unzip zip
 ```
 
-## **Usage Guide**
+### Step 1: Environment Setup
 
-### **Quick Setup**
-
-We provide a setup script that automates the configuration process. After installing the package:
-
-1. Make the setup script executable:
 ```bash
-   chmod +x setup.sh
-   ```
+# Create and set up working directory
+mkdir -p ~/singular-gpispace
+cd ~/singular-gpispace
 
-2. Run the setup script:
-   ```bash
-   ./setup.sh
-   ```
+# Set environment variables (add to ~/.bashrc for persistence)
+echo 'export software_ROOT=~/singular-gpispace' >> ~/.bashrc
+echo 'export install_ROOT=~/singular-gpispace' >> ~/.bashrc
+source ~/.bashrc
+```
 
-   This script will:
-   - Set up all required environment variables
-   - Create necessary directories
-   - Load required Spack modules
-   - Configure SSH for local execution
-   - Start the GPI-Space monitor
-   - Copy example files to the working directory
+### Step 2: Install Spack
 
-### **Manual Setup**
+```bash
+# Clone Spack
+git clone https://github.com/spack/spack.git $software_ROOT/spack
 
-If you prefer to set up manually or need to troubleshoot:
+# Switch to stable version
+cd $software_ROOT/spack
+git checkout releases/v0.21
 
-1. Load required packages:
-   ```bash
-   spack load gspc-feynman
-   spack load gpi-space
-   ```
+# Initialize Spack
+. $software_ROOT/spack/share/spack/setup-env.sh
 
-2. Set environment variables:
-   ```bash
-   export SINGULAR_INSTALL_DIR=$(spack location -i singular)
-   export GSPC_FEYNMAN_INSTALL_DIR=$(spack location -i gspc-feynman)
-   export GSPC_FEYNMAN_EXAMPLES_DIR=$GSPC_FEYNMAN_INSTALL_DIR/share/examples
-   export SINGULARPATH=$GSPC_FEYNMAN_INSTALL_DIR
-   ```
+# Bootstrap Spack
+spack spec zlib
+```
 
-3. Set up required directories and files:
-   ```bash
-   # Create necessary directories
-   mkdir -p $software_ROOT/tempdir
+### Step 3: Install gspc-feynman
 
-   # Create nodefile with current hostname
-   hostname > $software_ROOT/nodefile
+```bash
+# Add package repository
+git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
+spack repo add $software_ROOT/spack-packages
 
-   # Create loghostfile with current hostname
-   hostname > $software_ROOT/loghostfile
+# Install package
+spack install gspc-feynman
+```
 
-   # Copy example files to working directory
-   cp $GSPC_FEYNMAN_EXAMPLES_DIR/templategp.lib $software_ROOT/
-   cp $GSPC_FEYNMAN_EXAMPLES_DIR/templategspc.lib $software_ROOT/
-   ```
+## 🚀 Quick Start
 
-4. Configure SSH:
-   ```bash
-   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
-   ssh-copy-id -f -i ~/.ssh/id_rsa localhost
-   ```
+### Option 1: Using Setup Script
 
-5. Start GPI-Space Monitor:
-   ```bash
-   gspc-monitor --port 9876 &
-   ```
+```bash
+# Make script executable
+chmod +x setup.sh
 
-6. Start Singular:
-   ```bash
-   cd $software_ROOT
-   Singular
-   ```
+# Run setup
+./setup.sh
+```
 
-## **Example: Computing Feynman Integrals**
+### Option 2: Manual Setup
 
-This example demonstrates how to compute Feynman integrals using our framework. We'll set up a graph structure representing the Feynman diagram and compute its sector decomposition.
+```bash
+# Load required modules
+spack load gpi-space@24.12
+spack load singular@4.4.0p2
+spack load gspc-feynman
+
+# Set environment variables
+export SINGULAR_INSTALL_DIR=$(spack location -i singular@4.4.0p2)
+export GSPC_FEYNMAN_INSTALL_DIR=$(spack location -i gspc-feynman)
+export GSPC_FEYNMAN_EXAMPLES_DIR=$GSPC_FEYNMAN_INSTALL_DIR/share/examples
+export SINGULARPATH=$GSPC_FEYNMAN_INSTALL_DIR
+```
+
+## 🔍 Starting GPI-Space Monitor
+
+### Standard Method (with screen access)
+```bash
+gspc-monitor --port 9876 &
+```
+
+### File Redirection Method (without screen access)
+```bash
+# Create logs directory
+mkdir -p $software_ROOT/logs
+
+# Get GPI-Space binary path
+GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
+
+# Start monitor with logging
+[ -f $software_ROOT/logs/monitor.txt ] && rm $software_ROOT/logs/monitor.txt
+cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
+
+# Monitor the output
+tail -f $software_ROOT/logs/monitor.txt
+```
+
+## 🧪 Example Usage
 
 ```singular
 LIB "templategspc.lib";
 
+// Configure GPI-Space
 configToken gc = configure_gspc();
 gc.options.tmpdir = "tempdir";
 gc.options.nodefile = "nodefile";
@@ -180,9 +124,8 @@ gc.options.procspernode = 4;
 gc.options.loghostfile = "loghostfile";
 gc.options.logport = 9876;
 
+// Define graph structure
 ring R = 0, x, dp;
-
-// Define the graph structure
 list v = list(1, 2, 3, 4, 5, 6);  // vertices
 list e = list(
     list(6, 1),    // edge 6->1
@@ -196,7 +139,7 @@ list e = list(
     list(2),       // external leg 2
     list(3),       // external leg 3
     list(4)        // external leg 4
-);  // edges and external legs
+);
 
 // Define target integrals
 list targetInt = list(
@@ -204,52 +147,67 @@ list targetInt = list(
     list(1, -1, 1, -1, -3, -1, -1, -4, -1)
 );
 
-// Combine all data into a single list
+// Compute sector decomposition
 list L = v, e, targetInt;
-
-// Compute the sector decomposition
 def re = gspc_feynman(L, gc);
-re;
 ```
 
-## **Troubleshooting**
+## 🔧 Troubleshooting
 
-If you encounter any issues, please check the following:
+### Common Issues
 
-1. **Environment Variables**: Make sure all required environment variables are set:
+1. **Monitor Not Starting**
    ```bash
-   echo $SINGULAR_INSTALL_DIR
-   echo $GSPC_FEYNMAN_INSTALL_DIR
-   echo $GSPC_FEYNMAN_EXAMPLES_DIR
-   echo $SINGULARPATH
+   # Check if port is in use
+   netstat -tuln | grep 9876
+   
+   # Check log file
+   cat $software_ROOT/logs/monitor.txt
    ```
 
-2. **File Permissions**: Ensure you have read/write permissions in the working directory:
+2. **Module Loading Issues**
    ```bash
-   ls -l $software_ROOT/tempdir
-   ls -l $software_ROOT/nodefile
-   ls -l $software_ROOT/loghostfile
-   ls -l $GSPC_FEYNMAN_INSTALL_DIR/share/examples/
+   # Reload modules
+   spack load gpi-space@24.12
+   spack load singular@4.4.0p2
+   spack load gspc-feynman
    ```
 
-3. **GPI-Space Monitor**: Verify the monitor is running:
+3. **SSH Connection Issues**
    ```bash
-   ps aux | grep gspc-monitor
-   ```
-
-4. **SSH Connection**: Test SSH connection to localhost:
-   ```bash
+   # Test SSH connection
    ssh localhost echo "SSH connection successful"
+   
+   # Regenerate SSH keys if needed
+   ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
+   ssh-copy-id -f -i ~/.ssh/id_rsa localhost
    ```
 
-5. **Library Loading**: If you get library loading errors, verify the library path:
-   ```bash
-   echo $SINGULARPATH
-   ls -l $GSPC_FEYNMAN_INSTALL_DIR/lib/libSINGULAR-template-module.so
-   ```
+### Environment Verification
 
-6. **Common Issues**:
-   - If the GPI-Space monitor fails to start, ensure GPI-Space is loaded: `spack load gpi-space`
-   - If library loading fails, check if the module is in the correct location
-   - If SSH connection fails, verify SSH server is running: `sudo systemctl status ssh`
-   - If environment variables are not set, run the setup script again
+```bash
+# Check environment variables
+echo "SINGULAR_INSTALL_DIR: $SINGULAR_INSTALL_DIR"
+echo "GSPC_FEYNMAN_INSTALL_DIR: $GSPC_FEYNMAN_INSTALL_DIR"
+echo "GSPC_FEYNMAN_EXAMPLES_DIR: $GSPC_FEYNMAN_EXAMPLES_DIR"
+echo "SINGULARPATH: $SINGULARPATH"
+
+# Check file permissions
+ls -l $software_ROOT/tempdir
+ls -l $software_ROOT/nodefile
+ls -l $software_ROOT/loghostfile
+```
+
+## 📚 Additional Resources
+
+- [GPI-Space Documentation](https://github.com/singular-gpispace/gspc-feynman)
+- [Singular Documentation](https://www.singular.uni-kl.de/)
+- [Spack Documentation](https://spack.readthedocs.io/)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the LICENSE file for details.

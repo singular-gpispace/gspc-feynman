@@ -22,17 +22,11 @@ spack load gpi-space@24.12
 
 # Get GPI-Space root from spack
 GPISPACE_ROOT=$(spack location -i gpi-space@24.12)
-if [ -z "$GPISPACE_ROOT" ]; then
-    echo "Error: Could not find GPI-Space installation"
-    exit 1
-fi
+
 
 # Set and verify GSPC_HOME
 export GSPC_HOME="$GPISPACE_ROOT"
-if [ ! -d "$GSPC_HOME" ]; then
-    echo "Error: GSPC_HOME directory does not exist: $GSPC_HOME"
-    exit 1
-fi
+
 
 # Generate SVG workflow diagram
 pnetc "$WORKSPACE_DIR/template/workflow/template.xpnet" | pnet2dot | dot -T svg > "$WORKSPACE_DIR/template/workflow/fey.svg"
@@ -42,23 +36,13 @@ INSTALL_PREFIX="$WORKSPACE_DIR/install_dir"
 BUILD_TYPE="Release"
 BOOST_NO_CMAKE="on"
 
-# Set FLINT home directory
-FLINT_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/flint-2.6.3-pb3i4qjyjz7pqkpf6cs7wk6ro5pl564i"
-
-# Set GMP home directory
-GMP_HOME="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/gmp-6.2.1-gjqp7e3m3fik4wsuqqcxv2brlj2wkyza"
-
-# Set Singular install
-SINGULAR_INSTALL_DIR="/home/atraore/singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.3.0/singular-4.4.0p2-k7rgdkzo5prqsvxjckejvcdvxgjr64bk"
+# Get dependency paths from spack using specific hashes
+FLINT_HOME=$(spack location -i /pb3i4qj)  # flint@2.6.3%gcc@11.3.0
+GMP_HOME=$(spack location -i /gjqp7e3)    # gmp@6.2.1%gcc@11.3.0
+SINGULAR_INSTALL_DIR=$(spack location -i singular@4.4.0p2)
 
 # Set the library path correctly
 export LD_LIBRARY_PATH=$GSPC_HOME/lib:$FLINT_HOME/lib:$GMP_HOME/lib:$SINGULAR_INSTALL_DIR/lib:$LD_LIBRARY_PATH
-
-# Verify paths before building
-if [ ! -f "$GSPC_HOME/gspc_version" ]; then
-    echo "Error: GPI-Space version file missing at $GSPC_HOME/gspc_version"
-    exit 1
-fi
 
 # Run CMake
 cmake -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
@@ -90,7 +74,6 @@ export GSPC_FEYNMAN_INSTALL_DIR="$WORKSPACE_DIR/install_dir"
 
 # Update LD_LIBRARY_PATH to include the install directory
 export LD_LIBRARY_PATH=$GSPC_HOME/lib:$FLINT_HOME/lib:$GSPC_FEYNMAN_INSTALL_DIR:$LD_LIBRARY_PATH
-
 
 # Run Singular
 Singular example.lib
