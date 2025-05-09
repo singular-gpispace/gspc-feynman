@@ -5,85 +5,60 @@
 #include <iostream>
 #include <cstdlib> // for std::getenv
 
-#ifndef SP_INSTALL_PATH
-#define SP_INSTALL_PATH "/home/atraore/gpi/try_gpi/gspc-feynman/install_dir"
-#endif
-
 namespace singular_template
 {
-  const std::filesystem::path SP_INSTALL_PATH_OBJ(SP_INSTALL_PATH);
-
   namespace
   {
-    void check(const std::filesystem::path& path, bool condition, const std::string& message)
-    {
-      if (!condition)
-      {
-        throw std::logic_error(path.string() + " " + message + ": Installation incomplete!?");
-      }
-    }
-
-    void check_is_directory(const std::filesystem::path& path)
-    {
-      check(path, std::filesystem::is_directory(path), "is not a directory");
-    }
-
-    /* void check_is_file(const std::filesystem::path& path)
-    {
-      check(path, std::filesystem::exists(path), "does not exist");
-      check(path, std::filesystem::is_regular_file(path), "is not a regular file");
-    } */
-
     std::filesystem::path gspc_home(const std::filesystem::path& gspc_path)
     {
-      return gspc_path;
+      if (gspc_path.empty())
+      {
+        const char* env_gspc_home = std::getenv("GSPC_HOME");
+        if (!env_gspc_home || std::string(env_gspc_home).empty())
+        {
+          throw std::runtime_error("GSPC_HOME environment variable not set or empty");
+        }
+        return std::filesystem::canonical(env_gspc_home);
+      }
+      return std::filesystem::canonical(gspc_path);
     }
 
     std::filesystem::path workflow_path(const std::filesystem::path& installation_path)
     {
+      if (installation_path.empty())
+      {
+        throw std::runtime_error("Installation path is empty");
+      }
       return installation_path / "libexec" / "workflow";
     }
 
     std::filesystem::path workflow_all_file(const std::filesystem::path& installation_path)
     {
-      return workflow_path(installation_path) / "template.pnet";
+      auto path = workflow_path(installation_path) / "template.pnet";
+      if (!std::filesystem::exists(path))
+      {
+        throw std::runtime_error("Workflow file not found: " + path.string());
+      }
+      return path;
     }
   }
 
   installation::installation()
-    : installation(SP_INSTALL_PATH_OBJ)
   {
-  }
-// Setting GSPC_HOME to the path for the new GPI-Space installation
-  installation::installation(const std::filesystem::path& ip)
-    : _path(ip), _gspc_path(std::filesystem::path(std::getenv("GSPC_HOME")))
-{
-    /* std::cout << "Using GSPC_HOME (inside installation.cpp): " << _gspc_path << std::endl;
-    
-    if (!std::filesystem::exists(_gspc_path / "gspc_version")) {
-        std::cerr << "ERROR: GSPC version file not found at " << (_gspc_path / "gspc_version") << std::endl;
-        throw std::runtime_error("GSPC version file missing!");
-    } */
-
-    check_is_directory(_gspc_path);
-}
-
-/* 
-  installation::installation(const std::filesystem::path& ip, const std::filesystem::path& gp)
-  : _path(ip), _gspc_path(gp)
-  {
-    std::cout << "Using GSPC_HOME (inside installation.cpp): " << _gspc_path << std::endl;
-    std::cout << "Using path ip (inside installation.cpp): " << _path << std::endl;
-
-    if (!std::filesystem::exists(_gspc_path / "gspc_version"))
+    const char* install_dir = std::getenv("GSPC_FEYNMAN_INSTALL_DIR");
+    if (!install_dir || std::string(install_dir).empty())
     {
-      std::cerr << "ERROR: GSPC version file not found at " << (_gspc_path / "gspc_version") << std::endl;
+      throw std::runtime_error("GSPC_FEYNMAN_INSTALL_DIR environment variable not set or empty");
     }
+    _path = std::filesystem::canonical(install_dir);
+    _gspc_path = gspc_home(std::filesystem::path());
+  }
 
-    check_is_directory(gspc_home(_gspc_path));
-    check_is_directory(workflow_path(_path));
-    check_is_file(workflow_all());
-  } */
+  installation::installation(const std::filesystem::path& ip)
+  {
+    _path = std::filesystem::canonical(ip);
+    _gspc_path = gspc_home(std::filesystem::path());
+  }
 
   std::filesystem::path installation::workflow_all() const
   {
@@ -99,7 +74,6 @@ namespace singular_template
   {
     gspc::set_gspc_home(vm, gspc_home(_gspc_path));
     gspc::set_application_search_path(vm, workflow_path(_path));
-
     return gspc::installation(vm);
   }
 }

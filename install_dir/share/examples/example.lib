@@ -1,7 +1,5 @@
-
-
 LIB "templategspc.lib";
-//LIB "/home//atraore/gpi/try_gpi/gspc-feynman/template/template/LIB/templategspc.lib";
+//LIB "/home/atraore/gpi/try_gpi/gspc-feynman/template/template/LIB/templategspc.lib";
 
 //LIB "random.lib";
 LIB "modstd.lib";
@@ -10,8 +8,8 @@ LIB "modstd.lib";
 
 // Configure GPI-Space	
 configToken gc = configure_gspc();
-gc.options.tmpdir = "/home//atraore/gpi/try_gpi/gspc-feynman/examples/temp";
-gc.options.nodefile = "nodefile";
+gc.options.tmpdir = system("getenv", "GSPC_FEYNMAN_INSTALL_DIR") + "/temp";
+gc.options.nodefile = system("getenv", "software_ROOT") + "/nodefile";
 gc.options.procspernode = 7;
 gc.options.loghost = "waas";
 gc.options.logport = 9876;

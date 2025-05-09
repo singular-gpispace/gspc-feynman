@@ -23,13 +23,9 @@ gspc_template(list, configToken, configToken)    interface of the template frame
 
 proc mod_init()
 {
-    string libpath = system("getenv", "GSPC_FEYNMAN_INSTALL_DIR");
-    if (libpath == "")
-    {
-        ERROR("GSPC_FEYNMAN_INSTALL_DIR environment variable not set");
-    }
-    string module_path = libpath + "/libSINGULAR-template-module.so";
-    LIB(module_path);
+    
+
+    LIB "/home/atraore/gpi/try_gpi/feynman_ibp/build_dir/src/libSINGULAR-template-module.so";
 
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");
@@ -43,6 +39,7 @@ proc mod_init()
     newstruct("oneIBP", "list c, list i");
     newstruct("setIBP", "ring over,list seed,list IBP");
     newstruct("oneSector", "list lab, list sectorMap ,list targetInts ");
+
 }
 
 proc configure_gspc()
@@ -52,8 +49,6 @@ RETURN: a configToken containing a gspcConfigToken with the standard configurati
 {
     gspcConfigToken gc;
     gc.rifstrategy = "ssh";
-    gc.tmpdir = system("getenv", "GSPC_FEYNMAN_INSTALL_DIR") + "/temp";
-    gc.nodefile = system("getenv", "software_ROOT") + "/nodefile";
     configToken ct;
     ct.tokentype = "gspcConfigToken";
     ct.options = gc;
@@ -114,7 +109,7 @@ static proc gspc_template(list l, configToken gc, configToken pc)
             }
             gc.options.loghost = loghost;
         }
-        driver_opts = driver_opts + " --log-host " + gc.options.loghost + " --log-port " + string(gc.options.logport);
+        driver_opts = driver_opts + " --log-host " + gc.options.loghost, " --log-port ", string(gc.options.logport);
     }
 
     if (system("getenv", "LD_LIBRARY_PATH") != "")
@@ -125,90 +120,112 @@ static proc gspc_template(list l, configToken gc, configToken pc)
     //Starting to parse workflow options
     string workflow_opts;
 
+    //Parse N
+    //workflow_opts = "--N " + string(N);
+
     //Parse basefilename
-    string tmpdir = gc.options.tmpdir;
-    if (tmpdir == "")
+    string tmpdir;
+    if (gc.options.tmpdir[1] == "/")
     {
-        ERROR("tmpdir is not set in configuration");
+        tmpdir = gc.options.tmpdir;
     }
-    if (tmpdir[1] != "/")
+    else
     {
-        tmpdir = system("getenv", "PWD") + "/" + tmpdir;
+        tmpdir = system("getenv", "PWD") + "/" + gc.options.tmpdir;
     }
-    // Ensure tmpdir ends with a single slash
-    if (tmpdir[size(tmpdir)] != "/")
-    {
-        tmpdir = tmpdir + "/";
-    }
-    workflow_opts = workflow_opts + " --basefilename " + tmpdir;
+    string basefilename = tmpdir + "/";
+    workflow_opts = workflow_opts + " --basefilename " + basefilename;
 
     //Parse input
     link lin;
     int N = 1;
     for (int i = 1; i <= N; i++)
     {
-        string input_file = tmpdir + "input";
-        lin = "ssi:w " + input_file;
+        lin = "ssi:w " + basefilename + "input";
         write(lin, l[i]);
         close(lin);
     }
     workflow_opts = workflow_opts + " --input " + "input";
 
     //Parse libraryname
-    string loadlib = pc.options.neededLibrary;
-    if (loadlib == "")
+    string loadlib;
+    if (pc.options.neededLibrary[1] == "/")
     {
-        ERROR("neededLibrary is not set in configuration");
+        loadlib = pc.options.neededLibrary;
     }
-    if (loadlib[1] != "/")
+    else
     {
-        loadlib = system("getenv", "PWD") + "/" + loadlib;
+        loadlib = system("getenv", "PWD") + "/" + pc.options.neededLibrary;
     }
     workflow_opts = workflow_opts + " --libraryname " + loadlib;
 
+
+
     string all_opts = driver_opts + " " + workflow_opts;
+
     def sm_result = sggspc_template(all_opts);
+
 
     return(sm_result);
 }
 
-proc gspc_feynman(list L, configToken gc)
+proc gspc_template_SchRes(list L, configToken gc)
 {
-    if (size(L) < 3)
-    {
-        ERROR("Input list must contain at least 3 elements: vertices, edges, and targetInt");
-    }
     
     configToken ct = configure_template();
     ct.options.neededLibrary = "templategp.lib";
     ct.options.functionName = "stdBasis";
 
+    /*  int r = size(I);
+     //intvec primeiv = primeList(I, nb_prime);
+     string s = "{{1, 3}, {1, 2}, {1, 2}, {2, 4}, {3, 4}, {3, 4}}";
+     // string s = l[2];
+     print(s);
+     string ss = "{1,2,3,4}";
+  */
+  //intvec primeiv = primeList(I, nb_prime);
+    //list L = s;
     list inputlists;
     token t;
 
     t.fieldnames = list("generators", "Input101");
     //  L is a list containing the input data
     for (int i = 1; i <= size(L); i++) {
+
         t.data[i] = L[i];
+
     }
     inputlists[1] = t;
 
-    // Verify configuration
-    if (typeof(gc.options) != "gspcConfigToken")
-    {
-        ERROR("Invalid configuration token type for GPI-Space");
-    }
-    if (gc.options.tmpdir == "")
-    {
-        ERROR("tmpdir not set in GPI-Space configuration");
-    }
-    if (gc.options.nodefile == "")
-    {
-        ERROR("nodefile not set in GPI-Space configuration");
-    }
-
     def re = gspc_template(inputlists, gc, ct);
     def inputRing = basering;
+    // Access the first element in the list
     def resultToken = re[1];
-    return(resultToken);
+
+    // Print the structure and type of `resultToken`
+   /*  print("Structure of resultToken: "); print(resultToken);
+    print("Type of resultToken: "); print(typeof(resultToken)); */
+    // print(re);
+
+
+     // Print current ring context
+     //print("Current ring context before accessing data: "); print(basering);
+   /*   def resultRing = resultToken.r_data;
+     setring resultRing;
+     // Extract the data from resultToken
+     list Result = resultToken.data;
+     print("beforeReturn");
+     print(Result);
+     // Print the extracted data for verification
+
+     // Restore the original ring context
+     setring inputRing;
+
+     // Print restored ring context
+     print("Ring context restored to: "); print(basering);
+     list output = imap(resultRing, output); */
+    return(re[1]);
+    // Return the result
+    //return(resultRing);
+    //return(0);
 }
