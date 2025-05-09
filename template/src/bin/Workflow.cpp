@@ -1,6 +1,8 @@
 #include <interface/Workflow.hpp>
 
 #include <iostream>
+#include "template/config.hpp"
+#include <Singular/libsingular.h>
 
 
 namespace template_module
@@ -22,9 +24,7 @@ namespace template_module
         :_input(args.at("input").as<std::string>())
         , _basefilename(args.at("basefilename").as<std::string>())
         , _libraryname(args.at("libraryname").as<std::string>())
-
     {
-
     }
 
     ValuesOnPorts Workflow::inputs() const
@@ -38,8 +38,33 @@ namespace template_module
         return values_on_ports;
     }
 
-
-
+void printListElements(lists output) {
+    if (!output) {
+        std::cerr << "ERROR: Null list in printListElements" << std::endl;
+        return;
+    }
+    
+    std::cout << "List with " << output->nr + 1 << " elements:" << std::endl;
+    for (int i = 0; i <= output->nr; i++) {
+        std::cout << "  [" << i << "]: ";
+        if (output->m[i].rtyp == STRING_CMD) {
+            std::cout << "STRING: " << (char*)output->m[i].data << std::endl;
+        } else if (output->m[i].rtyp == INT_CMD) {
+            std::cout << "INT: " << (int)(long)output->m[i].data << std::endl;
+        } else if (output->m[i].rtyp == LIST_CMD) {
+            std::cout << "LIST" << std::endl;
+            printListElements((lists)output->m[i].data);
+        } else if (output->m[i].rtyp == RING_CMD) {
+            std::cout << "RING: " << rString((ring)output->m[i].data) << std::endl;
+        } else if (output->m[i].rtyp == MATRIX_CMD) {
+            std::cout << "MATRIX" << std::endl;
+            //printMat((matrix)output->m[i].data);
+            std::cout << "this is a matrix" << std::endl;
+        } else {
+            std::cout << "Type: " << output->m[i].rtyp << std::endl;
+        }
+    }
+}
     void Workflow::process(WorkflowResult const& results, [[maybe_unused]] Parameters const& parameters, leftv res) const {
         // Allocate and initialize the output list
         lists out_list = static_cast<lists>(omAlloc0Bin(slists_bin));
@@ -47,49 +72,53 @@ namespace template_module
         // Retrieve the map from the results
         auto& valuesOnPortsMap = results.template_module::ValuesOnPorts::map();
 
-        // Determine the number of "OUTPUT" entries
-        int output_count = 0;
-        for (auto it = valuesOnPortsMap.begin(); it != valuesOnPortsMap.end(); ++it) {
-            if (boost::get<std::string>(it->first) == "place_output") {
-                output_count++;
-            }
-        }
+        // Get the output value
+        auto output_it = valuesOnPortsMap.find("output");
+        if (output_it != valuesOnPortsMap.end()) {
+            try {
+                // Get the output string
+                std::string output = boost::get<std::string>(output_it->second);
+                //std::cout << "Raw output: " << output << std::endl;
 
-        //std::cout << "output count: " << output_count << std::endl;
-
-        // Initialize the list with the number of "OUTPUT" entries
-        out_list->Init(output_count);
-        //std::cout << "Initialized out_list with size: " << output_count << std::endl;
-
-        int i = 0;
-
-        for (auto it = valuesOnPortsMap.begin(); it != valuesOnPortsMap.end(); ++it) {
-            if (boost::get<std::string>(it->first) == "place_output") {
-                try {
-                    // Extract and print the raw input
-                    std::string raw_data = boost::get<std::string>(it->second);
-                    //std::cout << "Raw data: " << raw_data << std::endl;
-
-                    // Skip deserialization and use raw data directly
-                    // std::cout << "Skipping deserialization for debug purposes.\n";
-                    out_list->m[i].rtyp = STRING_CMD;  // Assuming it's a string type
-                    out_list->m[i].data = strdup(raw_data.c_str());  // Copy raw string
-                    i++;
+                // Split the output string by semicolons
+                std::vector<std::string> parts;
+                size_t start = 0;
+                size_t end = 0;
+                while ((end = output.find(';', start)) != std::string::npos) {
+                    parts.push_back(output.substr(start, end - start));
+                    start = end + 1;
                 }
-                catch (const std::exception& e) {
-                    std::cerr << "Error accessing data: " << e.what() << std::endl;
+                if (start < output.length()) {
+                    parts.push_back(output.substr(start));
+                }
+
+                // Initialize the list with the number of parts
+                out_list->Init(parts.size());
+                //std::cout << "Initialized out_list with size: " << parts.size() << std::endl;
+
+                // Add each part to the list
+                for (size_t i = 0; i < parts.size(); ++i) {
+                    out_list->m[i].rtyp = STRING_CMD;
+                    out_list->m[i].data = strdup(parts[i].c_str());
                 }
             }
-        }
-
-
-        // Verify that the number of entries processed matches the expected count
-        if (i != output_count) {
-            std::cerr << "Warning: Processed " << i << " OUTPUT entries, but expected " << output_count << std::endl;
+            catch (const std::exception& e) {
+                std::cerr << "Error processing output: " << e.what() << std::endl;
+                out_list->Init(1);
+                out_list->m[0].rtyp = STRING_CMD;
+                out_list->m[0].data = strdup("Error processing output");
+            }
+        } else {
+            std::cerr << "No output found in results" << std::endl;
+            out_list->Init(1);
+            out_list->m[0].rtyp = STRING_CMD;
+            out_list->m[0].data = strdup("No output found");
         }
 
         // Set the result type and data
         res->rtyp = LIST_CMD;
         res->data = out_list;
+        //print the result
+        printListElements(out_list);
     }
 }

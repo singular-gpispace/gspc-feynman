@@ -91,17 +91,6 @@ export GSPC_FEYNMAN_INSTALL_DIR="$WORKSPACE_DIR/install_dir"
 # Update LD_LIBRARY_PATH to include the install directory
 export LD_LIBRARY_PATH=$GSPC_HOME/lib:$FLINT_HOME/lib:$GSPC_FEYNMAN_INSTALL_DIR:$LD_LIBRARY_PATH
 
-# Verify environment variables
-echo "Verifying environment variables..."
-echo "GSPC_HOME=$GSPC_HOME"
-echo "GSPC_FEYNMAN_INSTALL_DIR=$GSPC_FEYNMAN_INSTALL_DIR"
-echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-
-# Verify directories and permissions
-echo "Verifying directories and permissions..."
-ls -la "$GSPC_FEYNMAN_INSTALL_DIR/temp"
-ls -la "$GSPC_FEYNMAN_INSTALL_DIR/libSINGULAR-template-module.so"
-ls -la "$GSPC_FEYNMAN_INSTALL_DIR/libSINGULAR-template-installation.so"
 
 # Run Singular
 Singular example.lib

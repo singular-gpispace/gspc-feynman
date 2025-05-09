@@ -23,8 +23,12 @@ export GSPC_FEYNMAN_EXAMPLES_DIR=$GSPC_FEYNMAN_INSTALL_DIR/share/examples
 export SINGULARPATH=$GSPC_FEYNMAN_INSTALL_DIR
 export GPI_SPACE_HOME=$(spack location -i gpi-space@24.12)
 
-# Ensure LD_LIBRARY_PATH includes GPI-Space 24.12
-export LD_LIBRARY_PATH=$GPI_SPACE_HOME/lib:$LD_LIBRARY_PATH
+# Copy libraries to GPI-Space lib directory
+cp $GSPC_FEYNMAN_INSTALL_DIR/lib/libSINGULAR-template-module.so $GPI_SPACE_HOME/lib/
+cp $GSPC_FEYNMAN_INSTALL_DIR/lib/libSINGULAR-template-installation.so $GPI_SPACE_HOME/lib/
+
+# Ensure LD_LIBRARY_PATH includes both GPI-Space and gspc-feynman libs
+export LD_LIBRARY_PATH=$GPI_SPACE_HOME/lib:$GSPC_FEYNMAN_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
 # Create required files
 hostname > $software_ROOT/nodefile
