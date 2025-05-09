@@ -23,9 +23,13 @@ gspc_template(list, configToken, configToken)    interface of the template frame
 
 proc mod_init()
 {
-    
-
-    LIB "/home/atraore/gpi/try_gpi/gspc-feynman/build_dir/src/libSINGULAR-template-module.so";
+    string libpath = system("getenv", "GSPC_FEYNMAN_INSTALL_DIR");
+    if (libpath == "")
+    {
+        ERROR("GSPC_FEYNMAN_INSTALL_DIR environment variable not set");
+    }
+    string module_path = libpath + "/lib/libSINGULAR-template-module.so";
+    LIB(module_path);
 
     newstruct("configToken", "string tokentype, def options");
     newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string rifstrategyparameters, string loghost, int logport, string loghostfile");
