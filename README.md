@@ -133,7 +133,7 @@ def re = gspc_feynman(L, gc);
 
 ### Option 2: Manual Setup (Alternative)
 
-If you don't have access to the screen or prefer to run the monitor separately:
+If you don't have access to the screen or prefer to use  a file:
 
 ```bash
 # Create logs directory

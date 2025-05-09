@@ -8,9 +8,6 @@ export install_ROOT=~/singular-gpispace
 mkdir -p $software_ROOT
 mkdir -p $software_ROOT/tempdir
 
-# Unload any existing modules to avoid conflicts
-spack unload -a
-
 # Load required modules with specific versions
 spack load gpi-space@24.12
 spack load singular@4.4.0p2
@@ -67,10 +64,6 @@ echo "SINGULARPATH: $SINGULARPATH"
 echo "GPI_SPACE_HOME: $GPI_SPACE_HOME"
 echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
 
-# Instructions for running Singular
-echo -e "\nTo start Singular, run:"
-echo "cd $software_ROOT"
-echo "Singular"
-
-# Change to the working directory
+# Change to the working directory and start Singular
+echo -e "\nChanging to working directory and starting Singular..."
 cd $software_ROOT
