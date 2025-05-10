@@ -13,6 +13,7 @@ This package provides a framework for automating the reduction of Feynman integr
 ## **Using Spack Package Manager**
 
 #### Required System Packages
+
 ```bash
 
 sudo apt update
@@ -42,7 +43,7 @@ git clone https://github.com/spack/spack.git $software_ROOT/spack
 
 # Switch to stable version
 cd $software_ROOT/spack
-git checkout releases/v0.21
+git checkout releases/v0.23
 
 # Initialize Spack
 . $software_ROOT/spack/share/spack/setup-env.sh
@@ -159,27 +160,28 @@ tail -f $software_ROOT/logs/monitor.txt
 ### Common Issues
 
 1. **Monitor Not Starting**
+
    ```bash
    # Check if port is in use
    netstat -tuln | grep 9876
-   
+
    # Check log file
    cat $software_ROOT/logs/monitor.txt
    ```
-
 2. **Module Loading Issues**
+
    ```bash
    # Reload modules
    spack load gpi-space@24.12
    spack load singular@4.4.0p2
    spack load gspc-feynman
    ```
-
 3. **SSH Connection Issues**
+
    ```bash
    # Test SSH connection
    ssh localhost echo "SSH connection successful"
-   
+
    # Regenerate SSH keys if needed
    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
    ssh-copy-id -f -i ~/.ssh/id_rsa localhost
