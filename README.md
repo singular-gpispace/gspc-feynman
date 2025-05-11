@@ -168,6 +168,7 @@ tail -f $software_ROOT/logs/monitor.txt
    # Check log file
    cat $software_ROOT/logs/monitor.txt
    ```
+
 2. **Module Loading Issues**
 
    ```bash
@@ -176,6 +177,7 @@ tail -f $software_ROOT/logs/monitor.txt
    spack load singular@4.4.0p2
    spack load gspc-feynman
    ```
+
 3. **SSH Connection Issues**
 
    ```bash
@@ -186,6 +188,32 @@ tail -f $software_ROOT/logs/monitor.txt
    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
    ssh-copy-id -f -i ~/.ssh/id_rsa localhost
    ```
+
+4. **gpi-space@24.12 Not Found**
+
+   If you encounter an error indicating that `gpi-space@24.12` is not found, follow these steps:
+
+   - Run the following command to checksum the version:
+     ```bash
+     spack checksum gpi-space@24.12
+     ```
+
+   - If prompted, select the version and press `c` to checksum.
+
+   - Open the `gpi-space/package.py` file in your `spack-packages/packages/` directory 
+   ```julia
+    spack edit gpi-space
+   ```
+
+   and ensure it contains the following line:
+     ```python
+     version("24.12", sha256="9cd97b8e41b4494c14a90afff6b801f9cf3b5811205e39c33a481ab09db59920")
+     ```
+
+   - Save the file and try installing `gspc-feynman` again:
+     ```bash
+     spack install gspc-feynman
+     ```
 
 ### Environment Verification
 

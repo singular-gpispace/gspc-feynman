@@ -13,6 +13,7 @@ This package provides a framework for automating the reduction of Feynman integr
 ## **Using Spack Package Manager**
 
 #### Required System Packages
+
 ```bash
 
 sudo apt update
@@ -42,7 +43,7 @@ git clone https://github.com/spack/spack.git $software_ROOT/spack
 
 # Switch to stable version
 cd $software_ROOT/spack
-git checkout releases/v0.21
+git checkout releases/v0.23
 
 # Initialize Spack
 . $software_ROOT/spack/share/spack/setup-env.sh
@@ -133,7 +134,7 @@ def re = gspc_feynman(L, gc);
 
 ### Option 2: Manual Setup (Alternative)
 
-If you don't have access to the screen or prefer to run the monitor separately:
+If you don't have access to the screen or prefer to use  a file:
 
 ```bash
 # Create logs directory
@@ -159,15 +160,17 @@ tail -f $software_ROOT/logs/monitor.txt
 ### Common Issues
 
 1. **Monitor Not Starting**
+
    ```bash
    # Check if port is in use
    netstat -tuln | grep 9876
-   
+
    # Check log file
    cat $software_ROOT/logs/monitor.txt
    ```
 
 2. **Module Loading Issues**
+
    ```bash
    # Reload modules
    spack load gpi-space@24.12
@@ -176,14 +179,41 @@ tail -f $software_ROOT/logs/monitor.txt
    ```
 
 3. **SSH Connection Issues**
+
    ```bash
    # Test SSH connection
    ssh localhost echo "SSH connection successful"
-   
+
    # Regenerate SSH keys if needed
    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
    ssh-copy-id -f -i ~/.ssh/id_rsa localhost
    ```
+
+4. **gpi-space@24.12 Not Found**
+
+   If you encounter an error indicating that `gpi-space@24.12` is not found, follow these steps:
+
+   - Run the following command to checksum the version:
+     ```bash
+     spack checksum gpi-space@24.12
+     ```
+
+   - If prompted, select the version and press `c` to checksum.
+
+   - Open the `gpi-space/package.py` file in your `spack-packages/packages/` directory 
+   ```julia
+    spack edit gpi-space
+   ```
+
+   and ensure it contains the following line:
+     ```python
+     version("24.12", sha256="9cd97b8e41b4494c14a90afff6b801f9cf3b5811205e39c33a481ab09db59920")
+     ```
+
+   - Save the file and try installing `gspc-feynman` again:
+     ```bash
+     spack install gspc-feynman
+     ```
 
 ### Environment Verification
 
