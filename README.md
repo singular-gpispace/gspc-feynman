@@ -1,42 +1,54 @@
-# 🚀 Parallel Computation of Short IPB Systems
+# Parallel Computation of Short IPB Systems
 
 ![Petri Net](template/cmake/modules/web.png)
 
-## 📋 Overview
+## Table of Contents
+- [Overview](#overview)
+- [Installation Guide](#installation-guide)
+  - [Prerequisites](#prerequisites)
+  - [Environment Setup](#environment-setup)
+  - [Installation Steps](#installation-steps)
+- [Quick Start](#quick-start)
+  - [Using Setup Script](#using-setup-script)
+  - [Manual Setup](#manual-setup)
+- [Example Usage](#example-usage)
+- [Troubleshooting](#troubleshooting)
+- [Additional Resources](#additional-resources)
 
-This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. It transforms sector structures into directed acyclic graphs (DAGs) and generates Petri net representations for parallel computation using GPI-Space.
+## Overview
 
-## 🛠️ Installation Guide
+This package provides a framework for automating the reduction of Feynman integrals using Integration-by-Parts (IBP) identities and sector decomposition. It transforms sector structures into directed acyclic graphs (DAGs) and generates Petri net representations for parallel computation using [GPI-Space](https://github.com/cc-hpc-itwm/gpispace).
+
+## Installation Guide
 
 ### Prerequisites
 
-## **Using Spack Package Manager**
-
-#### Required System Packages
-
+#### Required System Packages:
 ```bash
-
 sudo apt update
 sudo apt install -y build-essential ca-certificates coreutils curl \
     environment-modules gfortran git gpg lsb-release python3 \
     python3-distutils python3-venv unzip zip
 ```
 
-### Step 1: Environment Setup
+### Environment Setup
 
+1. Create and set up working directory:
 ```bash
-# Create and set up working directory
 mkdir -p ~/singular-gpispace
 cd ~/singular-gpispace
+```
 
-# Set environment variables (add to ~/.bashrc for persistence)
+2. Set environment variables (add to `~/.bashrc` for persistence):
+```bash
 echo 'export software_ROOT=~/singular-gpispace' >> ~/.bashrc
 echo 'export install_ROOT=~/singular-gpispace' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Step 2: Install Spack
+### Installation Steps
 
+1. **Install Spack**:
 ```bash
 # Clone Spack
 git clone https://github.com/spack/spack.git $software_ROOT/spack
@@ -52,8 +64,7 @@ git checkout releases/v0.23
 spack spec zlib
 ```
 
-### Step 3: Install gspc-feynman
-
+2. **Install gspc-feynman**:
 ```bash
 # Add package repository
 git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
@@ -63,35 +74,61 @@ spack repo add $software_ROOT/spack-packages
 spack install gspc-feynman
 ```
 
-### Step 4: Configure Environment
-
+3. **Configure Environment**:
 ```bash
 # Set environment variables
 export GSPC_FEYNMAN_INSTALL_DIR=$(spack location -i gspc-feynman)
+export GPI_SPACE_HOME=$(spack location -i gpi-space@24.12)
+export GSPC_HOME=$GPI_SPACE_HOME
+export SINGULAR_INSTALL_DIR=$(spack location -i singular@4.4.0p2)
+export GSPC_FEYNMAN_EXAMPLES_DIR=$GSPC_FEYNMAN_INSTALL_DIR/share/examples
+export SINGULARPATH=$GSPC_FEYNMAN_INSTALL_DIR
+export LD_LIBRARY_PATH=$GSPC_HOME/lib:$GSPC_FEYNMAN_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
-### Option 1: Using Setup Script (Recommended)
+### Using Setup Script
+
+The recommended way to start is using the provided setup script:
 
 ```bash
-# The setup script will:
-#  Start the GPI-Space monitor
 $GSPC_FEYNMAN_INSTALL_DIR/libexec/setup.sh
 ```
 
-### Resume After Setup
-
-After pressing Ctrl+C to stop watching the monitor, you can continue in the same terminal:
+After pressing `Ctrl+C` to stop watching the monitor:
 
 ```bash
-# 2. Change to the working directory ($software_ROOT)
+# Change to working directory
 cd $software_ROOT
+
+# Load Singular
+spack load singular@4.4.0p2
+
 # Start Singular
 Singular
 ```
 
-## 🧪 Example Usage
+### Manual Setup
+
+If you prefer manual setup:
+
+```bash
+# Create logs directory
+mkdir -p $software_ROOT/logs
+
+# Get GPI-Space binary path
+GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
+
+# Start monitor with logging
+[ -f $software_ROOT/logs/monitor.txt ] && rm $software_ROOT/logs/monitor.txt
+cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
+
+# Monitor the output
+tail -f $software_ROOT/logs/monitor.txt
+```
+
+## Example Usage
 
 ```singular
 LIB "templategspc.lib";
@@ -132,45 +169,32 @@ list L = v, e, targetInt;
 def re = gspc_feynman(L, gc);
 ```
 
-### Option 2: Manual Setup (Alternative)
-
-If you don't have access to the screen or prefer to use  a file:
-
-```bash
-# Create logs directory
-mkdir -p $software_ROOT/logs
-
-# Get GPI-Space binary path
-GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
-
-# Start monitor with logging
-[ -f $software_ROOT/logs/monitor.txt ] && rm $software_ROOT/logs/monitor.txt
-cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
-
-# Monitor the output
-tail -f $software_ROOT/logs/monitor.txt
-
-# Note: You can press Ctrl+C to stop watching the logs and continue using the same terminal
-# To return to monitoring the logs, simply run:
-# tail -f $software_ROOT/logs/monitor.txt
-```
-
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
 1. **Monitor Not Starting**
-
-   ```bash
-   # Check if port is in use
-   netstat -tuln | grep 9876
-
-   # Check log file
-   cat $software_ROOT/logs/monitor.txt
-   ```
+   - Check if port is in use:
+     ```bash
+     netstat -tuln | grep 9876
+     ```
+   - Check log file:
+     ```bash
+     cat $software_ROOT/logs/monitor.txt
+     ```
+   - If "Connection refused" errors in Singular:
+     ```bash
+     # Kill any existing monitor processes
+     pkill -f gspc-logging-to-stdout.exe
+     
+     # Start monitor with proper environment
+     export software_ROOT=~/singular-gpispace
+     mkdir -p $software_ROOT/logs
+     GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
+     cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
+     ```
 
 2. **Module Loading Issues**
-
    ```bash
    # Reload modules
    spack load gpi-space@24.12
@@ -179,7 +203,6 @@ tail -f $software_ROOT/logs/monitor.txt
    ```
 
 3. **SSH Connection Issues**
-
    ```bash
    # Test SSH connection
    ssh localhost echo "SSH connection successful"
@@ -190,30 +213,21 @@ tail -f $software_ROOT/logs/monitor.txt
    ```
 
 4. **gpi-space@24.12 Not Found**
-
-   If you encounter an error indicating that `gpi-space@24.12` is not found, follow these steps:
-
-   - Run the following command to checksum the version:
-     ```bash
-     spack checksum gpi-space@24.12
-     ```
-
-   - If prompted, select the version and press `c` to checksum.
-
-   - Open the `gpi-space/package.py` file in your `spack-packages/packages/` directory 
-   ```julia
-    spack edit gpi-space
+   If you encounter an error indicating that `gpi-space@24.12` is not found:
+   ```bash
+   # Run checksum command
+   spack checksum gpi-space@24.12
+   
+   # When prompted, select version and press 'c' to checksum
+   
+   # Edit the package file
+   spack edit gpi-space
+   
+   # Ensure it contains:
+   version("24.12", sha256="9cd97b8e41b4494c14a90afff6b801f9cf3b5811205e39c33a481ab09db59920")
    ```
-
-   and ensure it contains the following line:
-     ```python
-     version("24.12", sha256="9cd97b8e41b4494c14a90afff6b801f9cf3b5811205e39c33a481ab09db59920")
-     ```
-
-   - Save the file and try installing `gspc-feynman` again:
-     ```bash
-     spack install gspc-feynman
-     ```
+   
+   Then restart from [Install gspc-feynman](#installation-steps)
 
 ### Environment Verification
 
@@ -230,16 +244,13 @@ ls -l $software_ROOT/nodefile
 ls -l $software_ROOT/loghostfile
 ```
 
-## 📚 Additional Resources
-
-- [GPI-Space Documentation](https://github.com/singular-gpispace/gspc-feynman)
+## Additional Resources
+- [GPI-Space Documentation](https://github.com/cc-hpc-itwm/gpispace)
 - [Singular Documentation](https://www.singular.uni-kl.de/)
 - [Spack Documentation](https://spack.readthedocs.io/)
 
-## 🤝 Contributing
-
+## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
-
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+## License
+Apache License 2.0 - see [LICENSE](LICENSE) file
