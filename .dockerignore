@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Build directories
+build_dir/
+install_dir/
+
+# Temporary files
+tempdir/
+*.tmp
+*.log
+
+# Documentation
+*.md
+*.txt
+!readme.txt
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# Spack
+spack/
+spack-packages/
+
+# SSH keys
+.ssh/ 
