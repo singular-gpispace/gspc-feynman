@@ -104,8 +104,8 @@ gc.options.nodefile = "nodefile";
 gc.options.procspernode = 4;
 gc.options.loghostfile = "loghostfile";
 gc.options.logport = 9876;
-//gc.options.rifstrategyparameters = "--ssh-username=root"; 
-gc.options.rifstrategy = "local";
+gc.options.rifstrategyparameters = "--ssh-username=root"; 
+//gc.options.rifstrategy = "local";
 
 
 // Define graph structure
@@ -152,8 +152,9 @@ mkdir -p $software_ROOT/logs
 GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
 
 # Start monitor with logging
-[ -f $software_ROOT/logs/monitor.txt ] && rm $software_ROOT/logs/monitor.txt
-cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
+mkdir -p logs
+[ -f logs/monitor.txt ] && rm logs/monitor.txt
+cd gpi-space/bin && ./gspc-logging-to-stdout.exe --port 9876 >> ../../logs/monitor.txt 2>&1 &
 
 # Monitor the output
 tail -f $software_ROOT/logs/monitor.txt
