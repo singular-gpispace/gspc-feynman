@@ -252,3 +252,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+
+ "source /singular-gpispace/spack/share/spack/setup-env.sh && spack load gpi-space@24.12 && cd /singular-gpispace/spack/opt/spack/linux-ubuntu22.04-skylake/gcc-11.4.0/gpi-space-24.12-wsvncza6r42ecjasvrvwkfq7quupdipc/bin && ./gspc-monitor --port 9876 >> /singular-gpispace/logs/monitor.txt 2>&1 & sleep 2 && echo 'Monitor started'"
+ ps aux | grep gspc-monitor && echo '---' && tail -f /singular-gpispace/logs/monitor.txt"
