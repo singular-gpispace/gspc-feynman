@@ -96,7 +96,8 @@ RUN setcap cap_sys_admin+ep /bin/hostname
 
 RUN printf '#!/bin/bash\n\
 service ssh start\n\
-CONTAINER_HOSTNAME=$(echo $HOSTNAME | tr -d " ")\n\
+# Get the hostname from the container environment\n\
+CONTAINER_HOSTNAME=$(hostname)\n\
 CONTAINER_IP=$(ip addr show eth0 | grep "inet\b" | awk "{print \$2}" | cut -d/ -f1 | tr -d " ")\n\
 source /singular-gpispace/spack/share/spack/setup-env.sh\n\
 if ! spack repo list | grep -q "/singular-gpispace/spack-packages"; then\n\
@@ -133,6 +134,13 @@ cp $GSPC_FEYNMAN_EXAMPLES_DIR/templategspc.lib . 2>/dev/null || true\n\
 # Write only hostname to nodefile and loghostfile\n\
 echo "$CONTAINER_HOSTNAME" > nodefile\n\
 echo "$CONTAINER_HOSTNAME" > loghostfile\n\
+\n\
+# Create a default Singular configuration file with SSH username and entry point\n\
+mkdir -p ~/.singular\n\
+echo "rifstrategyparameters = \"--ssh-username=root --entry-point=$CONTAINER_HOSTNAME\"" > ~/.singular/gspc.conf\n\
+\n\
+# Create a Singular startup file to ensure configuration is loaded\n\
+echo "LIB \"templategspc.lib\";" > ~/.singularrc\n\
 \n\
 $GPISPACE_BIN/gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &\n\
 \n\

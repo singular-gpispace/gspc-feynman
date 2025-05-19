@@ -104,9 +104,7 @@ gc.options.nodefile = "nodefile";
 gc.options.procspernode = 4;
 gc.options.loghostfile = "loghostfile";
 gc.options.logport = 9876;
-//gc.options.rifstrategyparameters = "--ssh-username=root"; 
 gc.options.rifstrategy = "local";
-
 
 // Define graph structure
 ring R = 0, x, dp;
