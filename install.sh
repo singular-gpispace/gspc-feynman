@@ -64,7 +64,11 @@ cp "$WORKSPACE_DIR/build_dir/src/libSINGULAR-template-installation.so" \
 
 # Navigate to example directory
 cd "$WORKSPACE_DIR/examples" || exit 1
-rm -rf temp/*
+
+# nodefile.
+export software_ROOT="$PWD"
+hostname > "$software_ROOT/nodefile"
+rm -rf temp && mkdir -p temp
 
 # Set Singular installation path
 export PATH=$SINGULAR_INSTALL_DIR/bin:$PATH

@@ -5,15 +5,16 @@ LIB "templategspc.lib";
 LIB "modstd.lib";
 //following from Leadsyz;LIB "general.lib";LIB "monomialideal.lib"; LIB "homolog.lib";
 
-
-// Configure GPI-Space	
+/*
 configToken gc = configure_gspc();
 gc.options.tmpdir = system("getenv", "GSPC_FEYNMAN_INSTALL_DIR") + "/temp";
 gc.options.nodefile = system("getenv", "software_ROOT") + "/nodefile";
+*/
+// Configure GPI-Space	
+configToken gc = configure_gspc(); // Gets defaults for tmpdir, nodefile, rifstrategy
 gc.options.procspernode = 7;
 gc.options.loghost = "waas";
 gc.options.logport = 9876;
-
 
 
 ring R = 0, x, dp;
@@ -71,4 +72,3 @@ def m = read(l);
 string(m.data[1]);
 rtimer - t;
 print("timer");
-
