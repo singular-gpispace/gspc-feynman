@@ -3,6 +3,7 @@
 ![Petri Net](template/cmake/modules/web.png)
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Installation Guide](#installation-guide)
   - [Prerequisites](#prerequisites)
@@ -24,6 +25,7 @@ This package provides a framework for automating the reduction of Feynman integr
 ### Prerequisites
 
 #### Required System Packages:
+
 ```bash
 sudo apt update
 sudo apt install -y build-essential ca-certificates coreutils curl \
@@ -34,12 +36,14 @@ sudo apt install -y build-essential ca-certificates coreutils curl \
 ### Environment Setup
 
 1. Create and set up working directory:
+
 ```bash
 mkdir -p ~/singular-gpispace
 cd ~/singular-gpispace
 ```
 
 2. Set environment variables (add to `~/.bashrc` for persistence):
+
 ```bash
 echo 'export software_ROOT=~/singular-gpispace' >> ~/.bashrc
 echo 'export install_ROOT=~/singular-gpispace' >> ~/.bashrc
@@ -49,6 +53,7 @@ source ~/.bashrc
 ### Installation Steps
 
 1. **Install Spack**:
+
 ```bash
 # Clone Spack
 git clone https://github.com/spack/spack.git $software_ROOT/spack
@@ -65,6 +70,7 @@ spack spec zlib
 ```
 
 2. **Install gspc-feynman**:
+
 ```bash
 # Add package repository
 git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
@@ -75,6 +81,7 @@ spack install gspc-feynman
 ```
 
 3. **Configure Environment**:
+
 ```bash
 # Set environment variables
 export GSPC_FEYNMAN_INSTALL_DIR=$(spack location -i gspc-feynman)
@@ -174,6 +181,7 @@ def re = gspc_feynman(L, gc);
 ### Common Issues
 
 1. **Monitor Not Starting**
+   
    - Check if port is in use:
      ```bash
      netstat -tuln | grep 9876
@@ -193,27 +201,27 @@ def re = gspc_feynman(L, gc);
      GPISPACE_BIN=$(spack location -i gpi-space@24.12)/bin
      cd $GPISPACE_BIN && ./gspc-logging-to-stdout.exe --port 9876 >> $software_ROOT/logs/monitor.txt 2>&1 &
      ```
-
 2. **Module Loading Issues**
+   
    ```bash
    # Reload modules
    spack load gpi-space@24.12
    spack load singular@4.4.0p2
    spack load gspc-feynman
    ```
-
 3. **SSH Connection Issues**
+   
    ```bash
    # Test SSH connection
    ssh localhost echo "SSH connection successful"
-
+   
    # Regenerate SSH keys if needed
    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
    ssh-copy-id -f -i ~/.ssh/id_rsa localhost
    ```
-
 4. **gpi-space@24.12 Not Found**
    If you encounter an error indicating that `gpi-space@24.12` is not found:
+   
    ```bash
    # Run checksum command
    spack checksum gpi-space@24.12
@@ -244,13 +252,63 @@ ls -l $software_ROOT/nodefile
 ls -l $software_ROOT/loghostfile
 ```
 
+## ⏱️ Performance Comparison: Sequential vs Parallel
+
+This section compares sector reduction timings between:
+
+- **Singular (Sequential)**
+- **Singular + FLINT C++ (Parallel)**
+
+### 📊 Sector Timing Table
+
+| Sector     | Singular (Sequential) [s] | Singular + FLINT (Parallel) [s] |
+|------------|----------------------------|----------------------------------|
+| {1,2,3}    | 2.00                       | 0.22                             |
+| {1,2}      | 85.00                      | 0.78                             |
+| {2,3}      | 126.00                     | 0.91                             |
+| {1,3}      | 18.00                      | 0.37                             |
+| {1}        | 2227.00                    | 7.65                             |
+| {2}        | 2067.00                    | 6.41                             |
+| {3}        | 137.00                     | 1.75                             |
+
+> **Speedup achieved with FLINT and parallelization**
+> 
+
+---
+
+## 📐 Feynman Graph
+
+- **Vertices:** `1, 2, 3, 4, 5, 6`
+- **Edges:**
+  `(6,1), (4,6), (1,2), (3,5), (4,3), (2,5), (5,6)`
+- **External Legs Attached:** `1, 2, 3, 4`
+
+---
+
+### 🧮 Tail Vectors 
+
+| ID  | Tail Vector (Exponents)                          |
+|-----|--------------------------------------------------|
+| 1   | (1, 1, 1, -1, -3, -1, -1, -1, -1)                |
+| 2   | (1, -1, 1, -1, -3, -1, -1, -4, -1)               |
+
+These tail vectors define the integral configuration and sector properties used in the IBP reduction.
+
+---
+
+
+
 ## Additional Resources
+
 - [GPI-Space Documentation](https://github.com/cc-hpc-itwm/gpispace)
 - [Singular Documentation](https://www.singular.uni-kl.de/)
 - [Spack Documentation](https://spack.readthedocs.io/)
 
 ## Contributing
+
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
+
 Apache License 2.0 - see [LICENSE](LICENSE) file
+
