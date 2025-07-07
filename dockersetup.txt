@@ -1,45 +1,27 @@
+# Build the Docker image
 docker build -t gspc-feynman .
+
+# Run the container locally (for testing)
 docker run -it --hostname waas --cap-add=SYS_ADMIN gspc-feynman
 docker run -it --hostname $(hostname) --cap-add=SYS_ADMIN gspc-feynman
 
+# Tag the image for Singular-GPISpace organization
+docker tag gspc-feynman ghcr.io/singular-gpispace/gspc-feynman:latest
 
-docker tag gspc-feynman ghcr.io/$(whoami)/gspc-feynman:latest
-export GITHUB_TOKEN=your_token_here
+# Login to GitHub Container Registry
+# Replace YOUR_TOKEN with your GitHub Personal Access Token
+echo YOUR_TOKEN | docker login ghcr.io -u $(whoami) --password-stdin
 
+# Push the image to Singular-GPISpace organization
+docker push ghcr.io/singular-gpispace/gspc-feynman:latest
 
+# For other users to pull and run the image:
+# 1. Login to GHCR (if image is private)
+# echo YOUR_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+# 2. Pull the image
+# docker pull ghcr.io/singular-gpispace/gspc-feynman:latest
+# 3. Run the container
+# docker run -it --hostname $(hostname) --cap-add=SYS_ADMIN ghcr.io/singular-gpispace/gspc-feynman:latest
 
-echo code_github | docker login ghcr.io -u blociss --password-stdin
-
-
-GitHub Container Registry (GHCR) using your username blociss.
-
-Now, to push your Docker image to GHCR and make it available for others:
-
-✅ 1. Tag the image correctly (must be lowercase!)
-bash
-
-docker tag gspc-feynman ghcr.io/blociss/gspc-feynman:latest
-✅ 2. Push the image
-bash
-
-docker push ghcr.io/blociss/gspc-feynman:latest
-✅ 3. What the other user needs to do (e.g., on macOS or Windows):
-Install Docker Desktop
-
-Available for macOS and Windows.
-
-Login to GHCR (optional if image is public)
-
-bash
-
-echo YOUR_TOKEN | docker login ghcr.io -u blociss --password-stdin
-Pull and run the image
-
-bash
-
-docker pull ghcr.io/blociss/gspc-feynman:latest
-docker run -it --hostname $(hostname) --cap-add=SYS_ADMIN ghcr.io/blociss/gspc-feynman:latest
-
-
-
-https://ghcr.io/blociss/gspc-feynman
+# Image URL
+https://ghcr.io/singular-gpispace/gspc-feynman
